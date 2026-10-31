@@ -248,27 +248,39 @@ private fun LogHeader(model: RethinkLogRowModel, cardColor: Color, chevron: Floa
             TitleAndTime(model.destination, model.timeLabel, chevron) { title, mod ->
                 Text(rethinkDomainText(title, scheme.onSurface, scheme.onSurfaceVariant), style = MaterialTheme.typography.titleSmall, maxLines = 1, overflow = TextOverflow.MiddleEllipsis, modifier = mod)
             }
-            Row(horizontalArrangement = Arrangement.spacedBy(SharedDimensions.spacingXs), verticalAlignment = Alignment.CenterVertically) {
-                val reason = model.reason?.takeIf { model.isBlocked && it.isNotBlank() }
-                val answer = model.endpoint?.takeIf { model.kind == RethinkLogKind.Dns && !model.isBlocked && it.isNotBlank() }
-                when {
-                    reason != null -> RethinkPill(
-                        text = reason,
-                        colors = RethinkPillDefaults.blocked(),
-                        size = RethinkPillSize.Small,
-                        modifier = Modifier.weight(1f, fill = false),
-                    )
-                    // The resolved address, plain: monospace already reads as an address, and an arrow
-                    // here would echo the download arrow on network rows with a different meaning.
-                    answer != null -> RethinkPill(
-                        text = answer,
-                        size = RethinkPillSize.Small,
-                        monospace = true,
-                        modifier = Modifier.weight(1f, fill = false),
-                    )
-                }
-                RethinkPill(model.typeLabel, size = RethinkPillSize.Small, fontWeight = FontWeight.Bold)
-                model.facts.firstOrNull()?.let { RethinkPill(it.text, size = RethinkPillSize.Small, leadingIcon = it.icon) }
+            LogFactsLine(model)
+        }
+    }
+}
+
+/**
+ * The row's second line as quiet text, not a strip of chips: why it was blocked (in the blocked
+ * colour), or for an allowed DNS answer the address; then the one useful readout (data moved,
+ * latency). The protocol only fills the line when nothing else would; the details have it.
+ */
+@Composable
+private fun LogFactsLine(model: RethinkLogRowModel) {
+    val scheme = MaterialTheme.colorScheme
+    val style = MaterialTheme.typography.labelMedium
+    val reason = model.reason?.takeIf { model.isBlocked && it.isNotBlank() }
+    val answer = model.endpoint?.takeIf { model.kind == RethinkLogKind.Dns && !model.isBlocked && it.isNotBlank() }
+    val fact = model.facts.firstOrNull()
+    Row(horizontalArrangement = Arrangement.spacedBy(SharedDimensions.spacingSm), verticalAlignment = Alignment.CenterVertically) {
+        when {
+            reason != null -> Text(
+                reason, style = style, fontWeight = FontWeight.SemiBold, color = RethinkStatusColors.blocked,
+                maxLines = 1, overflow = TextOverflow.Ellipsis, modifier = Modifier.weight(1f, fill = false),
+            )
+            answer != null -> Text(
+                answer, style = style.copy(fontFamily = androidx.compose.ui.text.font.FontFamily.Monospace), color = scheme.onSurfaceVariant,
+                maxLines = 1, overflow = TextOverflow.Ellipsis, modifier = Modifier.weight(1f, fill = false),
+            )
+            fact == null -> Text(model.typeLabel, style = style, color = scheme.onSurfaceVariant, maxLines = 1)
+        }
+        fact?.let {
+            Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(SharedDimensions.spacingGridTile)) {
+                it.icon?.let { icon -> Icon(icon, null, tint = scheme.onSurfaceVariant, modifier = Modifier.size(SharedDimensions.iconSizeXs - 2.dp)) }
+                Text(it.text, style = style.copy(fontFeatureSettings = "tnum"), color = scheme.onSurfaceVariant, maxLines = 1)
             }
         }
     }

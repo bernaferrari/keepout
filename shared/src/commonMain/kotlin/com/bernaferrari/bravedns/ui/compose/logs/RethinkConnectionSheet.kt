@@ -3,6 +3,10 @@
 
 package com.bernaferrari.bravedns.ui.compose.logs
 
+import androidx.compose.ui.semantics.Role
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.ui.draw.clip
+import androidx.compose.foundation.clickable
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -156,7 +160,8 @@ fun RethinkConnectionSheet(
             onOpenApp = onOpenApp,
         )
         snackbarHostState?.let { SnackbarHost(it, Modifier.fillMaxWidth()) }
-        Spacer(Modifier.size(SharedDimensions.spacingLg))
+        // Room above the navigation bar, so the last control never sits under it.
+        Spacer(Modifier.size(SharedDimensions.spacing2xl))
     }
 }
 
@@ -174,7 +179,22 @@ fun ColumnScope.RethinkConnectionSheetContent(
     onCopyAddress: (() -> Unit)? = null,
     onOpenApp: (() -> Unit)? = null,
 ) {
-    RethinkSheetHeader(title = model.title, subtitle = model.subtitle, leading = appIcon)
+    // The header is the way to the app: the whole row opens its App detail, with a chevron to say so.
+    val openLabel = strings.openApp
+    RethinkSheetHeader(
+        title = model.title,
+        subtitle = model.subtitle,
+        leading = appIcon,
+        trailing = if (onOpenApp != null) {
+            { Icon(MaterialSymbols.AutoMirrored.Filled.KeyboardArrowRight, null, tint = MaterialTheme.colorScheme.onSurfaceVariant) }
+        } else null,
+        modifier = if (onOpenApp != null) {
+            Modifier
+                .clip(RoundedCornerShape(SharedDimensions.cornerRadiusLg))
+                .clickable(onClickLabel = openLabel, role = Role.Button, onClick = onOpenApp)
+                .padding(vertical = SharedDimensions.spacingXs)
+        } else Modifier,
+    )
     VerdictCard(model)
     if (model.primaryAction != null || model.secondaryAction != null) {
         Column(verticalArrangement = Arrangement.spacedBy(SharedDimensions.spacingSm)) {
@@ -195,7 +215,7 @@ fun ColumnScope.RethinkConnectionSheetContent(
         }
     }
     model.rule?.let { rule -> RuleGroup(rule, strings, onRuleActionChange, onRuleScopeChange) }
-    FooterLinks(model, strings, onCopyAddress, onOpenApp)
+    FooterLinks(model, strings, onCopyAddress)
 }
 
 @Composable
@@ -274,14 +294,10 @@ private fun FooterLinks(
     model: RethinkConnectionSheetModel,
     strings: RethinkConnectionSheetStrings,
     onCopyAddress: (() -> Unit)?,
-    onOpenApp: (() -> Unit)?,
 ) {
     var expanded by rememberSaveable { mutableStateOf(false) }
     Column {
         FlowRow(horizontalArrangement = Arrangement.spacedBy(SharedDimensions.spacingXs)) {
-            if (onOpenApp != null && strings.openApp != null) {
-                TextButton(onClick = onOpenApp) { Text(strings.openApp) }
-            }
             if (onCopyAddress != null) {
                 TextButton(onClick = onCopyAddress) {
                     Icon(MaterialSymbols.Filled.ContentCopy, null, Modifier.size(ButtonDefaults.IconSize))

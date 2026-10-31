@@ -88,7 +88,8 @@ fun connectionLogModel(ct: ConnectionTracker): RethinkLogRowModel {
     var appCount by remember(ct.uid) { mutableIntStateOf(1) }
 
     LaunchedEffect(ct.uid, ct.appName, ct.usrId) {
-        val apps = withContext(Dispatchers.IO) { FirewallManager.getPackageNamesByUid(ct.uid) }
+        // A cold start may not have filled the app cache yet; without it every row drew a blank disc.
+        val apps = withContext(Dispatchers.IO) { FirewallManager.ensureLoaded(); FirewallManager.getPackageNamesByUid(ct.uid) }
         appCount = apps.size
         packageName = apps.firstOrNull()
     }

@@ -16,6 +16,7 @@
  */
 package com.bernaferrari.bravedns.ui.compose.home
 
+import com.bernaferrari.bravedns.ui.compose.theme.SectionHeader
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
@@ -246,7 +247,7 @@ data class RethinkHomeStrings(
 private enum class ProtectionVisualState { Protected, Recovering, Paused, Off }
 
 private const val MARK_TURN_MILLIS = 24_000
-private val MarkSizeCompact = 104.dp
+private val MarkSizeCompact = 72.dp
 private val MarkSizeExpanded = 232.dp
 private val HeroCorner = 40.dp
 private val SplitBarHeight = 14.dp
@@ -431,27 +432,35 @@ private fun ProtectionHero(
         Column(
             Modifier.padding(if (expanded) SharedDimensions.spacing2xl else SharedDimensions.spacingXl),
         ) {
+            val title: @Composable (Modifier) -> Unit = { titleModifier ->
+                Text(
+                    text = status,
+                    style = if (expanded) MaterialTheme.typography.displayLarge else MaterialTheme.typography.headlineLarge,
+                    fontWeight = FontWeight.ExtraBold,
+                    letterSpacing = if (expanded) (-1).sp else (-0.5).sp,
+                    lineHeight = if (expanded) 60.sp else 36.sp,
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis,
+                    modifier = titleModifier.semantics { heading() },
+                )
+            }
             if (expanded) {
                 // Wide: the mark is the centre of the pane, the words and the controls below it.
                 Box(Modifier.weight(1f).fillMaxWidth(), contentAlignment = Alignment.Center) {
                     ProtectionMark(state, colors, MarkSizeExpanded)
                 }
+                title(Modifier)
             } else {
-                ProtectionMark(state, colors, MarkSizeCompact)
-                Spacer(Modifier.height(SharedDimensions.spacingXl))
+                // Compact: the mark beside the state, so the hero is a summary, not a whole screen.
+                Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(SharedDimensions.spacingLg)) {
+                    ProtectionMark(state, colors, MarkSizeCompact)
+                    title(Modifier.weight(1f))
+                }
             }
-            Text(
-                text = status,
-                style = if (expanded) MaterialTheme.typography.displayLarge else MaterialTheme.typography.displayMedium,
-                fontWeight = FontWeight.ExtraBold,
-                letterSpacing = (-1).sp,
-                lineHeight = if (expanded) 60.sp else 50.sp,
-                maxLines = 2,
-                overflow = TextOverflow.Ellipsis,
-                modifier = Modifier.semantics { heading() },
-            )
-            Spacer(Modifier.height(SharedDimensions.spacingSm))
-            if (subtitle.isNotBlank()) {
+            // "Protected" needs no second line; the other states carry news (when a pause ends,
+            // what's failing, how to turn it on).
+            if (subtitle.isNotBlank() && state != ProtectionVisualState.Protected) {
+                Spacer(Modifier.height(SharedDimensions.spacingMd))
                 Text(subtitle, style = MaterialTheme.typography.bodyLarge, color = colors.content.copy(alpha = 0.82f))
             }
             if (state == ProtectionVisualState.Paused && onAdjustPause != null) {
@@ -862,29 +871,12 @@ private object StillTurn : State<Float> {
     override val value: Float = 0f
 }
 
-@Composable
-private fun SectionHeader(title: String, action: String? = null, onAction: (() -> Unit)? = null) {
-    Row(Modifier.fillMaxWidth().heightIn(min = SharedDimensions.touchTargetMin), verticalAlignment = Alignment.CenterVertically) {
-        Text(
-            title,
-            style = MaterialTheme.typography.titleMedium,
-            fontWeight = FontWeight.Bold,
-            modifier = Modifier.weight(1f).semantics { heading() },
-        )
-        if (action != null && onAction != null) {
-            TextButton(onClick = onAction) {
-                Text(action)
-                Icon(MaterialSymbols.AutoMirrored.Filled.KeyboardArrowRight, null, modifier = Modifier.size(SharedDimensions.iconSizeSm))
-            }
-        }
-    }
-}
-
 /** The last 24 hours: allowed vs blocked as numbers and as one split bar. */
 @Composable
 private fun TodaySection(uiState: RethinkHomeUiState, strings: RethinkHomeStrings, onActivityClick: (() -> Unit)?) {
     Column {
-        SectionHeader(strings.last24Hours, strings.seeStatistics, onActivityClick)
+        // The app's one section header, so Home reads like every other screen.
+        SectionHeader(strings.last24Hours, actionLabel = strings.seeStatistics, onAction = onActivityClick)
         Surface(shape = RoundedCornerShape(SharedDimensions.groupCornerRadius), color = MaterialTheme.colorScheme.surfaceContainerLow) {
             Column(Modifier.padding(SharedDimensions.spacingXl), verticalArrangement = Arrangement.spacedBy(SharedDimensions.spacingLg)) {
                 Text(strings.connections, style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.onSurfaceVariant)
@@ -908,10 +900,7 @@ private fun TodaySection(uiState: RethinkHomeUiState, strings: RethinkHomeString
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                         modifier = Modifier.weight(1f),
                     )
-                    RethinkPill(
-                        text = strings.blockedCount(uiState.dnsBlockedToday),
-                        colors = if (uiState.dnsBlockedToday > 0) RethinkPillDefaults.blocked() else RethinkPillDefaults.neutral(),
-                    )
+                    BlockedCount(strings.blockedCount(uiState.dnsBlockedToday), uiState.dnsBlockedToday > 0)
                 }
             }
         }
@@ -949,6 +938,21 @@ private fun SplitBar(allowed: Long, blocked: Long) {
     }
 }
 
+/**
+ * "25 blocked" as plain text in the blocked colour: the red still marks it, without a solid block
+ * per row outshouting the day's totals above.
+ */
+@Composable
+private fun BlockedCount(text: String, any: Boolean) {
+    Text(
+        text,
+        style = MaterialTheme.typography.labelLarge,
+        fontWeight = FontWeight.SemiBold,
+        color = if (any) RethinkStatusColors.blocked else MaterialTheme.colorScheme.onSurfaceVariant,
+        maxLines = 1,
+    )
+}
+
 /** The apps the firewall stopped most, each a row that opens its rules. */
 @Composable
 private fun StoppedMostSection(apps: List<RethinkHomeBlockedApp>, strings: RethinkHomeStrings, onClick: ((String) -> Unit)?) {
@@ -966,13 +970,7 @@ private fun StoppedMostSection(apps: List<RethinkHomeBlockedApp>, strings: Rethi
                             app.icon?.invoke() ?: Box(Modifier.fillMaxSize().background(MaterialTheme.colorScheme.surfaceContainerHighest))
                         }
                     },
-                    trailing = {
-                        RethinkPill(
-                            text = strings.blockedCount(app.count),
-                            colors = RethinkPillDefaults.blocked(),
-                            leadingIcon = MaterialSymbols.Filled.DoNotDisturbOn,
-                        )
-                    },
+                    trailing = { BlockedCount(strings.blockedCount(app.count), app.count > 0) },
                     position = cardPositionFor(index, apps.lastIndex),
                     onClick = onClick?.let { { it(app.id) } },
                 )

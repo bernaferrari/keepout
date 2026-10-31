@@ -81,7 +81,7 @@ fun CustomRulesScreen(
     val editRule = rememberRuleEditAction(snackbar, eventLogger)
 
     LaunchedEffect(uid) {
-        if (lockedToApp) lockedAppName = withContext(Dispatchers.IO) { FirewallManager.getAppNameByUid(uid).orEmpty() }
+        if (lockedToApp) lockedAppName = withContext(Dispatchers.IO) { FirewallManager.ensureLoaded(); FirewallManager.getAppNameByUid(uid).orEmpty() }
     }
     val listUid = (rulesScope as? RethinkRulesScope.App)?.uid ?: UID_EVERYBODY
     LaunchedEffect(listUid) {
@@ -119,7 +119,7 @@ fun CustomRulesScreen(
     fun loadOwnerName(ruleUid: Int) {
         if (ruleUid == UID_EVERYBODY || appNames.containsKey(ruleUid)) return
         scope.launch {
-            val name = withContext(Dispatchers.IO) { FirewallManager.getAppNameByUid(ruleUid).orEmpty() }
+            val name = withContext(Dispatchers.IO) { FirewallManager.ensureLoaded(); FirewallManager.getAppNameByUid(ruleUid).orEmpty() }
             appNames[ruleUid] = name
         }
     }

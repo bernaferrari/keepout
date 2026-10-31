@@ -110,6 +110,9 @@ fun rememberAppIconPainter(uid: Int, fallbackToDefault: Boolean = false): Painte
         if (value != null) return@produceState
         value =
             withContext(Dispatchers.IO) {
+                // A cold start may not have filled the app cache yet; without it a seeded or
+                // multi-user uid falls through to "no package" and the row draws a blank disc.
+                FirewallManager.ensureLoaded()
                 val candidateUids = listOf(uid, FirewallManager.appId(uid, mainUserOnly = true)).distinct()
                 candidateUids.firstNotNullOfOrNull { FirewallManager.getPackageNameByUid(it) }
                     ?: candidateUids.firstNotNullOfOrNull {

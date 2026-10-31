@@ -75,6 +75,7 @@ fun ConnectionRow(
     LaunchedEffect(dc.uid, dc.appOrDnsName) {
         val resolved =
             withContext(Dispatchers.IO) {
+                FirewallManager.ensureLoaded()
                 val appInfo = FirewallManager.getAppInfoByUid(dc.uid)
                 val displayName = if (dc.appOrDnsName.isNullOrEmpty()) {
                     appInfo?.appName ?: fallbackName.orEmpty()
