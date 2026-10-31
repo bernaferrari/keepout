@@ -422,7 +422,7 @@
     <string name="orbot_bs_status_1" translatable="true">Forwarding %1$s connections to Orbot.</string>
     <string name="orbot_bs_status_2" translatable="true">HTTP proxy is set.</string>
     <string name="orbot_bs_status_3" translatable="true">Forwarding %1$s to Orbot, HTTP proxy also set.</string>
-    <string name="orbot_bs_status_4" translatable="true">One-click Tor-as-a-proxy (Orbot) setup.</string>
+    <string name="orbot_bs_status_4" translatable="true">Needs the Orbot app</string>
 
     <string name="orbot_status_arg_2" translatable="true">TCP</string>
     <string name="orbot_status_arg_3" translatable="true">DNS and TCP</string>
@@ -1334,21 +1334,21 @@
 
     <!-- anti-censorship -->
 
-    <string name="ac_never_split_desc" translatable="true">Do not alter packets.</string>
+    <string name="ac_never_split_desc" translatable="true">Traffic goes out unchanged.</string>
 
-    <string name="ac_split_auto_desc" translatable="true">Alter packets as necessary.</string>
+    <string name="ac_split_auto_desc" translatable="true">Keepout picks the method per connection.</string>
 
     <string name="ac_split_tcp" translatable="true">TCP</string>
-    <string name="ac_split_tcp_desc" translatable="true">Alter TCP packets.</string>
+    <string name="ac_split_tcp_desc" translatable="true">Splits every connection\'s first packet.</string>
 
     <string name="ac_split_tls" translatable="true">TCP/TLS</string>
-    <string name="ac_split_tls_desc" translatable="true">Alter TCP or TLS packets.</string>
+    <string name="ac_split_tls_desc" translatable="true">Also splits the encrypted hello that names the site.</string>
 
     <string name="ac_desync" translatable="true">Desync</string>
-    <string name="ac_desync_desc" translatable="true">Send decoy packets as necessary.</string>
+    <string name="ac_desync_desc" translatable="true">Sends decoy packets that confuse censors.</string>
 
     <string name="ac_tcp_proxy" translatable="false">Hybrid</string>
-    <string name="ac_tcp_proxy_desc" translatable="false">Also uses proxy as necessary.</string>
+    <string name="ac_tcp_proxy_desc" translatable="false">Disguises traffic and falls back to a proxy.</string>
 
     <!-- TCP Proxy Screen -->
     <string name="tcp_proxy_warp_active_error" translatable="true">WARP is on. Turn it off first.</string>
@@ -1358,15 +1358,15 @@
     <string name="tcp_proxy_cloudflare_warp_title" translatable="true">Cloudflare WARP</string>
     <string name="tcp_proxy_cloudflare_warp_desc" translatable="true">Modern, fast, and secure way to connect to a VPN server. Secure all your internet traffic with an ultra-secure, lightning-quick VPN service that lets you connect with the WireGuard protocol.</string>
 
-    <string name="ac_retry_options_title" translatable="true">Strategy</string>
-    <string name="ac_retry_options_desc" translatable="true">Set how retries work for censored connections.</string>
+    <string name="ac_retry_options_title" translatable="true">When to use it</string>
+    <string name="ac_retry_options_desc" translatable="true">Disguising traffic can slow some sites.</string>
 
-    <string name="ac_retry_options_never_desc" translatable="true">On failure, never retry anti-censorship techniques.</string>
+    <string name="ac_retry_options_never_desc" translatable="true">Never retry a blocked connection.</string>
 
-    <string name="ac_retry_options_with_split_desc" translatable="true">Apply anti-censorship techniques when necessary.</string>
+    <string name="ac_retry_options_with_split_desc" translatable="true">Only after a connection looks blocked.</string>
 
     <string name="lbl_always" translatable="true">Always</string>
-    <string name="ac_retry_options_after_split_desc" translatable="true">Always apply anti-censorship techniques.</string>
+    <string name="ac_retry_options_after_split_desc" translatable="true">On every connection, from the start.</string>
 
     <string name="ac_toast_retry_disabled" translatable="true">Pick any anti-censorship option to choose strategy.</string>
 
@@ -1762,8 +1762,8 @@
         <item quantity="one">%d app uses Orbot</item>
         <item quantity="other">%d apps use Orbot</item>
     </plurals>
-    <string name="ac_split_options_title">Split strategy</string>
-    <string name="ac_split_options_desc">How the first bytes of each connection are split to slip past deep-packet inspection.</string>
+    <string name="ac_split_options_title">How to disguise traffic</string>
+    <string name="ac_split_options_desc">Keepout splits the start of each connection so censors can\'t read where it\'s going.</string>
     <string name="rpn_countries_no_matches">No locations match</string>
     <string name="dns_list_subtitle">Choose how domain names are resolved</string>
     <string name="dns_list_protocol_section">Protocol</string>

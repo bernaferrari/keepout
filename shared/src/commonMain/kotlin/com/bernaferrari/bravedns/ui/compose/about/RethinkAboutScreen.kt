@@ -10,7 +10,6 @@ package com.bernaferrari.bravedns.ui.compose.about
 
 import com.bernaferrari.bravedns.ui.compose.theme.RethinkIconWell
 import com.bernaferrari.bravedns.ui.compose.theme.RethinkIconWellContainerColor
-import com.bernaferrari.bravedns.ui.compose.theme.RethinkIconWellDefaults
 import com.bernaferrari.bravedns.ui.compose.theme.RethinkPill
 import com.bernaferrari.bravedns.ui.compose.theme.RethinkPillDefaults
 import com.bernaferrari.bravedns.ui.compose.theme.RethinkPillSize
@@ -201,10 +200,10 @@ fun RethinkAboutScreen(
                     AboutRow(strings.website, { tint -> Icon(MaterialSymbols.Filled.Public, null, tint = tint) }, actions.onWebsite),
                     AboutRow(strings.github, assets.github, actions.onGithub),
                     AboutRow(strings.faq, { tint -> Icon(MaterialSymbols.AutoMirrored.Filled.HelpOutline, null, tint = tint) }, actions.onFaq),
-                    AboutRow(strings.docs, { tint -> Icon(MaterialSymbols.AutoMirrored.Filled.Article, null, tint = tint) }, actions.onDocs),
+                    AboutRow(strings.docs, { tint -> Icon(MaterialSymbols.Filled.AutoStories, null, tint = tint) }, actions.onDocs),
                     AboutRow(strings.privacyPolicy, { tint -> Icon(MaterialSymbols.Filled.Policy, null, tint = tint) }, actions.onPrivacyPolicy),
-                    AboutRow(strings.terms, { tint -> Icon(MaterialSymbols.AutoMirrored.Filled.Article, null, tint = tint) }, actions.onTerms),
-                    AboutRow(strings.license, { tint -> Icon(MaterialSymbols.AutoMirrored.Filled.Article, null, tint = tint) }, actions.onLicense),
+                    AboutRow(strings.terms, { tint -> Icon(MaterialSymbols.Filled.Rule, null, tint = tint) }, actions.onTerms),
+                    AboutRow(strings.license, { tint -> Icon(MaterialSymbols.Filled.Code, null, tint = tint) }, actions.onLicense),
                 ),
             )
         }
@@ -266,7 +265,6 @@ private fun AboutAppSection(uiState: RethinkAboutUiState, strings: RethinkAboutS
             }
             add(AboutRow(strings.appInfo, aboutIcon(MaterialSymbols.Filled.Info), actions.onAppInfo))
             add(AboutRow(strings.vpnProfile, aboutIcon(MaterialSymbols.Filled.VpnKey), actions.onVpnProfile))
-            add(AboutRow(strings.notifications, aboutIcon(MaterialSymbols.Filled.Notifications), actions.onNotifications))
         },
     )
 }
@@ -306,7 +304,8 @@ private fun AboutCommunitySection(
     actions: RethinkAboutActions,
     assets: RethinkAboutAssets,
 ) {
-    val accent = MaterialTheme.colorScheme.tertiary
+    // The app's accent, like every section above: tertiary is green in most palettes and read as "allowed".
+    val accent = MaterialTheme.colorScheme.primary
     Column {
         SectionHeader(strings.connect)
         RethinkListGroup {
@@ -348,13 +347,11 @@ private fun AboutSocialRow(
         modifier = Modifier.fillMaxWidth().padding(top = SharedDimensions.spacingGridTile).clip(shape),
     ) {
         Row(
-            // Same 16dp inset and icon container as the rows above, so the leading column aligns.
-            modifier = Modifier.fillMaxWidth().padding(start = SharedDimensions.spacingLg, end = SharedDimensions.spacingXs, top = SharedDimensions.spacingSm, bottom = SharedDimensions.spacingSm),
+            // The five channels spread evenly across the row; a lone share glyph added nothing.
+            modifier = Modifier.fillMaxWidth().padding(horizontal = SharedDimensions.spacingSm, vertical = SharedDimensions.spacingSm),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(SharedDimensions.spacingXs),
+            horizontalArrangement = Arrangement.SpaceEvenly,
         ) {
-            RethinkIconWell(MaterialSymbols.Filled.Share, tint = accent, containerColor = RethinkIconWellDefaults.tinted(accent), iconSize = SharedDimensions.iconSizeMd)
-            Spacer(Modifier.weight(1f))
             AboutSocialIcon(strings.twitter, actions.onTwitter, assets.twitter, accent)
             AboutSocialIcon(strings.email, actions.onEmail, assets.email, accent)
             AboutSocialIcon(strings.reddit, actions.onReddit, assets.reddit, accent)

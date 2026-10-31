@@ -133,7 +133,6 @@ fun AboutScreen(
         onBackClick = onBackClick,
         assets = RethinkAboutAssets(
             telegram = { tint -> Icon(BrandIcons.Telegram, null, tint = tint) },
-            bugReport = { tint -> Icon(MaterialSymbols.Filled.Android, null, tint = tint) },
             github = { tint -> Icon(BrandIcons.Github, null, tint = tint) },
             twitter = { tint -> Icon(BrandIcons.Twitter, null, tint = tint) },
             email = { tint -> Icon(MaterialSymbols.Filled.Email, null, tint = tint) },
