@@ -196,7 +196,7 @@
       "file": "readme/big-screen.jpg",
       "devices": [
         {
-          "raw": "tablet10/02-logs.png",
+          "raw": "slate7/02-logs.png",
           "role": "slate",
           "frame": "tablet"
         },

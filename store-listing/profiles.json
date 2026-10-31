@@ -15,7 +15,7 @@
     "captureHeight": 1920,
     "captureDensity": 320,
     "frame": "tablet",
-    "label": "7\u2033 tablet"
+    "label": "7″ tablet"
   },
   "tablet10": {
     "width": 1920,
@@ -24,7 +24,7 @@
     "captureHeight": 1200,
     "captureDensity": 240,
     "frame": "tablet",
-    "label": "10\u2033 tablet"
+    "label": "10″ tablet"
   },
   "readme": {
     "width": 2400,
@@ -32,5 +32,14 @@
     "frame": "phone",
     "label": "README",
     "defaultLocaleOnly": true
+  },
+  "slate7": {
+    "width": 1920,
+    "height": 1200,
+    "captureWidth": 1920,
+    "captureHeight": 1200,
+    "captureDensity": 320,
+    "frame": "tablet",
+    "label": "7″ tablet, landscape (README only)"
   }
 }

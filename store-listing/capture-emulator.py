@@ -75,9 +75,16 @@ with d:
     for profile in d.profiles():
         d.night(False)
         launch()
+        if profile == 'slate7':
+            # README only: a 7" tablet in landscape (960dp, list beside details) shows the log at a
+            # readable size where the 10" capture shrinks it.
+            tab('Activity')
+            tap('Log')
+            shot('02-logs')
+            continue
         shot('01-home', animated=True)
 
-        # Stats is the Insights view of the Activity tab (Log · Insights switch in its top bar).
+        # Stats is the Insights view of the Activity tab (the Log · Insights header is its title).
         tab('Activity')
         tap('Insights')
         tap('24h')
@@ -88,9 +95,7 @@ with d:
         # The log is the Activity tab's other view. It opens on All: connections and DNS lookups as
         # one timeline. Type lives in the Filters sheet (All · Connections · DNS lookups); the
         # verdict group (All · Allowed · Blocked) shares the one control row with the Filters button.
-        for _ in range(3):  # back to the top: the collapsed bar swaps the switch for the 1h/24h/7d tabs
-            d.scroll(.6, up=True)
-        tap('Log')
+        tap('Log')  # the header stays put while Insights scrolls, so Log is always in reach
         shot('02-logs')
         tap('Filters', above=.3)
         tap('DNS lookups')
