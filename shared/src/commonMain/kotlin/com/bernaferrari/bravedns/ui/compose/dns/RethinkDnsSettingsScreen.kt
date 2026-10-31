@@ -548,12 +548,11 @@ private fun DnsInUseHero(
                 overflow = TextOverflow.Ellipsis,
             )
             // The protocol only when it says something: a bare "DNS", or one that repeats the name, doesn't.
-            val preset = state.rethinkPresetLabel.takeIf { choice == RethinkDnsChoice.Rethink && it.isNotBlank() }
+            // The blocklist is named once, on the selected Rethink row below ("Blocklist: Default").
             val showProtocol = protocol != GENERIC_PROTOCOL && !protocol.equals(displayName, ignoreCase = true)
             val showEndpoint = endpoint.isNotBlank()
-            if (preset != null || showProtocol || showEndpoint) {
+            if (showProtocol || showEndpoint) {
                 Row(horizontalArrangement = Arrangement.spacedBy(SharedDimensions.spacingSm), verticalAlignment = Alignment.CenterVertically) {
-                    if (preset != null) RethinkPill(preset, colors = RethinkPillDefaults.onContainer(onHero), size = RethinkPillSize.Large, leadingIcon = KeepoutIcons.Blocklists)
                     if (showProtocol) RethinkPill(protocol, colors = RethinkPillDefaults.onContainer(onHero), size = RethinkPillSize.Large)
                     if (showEndpoint) {
                         RethinkPill(endpoint, Modifier.weight(1f, fill = false), colors = RethinkPillDefaults.onContainer(onHero), size = RethinkPillSize.Large)
@@ -634,7 +633,8 @@ internal fun RethinkDnsToggleRow(
 @Composable
 internal fun RethinkDnsStatusText(text: String, enabled: Boolean) = RethinkStatusLabel(
     label = text,
-    color = if (enabled) RethinkStatusColors.allowed else RethinkStatusColors.idle,
+    // A setting's current value, not a verdict: the accent, never the allowed green.
+    color = if (enabled) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant,
     indicator = RethinkStatusIndicator.None,
     style = MaterialTheme.typography.labelMedium,
     fontWeight = FontWeight.Bold,

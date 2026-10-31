@@ -22,7 +22,7 @@
     </plurals>
     <string name="dns_device_off">Off</string>
     <string name="dns_device_on">On</string>
-    <string name="dns_device_set_up">Download lists (about 60 MB)</string>
+    <string name="dns_device_set_up">Download · 60 MB</string>
     <string name="dns_device_turn_on">Turn on</string>
     <string name="dns_device_choose">Choose lists</string>
     <string name="dns_device_manage">Manage</string>
@@ -83,4 +83,7 @@
     <string name="blocklist_fetch_local">Download the on-device blocklists (about 60 MB) to choose which ones to use.</string>
     <string name="blocklist_fetch_local_progress">Downloading the on-device blocklists (about 60 MB)…</string>
     <string name="blocklist_fetch_local_failed">The download didn\'t finish. Check your connection and try again.</string>
+    <!-- Advanced DNS: which resolver trusted domains use. -->
+    <string name="dns_trusted_endpoint">Trusted domains\' DNS</string>
+    <string name="dns_trusted_endpoint_desc">The resolver trusted domains go through</string>
 </resources>

@@ -1,6 +1,7 @@
 /* Copyright 2026 RethinkDNS and its authors */
 package com.bernaferrari.bravedns.ui.components
 
+import androidx.compose.ui.text.font.FontWeight
 import com.bernaferrari.bravedns.ui.icons.MaterialSymbols
 
 import androidx.compose.foundation.layout.Arrangement
@@ -58,7 +59,8 @@ fun DnsEndpointRow(
         color = if (selected) MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.32f) else MaterialTheme.colorScheme.surfaceContainerLow,
     ) {
         Row(
-            modifier = Modifier.fillMaxWidth().padding(horizontal = SharedDimensions.cardPaddingSm, vertical = SharedDimensions.spacingSmMd),
+            // 16dp in, like every list row; the trailing controls keep their own touch padding.
+            modifier = Modifier.fillMaxWidth().padding(start = SharedDimensions.spacingLg, end = SharedDimensions.spacingXs, top = SharedDimensions.spacingSmMd, bottom = SharedDimensions.spacingSmMd),
             horizontalArrangement = Arrangement.spacedBy(SharedDimensions.spacingSmMd),
             verticalAlignment = Alignment.CenterVertically,
         ) {
@@ -67,7 +69,7 @@ fun DnsEndpointRow(
                     horizontalArrangement = Arrangement.spacedBy(SharedDimensions.spacingSm),
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
-                    Text(title, style = MaterialTheme.typography.bodyLarge, modifier = Modifier.weight(1f, fill = false))
+                    Text(title, style = MaterialTheme.typography.bodyLarge, fontWeight = FontWeight.Medium, modifier = Modifier.weight(1f, fill = false))
                     if (!badge.isNullOrEmpty()) RethinkPill(badge, size = RethinkPillSize.Small)
                 }
                 if (!description.isNullOrEmpty()) Text(description, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
@@ -83,10 +85,13 @@ fun DnsEndpointRow(
             if (trailing != null) {
                 trailing()
             } else {
-                DnsEndpointActionButton(action, actionLabel, onActionClick)
-                when (selection) {
-                    DnsRowSelection.Radio -> RadioButton(selected, onClick = { onSelectionChange(true) })
-                    DnsRowSelection.Checkbox -> Checkbox(selected, onCheckedChange = onSelectionChange)
+                // The action and the selection read as one cluster: their 48dp targets touch, no gap.
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    DnsEndpointActionButton(action, actionLabel, onActionClick)
+                    when (selection) {
+                        DnsRowSelection.Radio -> RadioButton(selected, onClick = { onSelectionChange(true) })
+                        DnsRowSelection.Checkbox -> Checkbox(selected, onCheckedChange = onSelectionChange)
+                    }
                 }
             }
         }

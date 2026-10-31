@@ -546,7 +546,7 @@
     <string name="settings_protocol_translation_dns_inactive" translatable="true">Switch to DNS/DNS+Firewall mode to enable this setting</string>
 
     <string name="settings_default_dns_heading" translatable="true">Choose fallback DNS</string>
-    <string name="settings_default_dns_desc" translatable="true">In rare cases when user-preferred DNS could not be ascertained, fallback DNS is used.</string>
+    <string name="settings_default_dns_desc" translatable="true">Used when the DNS you chose can\'t be reached.</string>
 
 
 
@@ -726,19 +726,19 @@
 
     <string name="cd_dnscrypt_relay_heading" translatable="true">Relays</string>
 
-    <string name="cd_dns_alg_heading" translatable="true">Advanced DNS filtering (experimental)</string>
-    <string name="cd_dns_alg_desc" translatable="true">Assign unique IP per DNS request.</string>
+    <string name="cd_dns_alg_heading" translatable="true">Per-lookup filtering</string>
+    <string name="cd_dns_alg_desc" translatable="true">Gives each lookup its own address, so domain rules apply to the connection that follows. Experimental.</string>
 
-    <string name="cd_split_dns_heading" translatable="true">Split DNS (experimental)</string>
-    <string name="cd_split_dns_desc" translatable="true">Forward DNS queries from proxied apps to the proxy\'s DNS servers.</string>
+    <string name="cd_split_dns_heading" translatable="true">Split DNS</string>
+    <string name="cd_split_dns_desc" translatable="true">Apps that go through a proxy look up names with that proxy\'s DNS. Experimental.</string>
 
     <string name="cd_treat_dns_rules_firewall_heading" translatable="true">Treat DNS rules as firewall rules (experimental)</string>
     <string name="cd_treat_dns_rules_firewall_desc" translatable="true">DNS blocking will be bypassed during resolution; the decision will be made at connection time.</string>
 
-    <string name="cd_allowed_dns_record_types_heading" translatable="false">Allowed DNS record types</string>
-    <string name="cd_allowed_dns_record_types_desc" translatable="false">Select which DNS resource record types to allow.</string>
+    <string name="cd_allowed_dns_record_types_heading" translatable="false">Record types</string>
+    <string name="cd_allowed_dns_record_types_desc" translatable="false">Which kinds of DNS records apps may look up.</string>
 
-    <string name="dns_record_types_auto_mode_status" translatable="true">Auto (all types)</string>
+    <string name="dns_record_types_auto_mode_status" translatable="true">All</string>
 
     <!-- Connection Tracker fragment string -->
 
@@ -1443,7 +1443,7 @@
     <string name="vpn_policy_title" translatable="true">Connection change policy</string>
 
     <string name="use_fallback_dns_to_bypass" translatable="true">Use fallback DNS as bypass</string>
-    <string name="use_fallback_dns_to_bypass_desc" translatable="true">When enabled, always uses fallback DNS for bypassed apps, domains, and IPs.</string>
+    <string name="use_fallback_dns_to_bypass_desc" translatable="true">Apps, domains and addresses that bypass Keepout always use the fallback DNS.</string>
 
     <!-- alert, commenting out for now in v055b -->
 
@@ -1601,11 +1601,11 @@
     <string name="db_corruption_action_dismiss" translatable="false">Dismiss</string>
     <string name="block_free_dns_mode_title">Trusted DNS bypass</string>
     <string name="bfdm_option_auto_label">Automatic</string>
-    <string name="bfdm_option_auto_desc">Avoid DNS leaks when split DNS or leak prevention is enabled; otherwise use the network resolver.</string>
+    <string name="bfdm_option_auto_desc">Prevents leaks when Split DNS or leak protection is on; otherwise uses your network\'s DNS.</string>
     <string name="bfdm_option_global_label">Use configured DNS</string>
-    <string name="bfdm_option_global_desc">Resolve trusted domains with your currently configured DNS.</string>
+    <string name="bfdm_option_global_desc">Trusted domains use the DNS you chose.</string>
     <string name="bfdm_option_fallback_label">Use fallback DNS</string>
-    <string name="bfdm_option_fallback_desc">Resolve trusted domains with the network fallback resolver.</string>
+    <string name="bfdm_option_fallback_desc">Trusted domains use the fallback DNS.</string>
     <string name="rpn_account_title">RPN account</string>
     <string name="rpn_account_manage_tab">Manage</string>
     <string name="rpn_account_history_tab">History</string>
