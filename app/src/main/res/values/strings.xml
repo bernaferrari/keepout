@@ -451,8 +451,8 @@
 
     <string name="settings_general_header" translatable="true">General</string>
 
-    <string name="settings_autostart_bootup_heading" translatable="true">Auto-start on power-up (experimental)</string>
-    <string name="settings_autostart_bootup_desc" translatable="true">On device power-up, start Keepout if it was running before shut down.</string>
+    <string name="settings_autostart_bootup_heading" translatable="true">Start on boot</string>
+    <string name="settings_autostart_bootup_desc" translatable="true">Turns Keepout back on after a restart if it was on before. Experimental.</string>
 
     <string name="settings_network_all_networks" translatable="true">Use every network</string>
     <string name="settings_network_all_networks_desc" translatable="true">Connects over all available networks, not only the one Android marks active. Experimental.</string>
@@ -1421,7 +1421,7 @@
     <string name="settings_firebase_error_reporting_desc" translatable="true">Capture error logs to help improve stability.</string>
 
     <string name="tombstone_app_title" translatable="true">Remember uninstalled apps</string>
-    <string name="tombstone_app_desc" translatable="true">When enabled, keep app rules for 7 days.</string>
+    <string name="tombstone_app_desc" translatable="true">Keeps an uninstalled app\'s rules for 7 days, in case it comes back.</string>
 
     <string name="firewall_bubble_title" translatable="false">Firewall bubble</string>
     <string name="firewall_bubble_subtitle" translatable="false">Review blocked apps and allow them temporarily.</string>

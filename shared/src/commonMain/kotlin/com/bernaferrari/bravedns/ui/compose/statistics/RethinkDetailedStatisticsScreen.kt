@@ -4,8 +4,6 @@
 package com.bernaferrari.bravedns.ui.compose.statistics
 
 import com.bernaferrari.bravedns.ui.compose.theme.RethinkPill
-import com.bernaferrari.bravedns.ui.compose.theme.RethinkPillDefaults
-import com.bernaferrari.bravedns.ui.compose.theme.RethinkPillSize
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -81,16 +79,6 @@ fun RethinkDetailedStatisticsScreen(
                     subtitle = subtitle,
                     onBackClick = onBackClick,
                     scrollBehavior = scrollBehavior,
-                    actions = {
-                        if (itemCount > 0) {
-                            RethinkPill(
-                                itemCount.toString(),
-                                Modifier.padding(end = SharedDimensions.spacingSm),
-                                colors = RethinkPillDefaults.primary(),
-                                size = RethinkPillSize.Large,
-                            )
-                        }
-                    },
                 )
             },
         ) { padding ->
