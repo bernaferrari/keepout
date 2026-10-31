@@ -3,7 +3,6 @@
     <string name="title_about" translatable="true">Par lietotni</string>
     <string name="title_settings" translatable="true">Iestatījumi</string>
     <string name="title_statistics" translatable="true">Statistika</string>
-    <string name="finish" translatable="true">Pabeigt</string>
     <string name="lbl_cancel" translatable="true">Atcelt</string>
     <string name="lbl_dismiss" translatable="true">Noraidīt</string>
     <string name="lbl_allowed" translatable="true">Atļauts</string>
@@ -49,9 +48,6 @@
     <string name="home_stopped_most">Visbiežāk bloķēti</string>
     <string name="home_nothing_stopped">Pēdējo 24 stundu laikā nekas netika bloķēts.</string>
     <string name="home_see_statistics">Statistika</string>
-    <string name="home_apps_caption">Wi-Fi un mobilie dati katrai lietotnei</string>
-    <string name="home_logs_caption">Katrs savienojums un pieprasījums</string>
-    <string name="home_dns_caption">DNS serveris un bloķēšanas saraksti</string>
     <string name="log_detail_protocol">Protokols</string>
     <string name="log_detail_country">Valsts</string>
     <string name="log_detail_address">Adrese</string>

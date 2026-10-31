@@ -19,7 +19,6 @@
     <string name="notification_content" description="Indicates what will happen if the user taps the notification.">تحفظ کی ترتیب کو تبدیل کرنے کے لیے تھپتھپائیں</string>
     <string name="dns_mode_notification_title">محفوظ! تیز اور محفوظ ڈی این ایس سے منسلک ہے۔</string>
     <string name="pause_mode_notification_title">روک دیا گیا! سدود ایپس کو فائر وال کیا جاتا رہے گا۔</string>
-    <string name="finish">ختم کرنا</string>
     <string name="firewall_mode_notification_title">محفوظ! فائر وال سے منسلک ہے۔</string>
     <string name="status_no_internet">انٹرنیٹ نہیں</string>
     <string name="lbl_apply" translatable="true">لاگو کرو</string>
@@ -33,9 +32,6 @@
     <string name="home_stopped_most">سب سے زیادہ بلاک</string>
     <string name="home_nothing_stopped">پچھلے 24 گھنٹوں میں کچھ بلاک نہیں ہوا۔</string>
     <string name="home_see_statistics">اعدادوشمار</string>
-    <string name="home_apps_caption">Wi-Fi اور ڈیٹا، ہر ایپ کے لیے</string>
-    <string name="home_logs_caption">ہر کنکشن اور ہر درخواست</string>
-    <string name="home_dns_caption">DNS سرور اور بلاک لسٹس</string>
     <string name="log_detail_protocol">پروٹوکول</string>
     <string name="log_detail_country">ملک</string>
     <string name="log_detail_address">پتہ</string>

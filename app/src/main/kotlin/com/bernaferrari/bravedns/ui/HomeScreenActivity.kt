@@ -18,6 +18,7 @@
 package com.bernaferrari.bravedns.ui
 
 
+import android.os.Build
 import com.bernaferrari.bravedns.ui.compose.configure.LOGGING_DEVELOPER
 import androidx.compose.material3.LoadingIndicator
 import Logger
@@ -1145,7 +1146,8 @@ class HomeScreenActivity : FragmentActivity() {
     }
 
     private fun requestNotificationPermission() {
-        if (!canAskForNotifications()) {
+        // The explicit SDK check (canAskForNotifications() also has one) lets lint see the guard.
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU || !canAskForNotifications()) {
             refreshHomeEnvironment()
             return
         }

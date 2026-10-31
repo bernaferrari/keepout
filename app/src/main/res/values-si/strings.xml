@@ -4,7 +4,6 @@
     <string name="title_settings" translatable="true">සැකසුම්</string>
     <string name="title_statistics" translatable="true">සංඛ්‍යාලේඛන</string>
     <string name="txt_home" translatable="true">හෝම්</string>
-    <string name="finish" translatable="true">අවසන් කරන්න</string>
     <string name="lbl_cancel" translatable="true">අවලංගු කරන්න</string>
     <string name="lbl_apply" translatable="true">අයදුම් කරන්න</string>
     <string name="lbl_all" translatable="true">සියලු</string>
@@ -37,7 +36,6 @@
     <string name="lbl_fast" translatable="true">ඉක්මන්</string>
     <string name="lbl_slow" translatable="true">සෙමෙන්</string>
     <string name="lbl_add" translatable="true">එකතු කරන්න</string>
-    <string name="lbl_app_wise" translatable="true">බැගින් යෙදුමකට</string>
     <string name="lbl_sec" translatable="true">තප්</string>
     <string name="lbl_min" translatable="true">මිනිත්තු</string>
     <string name="lbl_hour" translatable="true">පැ</string>
@@ -57,9 +55,6 @@
     <string name="lbl_overall" translatable="true">සමස්තය</string>
     <string name="lbl_stopped" translatable="true">නැවතුනා</string>
     <string name="lbl_idle" translatable="true">අයිඩල්</string>
-    <string name="lbl_private" translatable="true">පෞද්ගලික</string>
-    <string name="lbl_secure" translatable="true">සුරක්ෂිත</string>
-    <string name="lbl_anonymous" translatable="true">නිර්නාමික</string>
     <string name="lbl_peer" translatable="true">පියර්</string>
     <string name="lbl_split" translatable="true">බෙදන්න</string>
     <string name="lbl_test" translatable="true">පරීක්ෂනය</string>
@@ -102,9 +97,6 @@
     <string name="home_stopped_most">වැඩිපුරම නැවැත්වූ</string>
     <string name="home_nothing_stopped">පසුගිය පැය 24 තුළ කිසිවක් අවහිර කර නැත.</string>
     <string name="home_see_statistics">සංඛ්‍යාලේඛන</string>
-    <string name="home_apps_caption">එක් එක් යෙදුමට Wi-Fi සහ දත්ත</string>
-    <string name="home_logs_caption">සෑම සම්බන්ධතාවක්ම සහ සෙවීමක්ම</string>
-    <string name="home_dns_caption">Resolver සහ අවහිර ලැයිස්තු</string>
     <string name="log_detail_protocol">ප්‍රොටෝකෝලය</string>
     <string name="log_detail_country">රට</string>
     <string name="log_detail_address">ලිපිනය</string>

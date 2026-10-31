@@ -2,7 +2,6 @@
 <resources>
     <string name="title_settings">تنظیمات</string>
     <string name="txt_home">خانه</string>
-    <string name="always_on_dialog_neutral">تنظیمات</string>
     <string name="title_about">درباره</string>
     <string name="orbot_install_dialog_title">Orbot نصب شود؟</string>
     <string name="pause_mode_notification_title">متوقف شد! برنامه های مسدود شده همچنان دیوار آتش می شوند.</string>
@@ -14,14 +13,12 @@
     <string name="dns_mode_notification_title">حفاظت شده! متصل به DNS سریع و امن.</string>
     <string name="firewall_mode_notification_title">حفاظت شده! متصل به دیوار آتش.</string>
     <string name="status_dns_error">خطای DNS</string>
-    <string name="finish">پایان</string>
     <string name="status_waiting" description="This text appears during the connection process if Intra needs user permission or the phone is offline.">در انتظار</string>
     <string name="other_dns_list_tab1">DoH</string>
     <string name="universal_firewall_explanation">قوانین دیوار آتش را بر روی همه برنامه ها بر اساس رویدادهای دستگاه اعمال کنید، به عنوان مثال، دیوار آتش زمانی که دستگاه قفل است یا زمانی که یک برنامه خاص در حال استفاده نیست.</string>
     <string name="accessibility_service_description">RethinkDNS از سرویس دسترس پذیری برای شناسایی و فایروال برنامه های پس زمینه استفاده می کند. RethinkDNS هیچ اطلاعاتی را جمع آوری یا نمی فروشد.</string>
     <string name="slide_2_desc">RethinkDNS ساده ترین راه برای نظارت بر فعالیت شبکه، دور زدن سانسور اینترنت و برنامه های فایروال در دستگاه اندرویدی شما است.</string>
     <string name="dns_mode_info_title">DNS</string>
-    <string name="firewall_mode_info_title">دیوار آتش</string>
     <string name="block">مسدود کردن</string>
     <string name="status_dns_server_down">سرور DNS در دسترس نیست</string>
     <string name="status_exposed" description="This is a large message in a scary color.  It indicates that DNS queries can be surveilled or modified in transit.">محافظت نشده</string>
@@ -102,7 +99,6 @@
     <string name="local_blocklist_download" translatable="true">لیست های مسدود را دانلود کنید</string>
     <string name="dns_crypt_relay_remove_dialog_title" translatable="true">رله DNSCrypt حذف شود؟</string>
     <string name="refresh_complete" translatable="true">همگامسازی مجدد فهرست برنامه‌ها کامل شد.</string>
-    <string name="firewall_act_universal_tab" translatable="true">کلی</string>
     <string name="doh_custom_url_remove_success" translatable="true">نقطه پایانی حذف شد.</string>
     <string name="local_blocklist_redownload" translatable="true">به روز است!</string>
     <string name="local_blocklist_download_desc" translatable="true">برای استفاده از این ویژگی، لیست های مسدودی (حدود 60 مگابایت) را دانلود کنید؟</string>
@@ -143,7 +139,6 @@
     <string name="settings_proxy_header" translatable="true">پروکسی</string>
     <string name="settings_https_heading" translatable="true">راه اندازی پروکسی HTTP(S)</string>
     <string name="orbot_both" translatable="true">پروکسی از نوع TCP + HTTP</string>
-    <string name="settings_socks5_heading" translatable="true">راه اندازی پروکسی SOCKS5</string>
     <string name="settings_allow_bypass_desc" translatable="true">به برنامه های درخواست کننده اجازه دسترسی به همه شبکه های موجود را بدهید. این برنامه‌ها ممکن است بر حسب تقاضا تونل VPN Keepout را دور بزنند. برخی از برنامه‌های کنفرانس صوتی/تصویری مانند Zoom و Meet ممکن است برای عملکرد صحیح به این نیاز داشته باشند.</string>
     <string name="settings_https_desc" translatable="true">این تنظیم فقط یک توصیه بوده و ممکن است برنامه ها آن را نادیده بگیرند. برنامه‌هایی که از پروکسی HTTP(S) استفاده می‌کنند، قوانین فایروال و DNS را دور می‌زنند.</string>
     <string name="orbot" translatable="true">Orbot (ربات پیازی تور)</string>
@@ -197,7 +192,6 @@
     <string name="settings_http_proxy_error_text2" translatable="true">‌پورت نامعتبر است</string>
     <string name="lbl_active" translatable="true">فعال</string>
     <string name="lbl_dns_servers" translatable="true">سرورهای DNS</string>
-    <string name="lbl_app_wise" translatable="true">در هر برنامه</string>
     <string name="lbl_insecure" translatable="true">(ناامن)</string>
     <string name="lbl_min" translatable="true">دقیقه</string>
     <string name="lbl_private_key" translatable="true">کلید خصوصی</string>
@@ -220,7 +214,6 @@
 \n Orbot از Tor برای رمزگذاری ترافیک اینترنت شما استفاده می کند که به شما کمک می کند سانسور را دور بزنید و در برابر اشکال نظارت شبکه که آزادی و حریم خصوصی شخصی را تهدید می کند، دفاع کنید.
 \n پراکسی TCP: فقط اتصالات TCP برنامه‌های شامل شده را مجدداً به Orbot فوروارد کنید.
 \n پراکسی HTTP: دوباره فکر کنید تونل HTTP CONNECT را به Orbot ایجاد می کند و فقط اتصالات TCP برنامه های شامل را ارسال می کند.</string>
-    <string name="settings_general_customize" translatable="true">customize</string>
     <string name="settings_orbot_notification_content" translatable="true">Failure starting Tor-as-a-Proxy. Open the Orbot app to start it manually.</string>
     <string name="about_settings_app_info" translatable="true">اطلاعات برنامه</string>
     <string name="search_proxy_add_apps" translatable="true">Search apps by name</string>
@@ -238,9 +231,7 @@
     <string name="lbl_last" translatable="true">آخر</string>
     <string name="lbl_starting" translatable="true">راه افتادن</string>
     <string name="lbl_overall" translatable="true">به طور کلی</string>
-    <string name="lbl_secure" translatable="true">امن است</string>
     <string name="lbl_stopped" translatable="true">متوقف شد</string>
-    <string name="lbl_private" translatable="true">خصوصی</string>
     <string name="lbl_peer" translatable="true">همتا</string>
     <string name="dot_custom_url_remove_dialog_title" translatable="true">نقطه پایانی DoTحذف شود؟</string>
     <string name="orbot_no_app_toast" translatable="true">برای فعال کردن Orbot حداقل یک برنامه اضافه کنید</string>
@@ -252,7 +243,6 @@
     <string name="http_proxy_dialog_desc" translatable="true">راه اندازی URL فرم، &lt;protocol&gt;://&lt;username&gt;:&lt;password&gt;@&lt;domain-or-ip&gt;:&lt;port&gt;&lt;path&gt;. مثال: http://proxy.example.com:8080/</string>
     <string name="hybrid_mode_with_proxy_notification_title" translatable="true">حفاظت شده! به DNS +فایروال +پروکسی متصل است</string>
     <string name="lbl_idle" translatable="true">بیکار</string>
-    <string name="lbl_anonymous" translatable="true">ناشناس</string>
     <string name="lbl_split" translatable="true">شکاف</string>
     <string name="settings_dns_proxy_dialog_header" translatable="true">پراکسی SOCKS5 را تنظیم کنید</string>
     <string name="settings_socks_forwarding_desc_no_app" translatable="true">بازارسال به %1$s:%2$s</string>
@@ -269,7 +259,6 @@
     <string name="logs_card_duration" translatable="true">از %1$s</string>
     <string name="settings_theme_dialog_themes_2" translatable="true">روشن</string>
     <string name="settings_ip_text_ipv6" translatable="true">IPv6</string>
-    <string name="hsf_vpn_dialog_header" translatable="true">توجه!</string>
     <string name="settings_socks_forwarding_default_desc" translatable="true">انتقال اتصالات به SOCKS5 endpoint.</string>
     <string name="firewall_status_unknown" translatable="true">نامشخص</string>
     <string name="hs_biometeric_title" translatable="true">بازکردن Keepout</string>
@@ -308,10 +297,8 @@
     <string name="about_bug_no_log_dialog_title" translatable="true">گزارش اشکال</string>
     <string name="about_whats_new" translatable="true">چه چیزهایی در %1$s جدید است</string>
     <string name="about_mozilla" translatable="true">Rethink توسط Mozilla Builders، بنیاد FOSS United و FLOSS/fund پشتیبانی می‌شود.</string>
-    <string name="dc_local_block_desc_1" translatable="true">از بین بیش از ۱۹۵ لیست مسدودکننده انتخاب کنید. برای دانلود یا پیکربندی لیست‌های مسدودکننده اینجا کلیک کنید.</string>
     <string name="dc_dns_website_desc" translatable="true">آیکون‌های وب‌سایت را از nextdns.io و duckduckgo.com دریافت می‌کند. تا ۳۵۰ مگابایت از فضای دیسک را اشغال می‌کند</string>
     <string name="firewall_status_whitelisted" translatable="true">قوانین فراگیر فایروال را دور می‌زند</string>
-    <string name="hsf_vpn_dialog_message" translatable="true">Keepout برای راه‌اندازی VPN محلی جهت رمزگذاری درخواست‌های DNS دستگاه، پیاده‌سازی مانیتور شبکه و اجرای قوانین دیوار‌آتش به مجوز نیاز دارد.\n\nKeepout هیچ اطلاعاتی را جمع‌آوری نمی‌کند و به هیچ وجه از شما جاسوسی نمی‌کند.</string>
     <string name="dc_other_dns_heading" translatable="true">نوع</string>
     <string name="about_github" translatable="true">مشارکت در گیت‌هاب</string>
     <string name="about_twitter" translatable="true">ما را در توییتر دنبال کنید</string>
@@ -341,9 +328,7 @@
     <string name="error_loading_log_file" translatable="true">خطا در بارگیری فایل گزارش</string>
     <string name="collecting_logs_progress_text" translatable="true">در حال ضبط…</string>
     <string name="cd_dns_crypt_title" translatable="true">تفکیک‌کننده‌ها</string>
-    <string name="cd_custom_doh_url_name_default" translatable="true">DoH</string>
     <string name="cd_custom_doh_url_name" translatable="true">DoH %1$s</string>
-    <string name="cd_custom_dns_proxy_name_default" translatable="true">پروکسی</string>
     <string name="cd_custom_dns_proxy_name" translatable="true">پروکسی %1$s</string>
     <string name="cd_custom_dns_proxy_default_app" translatable="true">هیچکدام</string>
     <string name="cd_dns_proxy_mode_internal" translatable="true">داخلی</string>
@@ -351,7 +336,6 @@
     <string name="cd_dns_proxy_error_text_1" translatable="true">آدرس آی‌پی نامعتبر است</string>
     <string name="cd_dns_proxy_error_text_2" translatable="true">محدوده پورت باید از 1024 تا 65535 باشد.</string>
     <string name="cd_dns_proxy_error_text_3" translatable="true">پورت نامعتبر است</string>
-    <string name="cd_dns_crypt_name_default" translatable="true">DNSCrypt</string>
     <string name="cd_dns_crypt_name" translatable="true">DNSCrypt %1$s</string>
     <string name="cd_dns_crypt_relay_name" translatable="true">DNSRelay %1$s</string>
     <string name="cd_dns_crypt_dialog_heading" translatable="true">DNSCrypt Resolver یا Relay را اضافه کنید</string>
@@ -362,13 +346,10 @@
     <string name="cd_dns_crypt_dialog_desc" translatable="true">توضیحات (اختیاری)</string>
     <string name="cd_doh_dialog_heading" translatable="true">افزودن DNS بر بستر HTTPS</string>
     <string name="cd_doh_dialog_resolver_name" translatable="true">نام حل‌کننده</string>
-    <string name="univ_view_blocked_ip" translatable="true">قوانین آی پی و پورت</string>
     <string name="univ_view_blocked_ip_desc" translatable="true">ویرایش قواعد دامنه، آی‌پی / پورت مسدود یا مورد اعتماد.</string>
     <string name="univ_accessibility_crash_dialog_positive" translatable="true">به تنظیمات بروید</string>
     <string name="univ_accessibility_dialog_positive" translatable="true">اعطا کردن</string>
     <string name="univ_accessibility_dialog_negative" translatable="true">رد کردن</string>
-    <string name="univ_firewall_heading" translatable="true">قوانین فراگیر فایروال</string>
-    <string name="app_ip_domain_rules" translatable="true">قوانین آی‌پی / دامنه برای هر برنامه</string>
     <string name="cd_doh_dialog_checkbox_desc" translatable="true">گواهی‌های TLS سرور را اعتبارسنجی نکنید (فقط در صورتی فعال کنید که می‌دانید چه می‌کنید)</string>
     <string name="cd_dnscrypt_relay_heading" translatable="true">رله‌ها</string>
     <string name="cd_dns_alg_heading" translatable="true">فیلترینگ پیشرفته DNS (آزمایشی)</string>
@@ -384,16 +365,10 @@
     <string name="hs_download_positive_default" translatable="true">باشه</string>
     <string name="hs_download_positive_website" translatable="true">دیدن وبسایت</string>
     <string name="hs_download_negative_default" translatable="true">بعداً یادم بیار</string>
-    <string name="univ_firewall_rule_1" translatable="true">مسدود کردن همهٔ برنامه‌ها هنگام قفل بودن دستگاه</string>
     <string name="univ_firewall_rule_2" translatable="true">برنامه‌های غیرفعال را مسدود کنید</string>
-    <string name="univ_firewall_rule_3" translatable="true">در صورت ناشناس بودن برنامهٔ مبدأ، مسدود شود</string>
     <string name="univ_firewall_rule_4" translatable="true">مسدودسازی UDP به استثنای DNS و NTP</string>
     <string name="univ_firewall_rule_5" translatable="true">مسدودسازی در صورت دور زدن DNS</string>
-    <string name="univ_firewall_rule_6" translatable="true">مسدود کردن برنامه‌های تازه نصب‌شده به‌طور پیش‌فرض</string>
-    <string name="univ_firewall_rule_8" translatable="true">مسدود کردن ترافیک پورت ۸۰ (HTTP ناامن)</string>
     <string name="univ_firewall_rule_9" translatable="true">مسدود کردن در شبکه حجمی (موبایل)</string>
-    <string name="univ_firewall_rule_10" translatable="true">مسدود کردن همه به جز برنامه‌ها و آی‌پی‌های مجاز</string>
-    <string name="app_ip_domain_rules_desc" translatable="true">اصلاح قوانین IP / دامنه بر اساس برنامه</string>
     <string name="dns_connected_rethink_plus" translatable="true">متصل. %1$s لیست انسداد فعال</string>
     <string name="dns_connected" translatable="true">متصل</string>
     <string name="dns_info_positive" translatable="true">باشه</string>
@@ -412,19 +387,7 @@
     <string name="fapps_firewall_filter_bypass_universal" translatable="true">دور زده شده</string>
     <string name="fapps_firewall_filter_excluded" translatable="true">مستثنی شده</string>
     <string name="fapps_firewall_filter_isolate" translatable="true">جدا شده</string>
-    <string name="fapps_info_dialog_message" translatable="true">اتصال برنامه‌ها به اینترنت را مسدود کنید. محدود کردن دسترسی به اینترنت، به جلوگیری از مصرف بی‌مورد داده و همچنین صرفه‌جویی در مصرف باتری کمک می‌کند.</string>
-    <string name="fapps_info_unmetered_msg" translatable="true">اجازه / مسدودسازی در شبکه نامحدود (وای‌فای)</string>
-    <string name="fapps_info_metered_msg" translatable="true">اجازه دادن / مسدود کردن در شبکه حجمی (موبایل)</string>
-    <string name="fapps_info_bypass_msg" translatable="true">دور زدن قوانین سراسری فایروال</string>
-    <string name="fapps_info_bypass_dns_firewall_msg" translatable="true">دور زدن قوانین DNS و فایروال</string>
-    <string name="fapps_info_exclude_msg" translatable="true">از هر دو DNS و فایروال مستثنی شود.</string>
-    <string name="fapps_info_isolate_msg" translatable="true">همه را به جز آی‌پی‌های مورد اعتماد مسدود کنید.</string>
     <string name="fapps_info_dialog_positive_btn" translatable="true">باشه</string>
-    <string name="fapps_unmetered_unblock_dialog_title" translatable="true">مجاز در شبکه نامحدود</string>
-    <string name="fapps_unmetered_block_dialog_title" translatable="true">مسدودسازی در اتصال شبکه نامحدود</string>
-    <string name="fapps_unmetered_block_dialog_message" translatable="true">اتصالات برنامه‌های فهرست‌شده در شبکه‌ی بدون محدودیت حجمی (وای‌فای) مسدود شود؟</string>
-    <string name="fapps_unmetered_unblock_dialog_message">اتصال برنامه‌های فهرست‌شده در شبکهٔ نامحدود (وای‌فای) مجاز شود؟</string>
-    <string name="fapps_metered_block_dialog_title" translatable="true">مسدودسازی در اتصال محدود</string>
     <string name="cd_no_rules_text" translatable="true">بدون قوانین دامنه</string>
     <string name="ci_trust_rule" translatable="true">اعتماد</string>
     <string name="config_invalid_desc" translatable="true">پیکربندی WireGuard نامعتبر است</string>
@@ -478,21 +441,8 @@
     <string name="category_name_non_app_sys" translatable="true">خدمات سیستم</string>
     <string name="catch_all_wg_dialog_title" translatable="true">همیشه روشن</string>
     <string name="cd_doh_dialog_resolver_url" translatable="true">Resolver URL</string>
-    <string name="fapps_metered_block_dialog_message" translatable="true">آیا اتصالات در شبکه‌ی محدود (موبایل) برای برنامه‌های لیست‌شده مسدود می‌شود؟</string>
-    <string name="fapps_metered_unblock_dialog_title" translatable="true">اجازه در metered</string>
-    <string name="fapps_metered_unblock_dialog_message" translatable="true">اتصالات در شبکه اندازه‌گیری شده (موبایل) برای برنامه‌های فهرست مجاز باشد؟</string>
-    <string name="fapps_bypass_block_dialog_title" translatable="true">دور زدن برنامه ها</string>
-    <string name="fapps_bypass_block_dialog_message" translatable="true">قوانین فایروال جهانی برای برنامه های لیست شده را دور بزنید؟</string>
-    <string name="fapps_bypass_dns_firewall_dialog_title" translatable="true">دور زدن برنامه ها</string>
-    <string name="fapps_bypass_dns_firewall_dialog_message" translatable="true">قوانین فایروال DNS &amp; جهانی را برای برنامه های فهرست شده <i/> دور بزنید؟</string>
-    <string name="fapps_unblock_dialog_title" translatable="true">برنامه ها را مجاز کنید</string>
-    <string name="fapps_unblock_dialog_message" translatable="true">اتصالات برای برنامه های فهرست شده مجاز باشد؟</string>
-    <string name="fapps_exclude_block_dialog_title" translatable="true">حذف برنامه ها</string>
-    <string name="fapps_exclude_block_dialog_message" translatable="true">برنامه‌های لیست شده از DNS و فایروال مستثنی شوند؟</string>
-    <string name="fapps_isolate_block_dialog_title" translatable="true">برنامه ها را ایزوله کنید</string>
     <string name="dns_crypt_connection_failure" translatable="true">خطا در اتصال به سرور DNSCrypt.</string>
     <string name="update_complete_snack_message" translatable="true">نسخه جدید دانلود شد.</string>
-    <string name="fapps_isolate_block_dialog_message" translatable="true">برنامه‌های فهرست‌شده ایزوله شوند؟</string>
     <string name="rules_load_failure_desc" translatable="true">هیچ قانون فایروالی پیدا نشد</string>
     <string name="rules_load_failure_reload" translatable="true">بارگذاری</string>
     <string name="network_log_app_name_unknown" translatable="true">ناشناخته</string>
@@ -538,9 +488,6 @@
     <string name="home_stopped_most">بیشترین مسدودشده‌ها</string>
     <string name="home_nothing_stopped">در ۲۴ ساعت گذشته چیزی مسدود نشده است.</string>
     <string name="home_see_statistics">آمار</string>
-    <string name="home_apps_caption">Wi-Fi و داده، برای هر برنامه</string>
-    <string name="home_logs_caption">همه اتصال‌ها و درخواست‌ها</string>
-    <string name="home_dns_caption">سرور DNS و فهرست‌های بلاک</string>
     <string name="log_detail_protocol">پروتکل</string>
     <string name="log_detail_country">کشور</string>
     <string name="log_detail_address">نشانی</string>
@@ -578,5 +525,4 @@
     <string name="firewall_rule_no_rule_desc" translatable="true">هیچ قانون دیوار آتشی با این اتصال مطابقت ندارد.</string>
     <string name="firewall_rule_private_dns" translatable="true">DNS خصوصی</string>
     <string name="firewall_rule_proxied" translatable="true">پراکسی شده</string>
-    <string name="pause_desc" translatable="true">توجه: برنامه‌های مسدودشده (%1$s) همچنان تحت محافظت دیوار‌آتش باقی خواهند ماند.</string>
 </resources>

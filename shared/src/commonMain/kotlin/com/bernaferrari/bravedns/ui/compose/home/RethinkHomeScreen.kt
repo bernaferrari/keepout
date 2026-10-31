@@ -415,48 +415,13 @@ private fun ProtectionHero(
 ) {
     val colors = heroColors(state)
     val expanded = widthClass.isExpanded
-    val status = uiState.protectionStatus.ifBlank {
-        when {
-            uiState.isVpnActive && uiState.isPaused -> strings.paused
-            uiState.isVpnActive -> strings.protected
-            else -> strings.notActive
-        }
-    }
-    val subtitle = when (state) {
-        ProtectionVisualState.Protected -> strings.protectedSubtitle
-        ProtectionVisualState.Recovering -> strings.failingSubtitle
-        ProtectionVisualState.Paused -> uiState.pausedDetail
-        ProtectionVisualState.Off -> strings.inactiveSubtitle
-    }
+    val status = uiState.heroStatus(strings)
+    val subtitle = uiState.heroSubtitle(state, strings)
     Surface(modifier = modifier, shape = RoundedCornerShape(HeroCorner), color = colors.container, contentColor = colors.content) {
         Column(
             Modifier.padding(if (expanded) SharedDimensions.spacing2xl else SharedDimensions.spacingXl),
         ) {
-            val title: @Composable (Modifier) -> Unit = { titleModifier ->
-                Text(
-                    text = status,
-                    style = if (expanded) MaterialTheme.typography.displayLarge else MaterialTheme.typography.headlineLarge,
-                    fontWeight = FontWeight.ExtraBold,
-                    letterSpacing = if (expanded) (-1).sp else (-0.5).sp,
-                    lineHeight = if (expanded) 60.sp else 36.sp,
-                    maxLines = 2,
-                    overflow = TextOverflow.Ellipsis,
-                    modifier = titleModifier.semantics { heading() },
-                )
-            }
-            if (expanded) {
-                // Wide: the mark is the centre of the pane, the words and the controls below it.
-                Box(Modifier.weight(1f).fillMaxWidth(), contentAlignment = Alignment.Center) {
-                    ProtectionMark(state, colors, MarkSizeExpanded)
-                }
-                title(Modifier)
-            } else {
-                // Compact: the mark beside the state, so the hero is a summary, not a whole screen.
-                Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(SharedDimensions.spacingLg)) {
-                    ProtectionMark(state, colors, MarkSizeCompact)
-                    title(Modifier.weight(1f))
-                }
-            }
+            HeroHead(status, state, colors, expanded)
             // "Protected" needs no second line; the other states carry news (when a pause ends,
             // what's failing, how to turn it on).
             if (subtitle.isNotBlank() && state != ProtectionVisualState.Protected) {
@@ -475,6 +440,49 @@ private fun ProtectionHero(
             }
             Spacer(Modifier.height(SharedDimensions.spacingMd))
             HeroControls(uiState, strings, status, colors, onStartStopClick, onPause, onResume)
+        }
+    }
+}
+
+private fun RethinkHomeUiState.heroStatus(strings: RethinkHomeStrings): String = protectionStatus.ifBlank {
+    when {
+        isVpnActive && isPaused -> strings.paused
+        isVpnActive -> strings.protected
+        else -> strings.notActive
+    }
+}
+
+private fun RethinkHomeUiState.heroSubtitle(state: ProtectionVisualState, strings: RethinkHomeStrings): String = when (state) {
+    ProtectionVisualState.Protected -> strings.protectedSubtitle
+    ProtectionVisualState.Recovering -> strings.failingSubtitle
+    ProtectionVisualState.Paused -> pausedDetail
+    ProtectionVisualState.Off -> strings.inactiveSubtitle
+}
+
+/** The mark and the state: stacked in a wide pane, side by side on a phone so the hero stays a summary. */
+@Composable
+private fun ColumnScope.HeroHead(status: String, state: ProtectionVisualState, colors: HeroColors, expanded: Boolean) {
+    val title: @Composable (Modifier) -> Unit = { titleModifier ->
+        Text(
+            text = status,
+            style = if (expanded) MaterialTheme.typography.displayLarge else MaterialTheme.typography.headlineLarge,
+            fontWeight = FontWeight.ExtraBold,
+            letterSpacing = if (expanded) (-1).sp else (-0.5).sp,
+            lineHeight = if (expanded) 60.sp else 36.sp,
+            maxLines = 2,
+            overflow = TextOverflow.Ellipsis,
+            modifier = titleModifier.semantics { heading() },
+        )
+    }
+    if (expanded) {
+        Box(Modifier.weight(1f).fillMaxWidth(), contentAlignment = Alignment.Center) {
+            ProtectionMark(state, colors, MarkSizeExpanded)
+        }
+        title(Modifier)
+    } else {
+        Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(SharedDimensions.spacingLg)) {
+            ProtectionMark(state, colors, MarkSizeCompact)
+            title(Modifier.weight(1f))
         }
     }
 }

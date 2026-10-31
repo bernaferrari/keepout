@@ -20,7 +20,6 @@
     <string name="lbl_qr_code" translatable="true">QR-koodi</string>
     <string name="lbl_blocked" translatable="true">Estetty</string>
     <string name="lbl_http_socks5" translatable="true">HTTPS &amp; SOCKS5</string>
-    <string name="finish" translatable="true">Valmis</string>
     <string name="lbl_auto" translatable="true">(automaattinen)</string>
     <string name="lbl_slow" translatable="true">hidas</string>
     <string name="lbl_domain" translatable="true">Domain</string>
@@ -31,7 +30,6 @@
     <string name="lbl_addresses" translatable="true">Osoitteet</string>
     <string name="lbl_active" translatable="true">Aktiivinen</string>
     <string name="lbl_dns_servers" translatable="true">DNS palvelimet</string>
-    <string name="lbl_app_wise" translatable="true">per sovellus</string>
     <string name="lbl_public_key" translatable="true">Julkinen avain</string>
     <string name="lbl_ip_rules" translatable="true">IP-säännöt</string>
     <string name="lbl_min" translatable="true">min</string>
@@ -45,11 +43,9 @@
     <string name="lbl_remove" translatable="true">Poista</string>
     <string name="lbl_last" translatable="true">Viimeinen</string>
     <string name="lbl_stopped" translatable="true">Pysäytetty</string>
-    <string name="lbl_secure" translatable="true">turvallinen</string>
     <string name="lbl_idle" translatable="true">Tyhjäkäynti</string>
     <string name="lbl_configure" translatable="true">Määritä</string>
     <string name="lbl_private_key" translatable="true">Yksityinen avain</string>
-    <string name="lbl_private" translatable="true">yksityinen</string>
     <string name="lbl_status" translatable="true">Tila</string>
     <string name="lbl_starting" translatable="true">Käynnistetään</string>
     <string name="lbl_overall" translatable="true">Kaiken kaikkiaan</string>
@@ -65,7 +61,6 @@
     <string name="lbl_split" translatable="true">Jaa</string>
     <string name="lbl_rules" translatable="true">Säännöt</string>
     <string name="lbl_wireguard" translatable="true">WireGuard</string>
-    <string name="lbl_anonymous" translatable="true">anonyymi</string>
     <string name="allow" translatable="true">salli</string>
     <string name="isolate" translatable="true">eristä</string>
     <string name="pause_mode_notification_title" translatable="true">Keskeytetty! Estetyt sovellukset pysyvät palomuurissa.</string>
@@ -98,7 +93,6 @@
 \nKeepout ei kerää tietoja tai vakoile sinua millään tavalla.</string>
     <string name="status_no_internet" translatable="true">Ei internetiä</string>
     <string name="status_exposed" description="This is a large message in a scary color.  It indicates that DNS queries can be surveilled or modified in transit." translatable="true">Ei suojattu</string>
-    <string name="firewall_mode_info_title" translatable="true">Palomuuri</string>
     <string name="apps_info_title" translatable="true">Sovellukset</string>
     <string name="ada_noapp_dialog_positive" translatable="true">Hyvä on</string>
     <string name="fapps_info_dialog_positive_btn" translatable="true">Hyvä on</string>
@@ -118,9 +112,6 @@
     <string name="home_stopped_most">Eniten pysäytetty</string>
     <string name="home_nothing_stopped">Mitään ei ole estetty viimeisen 24 tunnin aikana.</string>
     <string name="home_see_statistics">Tilastot</string>
-    <string name="home_apps_caption">Wi-Fi ja mobiilidata sovelluskohtaisesti</string>
-    <string name="home_logs_caption">Jokainen yhteys ja haku</string>
-    <string name="home_dns_caption">DNS-palvelin ja estolistat</string>
     <string name="log_detail_protocol">Protokolla</string>
     <string name="log_detail_country">Maa</string>
     <string name="log_detail_address">Osoite</string>

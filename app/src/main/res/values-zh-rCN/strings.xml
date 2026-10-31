@@ -1,27 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="slide_2_desc">Keepout 是现 Android 设备上最易使用的监测网络活动、绕过互连网审查与拦截应用程序的防火墙软件。</string>
-    <string name="finish">完成</string>
     <string name="settings_orbot_disabled_error">关闭 HTTP(S) 与/或 SOCKS5 代理以继续设置 Tor 代理。</string>
     <string name="settings_orbot_notification_content">启动 Tor 代理失败。请手动开启 Orbot 应用。</string>
     <string name="settings_https_disabled_error">已连接至 %1$s 。请先将其关闭。</string>
-    <string name="fapps_info_dialog_message">阻止应用连接互联网。限制访问互联网有助于避免不必要的数据使用，也有助于省电。</string>
     <string name="fapps_info_dialog_positive_btn">了解</string>
     <string name="other_dns_list_tab1">DoH</string>
     <string name="pause_text">已暂停</string>
-    <string name="pause_desc">注意： %1$s 个已拦截的应用将会继续被拦截。</string>
     <string name="default_dns_name">RDNS 默认</string>
     <string name="settings_socks5_disabled_error">已连接至 %1$s 。请先将其关闭。</string>
-    <string name="univ_firewall_rule_8">拦截端口 80 （不安全 HTTP ）的流量</string>
     <string name="about_app">应用</string>
     <string name="orbot_stop_dialog_title">需手动干预</string>
-    <string name="ada_app_status_exclude">已排除在 DNS 与防火墙之外</string>
     <string name="orbot_none">无（默认）</string>
     <string name="block">拦截</string>
     <string name="about_docs">阅读文档</string>
-    <string name="fapps_metered_block_dialog_title">于计费网络拦截</string>
     <string name="notif_channel_firewall_alerts">防火墙警报</string>
-    <string name="ada_noapp_dialog_title">未找到应用</string>
     <string name="rt_list_simple_btn_txt">简单</string>
     <string name="rdns_plus">RDNS Plus</string>
     <string name="warning_title" description="Status indicator text shown in a warning notification.">警告： Keepout 已被停用</string>
@@ -39,7 +32,6 @@
     <string name="cd_dns_proxy_error_text_3">无效端口</string>
     <string name="cd_dns_crypt_dialog_name">名称</string>
     <string name="univ_firewall_rule_9">拦截于计费网络（移动数据）</string>
-    <string name="fapps_unmetered_unblock_dialog_message">是否于非计费网络（ WiFi ）放行所列出的应用？</string>
     <string name="firewall_rule_unknown">未知应用</string>
     <string name="firewall_rule_block_ip_univ_desc"><![CDATA[一项用户定义的全局防火墙规则拦截了此目标 IP / 端口。]]></string>
     <string name="firewall_rule_global_lockdown_desc"><![CDATA[此连接因全局闭关模式而被拦截。]]></string>
@@ -49,15 +41,12 @@
     <string name="dc_dns_proxy">DNS 代理</string>
     <string name="notification_action_pause_vpn">暂停</string>
     <string name="bsct_app_info">应用信息</string>
-    <string name="always_on_dialog_neutral">设置</string>
     <string name="download_update_dialog_trylater_title">现在无法更新</string>
     <string name="settings_enable_logs">启用本地日志</string>
     <string name="settings_allow_bypass_heading">于网络可见</string>
-    <string name="settings_socks5_heading">设置 SOCKS5 代理</string>
     <string name="orbot">Orbot</string>
     <string name="orbot_socks5">仅 TCP 代理</string>
     <string name="settings_orbot_notification_action">打开 Orbot</string>
-    <string name="hsf_vpn_dialog_header">注意！</string>
     <string name="settings_import_export_desc">手动备份或恢复应用数据与设置。</string>
     <string name="dc_entries">%1$s 条目 »</string>
     <string name="dc_local_block_heading">本地屏蔽名单</string>
@@ -70,7 +59,6 @@
     <string name="firewall_rule_foreground">应用未使用</string>
     <string name="new_app_bulk_notification_title">注意</string>
     <string name="ada_ip_no_connection">此分类无网络日志。</string>
-    <string name="ada_app_status_isolate">已隔离：仅允许受信任的 IP 和域名</string>
     <string name="rt_edit_dialog_positive">編辑</string>
     <string name="brbs_backup_title">备份</string>
     <string name="status_failing" description="This text appears if the connection is currently not working correctly. [CHAR_LIMIT=NONE]">失败</string>
@@ -101,7 +89,6 @@
     <string name="cd_custom_dns_proxy_default_app">无</string>
     <string name="cd_doh_dialog_resolver_name">解析服务名称</string>
     <string name="ctbs_dialog_negative_btn">返回</string>
-    <string name="univ_firewall_rule_10">除绕行应用及 IP 外全部拦截</string>
     <string name="dns_proxy_port">端口</string>
     <string name="copy_clipboard_label">URL</string>
     <string name="firewall_rule_block_app">应用已拦截</string>
@@ -120,12 +107,10 @@
     <string name="vpn_profile_error">无法打开 VPN 配置。</string>
     <string name="collecting_logs_progress_text">截取中……</string>
     <string name="hs_download_positive_website">访问网站</string>
-    <string name="univ_firewall_rule_3">拦截未知应用</string>
     <string name="univ_view_blocked_ip_desc">修改拦截或信任的域名、 IP / 端口规则。</string>
     <string name="firewall_rule_bypass_universal_ip">已绕行 IP</string>
     <string name="network_dns">系统 DNS</string>
     <string name="rt_download">下载屏蔽名单</string>
-    <string name="rt_download_desc">请下载屏蔽名单（约 60 MB ）以使用此功能。</string>
     <string name="always_on_dialog_positive">停止</string>
     <string name="dns_crypt_url_remove_dialog_message">于已保存的配置中删除此 DNSCrypt 解析服务。</string>
     <string name="local_blocklist_download">下载屏蔽名单</string>
@@ -138,16 +123,13 @@
     <string name="dc_other_dns_heading">类型</string>
     <string name="dc_dns_website_desc">从 nextdns.io 与 duckduckgo.com 获取网站图标。约占用 350 MB 磁盘空间</string>
     <string name="about_faq">查阅常见问题</string>
-    <string name="univ_firewall_rule_1">设备锁定时拦截所有应用</string>
     <string name="univ_accessibility_crash_dialog_positive">前往设置</string>
     <string name="dns_connected">已连接</string>
-    <string name="fapps_metered_block_dialog_message">是否于计费网络（移动数据）拦截所列出的应用？</string>
     <string name="dns_proxy_connection_failure">连接至 DNS 代理服务器时出错。</string>
     <string name="firewall_rule_device_lock">设备已锁定</string>
     <string name="notif_channel_vpn_failure">VPN 未启用</string>
     <string name="ada_noapp_dialog_message">缺少应用信息。这个应用是不是已经卸载了呢？</string>
     <string name="rt_dialog_title">保存更改</string>
-    <string name="radio_sky_btn">⛅ Sky</string>
     <string name="title_settings">设置</string>
     <string name="untracked">未跟踪</string>
     <string name="dns_crypt_url_remove_success">DNSCrypt 解析服务已删除。</string>
@@ -155,16 +137,13 @@
     <string name="settings_socks_forwarding_desc_no_app">正转发至 %1$s:%2$s</string>
     <string name="settings_ip_text_ipv46">自动</string>
     <string name="firewall_status_whitelisted">绕过全局防火墙规则</string>
-    <string name="dc_local_block_desc_1">于逾 195 条屏蔽名单中选择。轻触此处以下载或配置屏蔽名单。</string>
     <string name="about_mail_to_string">mailto:</string>
     <string name="about_twitter_handle">https://twitter.com/rethinkdns</string>
-    <string name="cd_dns_crypt_name_default">DNSCrypt</string>
     <string name="cd_doh_dialog_heading">添加 DNS over HTTPS</string>
     <string name="dns_info_neutral">复制</string>
     <string name="fapps_filter_parent_system">系统</string>
     <string name="unicode_question_sign">❔</string>
     <string name="firewall_rule_exempt_orbot_setup_desc"><![CDATA[此连接被放行因为通过 Orbot 的一键 Tor 代理 设置正在进行中。]]></string>
-    <string name="ada_app_status_block">已拦截</string>
     <string name="status_dns_server_down">DNS 服务器离线</string>
     <string name="local_blocklist_download_desc">是否下载屏蔽名单（约 60 MB ）来使用此功能？</string>
     <string name="download_update_dialog_failure_title">似乎有什么出错了！</string>
@@ -179,11 +158,9 @@
     <string name="about_whats_new">%1$s 的新内容</string>
     <string name="about_app_update_check">检查应用更新</string>
     <string name="about_dialog_neutral_button">建议新特性</string>
-    <string name="cd_custom_dns_proxy_name_default">代理</string>
     <string name="hs_download_negative_default">稍后提醒</string>
     <string name="univ_accessibility_dialog_negative">拒绝</string>
     <string name="dns_proxy_name">代理名称</string>
-    <string name="fapps_metered_unblock_dialog_message">是否于计费网络放行已列出应用？</string>
     <string name="firewall_rule_block_udp_ntp_desc"><![CDATA[一项用户定义的防火墙规则拦截了此 UDP 连接。]]></string>
     <string name="new_app_notification_action_toast_deny">拦截应用网络连接</string>
     <string name="ada_app_bypass_univ">无条件放行</string>
@@ -201,9 +178,7 @@
     <string name="settings_theme_dialog_themes_3">暗色</string>
     <string name="settings_ip_dialog_ipv6">IPv6 （实验性）</string>
     <string name="lbl_add">添加</string>
-    <string name="univ_view_blocked_ip">IP 与端口规则</string>
     <string name="dns_proxy_dialog_header_dns">添加 DNS 代理</string>
-    <string name="fapps_unmetered_unblock_dialog_title">于非计费网络放行</string>
     <string name="firewall_rule_trusted_ip">已信任 IP</string>
     <string name="notif_channel_download">下载警报</string>
     <string name="category_name_installed">已安装程序</string>
@@ -244,7 +219,6 @@
     <string name="error_loading_log_file">读取日志文件错误</string>
     <string name="cd_custom_dns_proxy_default_ip">127.0.0.1</string>
     <string name="fapps_firewall_filter_excluded">已排除</string>
-    <string name="fapps_unmetered_block_dialog_title">于非计费网络拦截</string>
     <string name="firewall_rule_block_dns_bypass_desc"><![CDATA[此连接因来源应用绕过了用户设置的 DNS 而被拦截。]]></string>
     <string name="notif_channel_desc_proxy_failure">在代理错误或异常时提醒我</string>
     <string name="ada_app_metered">计费网络</string>
@@ -272,7 +246,6 @@
     <string name="rbl_security">安全</string>
     <string name="brbs_restore_title">恢复</string>
     <string name="brbs_backup_complete_toast">备份完毕</string>
-    <string name="firewall_mode_info_title">防火墙</string>
     <string name="download_update_dialog_title">更新可用！</string>
     <string name="settings_enable_logs_desc">于本地保存 DNS 与防火墙日志。</string>
     <string name="orbot_stop_dialog_neutral">更改 DNS</string>
@@ -282,7 +255,6 @@
     <string name="cd_dns_proxy_error_text_1">无效 IP 地址</string>
     <string name="cd_dns_crypt_dialog_desc">说明（可选）</string>
     <string name="fapps_filter_clear_btn">清除</string>
-    <string name="fapps_unmetered_block_dialog_message">是否于非计费网络（ WiFi ）拦截所列出的应用？</string>
     <string name="network_log_app_name_unknown">未知</string>
     <string name="firewall_rule_exempt_dns_proxied">已代理 DNS</string>
     <string name="firewall_rule_exempt_app_bypass_univ_desc"><![CDATA[此连接因来源应用被设为全局放行而放行。]]></string>
@@ -317,7 +289,6 @@
     <string name="about_bug_report">漏洞报告</string>
     <string name="about_mail_bugreport_subject">[Rethink]: Bug report</string>
     <string name="about_website_link">https://www.rethinkdns.com/</string>
-    <string name="univ_firewall_rule_6">默认拦截所有新安装的应用</string>
     <string name="fapps_firewall_filter_bypass_universal">已绕行</string>
     <string name="settings_local_blocklist_dialog_positive">下载</string>
     <string name="other_dns_list_tab3">Dns Proxy</string>
@@ -325,7 +296,6 @@
     <string name="firewall_rule_no_rule_desc">此连接无匹配的防火墙规则。</string>
     <string name="firewall_rule_exempt_dns_proxied_desc"><![CDATA[此 DNS 连接已代理并转发至用户选择的 DNS 端点。]]></string>
     <string name="firewall_rule_block_http_desc"><![CDATA[此连接被拦截因为它可能使用了 不安全的 HTTP。]]></string>
-    <string name="notif_dialog_pause_dialog_positive">恢复</string>
     <string name="ci_block">拦截</string>
     <string name="exclude">排除</string>
     <string name="status_dns_error">DNS 错误</string>
@@ -346,31 +316,23 @@
     <string name="firewall_rule_block_http">不安全 HTTP</string>
     <string name="new_app_notification_content">Keepout 拦截了新安装的应用程序， %1$s 。</string>
     <string name="notif_channed_desc_download">提示本地屏蔽名单下载进度</string>
-    <string name="ada_app_status_whitelist">绕过全局防火墙规则</string>
     <string name="bsac_title_desc">规则仅应用于此应用程序。</string>
     <string name="notif_download_success_content">下载成功。</string>
     <string name="dc_doh">Dns over HTTPS</string>
     <string name="custom_url_error_invalid_url">无效 URL</string>
-    <string name="firewall_act_universal_tab">全局</string>
     <string name="settings_general_header">一般设置</string>
     <string name="settings_check_update_desc">每周一次自动检查应用是否有可用更新。</string>
     <string name="settings_http_proxy_error_text3">域名为空</string>
-    <string name="hsf_vpn_dialog_message">Keepout 需要设置本地 VPN 的权限，以加密设备的 DNS 请求、实现网络监测与执行防火墙规则。
-\n
-\nKeepout 并不会收集任何数据，且不会以任何方式监视您。</string>
     <string name="cd_dnscrypt_relay_heading">中继</string>
     <string name="ctbs_app_other_apps">%1$s + %2$s 个其他应用</string>
     <string name="dns_proxy_dialog_message">应用名称： %1$s \n \nIP 地址： %2$s \n \n端口： %3$s</string>
-    <string name="fapps_metered_unblock_dialog_title">于计费网络放行</string>
     <string name="settings_local_blocklist_version">版本： v%1$s</string>
     <string name="firewall_rule_block_metered">计费网络（移动数据）</string>
     <string name="firewall_rule_block_ip">IP / 端口（应用）</string>
     <string name="notif_channel_vpn_notification">VPN 已启用</string>
     <string name="category_name_sys_apps">系统应用</string>
-    <string name="lbbs_enabled">已启用</string>
     <string name="brbs_backup_dialog_positive">备份</string>
     <string name="about_docs_link">https://docs.rethinkdns.com/</string>
-    <string name="ada_app_status_allow">已放行</string>
     <string name="lbbs_copy">复制为 RDNS+ URL</string>
     <string name="app_name" translatable="false">Keepout</string>
     <string name="title_about">关于</string>
@@ -418,7 +380,6 @@
     <string name="firewall_rule_block_app_unmetered_desc"><![CDATA[一项用户定义的防火墙规则在此应用尝试连接至非计费网络时将其拦截。]]></string>
     <string name="settings_protocol_translation_dns_inactive">切换至 DNS 或 DNS + 防火墙模式以启用此设置</string>
     <string name="dc_block_heading">规则</string>
-    <string name="cd_custom_doh_url_name_default">DoH</string>
     <string name="ctbs_app_info_not_available_toast">未找到应用设置页</string>
     <string name="univ_accessibility_dialog_positive">准许</string>
     <string name="dc_dns_leaks_desc">若启用， Keepout 将捕获端口 53 上的所有数据包，并将其转发至您设置的 DNS 端点</string>
@@ -431,7 +392,6 @@
     <string name="firewall_rule_block_ip_desc"><![CDATA[一项用户定义的全局防火墙规则拦截了此目标 IP]]></string>
     <string name="dc_local_block_enabled">已启用</string>
     <string name="rules_load_failure_reload">刷新</string>
-    <string name="radio_max_btn">🪂 Max</string>
     <string name="fapps_filter_parent_installed">已安装</string>
     <string name="update_complete_action_snack">重启</string>
     <string name="firewall_rule_block_unmetered">非计费网络（ WiFi ）</string>
@@ -448,7 +408,6 @@
     <string name="rbl_parental_control">家长控制</string>
     <string name="lbbs_update_check">检查更新</string>
     <string name="brbs_restore_desc">从备份文件中恢复</string>
-    <string name="rethink_max_desc">逾 50 处地点；更私密；于 fly.io 运行的递归解析服务</string>
     <string name="lbbs_heading">配置逾 195 个屏蔽名单</string>
     <string name="brbs_backup_dialog_message">将应用设置、网络日志与 DNS 日志备份至单个文件内。这将重启 VPN 。</string>
     <string name="brbs_backup_dialog_failure_title">备份失败</string>
@@ -490,23 +449,10 @@
 \n若要使用 Keepout 的 DNS ，请至 Android 设置并关闭「私人 DNS 」。</string>
     <string name="rbl_security_desc" description="The text appears as blocklists description in configure screen">拦截恶意软件、勒索软件、加密软件、钓鱼及其他威胁。</string>
     <string name="rsv_blocklist_count_text" description="This label will appear in rethink configure simple view screen which shows number of blocklists for each category">%1$s 个屏蔽名单</string>
-    <string name="fapps_isolate_block_dialog_title">隔离应用</string>
-    <string name="fapps_exclude_block_dialog_message">是否从 DNS 与防火墙中排除已列出应用？</string>
-    <string name="fapps_isolate_block_dialog_message">是否隔离已列出应用？</string>
     <string name="title_statistics">统计</string>
     <string name="hs_biometeric_title">解锁 Keepout</string>
     <string name="hs_biometeric_desc">使用生物识别认证解锁 Keepout</string>
     <string name="hs_biometeric_error">生物识别认证错误</string>
-    <string name="fapps_info_unmetered_msg">于非收费网路（ WiFi ）放行/拦截。</string>
-    <string name="fapps_info_metered_msg">于计费网络（移动数据）放行/拦截。</string>
-    <string name="fapps_info_bypass_msg">绕过通用防火墙规则。</string>
-    <string name="fapps_info_exclude_msg">于 DNS 与防火墙中排除。</string>
-    <string name="fapps_info_isolate_msg">除信任 IP 外一概拦截。</string>
-    <string name="fapps_bypass_block_dialog_title">绕过应用</string>
-    <string name="fapps_bypass_block_dialog_message">是否对已列出应用绕过通用防火墙规则？</string>
-    <string name="fapps_unblock_dialog_title">放行应用</string>
-    <string name="fapps_unblock_dialog_message">是否放行已列出应用的连接？</string>
-    <string name="fapps_exclude_block_dialog_title">排除应用</string>
     <string name="ci_trust_rule">信任</string>
     <string name="ssv_app_network_activity_heading" description="This label will appear on the stats screen as a header for allowed apps." translatable="true">放行最多的应用</string>
     <string name="ssv_app_blocked_heading" description="This label will appear on the stats screen as a header for blocked applications." translatable="true">拦截最多的应用</string>
@@ -539,7 +485,6 @@
     <string name="lbl_logs" translatable="true">日志</string>
     <string name="bsct_block_domain" translatable="true">对此应用拦截、信任此域名</string>
     <string name="settings_lock_down_proxy_desc" translatable="true">VPN 处于仅 DNS 时无法设定代理。</string>
-    <string name="settings_general_customize" translatable="true">自定义</string>
     <string name="settings_default_dns_desc" translatable="true">在极少数情况下，用户偏好的 DNS 无法确定时，将使用回落 DNS 。</string>
     <string name="firewall_rule_dns_blocked" translatable="true">DNS 已拦截</string>
     <string name="ada_app_status_bypass_dns_firewall" translatable="true">绕过全局 DNS 与防火墙规则</string>
@@ -547,8 +492,6 @@
     <string name="dc_refresh_toast" translatable="true">刷新完毕</string>
     <string name="cd_dns_alg_heading" translatable="true">高级 DNS 过滤（实验性）</string>
     <string name="cd_dns_alg_desc" translatable="true">为每个 DNS 请求分配唯一 IP 。</string>
-    <string name="fapps_bypass_dns_firewall_dialog_title" translatable="true">绕行应用</string>
-    <string name="fapps_bypass_dns_firewall_dialog_message" translatable="true">是否为已列出的应用绕行通用 DNS 与防火墙规则？</string>
     <string name="firewall_rule_bypass_dns_firewall" translatable="true">已绕行应用</string>
     <string name="firewall_rule_domain_blocked_univ" translatable="true">域名（通用）</string>
     <string name="firewall_rule_domain_trusted_univ" translatable="true">信任域名（通用）</string>
@@ -570,9 +513,6 @@
     <string name="lbl_socks5" translatable="true">SOCKS5</string>
     <string name="public_key_copy_toast_msg" translatable="true">公钥已复制。</string>
     <string name="cd_doh_dialog_checkbox_desc" translatable="true">停止验证服务器 TLS 证书（仅当您了解您在做什么时启用）</string>
-    <string name="univ_firewall_heading" translatable="true">全局防火墙规则</string>
-    <string name="app_ip_domain_rules" translatable="true">分应用 IP / 域名规则</string>
-    <string name="app_ip_domain_rules_desc" translatable="true">修改分应用的 IP / 域名规则。</string>
     <string name="firewall_rule_proxied_desc" translatable="true"><![CDATA[此连接已代理并转发至用戶选择的代理。]]></string>
     <string name="key_length_explanation_base64" translatable="true">： WireGuard Base64 密钥必须为 44 字符（ 32 字节）</string>
     <string name="illegal_filename_error" translatable="true">非法文件名“%s”</string>
@@ -596,7 +536,6 @@
     <string name="lbl_fast" translatable="true">快</string>
     <string name="lbl_slow" translatable="true">慢</string>
     <string name="lbl_preshared_key" translatable="true">预共享密钥</string>
-    <string name="lbl_app_wise" translatable="true">分应用</string>
     <string name="lbl_min" translatable="true">分</string>
     <string name="lbl_sec" translatable="true">秒</string>
     <string name="lbl_hour" translatable="true">小时</string>
@@ -608,7 +547,6 @@
     <string name="lbl_save" translatable="true">保存</string>
     <string name="http_proxy_dialog_desc" translatable="true">设置符合下述格式的 URL ： &lt;协议&gt;://&lt;帐号&gt;:&lt;密码&gt;@&lt;域名或 IP&gt;:&lt;端口&gt;&lt;路径&gt; 。例如：http://proxy.example.com:8080/</string>
     <string name="search_proxy_add_apps" translatable="true">以应用名搜索应用程序</string>
-    <string name="fapps_info_bypass_dns_firewall_msg" translatable="true">绕过 DNS 与防火墙规则。</string>
     <string name="firewall_rule_proxied" translatable="true">代理</string>
     <string name="ssv_most_contacted_countries_heading" description="This label will appear on the stats screen as a header for most visited domains by country" translatable="true">连接最多的国家</string>
     <string name="bad_config_reason_invalid_key" translatable="true">键无效</string>
@@ -664,9 +602,6 @@
     <string name="lbl_starting" translatable="true">启动中</string>
     <string name="lbl_overall" translatable="true">总共</string>
     <string name="lbl_stopped" translatable="true">已停止</string>
-    <string name="lbl_private" translatable="true">私密</string>
-    <string name="lbl_secure" translatable="true">安全</string>
-    <string name="lbl_anonymous" translatable="true">匿名</string>
     <string name="lbl_peer" translatable="true">对等端点</string>
     <string name="failed_using_default" translatable="true">失败：使用回落 DNS</string>
     <string name="one_wg_apps_added" translatable="true">正在路由所有应用</string>
@@ -722,9 +657,6 @@
     <string name="home_stopped_most">拦截最多</string>
     <string name="home_nothing_stopped">过去 24 小时内没有拦截任何内容。</string>
     <string name="home_see_statistics">统计</string>
-    <string name="home_apps_caption">按应用管理 Wi-Fi 和数据</string>
-    <string name="home_logs_caption">每一次连接和查询</string>
-    <string name="home_dns_caption">解析服务和屏蔽名单</string>
     <string name="log_detail_protocol">协议</string>
     <string name="log_detail_country">国家/地区</string>
     <string name="log_detail_address">地址</string>

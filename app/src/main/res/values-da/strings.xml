@@ -5,7 +5,6 @@
     <string name="title_statistics" translatable="true">Statistik</string>
     <string name="txt_home" translatable="true">Hjem</string>
     <string name="accessibility_service_description" translatable="true">Keepout bruger tilgængelighedstjenester til at opdage baggrundsapplikationer og sætte en firewall op. Keepout indsamler eller sælger ingen oplysninger.</string>
-    <string name="finish" translatable="true">Fuldfør</string>
     <string name="lbl_cancel" translatable="true">Annullér</string>
     <string name="lbl_apply" translatable="true">Anvend</string>
     <string name="lbl_dismiss" translatable="true">Afvis</string>
@@ -41,7 +40,6 @@
     <string name="lbl_fast" translatable="true">hurtig</string>
     <string name="lbl_slow" translatable="true">langsom</string>
     <string name="lbl_add" translatable="true">tilføj</string>
-    <string name="lbl_app_wise" translatable="true">pr app</string>
     <string name="lbl_sec" translatable="true">sek</string>
     <string name="lbl_min" translatable="true">min</string>
     <string name="lbl_hour" translatable="true">t</string>
@@ -57,9 +55,6 @@
     <string name="lbl_overall" translatable="true">Samlet</string>
     <string name="lbl_stopped" translatable="true">Stoppet</string>
     <string name="lbl_idle" translatable="true">Inaktiv</string>
-    <string name="lbl_private" translatable="true">privat</string>
-    <string name="lbl_secure" translatable="true">sikker</string>
-    <string name="lbl_anonymous" translatable="true">anonym</string>
     <string name="lbl_peer" translatable="true">Peer</string>
     <string name="lbl_split" translatable="true">Opdel</string>
     <string name="lbl_test" translatable="true">test</string>
@@ -99,7 +94,6 @@
     <string name="notification_action_dns_mode" translatable="true">DNS</string>
     <string name="notification_action_dns_firewall_mode" translatable="true">DNS + firewall</string>
     <string name="dns_mode_info_title" translatable="true">DNS</string>
-    <string name="firewall_mode_info_title" translatable="true">Firewall</string>
     <string name="apps_info_title" translatable="true">Apps</string>
     <string name="alert_permission_accessibility" translatable="true">Tilladelse - tilgængelighed</string>
     <string name="alert_firewall_accessibility_explanation" translatable="true">Keepout bruger tilgængelighedstjenester til at spore, hvilke apps der er i brug (i forgrunden) mod dem, der ikke er i brug (i baggrunden).\n\nKeepout indsamler ikke oplysninger eller spionerer på dig på nogen som helst måde.</string>
@@ -122,9 +116,6 @@
     <string name="home_stopped_most">Stoppet oftest</string>
     <string name="home_nothing_stopped">Intet er blevet blokeret de seneste 24 timer.</string>
     <string name="home_see_statistics">Statistik</string>
-    <string name="home_apps_caption">Wi-Fi og mobildata, app for app</string>
-    <string name="home_logs_caption">Hver forbindelse og hvert opslag</string>
-    <string name="home_dns_caption">Resolver og blokeringslister</string>
     <string name="log_detail_protocol">Protokol</string>
     <string name="log_detail_country">Land</string>
     <string name="log_detail_address">Adresse</string>

@@ -39,8 +39,6 @@
     <string name="ada_delete_logs_dialog_desc" description="Appears as dialog description to clear the logs in app specific screen" translatable="true">Rensa alla loggar som hör till appen.</string>
     <string name="ada_delete_logs_dialog_title" description="Appears as dialog title to clear the logs in app specific screen" translatable="true">Rensa loggar</string>
     <string name="ada_noapp_dialog_message" translatable="true">Appinformation saknas. Har appen avinstallerats?</string>
-    <string name="ada_noapp_dialog_title" translatable="true">Ingen sådan app</string>
-    <string name="always_on_dialog_neutral" translatable="true">Inställningar</string>
     <string name="always_on_dialog_positive" translatable="true">Stoppa</string>
     <string name="always_on_dialog_stop_heading" translatable="true">Alltid-på-VPN</string>
     <string name="anti_censorship_title" translatable="true">Kringgå censur</string>
@@ -78,16 +76,13 @@
     <string name="category_name_others" translatable="true">Övrigt</string>
     <string name="cd_custom_dns_proxy_default_app" translatable="true">Ingen</string>
     <string name="cd_custom_dns_proxy_name" translatable="true">Proxy %1$s</string>
-    <string name="cd_custom_dns_proxy_name_default" translatable="true">Proxy</string>
     <string name="cd_custom_doh_url_name" translatable="true">DoH %1$s</string>
-    <string name="cd_custom_doh_url_name_default" translatable="true">DoH</string>
     <string name="cd_dns_alg_desc" translatable="true">Tilldela en unik IP-adress per DNS-förfrågan.</string>
     <string name="cd_dns_alg_heading" translatable="true">Avancerad DNS-filtrering (experimentell)</string>
     <string name="cd_dns_crypt_dialog_desc" translatable="true">Beskrivning (valfritt)</string>
     <string name="cd_dns_crypt_dialog_name" translatable="true">Namn</string>
     <string name="cd_dns_crypt_dialog_stamp" translatable="true">Stämpel</string>
     <string name="cd_dns_crypt_name" translatable="true">DNSCrypt %1$s</string>
-    <string name="cd_dns_crypt_name_default" translatable="true">DNSCrypt</string>
     <string name="cd_dns_crypt_relay_heading" translatable="true">Relä</string>
     <string name="cd_dns_crypt_relay_name" translatable="true">DNS-relä %1$s</string>
     <string name="cd_dns_crypt_resolver_heading" translatable="true">Resolver</string>
@@ -169,9 +164,6 @@
     <string name="exclude_apps_from_proxy_failure_toast">Den här appen kringgår proxyservrar</string>
     <string name="exclude_no_package_err_toast" translatable="true">För att undanta appar krävs ett paketnamn.</string>
     <string name="fail_open_network_title" translatable="true">Stoppa vid nätverksbortfall</string>
-    <string name="fapps_bypass_block_dialog_title" translatable="true">Kringgå appar</string>
-    <string name="fapps_bypass_dns_firewall_dialog_title" translatable="true">Kringgå appar</string>
-    <string name="fapps_exclude_block_dialog_title" translatable="true">Undanta appar</string>
     <string name="fapps_filter_categories_heading" translatable="true">Kategorier</string>
     <string name="fapps_filter_clear_btn" translatable="true">Rensa</string>
     <string name="fapps_filter_parent_installed" translatable="true">Installerade</string>
@@ -179,18 +171,7 @@
     <string name="fapps_firewall_filter_bypass_universal" translatable="true">Kringgångna</string>
     <string name="fapps_firewall_filter_excluded" translatable="true">Undantagna</string>
     <string name="fapps_firewall_filter_isolate" translatable="true">Isolerade</string>
-    <string name="fapps_info_dialog_message" translatable="true">Blockera appar från att ansluta till internet. Begränsad internetåtkomst hjälper till att förhindra obefogad dataanvändning och sparar batteri.</string>
-    <string name="fapps_info_isolate_msg" translatable="true">Blockera alla utom betrodda IP-adresser.</string>
-    <string name="fapps_isolate_block_dialog_title" translatable="true">Isolera appar</string>
-    <string name="fapps_metered_block_dialog_title" translatable="true">Blockera på nätverk med datatak</string>
-    <string name="fapps_metered_unblock_dialog_title" translatable="true">Tillåt på nätverk med datatak</string>
-    <string name="fapps_unblock_dialog_title" translatable="true">Tillåt appar</string>
-    <string name="fapps_unmetered_block_dialog_title" translatable="true">Blockera på nätverk utan datatak</string>
-    <string name="fapps_unmetered_unblock_dialog_title" translatable="true">Tillåt på nätverk utan datatak</string>
-    <string name="finish" translatable="true">Slutför</string>
     <string name="firewall_act_network_monitor_tab" translatable="true">Nätverk</string>
-    <string name="firewall_act_universal_tab" translatable="true">Universell</string>
-    <string name="firewall_mode_info_title" translatable="true">Brandvägg</string>
     <string name="firewall_rule_block_app_exception" translatable="true">Fel</string>
     <string name="firewall_rule_block_http" translatable="true">Osäker HTTP</string>
     <string name="firewall_rule_bypass_universal_ip" translatable="true">Kringgången IP-adress</string>
@@ -217,7 +198,6 @@
     <string name="key_length_explanation_base64" translatable="true">: WireGuards base64-nycklar måste vara 44 tecken (32 byte)</string>
     <string name="lbbs_configure" translatable="true">Konfigurera</string>
     <string name="lbbs_copy" translatable="true">Kopiera som RDNS+-URL</string>
-    <string name="lbbs_enabled" translatable="true">Aktiverad</string>
     <string name="lbbs_heading" translatable="true">Konfigurera fler än 195 blocklistor</string>
     <string name="lbbs_search" translatable="true">Sök domäner i blocklistor</string>
     <string name="lbbs_update_check" translatable="true">Sök efter uppdatering</string>
@@ -230,7 +210,6 @@
     <string name="lbl_allowed" translatable="true">Tillåten</string>
     <string name="lbl_allowed_ips" translatable="true">Tillåtna IP-adresser</string>
     <string name="lbl_always" translatable="true">Alltid</string>
-    <string name="lbl_anonymous" translatable="true">anonym</string>
     <string name="lbl_apply" translatable="true">Tillämpa</string>
     <string name="lbl_auto" translatable="true">(automatiskt)</string>
     <string name="lbl_blocked" translatable="true">Blockerad</string>
@@ -264,13 +243,11 @@
     <string name="lbl_peer" translatable="true">Peer</string>
     <string name="lbl_persistent_keepalive" translatable="true">Beständig keepalive</string>
     <string name="lbl_preshared_key" translatable="true">Delad nyckel</string>
-    <string name="lbl_private" translatable="true">privat</string>
     <string name="lbl_private_key" translatable="true">Privat nyckel</string>
     <string name="lbl_proceed" translatable="true">Fortsätt</string>
     <string name="lbl_remove" translatable="true">Ta bort</string>
     <string name="lbl_save" translatable="true">Spara</string>
     <string name="lbl_sec" translatable="true">sek</string>
-    <string name="lbl_secure" translatable="true">säker</string>
     <string name="lbl_slow" translatable="true">långsam</string>
     <string name="lbl_socks5" translatable="true">SOCKS5</string>
     <string name="lbl_split" translatable="true">Delad</string>
@@ -293,7 +270,6 @@
     <string name="no_configs_error" translatable="true">Inga konfigurationer hittades</string>
     <string name="notif_channel_vpn_failure" translatable="true">Inaktivt VPN</string>
     <string name="notif_dialog_pause_dialog_negative" translatable="true">Ignorera</string>
-    <string name="notif_dialog_pause_dialog_positive" translatable="true">Återuppta</string>
     <string name="notif_download_cancel_content" translatable="true">Hämtningen avbröts.</string>
     <string name="notif_download_content_text" translatable="true">Hämtning pågår …</string>
     <string name="notif_download_failure_content" translatable="true">Hämtningen misslyckades. Försök igen.</string>
@@ -320,7 +296,6 @@
     <string name="parse_error_inet_network" translatable="true">IP-nätverk</string>
     <string name="parse_error_integer" translatable="true">tal</string>
     <string name="parse_error_reason" translatable="true">Det går inte att tolka %1$s ”%2$s”</string>
-    <string name="pause_desc" translatable="true">Observera: %1$s blockerade appar omfattas fortfarande av brandväggen.</string>
     <string name="public_key_copy_toast_msg" translatable="true">Den offentliga nyckeln har kopierats.</string>
     <string name="quad9_dns_desc" translatable="true">Quad9 routar dina DNS-förfrågningar genom ett säkert nätverk av servrar över hela världen.</string>
     <string name="rbl_parental_control_desc" description="The text appears as blocklists description in configure screen" translatable="true">Blockera vuxen- och piratkopierat innehåll, nätspel och dejting samt sociala medier.</string>
@@ -329,7 +304,6 @@
     <string name="rbl_security" description="The text appears as part of the blocklist setup screen as categories or headlines" translatable="true">Säkerhet</string>
     <string name="rbl_security_desc" description="The text appears as blocklists description in configure screen" translatable="true">Blockera skadlig programvara, utpressningsprogram, kryptoskadlig kod, nätfiske och andra hot.</string>
     <string name="refresh_complete" translatable="true"> Synkroniseringen av applistan är klar.</string>
-    <string name="rethink_max_desc" translatable="true">Fler än 50 platser; mer privat; rekursiv resolver körs på fly.io</string>
     <string name="rethink_sky_desc" translatable="true">Fler än 280 platser; högre tillgänglighet; stubresolver körs på cloudflare.com</string>
     <string name="routing_remaining_apps" translatable="true">Routar återstående appar</string>
     <string name="rsv_blocklist_count_text" description="This label will appear in rethink configure simple view screen which shows number of blocklists for each category" translatable="true">%1$s blocklistor</string>
@@ -338,7 +312,6 @@
     <string name="rt_dialog_message" translatable="true">Vill du tillämpa de nykonfigurerade blocklistorna?</string>
     <string name="rt_dialog_neutral" translatable="true">Fortsätt</string>
     <string name="rt_download" translatable="true">Hämta blocklistor</string>
-    <string name="rt_download_desc" translatable="true">Hämta blocklistor (cirka 60 MB) för att använda funktionen.</string>
     <string name="rt_edit_dialog_positive" translatable="true">Redigera</string>
     <string name="rt_filter_parent_selected" translatable="true">Valda</string>
     <string name="rt_list_simple_btn_txt" translatable="true">Enkelt</string>
@@ -360,7 +333,6 @@
     <string name="settings_exclude_proxy_apps_heading" translatable="true">Appar för loopback-proxyvidarebefordran</string>
     <string name="settings_firebase_error_reporting_desc" translatable="true">Samla felrapporter för att bidra till bättre stabilitet.</string>
     <string name="settings_firebase_error_reporting_heading" translatable="true">Stabilitetsprogram</string>
-    <string name="settings_general_customize" translatable="true">Anpassa</string>
     <string name="settings_general_header" translatable="true">Allmänt</string>
     <string name="settings_http_proxy_desc" translatable="true">Vidarebefordrar till %1$s</string>
     <string name="settings_http_proxy_error_text1" translatable="true">Portintervallet ska vara 1024–65535</string>
@@ -401,15 +373,9 @@
     <string name="txt_home" translatable="true">Hem</string>
     <string name="univ_accessibility_dialog_negative" translatable="true">Neka</string>
     <string name="univ_accessibility_dialog_positive" translatable="true">Bevilja</string>
-    <string name="univ_firewall_heading" translatable="true">Universella brandväggsregler</string>
-    <string name="univ_firewall_rule_1" translatable="true">Blockera alla appar när enheten är låst</string>
-    <string name="univ_firewall_rule_10" translatable="true">Blockera alla utom kringgångna appar och IP-adresser</string>
     <string name="univ_firewall_rule_2" translatable="true">Blockera alla appar som inte används</string>
-    <string name="univ_firewall_rule_3" translatable="true">Blockera när källappen är okänd</string>
     <string name="univ_firewall_rule_4" translatable="true">Blockera UDP utom DNS och NTP</string>
     <string name="univ_firewall_rule_5" translatable="true">Blockera när DNS kringgås</string>
-    <string name="univ_firewall_rule_6" translatable="true">Blockera nyinstallerade appar som standard</string>
-    <string name="univ_firewall_rule_8" translatable="true">Blockera trafik på port 80 (osäker HTTP)</string>
     <string name="univ_firewall_rule_9" translatable="true">Blockera på nätverk med datatak (mobilt)</string>
     <string name="unknown_error" translatable="true">Okänt fel</string>
     <string name="update_complete_snack_message" translatable="true">Ny version hämtad.</string>

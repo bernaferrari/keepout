@@ -5,7 +5,6 @@
     <string name="title_statistics" translatable="true">Статыстыка</string>
     <string name="txt_home" translatable="true">Галоўная</string>
     <string name="accessibility_service_description" translatable="true">Keepout выкарыстоўвае службу спецыяльных магчымасцей для выяўлення фонавых праграм і брандмаўэра. Keepout не збірае і не прадае ніякай інфармацыі.</string>
-    <string name="finish" translatable="true">Завяршыць</string>
     <string name="lbl_cancel" translatable="true">Скасаваць</string>
     <string name="lbl_apply" translatable="true">Прымяніць</string>
     <string name="lbl_dismiss" translatable="true">Адхіліць</string>
@@ -63,9 +62,6 @@
     <string name="home_stopped_most">Найчасцей блакаваліся</string>
     <string name="home_nothing_stopped">За апошнія 24 гадзіны нічога не заблакіравана.</string>
     <string name="home_see_statistics">Статыстыка</string>
-    <string name="home_apps_caption">Wi-Fi і даныя для кожнай праграмы</string>
-    <string name="home_logs_caption">Усе злучэнні і запыты</string>
-    <string name="home_dns_caption">Рэзолвер і спісы блакіроўкі</string>
     <string name="log_detail_protocol">Пратакол</string>
     <string name="log_detail_country">Краіна</string>
     <string name="log_detail_address">Адрас</string>

@@ -10,7 +10,6 @@
     <string name="status_exposed" description="This is a large message in a scary color.  It indicates that DNS queries can be surveilled or modified in transit.">Не е защитено</string>
     <string name="universal_firewall_explanation">Прилагайте правила за защитна стена за всички приложения въз основа на събития в устройството, например защитна стена, когато устройството е заключено или когато дадено приложение не се използва.</string>
     <string name="notification_action_stop_vpn">STOP</string>
-    <string name="firewall_mode_info_title">Защитна стена</string>
     <string name="alert_firewall_accessibility_explanation">Keepout използва услуга за достъпност, за да проследява кои приложения се използват (на преден план) спрямо тези, които не се използват (на заден план).
 \n
 \nKeepout не събира никаква информация и не ви шпионира по никакъв начин.</string>
@@ -18,7 +17,6 @@
     <string name="title_settings">Настройки</string>
     <string name="title_statistics">Статистики</string>
     <string name="txt_home">Начало</string>
-    <string name="finish">Завърши</string>
     <string name="rdns_plus">RDNS Plus</string>
     <string name="allow">позволи</string>
     <string name="block">блокирай</string>
@@ -45,10 +43,7 @@
     <string name="lbl_last" translatable="true">Последен</string>
     <string name="lbl_starting" translatable="true">Стартиране</string>
     <string name="lbl_stopped" translatable="true">Спрян</string>
-    <string name="lbl_private" translatable="true">поверително</string>
-    <string name="lbl_secure" translatable="true">защитен</string>
     <string name="lbl_overall" translatable="true">Като цяло</string>
-    <string name="lbl_anonymous" translatable="true">анонимен</string>
     <string name="failed_using_default" translatable="true">Неуспешно: използване на резервен DNS</string>
     <string name="bsct_block_domain" translatable="true">Блокирайте, доверете се на домейн(и) за това приложение</string>
     <string name="always_on_dialog_heading" translatable="true">Деактивиране на винаги включената VPN услуга</string>
@@ -56,7 +51,6 @@
     <string name="always_on_dialog_positive_btn" translatable="true">Отидете в настройките</string>
     <string name="always_on_dialog_stop_message" translatable="true">Винаги включената VPN услуга е активирана за Keepout. Сигурни ли сте, че все пак искате да спрете Keepout?</string>
     <string name="private_dns_dialog_heading" translatable="true">Изключване на Private DNS</string>
-    <string name="firewall_act_universal_tab" translatable="true">Универсален</string>
     <string name="firewall_act_network_monitor_tab" translatable="true">Мрежови дневници</string>
     <string name="dot_custom_url_remove_dialog_title" translatable="true">Изтриване на DoT крайна точка?</string>
     <string name="dot_custom_url_remove_dialog_message" translatable="true">Изтрийте крайната точка на DNS през TLS от запазената конфигурация.</string>
@@ -72,7 +66,6 @@
     <string name="doh_custom_url_remove_dialog_message" translatable="true">Изтриване на крайната точка DNS over Https от запазената конфигурация.</string>
     <string name="always_on_dialog_positive" translatable="true">Спиране</string>
     <string name="always_on_dialog_stop_heading" translatable="true">Винаги активна VPN услуга</string>
-    <string name="always_on_dialog_neutral" translatable="true">Настройки</string>
     <string name="doh_custom_url_remove_dialog_title" translatable="true">Изтриване на крайната точка DoH?</string>
     <string name="lbl_public_key" translatable="true">Публичен ключ</string>
     <string name="lbl_wireguard" translatable="true">Заместващ Знак</string>
@@ -89,7 +82,6 @@
     <string name="lbl_mtu" translatable="true">MTU</string>
     <string name="lbl_slow" translatable="true">бавено</string>
     <string name="lbl_add" translatable="true">добавяне</string>
-    <string name="lbl_app_wise" translatable="true">на приложение</string>
     <string name="lbl_min" translatable="true">мин.</string>
     <string name="lbl_hour" translatable="true">час</string>
     <string name="lbl_day" translatable="true">ден</string>
@@ -188,7 +180,6 @@
     <string name="dns_proxy_remove_dialog_title" translatable="true">Изтриване на DNS прокси?</string>
     <string name="settings_enable_logs_desc" translatable="true">Съхранявайте логовете на DNS и защитната стена локално в устройството.</string>
     <string name="settings_proxy_header" translatable="true">прокси</string>
-    <string name="settings_socks5_heading" translatable="true">Настройка на прокси сървър SOCKS5</string>
     <string name="settings_https_heading" translatable="true">Настройка на прокси сървър HTTP(S)</string>
     <string name="settings_https_desc" translatable="true">Препращайте връзките към крайната точка HTTP(S) CONNECT.</string>
     <string name="orbot_socks5" translatable="true">Прокси само за TCP</string>
@@ -206,9 +197,6 @@
     <string name="home_stopped_most">Най-често блокирани</string>
     <string name="home_nothing_stopped">През последните 24 часа нищо не е блокирано.</string>
     <string name="home_see_statistics">Статистика</string>
-    <string name="home_apps_caption">Wi-Fi и данни за всяко приложение</string>
-    <string name="home_logs_caption">Всяка връзка и заявка</string>
-    <string name="home_dns_caption">Резолвер и списъци за блокиране</string>
     <string name="log_detail_protocol">Протокол</string>
     <string name="log_detail_country">Държава</string>
     <string name="log_detail_address">Адрес</string>

@@ -75,7 +75,10 @@
     <string name="rethink_preset_security_desc">Blocks malware, ransomware and phishing</string>
     <string name="rethink_preset_privacy_desc">Blocks ads, trackers and spyware</string>
     <string name="rethink_preset_custom_desc">Lists you choose from 190+</string>
-    <string name="rethink_preset_custom_count">%1$d lists you chose</string>
+    <plurals name="rethink_preset_custom_count">
+        <item quantity="one">%1$d list you chose</item>
+        <item quantity="other">%1$d lists you chose</item>
+    </plurals>
 
     <!-- Blocklist editor downloads: honest sizes, and a way to retry -->
     <string name="blocklist_fetch_remote">Getting the list of blocklists (about 50 KB)…</string>

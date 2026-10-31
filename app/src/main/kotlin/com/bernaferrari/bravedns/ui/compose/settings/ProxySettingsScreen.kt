@@ -15,6 +15,7 @@
  */
 package com.bernaferrari.bravedns.ui.compose.settings
 
+import androidx.compose.ui.platform.LocalResources
 import android.widget.Toast
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -121,7 +122,7 @@ fun ProxySettingsScreen(
     val offNotSetUp = stringResource(R.string.proxy_state_off_not_set_up)
     val tunnelsNoneOnTemplate = stringResource(R.string.proxy_wireguard_tunnels_none_on)
     val noTunnels = stringResource(R.string.proxy_wireguard_empty)
-    val resources = context.resources
+    val resources = LocalResources.current
     val offCopy = ProxyOffCopy(
         offWithHost = { host -> offHostTemplate.format(host) },
         offNotSetUp = offNotSetUp,

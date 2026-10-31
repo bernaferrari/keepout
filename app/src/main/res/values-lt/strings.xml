@@ -6,7 +6,6 @@
     <string name="title_about">Apie</string>
     <string name="txt_home">Pagrindinis</string>
     <string name="accessibility_service_description">RethinkDNS naudoja pritaikymo neįgaliesiems paslaugą, kad aptiktų ir foninėms programėlėms pritaikytų ugniasienės taisykles . RethinkDNS nerenka ir neparduoda jokios informacijos.</string>
-    <string name="finish">Baigti</string>
     <string name="exclude">išskirti</string>
     <string name="untracked">nesekama</string>
     <string name="warning_title" description="Status indicator text shown in a warning notification.">Įspėjimas: RethinkDNS buvo išjungta</string>
@@ -51,7 +50,6 @@
     <string name="settings_allow_bypass_desc">Leisti programėlėms apeiti RethinkDNS ugniasienę pagal poreikį. Kai kurioms garso / vaizdo konferencijų programėlėms, pvz., Zoom ir WhatsApp, gali prireikti apėjimo pagal poreikį, kad jos tinkamai veiktų.</string>
     <string name="settings_lock_down_mode_desc">Negalima leisti apeiti arba nustatyti įgaliotųjų serverių, kai VPN veikia visiško užrakinimo režimu. Eikite į VPN nustatymus.</string>
     <string name="settings_proxy_header">įgaliotasis serveris</string>
-    <string name="settings_socks5_heading">Nustatyti SOCKS5 įgaliotąjį serverį</string>
     <string name="settings_https_heading">Nustatyti HTTP(S) įgaliotąjį serverį</string>
     <string name="settings_https_desc">Šis nustatymas yra tik rekomendacinis ir gali būti, kad programėlės nepaisys jo. Programėlės, naudojančios HTTP(S) įgaliotąjį serverį, apeis ugniasienės ir DNS taisykles.</string>
     <string name="orbot_both">TCP + HTTP įgaliotasis serveris</string>
@@ -92,7 +90,6 @@
     <string name="settings_ip_text_ipv46">Automatinis</string>
     <string name="settings_protocol_translation_dns_inactive">Norėdami įjungti šį nustatymą, perjunkite į DNS / DNS + ugniasienės režimą</string>
     <string name="firewall_status_whitelisted">Apeinamos universaliosios ugniasienės taisyklės</string>
-    <string name="hsf_vpn_dialog_header">Dėmesio!</string>
     <string name="lbl_proceed">Tęsti</string>
     <string name="hsf_pause_vpn_failure">Nepavyksta pristabdyti: RethinkDNS neaktyvus</string>
     <string name="dc_block_heading">taisyklės</string>
@@ -100,7 +97,6 @@
     <string name="dc_custom_dns_radio">Kitas DNS</string>
     <string name="dc_rethink_dns_radio">RethinkDNS</string>
     <string name="dc_entries">%1$s įrašai 🔗</string>
-    <string name="dc_local_block_desc_1">Galite rinktis iš daugiau nei 185 blokavimo sąrašų. Spustelėkite čia, jei norite atsisiųsti arba konfigūruoti blokavimo sąrašus.</string>
     <string name="dc_check_update_heading">Priminti atnaujinti blokavimo sąrašus</string>
     <string name="about_bug_no_log_dialog_positive_btn">Siųsti el. laišką</string>
     <string name="about_faq">Peržiūrėti DUK</string>
@@ -114,12 +110,10 @@
     <string name="about_docs_link">https://docs.rethinkdns.com/</string>
     <string name="about_faq_link">https://www.rethinkdns.com/faq</string>
     <string name="cd_dns_crypt_title">sprendikliai</string>
-    <string name="cd_custom_doh_url_name_default">DoH</string>
     <string name="cd_custom_doh_url_name">DoH %1$s</string>
     <string name="cd_custom_dns_proxy_default_ip">127.0.0.1</string>
     <string name="cd_custom_dns_proxy_default_app">Joks</string>
     <string name="cd_dns_proxy_error_text_3">Netinkamas prievadas</string>
-    <string name="cd_dns_crypt_name_default">DNSCrypt</string>
     <string name="cd_dns_crypt_name">DNSCrypt %1$s</string>
     <string name="cd_dns_crypt_relay_name">DNSRelay %1$s</string>
     <string name="cd_dns_crypt_dialog_heading">Pridėti DNSCrypt sprendiklį arba relę</string>
@@ -136,13 +130,9 @@
     <string name="ctbs_dialog_negative_btn">Grįžti atgal</string>
     <string name="hs_download_negative_default">Priminkite vėliau</string>
     <string name="univ_firewall_rule_2">Blokuoti bet kokią nenaudojamą programėlę</string>
-    <string name="univ_firewall_rule_3">Blokuoti, kai šaltinio programėlė nežinoma</string>
     <string name="univ_firewall_rule_4">Blokuoti UDP, išskyrus DNS ir NTP</string>
     <string name="univ_firewall_rule_5">Blokuoti, kai apeinamas DNS</string>
-    <string name="univ_firewall_rule_6">Blokuoti naujai įdiegtas programėles automatiškai</string>
-    <string name="univ_firewall_rule_8">Blokuoti 80 prievado (nesaugaus HTTP) srautą</string>
     <string name="univ_firewall_rule_9">Blokuoti matuojamame (mobiliajame) tinkle</string>
-    <string name="univ_view_blocked_ip">ip ir prievadų taisyklės</string>
     <string name="univ_accessibility_crash_dialog_positive">Eiti į nustatymus</string>
     <string name="univ_accessibility_dialog_positive">Suteikti</string>
     <string name="univ_accessibility_dialog_negative">Drausti</string>
@@ -158,13 +148,6 @@
     <string name="dns_proxy_port">Prievado numeris</string>
     <string name="fapps_firewall_filter_isolate">Visiškas užrakinimas</string>
     <string name="fapps_info_dialog_positive_btn">Gerai</string>
-    <string name="fapps_unmetered_block_dialog_message">Blokuoti prisijungimus nematuojamame (WiFi) tinkle išvardytoms programėlėms\?</string>
-    <string name="fapps_unmetered_unblock_dialog_message">Leisti prisijungimus nematuojamame (WiFi) tinkle išvardytoms programėlėms\?</string>
-    <string name="fapps_metered_block_dialog_message">Blokuoti prisijungimus matuojamame (mobiliajame) tinkle išvardytoms programėlėms\?</string>
-    <string name="fapps_metered_unblock_dialog_title">Leisti matuojamuose</string>
-    <string name="fapps_metered_block_dialog_title">Blokuoti matuojamuose</string>
-    <string name="fapps_unmetered_unblock_dialog_title">Leisti nematuojamuose tinkluose</string>
-    <string name="fapps_unmetered_block_dialog_title">Blokuoti nematuojamuose tinkluose</string>
     <string name="unicode_warning_sign">⚠</string>
     <string name="unicode_question_sign">❔</string>
     <string name="rules_load_failure_heading">Pastaba</string>
@@ -181,7 +164,6 @@
     <string name="settings_local_blocklist_version">Versija: v%1$s</string>
     <string name="accessibility_notification_content">RethinkDNS pritaikymo neįgaliesiems paslauga sustojo arba sugedo. Nebeblokuojamos foninės programėlės. Bakstelėkite, kad vėl įjungtumėte.</string>
     <string name="pause_text">pristabdyta</string>
-    <string name="pause_desc">Pastaba: %1$s užblokuotos programėlės ir toliau bus apsaugotos ugniasiene.</string>
     <string name="other_dns_list_tab3">Dns įgaliotasis serveris</string>
     <string name="firewall_rule_no_rule">Jokios taisyklės</string>
     <string name="firewall_rule_block_metered">Matuojami (mobilieji)</string>
@@ -208,7 +190,6 @@
     <string name="new_app_notification_action_deny">Blokuoti toliau</string>
     <string name="new_app_notification_action_toast_allow">Programėlei leidžiamas tinklo ryšys</string>
     <string name="new_app_notification_action_toast_deny">Programėlei neleidžiamas tinklo ryšys</string>
-    <string name="notif_dialog_pause_dialog_positive">Tęsti</string>
     <string name="notif_dialog_pause_dialog_negative">Išmesti</string>
     <string name="notif_channel_vpn_failure">VPN - neaktyvus</string>
     <string name="notif_channel_vpn_notification">VPN - aktyvus</string>
@@ -220,21 +201,15 @@
     <string name="ci_dialog_error_invalid_ip">Netinkamas IP adresas, potinklis arba prievadas.</string>
     <string name="ada_noapp_dialog_message">Programėlės informacija nurodytai programėlei nerasta.</string>
     <string name="ada_noapp_dialog_positive">Gerai</string>
-    <string name="ada_app_status_allow">Leidžiama</string>
-    <string name="ada_app_status_block">Užblokuota</string>
     <string name="ada_app_status_block_md">Užblokuota per mobiliuosius duomenis</string>
-    <string name="ada_app_status_whitelist">Apeina universaliąsias ugniasienės taisykles</string>
     <string name="bsac_title_desc">Taisyklės taikomos tik šiai programėlei.</string>
     <string name="rt_dialog_neutral">Tęsti</string>
     <string name="rt_list_simple_btn_txt">paprasta</string>
     <string name="lbl_advanced">išplėstinė</string>
-    <string name="rt_download_desc">Atsisiųsti blokavimo sąrašus (apie 60 MB), kad galėtumėte naudotis šia funkcija.</string>
-    <string name="radio_sky_btn">⛅ Dangus</string>
     <string name="dc_local_block_enabled">Įjungta</string>
     <string name="dc_doh">Dns per HTTPS</string>
     <string name="dc_dns_crypt">DNSCrypt</string>
     <string name="dc_dns_proxy">DNS įgaliotasis serveris</string>
-    <string name="lbbs_enabled">Įjungta</string>
     <string name="lbbs_configure">Konfigūruoti</string>
     <string name="lbbs_copy">Kopijuoti kaip RDNS+ URL</string>
     <string name="lbbs_search">Ieškoti domenų blokavimo sąrašuose</string>
@@ -272,7 +247,6 @@
     <string name="dns_mode_info_title">DNS</string>
     <string name="apps_info_title">Programėlės</string>
     <string name="whats_new_version_update">&lt;b&gt;Didžiausios pastangos&lt;/b&gt;&lt;br/&gt;&lt;br/&gt; 1. Pristatome privatesnį Rethink sprendiklį &lt;i&gt;Max&lt;/i&gt;.&lt;br/&gt; 2. Pažymėti IPv6 kaip eksperimentinį; perjungti į IPv4 pagal numatytuosius nustatymus.&lt;br/&gt; 3. &lt;i&gt;Nauja funkcija&lt;/i&gt;: kurkite atsarginę kopiją ir atkurkite programėlės nustatymus.&lt;br/&gt; 4. &lt;i&gt;Nauja funkcija&lt;/i&gt;: programėlės užrakinimo režimas.&lt;br/&gt; 5. &lt;i&gt;Nauja funkcija&lt;/i&gt;: universalus užrakinimo režimas.&lt;br/&gt; 6. &lt;i&gt;Nauja funkcija&lt;/i&gt;: taikykite ugniasienės taisykles prievadų numeriams.&lt;br/&gt; 7. &lt;i&gt;Nauja funkcija&lt;/i&gt;: programėlių ugniasienės taisykles taikykite paketais.&lt;br/&gt; 8. Nedidelis naudotojo sąsajos atnaujinimas.&lt;br/&gt; 9. Kiti atminties ir gedimų pataisymai.&lt;br/&gt;&lt;br/&gt; &lt;a href=https://hosted.weblate.org/projects/rethink-dns-firewall/app/&gt;Padėkite išversti šią programėlę&lt;/a&gt;</string>
-    <string name="firewall_mode_info_title">Ugniasienė</string>
     <string name="always_on_dialog_positive">Sustabdyti</string>
     <string name="download_update_dialog_message_ok">Jau naudojate naujausią versiją.</string>
     <string name="alert_permission_accessibility">Leidimas - prieinamumas</string>
@@ -281,9 +255,7 @@
 \n
 \nRethinkDNS nerenka jokios informacijos ir jokiu būdu nešnipinėja jūsų.</string>
     <string name="always_on_dialog_stop_heading">Nuolatinis VPN</string>
-    <string name="firewall_act_universal_tab">Universaliosios</string>
     <string name="always_on_dialog_positive_btn">Eiti į nustatymus</string>
-    <string name="always_on_dialog_neutral">Nustatymai</string>
     <string name="info_dialog_rethink_toast_msg">Nukopijuota kaip RDNS+ DNS per HTTPS URL</string>
     <string name="download_update_dialog_message">Naują programėlės versiją galima atsisiųsti iš svetainės. Ar norite tęsti?</string>
     <string name="download_update_dialog_title">Naujas atnaujinimas!</string>
@@ -327,9 +299,6 @@
     <string name="settings_ip_dialog_ipv46">Automatinis (eksperimentinis)</string>
     <string name="firewall_status_unknown">Nežinoma</string>
     <string name="about_app">programėlė</string>
-    <string name="hsf_vpn_dialog_message">RethinkDNS reikia leidimo nustatyti vietinį VPN, kad būtų galima užšifruoti įrenginio DNS užklausas, įdiegti tinklo monitorių ir vykdyti ugniasienės taisykles.
-\n
-\nRethinkDNS nerenka jokios informacijos ir jokiu būdu nešnipinėja jūsų.</string>
     <string name="dc_dns_leaks_heading">Užkirsti kelią DNS nutekėjimui</string>
     <string name="about_join_telegram">Telegram</string>
     <string name="about_github">Prisidėti GitHub</string>
@@ -362,7 +331,6 @@
     <string name="about_website_link">https://www.rethinkdns.com/</string>
     <string name="error_loading_log_file">Klaida įkeliant žurnalo failą</string>
     <string name="collecting_logs_progress_text">Užfiksuojama…</string>
-    <string name="cd_custom_dns_proxy_name_default">Įgaliotasis serveris</string>
     <string name="cd_dns_proxy_error_text_1">Neteisingas IP adresas</string>
     <string name="cd_custom_dns_proxy_name">Įgaliotasis serveris %1$s</string>
     <string name="cd_dns_proxy_mode_external">Išorinis</string>
@@ -371,9 +339,7 @@
     <string name="cd_doh_dialog_heading">Pridėti DNS per HTTPS</string>
     <string name="ctbs_app_info_not_available_toast">Programėlės nustatymų puslapis nerastas</string>
     <string name="hs_download_positive_website">Apsilankyti svetainėje</string>
-    <string name="univ_firewall_rule_1">Blokuoti visas programėles, kai įrenginys užrakintas</string>
     <string name="hs_download_positive_default">gerai</string>
-    <string name="fapps_metered_unblock_dialog_message">Leisti prisijungimus matuojamame (mobiliajame) tinkle išvardytoms programėlėms\?</string>
     <string name="dns_connected_rethink_plus">Prisijungta. Naudojami %1$s blokavimo sąrašai</string>
     <string name="dns_proxy_desc">%1$s:%2$s, %3$s</string>
     <string name="fapps_filter_categories_heading">Kategorijos</string>
@@ -391,7 +357,6 @@
     <string name="system_dns_connection_failure">Nepavyko nustatyti dabartinio DNS serverio</string>
     <string name="firewall_rule_device_lock">Įrenginys užrakintas</string>
     <string name="firewall_rule_block_udp_ntp">UDP užblokuotas</string>
-    <string name="fapps_info_dialog_message">Užblokuokite programėlių prisijungimą prie interneto. Prieigos prie interneto apribojimas padeda išvengti nepagrįsto duomenų ir akumuliatoriaus energijos naudojimo. \n \nMatuojamų (mobiliųjų) / nematuojamų (WiFi) duomenų ugniasienės taisyklės nebus vykdomos, kai: \n \n1. VPN veikia blokavimo režimu (t. y. įjungtas <i>Blokuoti ryšius be VPN</i>). \n \n2. Įjungtas nustatymas <i>Naudoti visus prieinamus tinklus</i>.</string>
     <string name="firewall_rule_unknown">Šaltinis nežinomas</string>
     <string name="firewall_rule_foreground">Programėlė nenaudojama</string>
     <string name="firewall_rule_block_app_univ_mobile_desc">Naudotojo nustatyta universali ugniasienės taisyklė užblokavo šią programėlę, kai buvo bandoma prisijungti prie Matuojamo (mobiliojo) tinklo.<br/><br/> Norėdami pakeisti, eikite į Universaliosios skirtuką.</string>
@@ -414,7 +379,6 @@
     <string name="rt_dialog_message">Ar norite taikyti naujai sukonfigūruotus blokavimo sąrašus?</string>
     <string name="ci_block">blokuoti</string>
     <string name="ci_no_rule">nėra taisyklės</string>
-    <string name="ada_noapp_dialog_title">Programėlės informacija nerasta</string>
     <string name="notif_download_content_text">Atsisiuntimas vyksta…</string>
     <string name="rbl_privacy">Privatumas</string>
     <string name="rt_download">Atsisiųsti blokavimo sąrašus</string>
@@ -427,7 +391,6 @@
     <string name="ada_app_status_block_wifi">Užblokuota per Wi-Fi</string>
     <string name="rt_chip_check_update">Tikrinti, ar yra atnaujinimų</string>
     <string name="brbs_restore_complete_toast">Atkūrimas baigtas, iš naujo paleidžiama programėlė…</string>
-    <string name="ada_app_status_isolate">Izoliuota: leidžiami tik patikimi IP ir domenai</string>
     <string name="ada_app_status_unknown">Nežinoma</string>
     <string name="ada_app_metered">Matuojami</string>
     <string name="notif_download_content_title">Įrenginyje esančio blokavimo sąrašo atsisiuntimas</string>
@@ -436,7 +399,6 @@
     <string name="rt_edit_dialog_positive">Redaguoti</string>
     <string name="rt_chip_update_available">Galimas atnaujinimas</string>
     <string name="brbs_restore_no_uri_toast">Atkūrimas nepavyko; bandykite dar kartą</string>
-    <string name="radio_max_btn">🪂 Maks</string>
     <string name="bypass_universal">apeiti universaliąsias</string>
     <string name="isolate">visiškas užrakinimas</string>
     <string name="notification_action_resume_vpn">TĘSTI</string>
@@ -453,7 +415,6 @@
     <string name="settings_socks_forwarding_default_desc">Peradresuoti ryšius į SOCKS5 galinį punktą.</string>
     <string name="always_on_dialog_stop_message">Keepout skirtas nuolatinis VPN yra įjungtas. Ar vis tiek norite sustabdyti Keepout\?</string>
     <string name="dc_dns_leaks_desc">Kai įjungta, RethinkDNS užfiksuoja visus paketus 53 prievade ir persiunčia juos į vartotojo nustatytą DNS galinį punktą</string>
-    <string name="univ_firewall_rule_10">Blokuoti viską, išskyrus apeinančias programėles ir IP adresus</string>
     <string name="univ_view_blocked_ip_desc">Keisti blokuojamų arba apeinamų IP / prievadų taisykles.</string>
     <string name="fapps_firewall_filter_bypass_universal">Apeinama</string>
     <string name="fapps_firewall_filter_excluded">Išskirta</string>
@@ -462,12 +423,10 @@
     <string name="firewall_rule_exempt_app_bypass_univ">Apeinanti programėlė</string>
     <string name="firewall_rule_exempt_dns_proxied">DNS per įgaliotąjį serverį</string>
     <string name="firewall_rule_exempt_dns_proxied_desc">Šis DNS ryšys buvo atliktas naudojant įgaliotąjį serverį ir persiųstas į naudotojo pageidaujamą DNS galinį punktą.<br/><br/> Norėdami pakeisti, išjunkite Užkirsti kelią DNS nutekėjimui DNS Konfigūravimas ekrane.</string>
-    <string name="ada_app_status_exclude">Išskirta iš DNS ir ugniasienės</string>
     <string name="ada_app_exclude">Išskirti</string>
     <string name="ada_app_unmetered">Nematuojami</string>
     <string name="ada_app_bypass_univ">Apeiti universaliąsias</string>
     <string name="rethink_sky_desc">Daugiau nei 280 vietų; geresnis veikimo laikas; stub sprendiklis veikia cloudflare.com</string>
-    <string name="rethink_max_desc">Daugiau nei 50 vietovių; daugiau privatumo; rekursyvus sprendiklis veikia fly.io</string>
     <string name="rt_filter_desc">Rodomi %1$s blokavimo sąrašai</string>
     <string name="rt_filter_desc_subgroups">Rodomi %1$s blokavimo sąrašai grupėje: %2$s ir pogrupyje: %3$s</string>
     <string name="hsf_notification_permission_failure">Įjunkite pranešimų leidimą nustatymų ekrane</string>
@@ -493,9 +452,6 @@
     <string name="home_stopped_most">Dažniausiai blokuota</string>
     <string name="home_nothing_stopped">Per pastarąsias 24 valandas nieko neužblokuota.</string>
     <string name="home_see_statistics">Statistika</string>
-    <string name="home_apps_caption">Wi-Fi ir duomenys kiekvienai programai</string>
-    <string name="home_logs_caption">Kiekvienas ryšys ir užklausa</string>
-    <string name="home_dns_caption">DNS serveris ir blokavimo sąrašai</string>
     <string name="log_detail_protocol">Protokolas</string>
     <string name="log_detail_country">Šalis</string>
     <string name="log_detail_address">Adresas</string>

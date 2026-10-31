@@ -22,7 +22,6 @@
 
     <string name="accessibility_service_description" translatable="true">Keepout uses the accessibility service to detect and firewall background apps. Keepout doesn\'t collect or sell any information.</string>
 
-    <string name="finish" translatable="true">Finish</string>
 
     <string name="lbl_cancel" translatable="true">Cancel</string>
     <string name="lbl_apply" translatable="true">Apply</string>
@@ -97,7 +96,6 @@
     <string name="lbl_fast" translatable="true">fast</string>
     <string name="lbl_slow" translatable="true">slow</string>
     <string name="lbl_add" translatable="true">Add</string>
-    <string name="lbl_app_wise" translatable="true">Per app</string>
     <string name="lbl_sec" translatable="true">sec</string>
     <string name="lbl_min" translatable="true">min</string>
     <string name="lbl_hour" translatable="true">hr</string>
@@ -132,12 +130,8 @@
     <string name="lbl_mobile_data" translatable="true">Mobile data</string>
     <string name="lbl_stopped" translatable="true">Stopped</string>
     <string name="lbl_idle" translatable="true">Idle</string>
-    <string name="lbl_private" translatable="true">private</string>
-    <string name="lbl_secure" translatable="true">secure</string>
-    <string name="lbl_anonymous" translatable="true">anonymous</string>
     <string name="lbl_peer" translatable="true">Peer</string>
     <string name="lbl_split" translatable="true">Split</string>
-    <string name="lbl_ip" translatable="false">IP</string>
     <string name="lbl_mastodon" translatable="false">Mastodon</string>
     <string name="lbl_matrix" translatable="false">Matrix</string>
     <string name="lbl_reddit" translatable="false">Reddit</string>
@@ -250,7 +244,6 @@
     <string name="dns_mode_info_title" translatable="true">DNS</string>
 
 
-    <string name="firewall_mode_info_title" translatable="true">Firewall</string>
 
     <string name="apps_info_title" translatable="true">Apps</string>
 
@@ -282,13 +275,11 @@
     <string name="always_on_dialog_stop_message" translatable="true">Always-on VPN is enabled for Keepout. Are you sure you want to stop Keepout anyway?</string>
     <string name="always_on_dialog_lockdown_stop_message" translatable="true">Keepout is running the VPN in lockdown mode. Stopping it cuts off internet access for this user profile. Stop anyway?</string>
     <string name="always_on_dialog_positive" translatable="true">Stop anyway</string>
-    <string name="always_on_dialog_neutral" translatable="true">Settings</string>
 
     <string name="private_dns_dialog_heading" translatable="true">Private DNS is overriding Keepout</string>
     <string name="private_dns_dialog_desc" translatable="true">Android\'s Private DNS is on, so Keepout can\'t block ads and trackers. Turn it off in Android settings.</string>
     <string name="private_dns_dialog_positive" translatable="true">Go to settings</string>
 
-    <string name="firewall_act_universal_tab" translatable="true">Universal</string>
 
     <string name="firewall_act_network_monitor_tab" translatable="true">Network</string>
 
@@ -409,7 +400,6 @@
     <string name="settings_lock_down_mode_desc" translatable="true">Some options are off while the VPN is in lockdown mode. See VPN settings.</string>
     <string name="settings_lock_down_proxy_desc" translatable="true">Proxies can\'t be set up while the VPN runs in DNS-only mode.</string>
     <string name="settings_proxy_header" translatable="true">Proxy</string>
-    <string name="settings_socks5_heading" translatable="true">Set up SOCKS5 proxy</string>
     <string name="settings_https_heading" translatable="true">Set up HTTP(S) CONNECT proxy</string>
     <string name="settings_https_desc" translatable="true">Forward connections to HTTP(S) CONNECT endpoint.</string>
 
@@ -462,7 +452,6 @@
     <string name="settings_orbot_notification_action" translatable="true">Open Orbot</string>
 
     <string name="settings_general_header" translatable="true">General</string>
-    <string name="settings_general_customize" translatable="true">Customize</string>
 
     <string name="settings_autostart_bootup_heading" translatable="true">Auto-start on power-up (experimental)</string>
     <string name="settings_autostart_bootup_desc" translatable="true">On device power-up, start Keepout if it was running before shut down.</string>
@@ -574,8 +563,6 @@
 
     <string name="logs_card_duration" translatable="true">since %1$s</string>
 
-    <string name="hsf_vpn_dialog_header" translatable="true">VPN permission</string>
-    <string name="hsf_vpn_dialog_message" translatable="true">Keepout needs permission to set up a local VPN to encrypt the device\'s DNS requests, implement a network monitor, and enforce firewall rules. \n\nKeepout does not collect any information or spy on you in any way.</string>
 
     <string name="hsf_vpn_prepare_failure" translatable="true">Either VPN permission missing, or another app is in Always-on VPN mode.</string>
 
@@ -598,7 +585,6 @@
     <string name="dc_other_dns_heading" translatable="true">Type</string>
     <string name="dns_mode_system_desc" translatable="true">Whatever Wi‑Fi or mobile provides. Not encrypted.</string>
     <string name="dns_mode_other_desc" translatable="true">Cloudflare, Google, Quad9, AdGuard or your own</string>
-    <string name="dns_mode_rethink_desc" translatable="true">Encrypted. Blocks ads, trackers and malware.</string>
     <string name="dns_mode_smart_desc" translatable="true">Smart DNS picks from a rotating set of resolvers.</string>
 
     <string name="dc_custom_dns_radio" translatable="true">Another provider</string>
@@ -607,7 +593,6 @@
     <string name="dc_entries" translatable="true">%1$s entries »</string>
 
     <string name="dc_local_block_heading" translatable="true">On-device blocklists</string>
-    <string name="dc_local_block_desc_1" translatable="true">Choose from 195+ blocklists to download and configure.</string>
 
 
     <string name="dc_dns_website_heading" translatable="true">Show website icon in DNS logs (experimental)</string>
@@ -697,9 +682,7 @@
 
     <!-- Configure DNS Fragment string == cd -->
     <string name="cd_dns_crypt_title" translatable="true">Resolvers</string>
-    <string name="cd_custom_doh_url_name_default" translatable="true">DoH</string>
     <string name="cd_custom_doh_url_name" translatable="true">DoH %1$s</string>
-    <string name="cd_custom_dns_proxy_name_default" translatable="true">Proxy</string>
     <string name="cd_custom_dns_proxy_name" translatable="true">Proxy %1$s</string>
     <string name="cd_custom_dns_proxy_default_ip" translatable="false">127.0.0.1</string>
     <string name="cd_custom_dns_proxy_default_app" translatable="true">None</string>
@@ -708,7 +691,6 @@
     <string name="cd_dns_proxy_error_text_1" translatable="true">Invalid IP address</string>
     <string name="cd_dns_proxy_error_text_2" translatable="true">Port range should be from 1024–65535</string>
     <string name="cd_dns_proxy_error_text_3" translatable="true">Invalid port</string>
-    <string name="cd_dns_crypt_name_default" translatable="true">DNSCrypt</string>
     <string name="cd_dns_crypt_name" translatable="true">DNSCrypt %1$s</string>
     <string name="cd_dns_crypt_relay_name" translatable="true">DNSRelay %1$s</string>
 
@@ -765,17 +747,11 @@
 
 
     <!-- Universal Firewall-->
-    <string name="univ_firewall_rule_1" translatable="true">Block all apps when device is locked</string>
     <string name="univ_firewall_rule_2" translatable="true">Block background apps</string>
-    <string name="univ_firewall_rule_3" translatable="true">Block when source app is unknown</string>
     <string name="univ_firewall_rule_4" translatable="true">Block UDP</string>
     <string name="univ_firewall_rule_5" translatable="true">Block DNS bypass</string>
-    <string name="univ_firewall_rule_6" translatable="true">Block newly installed apps by default</string>
-    <string name="univ_firewall_rule_8" translatable="true">Block port 80 (insecure HTTP) traffic</string>
     <string name="univ_firewall_rule_9" translatable="true">Block mobile data</string>
-    <string name="univ_firewall_rule_10" translatable="true">Lockdown: block everything except apps and IPs you\'ve allowed</string>
 
-    <string name="univ_view_blocked_ip" translatable="true">Rules</string>
     <string name="univ_view_blocked_ip_desc" translatable="true">Block or trust domains and IPs, for one app or all.</string>
 
 
@@ -783,9 +759,6 @@
     <string name="univ_accessibility_dialog_positive" translatable="true">Grant</string>
     <string name="univ_accessibility_dialog_negative" translatable="true">Deny</string>
 
-    <string name="univ_firewall_heading" translatable="true">Universal firewall rules</string>
-    <string name="app_ip_domain_rules" translatable="true">Per-app IP and domain rules</string>
-    <string name="app_ip_domain_rules_desc" translatable="true">IP and domain rules for each app.</string>
 
     <!-- DNS adapters -->
     <string name="dns_connected_rethink_plus" translatable="true">Connected. %1$s blocklists in use</string>
@@ -819,43 +792,17 @@
     <string name="fapps_firewall_filter_excluded" translatable="true">Excluded</string>
     <string name="fapps_firewall_filter_isolate" translatable="true">Trusted only</string>
 
-    <string name="fapps_info_dialog_message" translatable="true">Block apps from connecting to the Internet. Limiting access to the Internet helps prevent unwarranted data usage, as well as conserve battery.</string>
-    <string name="fapps_info_unmetered_msg" translatable="true">Allow or block on Wi‑Fi (unmetered networks).</string>
-    <string name="fapps_info_metered_msg" translatable="true">Allow or block on mobile data (metered networks).</string>
-    <string name="fapps_info_bypass_msg" translatable="true">Skip universal rules.</string>
-    <string name="fapps_info_bypass_dns_firewall_msg" translatable="true">Skip DNS blocking and firewall rules.</string>
-    <string name="fapps_info_exclude_msg" translatable="true">Exclude from DNS and firewall.</string>
-    <string name="fapps_info_isolate_msg" translatable="true">Only reach domains and IPs you trust.</string>
 
     <string name="fapps_info_dialog_positive_btn" translatable="true">OK</string>
 
-    <string name="fapps_unmetered_unblock_dialog_title" translatable="true">Allow on Wi‑Fi</string>
-    <string name="fapps_unmetered_block_dialog_title" translatable="true">Block on Wi‑Fi</string>
-    <string name="fapps_unmetered_block_dialog_message" translatable="true">Block connections on Wi‑Fi (unmetered networks) for the listed apps?</string>
-    <string name="fapps_unmetered_unblock_dialog_message">Allow connections on Wi‑Fi (unmetered networks) for the listed apps?</string>
-
-    <string name="fapps_metered_block_dialog_title" translatable="true">Block on mobile data</string>
-    <string name="fapps_metered_block_dialog_message" translatable="true">Block connections on mobile data (metered networks) for the listed apps?</string>
-    <string name="fapps_metered_unblock_dialog_title" translatable="true">Allow on mobile data</string>
-    <string name="fapps_metered_unblock_dialog_message" translatable="true">Allow connections on mobile data (metered networks) for the listed apps?</string>
-
-    <string name="fapps_bypass_block_dialog_title" translatable="true">Skip universal rules</string>
-    <string name="fapps_bypass_block_dialog_message" translatable="true">Let the listed apps skip universal rules?</string>
 
 
-    <string name="fapps_bypass_dns_firewall_dialog_title" translatable="true">Skip all filtering</string>
-    <string name="fapps_bypass_dns_firewall_dialog_message" translatable="true">Let the listed apps skip DNS blocking and firewall rules?</string>
 
-    <string name="fapps_unblock_dialog_title" translatable="true">Allow apps</string>
-    <string name="fapps_unblock_dialog_message" translatable="true">Allow connections for the listed apps?</string>
 
-    <string name="fapps_exclude_block_dialog_title" translatable="true">Exclude apps</string>
-    <string name="fapps_exclude_block_dialog_message" translatable="true">Exclude the listed apps from DNS and firewall?</string>
 
-    <string name="fapps_isolate_block_dialog_title" translatable="true">Trusted only</string>
-    <string name="fapps_isolate_block_dialog_message" translatable="true">Let the listed apps reach only domains and IPs you trust?</string>
 
-    <string name="fapps_bulk_selected_apps" translatable="true" tools:ignore="PluralsCandidate">%1$d apps</string>
+
+
 
 
     <!-- Unicode -->
@@ -894,9 +841,6 @@
 
     <!-- Pause Activity -->
     <string name="pause_text" translatable="true">Paused</string>
-    <string name="pause_desc" translatable="true">Note: %1$s blocked apps will continue to be firewalled.</string>
-    <string name="pause_decrease_duration" translatable="true">Decrease duration</string>
-    <string name="pause_increase_duration" translatable="true">Increase duration</string>
 
     <!-- Other DNS list -->
     <string name="other_dns_list_tab1" translatable="true">DoH</string>
@@ -986,7 +930,6 @@
     <string name="new_app_notification_action_toast_deny" translatable="true">Network connection denied for the app</string>
 
     <!-- Notification dialog activity -->
-    <string name="notif_dialog_pause_dialog_positive" translatable="true">Resume</string>
     <string name="notif_dialog_pause_dialog_negative" translatable="true">Discard</string>
 
     <!-- Notification label names -->
@@ -1035,20 +978,14 @@
     <string name="ci_ip_label" translatable="false">%1$s: %2$s</string>
 
     <!-- app info -->
-    <string name="ada_noapp_dialog_title" translatable="true">No such app</string>
     <string name="ada_noapp_dialog_message" translatable="true">This app is no longer installed</string>
     <string name="ada_noapp_dialog_positive" translatable="true">OK</string>
 
 
     <string name="ada_ip_no_connection" translatable="true">No connections yet</string>
 
-    <string name="ada_app_status_allow" translatable="true">Allowed</string>
-    <string name="ada_app_status_block" translatable="true">Blocked</string>
     <string name="ada_app_status_block_wifi" translatable="true">Blocked on Wi‑Fi</string>
     <string name="ada_app_status_block_md" translatable="true">Blocked on mobile data</string>
-    <string name="ada_app_status_whitelist" translatable="true">Skips universal rules</string>
-    <string name="ada_app_status_exclude" translatable="true">Excluded from DNS and firewall</string>
-    <string name="ada_app_status_isolate" translatable="true">Trusted only: reaches only domains and IPs you trust</string>
     <string name="ada_app_status_bypass_dns_firewall" translatable="true">Skips all filtering</string>
     <string name="ada_app_status_unknown" translatable="true">Unknown</string>
 
@@ -1078,7 +1015,6 @@
 
     <!-- Temporary Allow Feature -->
     <string name="temp_allow_label" translatable="false">Allow for 15 minutes</string>
-    <string name="temp_allow_desc" translatable="false">Temporarily allow this app. Auto-reverts after 15 minutes.</string>
 
     <!-- app info bottom sheet -->
     <string name="bsac_title_desc" translatable="true">Rules apply to this app only.</string>
@@ -1119,22 +1055,17 @@
 
     <string name="rt_list_simple_btn_txt" translatable="true">Simple</string>
     <string name="lbl_protection" translatable="true">Protection</string>
-    <string name="lbl_system" translatable="true">System</string>
     <string name="lbl_advanced" translatable="true">Advanced</string>
 
     <string name="rt_filter_parent_selected" translatable="true">Selected</string>
 
-    <string name="rt_download_desc" translatable="true">Download blocklists (around 60MB) to use this feature.</string>
 
-    <string name="radio_sky_btn" translatable="true">⛅ Sky</string>
-    <string name="radio_max_btn" translatable="true">🪂 Max</string>
 
     <string name="rt_filter_hint" translatable="true">Showing all blocklists</string>
     <string name="rt_filter_desc" translatable="true">Showing %1$s blocklists</string>
     <string name="rt_filter_desc_subgroups" translatable="true">Showing %1$s blocklists in group: %2$s and subgroup: %3$s</string>
 
     <string name="rethink_sky_desc" translatable="true">280+ locations; higher uptime; stub resolver running on cloudflare.com</string>
-    <string name="rethink_max_desc" translatable="true">50+ locations; more private; recursive resolver running on fly.io</string>
 
     <!-- rethink bottomsheet filter -->
 
@@ -1151,7 +1082,6 @@
     <string name="dc_refresh_toast" translatable="true">Refresh complete</string>
 
     <!-- local blocklist bottom sheet -->
-    <string name="lbbs_enabled" translatable="true">Enabled</string>
     <string name="lbbs_state_header" translatable="true">Blocklist state</string>
     <string name="lbbs_toggle_off" translatable="true">Disable blocklists</string>
     <string name="lbbs_toggle_on" translatable="true">Enable blocklists</string>
@@ -1750,12 +1680,8 @@
     <string name="rpn_account_no_subscription_title">No active subscription</string>
     <string name="rpn_account_no_subscription_desc">Subscribe to Rethink Plus to route apps through Rethink\'s proxy network.</string>
     <string name="rpn_account_view_plans">View plans</string>
-    <string name="settings_misc_data_section">Data</string>
     <string name="settings_misc_behavior_section">Behavior</string>
-    <string name="settings_misc_website">Website</string>
-    <string name="settings_misc_about_app">About %1$s</string>
     <string name="settings_misc_about_desc">Version, support, and legal information</string>
-    <string name="settings_misc_backup_desc">Export settings and logs, or restore them from a backup file</string>
     <string name="proxy_servers_section">Proxy servers</string>
     <string name="proxy_tor_section">Tor</string>
     <plurals name="orbot_apps_count">
@@ -1765,8 +1691,6 @@
     <string name="ac_split_options_title">How to disguise traffic</string>
     <string name="ac_split_options_desc">Keepout splits the start of each connection so censors can\'t read where it\'s going.</string>
     <string name="rpn_countries_no_matches">No locations match</string>
-    <string name="dns_list_subtitle">Choose how domain names are resolved</string>
-    <string name="dns_list_protocol_section">Protocol</string>
     <string name="wg_fab_import_file">Import file</string>
     <string name="wg_fab_scan_qr">Scan QR code</string>
     <string name="wg_fab_add_configuration">Add configuration</string>
@@ -1779,10 +1703,7 @@
     <string name="about_partner_floss_funds" translatable="false">FLOSS/fund</string>
     <string name="welcome_feature_firewall">App firewall</string>
     <string name="welcome_feature_firewall_desc">Choose which apps can reach the internet, per network.</string>
-    <string name="welcome_feature_dns">Private DNS</string>
     <string name="welcome_feature_dns_desc">Encrypt lookups and block ads, trackers, and malware.</string>
-    <string name="welcome_feature_routing">Secure routing</string>
-    <string name="welcome_feature_routing_desc">Send apps through WireGuard or a proxy on any network.</string>
     <string name="custom_rule_port_format">Port %1$d</string>
     <plurals name="custom_rules_selected_count">
         <item quantity="one">%1$d selected</item>
@@ -1828,9 +1749,6 @@
     <string name="home_stopped_most">Stopped most</string>
     <string name="home_nothing_stopped">Nothing has been blocked in the last 24 hours.</string>
     <string name="home_see_statistics">Statistics</string>
-    <string name="home_apps_caption">Wi‑Fi and data, app by app</string>
-    <string name="home_logs_caption">Every connection and lookup</string>
-    <string name="home_dns_caption">Resolver and blocklists</string>
     <plurals name="home_blocked_count">
         <item quantity="one">%d blocked</item>
         <item quantity="other">%d blocked</item>
@@ -1847,12 +1765,7 @@
     <string name="firewall_rule_no_route">No route</string>
     <string name="firewall_rule_no_route_desc">Blocked because no network route was available.</string>
     <string name="ci_no_rules_text">No IP rules</string>
-    <string name="ada_no_activity">No activity yet</string>
     <string name="dns_endpoints_empty">No servers yet</string>
-    <string name="custom_rules_add_ip_title">Add IP rule</string>
-    <string name="custom_rules_add_domain_title">Add rule</string>
-    <string name="custom_rules_ip_hint">192.168.1.1 or 10.0.0.0/24</string>
-    <string name="custom_rules_domain_hint">example.com</string>
     <string name="exclude_apps_from_proxy_desc">This app connects directly, never through a proxy.</string>
     <string name="flight_recording_started">Flight recording started</string>
     <string name="doh_bootstrap_ips_label">Bootstrap IP addresses (optional)</string>

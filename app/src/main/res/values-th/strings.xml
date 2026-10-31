@@ -4,9 +4,6 @@
     <string name="title_settings" translatable="true">ตั้งค่า</string>
     <string name="title_statistics" translatable="true">สถานะ</string>
     <string name="lbl_idle" translatable="true">ว่างงาน</string>
-    <string name="lbl_private" translatable="true">ส่วนตัว</string>
-    <string name="lbl_secure" translatable="true">ปลอดภัย</string>
-    <string name="lbl_anonymous" translatable="true">ไม่ระบุชื่อ</string>
     <string name="lbl_split" translatable="true">แยก</string>
     <string name="block" translatable="true">ปิดกั้น</string>
     <string name="private_dns_dialog_positive" translatable="true">ไปที่การตั้งค่า</string>
@@ -17,7 +14,6 @@
     <string name="about_bug_no_log_dialog_title" translatable="true">รายงานจุดบกพร่อง</string>
     <string name="about_connect" translatable="true">ติดต่อ</string>
     <string name="about_mail_subject" translatable="true">[คิดใหม่]:</string>
-    <string name="fapps_unmetered_unblock_dialog_title" translatable="true">อนุญาตให้ใช้แบบไม่มีมิเตอร์</string>
     <string name="firewall_rule_global_lockdown_desc" translatable="true">This connection was blocked because universal lockdown is set.<br/><br/> To change go to Universal tab.</string>
     <string name="category_name_installed" translatable="true">แอปที่ติดตั้ง</string>
     <string name="brbs_backup_dialog_failure_positive" translatable="true">ลองสำรองข้อมูลอีกครั้ง</string>
@@ -49,18 +45,12 @@
     <string name="about_join_telegram" translatable="true">Telegram</string>
     <string name="dc_dns_leaks_desc" translatable="true">เมื่อเปิดใช้งาน Keepout จะจับแพ็กเก็ตทั้งหมดบนพอร์ต 53 และส่งต่อไปยังจุดสิ้นสุด DNS ที่ผู้ใช้ตั้งค่า</string>
     <string name="dc_check_update_heading" translatable="true">แจ้งเตือนการอัพเดตรายการบล็อค</string>
-    <string name="cd_custom_doh_url_name_default" translatable="true">DoH</string>
     <string name="dns_proxy_name" translatable="true">ชื่อพร็อกซี</string>
     <string name="firewall_rule_block_app_univ_mobile_desc" translatable="true">A user-set universal firewall rule blocked this app when trying to connect on Metered (Mobile) network.<br/><br/> To change go to Universal tab.</string>
     <string name="firewall_rule_isolate_desc" translatable="true">A user-set firewall rule blocked this app connecting to other than bypassed IPs.<br/><br/> To change go to All Apps tab.</string>
     <string name="new_app_notification_action_deny" translatable="true">บล็อคต่อไป</string>
-    <string name="ada_noapp_dialog_title" translatable="true">ไม่มีแอพดังกล่าว</string>
-    <string name="ada_app_status_isolate" translatable="true">แยกไว้: อนุญาตเฉพาะ IP และโดเมนที่เชื่อถือได้</string>
-    <string name="ada_app_status_whitelist" translatable="true">ข้ามกฎไฟร์วอลล์ส่วนกลาง</string>
-    <string name="ada_app_status_exclude" translatable="true">ยกเว้นจาก DNS และไฟร์วอลล์</string>
     <string name="ada_app_status_bypass_dns_firewall" translatable="true">ข้ามกฎ DNS และไฟร์วอลล์ส่วนกลาง</string>
     <string name="ada_app_metered" translatable="true">มิเตอร์</string>
-    <string name="rt_download_desc" translatable="true">ดาวน์โหลดรายการบล็อค (ประมาณ 60MB) เพื่อใช้ฟีเจอร์นี้</string>
     <string name="rt_list_simple_btn_txt" translatable="true">เรียบง่าย</string>
     <string name="ssv_most_contacted_ips_heading" description="This label will appear on the stats screen as a header for most visited ips" translatable="true">IP ที่ติดต่อมากที่สุด</string>
     <string name="ssv_most_blocked_domain_heading" description="This label will appear on the stats screen as a header for most blocked domains" translatable="true">โดเมนที่ถูกบล็อคมากที่สุด</string>
@@ -93,7 +83,6 @@
     <string name="about_settings_vpn_profile" translatable="true">โปรไฟล์ VPN</string>
     <string name="about_twitter" translatable="true">ติดตามเราบน Twitter</string>
     <string name="cd_dns_crypt_title" translatable="true">ตัวแก้ปัญหา</string>
-    <string name="cd_custom_dns_proxy_name_default" translatable="true">พร็อกซี</string>
     <string name="cd_custom_doh_url_name" translatable="true">DoH %1$s</string>
     <string name="cd_custom_dns_proxy_name" translatable="true">พร็อกซี %1$s</string>
     <string name="cd_dns_proxy_error_text_1" translatable="true">ที่อยู่ IP ไม่ถูกต้อง</string>
@@ -103,13 +92,9 @@
     <string name="cd_dns_alg_heading" translatable="true">การกรอง DNS ขั้นสูง (ทดลอง)</string>
     <string name="ctbs_dialog_negative_btn" translatable="true">ย้อนกลับ</string>
     <string name="hs_download_negative_default" translatable="true">เตือนฉันภายหลัง</string>
-    <string name="univ_firewall_rule_1" translatable="true">บล็อกแอปทั้งหมดเมื่ออุปกรณ์ถูกล็อค</string>
     <string name="univ_firewall_rule_2" translatable="true">บล็อคแอปใด ๆ ที่ไม่ได้ใช้งาน</string>
-    <string name="univ_firewall_rule_3" translatable="true">บล็อคเมื่อแอปต้นทางไม่เป็นที่รู้จัก</string>
     <string name="univ_firewall_rule_5" translatable="true">บล็อคเมื่อ DNS ถูกข้าม</string>
     <string name="univ_firewall_rule_9" translatable="true">บล็อคบนเครือข่ายแบบมิเตอร์ (มือถือ)</string>
-    <string name="univ_firewall_rule_10" translatable="true">บล็อกทั้งหมดยกเว้นแอปและ IP ที่ถูกข้ามไป</string>
-    <string name="univ_firewall_rule_6" translatable="true">บล็อกแอปที่เพิ่งติดตั้งใหม่ตามค่าเริ่มต้น</string>
     <string name="univ_view_blocked_ip_desc" translatable="true">แก้ไขกฎของโดเมน, IP / พอร์ตที่ถูกบล็อคหรือเชื่อถือ</string>
     <string name="univ_accessibility_dialog_positive" translatable="true">ยินยอม</string>
     <string name="dns_connected_rethink_plus" translatable="true">เชื่อมต่อแล้ว %1$s รายการบล็อคที่ใช้งานอยู่</string>
@@ -118,14 +103,6 @@
     <string name="dns_info_positive" translatable="true">Ok</string>
     <string name="dns_proxy_dialog_header_dns" translatable="true">เพิ่มพร็อกซี DNS</string>
     <string name="fapps_firewall_filter_bypass_universal" translatable="true">ข้ามไป</string>
-    <string name="fapps_info_unmetered_msg" translatable="true">อนุญาต/บล็อคเครือข่ายแบบไม่จำกัดปริมาณ (WiFi)</string>
-    <string name="fapps_info_metered_msg" translatable="true">อนุญาต/บล็อคการใช้งานเครือข่ายแบบคิดค่าบริการตามปริมาณการใช้งาน (มือถือ)</string>
-    <string name="fapps_info_bypass_dns_firewall_msg" translatable="true">ข้ามกฎ DNS และไฟร์วอลล์</string>
-    <string name="fapps_unmetered_block_dialog_message" translatable="true">บล็อกการเชื่อมต่อบนเครือข่ายแบบไม่จำกัดปริมาณ (WiFi) สำหรับแอปที่อยู่ในรายการหรือไม่?</string>
-    <string name="fapps_exclude_block_dialog_title" translatable="true">ไม่รวมแอป</string>
-    <string name="fapps_metered_block_dialog_title" translatable="true">บล็อคบนมิเตอร์</string>
-    <string name="fapps_bypass_block_dialog_title" translatable="true">ข้ามแอปพลิเคชั่น</string>
-    <string name="fapps_exclude_block_dialog_message" translatable="true">ไม่รวมแอปที่แสดงรายการไว้ใน DNS และไฟร์วอลล์หรือไม่?</string>
     <string name="rules_load_failure_desc" translatable="true">ไม่พบกฎไฟร์วอลล์</string>
     <string name="rules_load_failure_reload" translatable="true">โหลดซ้ำ</string>
     <string name="network_log_app_name_unnamed" translatable="true">ไม่ระบุชื่อ (%1$s)</string>
@@ -136,7 +113,6 @@
     <string name="other_dns_list_tab1" translatable="true">DoH</string>
     <string name="toast_allow_bypass_disabled" translatable="true">%1$s ถูกปิดใช้งานเนื่องจากพร็อกซีเปิดใช้งานอยู่</string>
     <string name="firewall_rule_no_rule" translatable="true">ไม่มีกฎ</string>
-    <string name="pause_desc" translatable="true">หมายเหตุ: แอปที่ถูกบล็อก %1$s จะยังคงถูกไฟร์วอลล์ต่อไป</string>
     <string name="firewall_rule_block_unmetered" translatable="true">ไม่จำกัดปริมาณ (WiFi)</string>
     <string name="firewall_rule_block_metered" translatable="true">มิเตอร์ (มือถือ)</string>
     <string name="firewall_rule_univ_block_metered" translatable="true">มิเตอร์ (สากล)</string>
@@ -176,7 +152,6 @@
     <string name="cd_no_rules_text" translatable="true">ไม่มีกฎของโดเมน</string>
     <string name="ci_dialog_error_invalid_ip" translatable="true">ที่อยู่ IP, ซับเน็ตหรือพอร์ตไม่ถูกต้อง</string>
     <string name="ci_no_rule" translatable="true">ไม่มีกฎ</string>
-    <string name="ada_app_status_allow" translatable="true">อนุญาต</string>
     <string name="ada_app_status_unknown" translatable="true">ไม่ทราบ</string>
     <string name="ada_app_status_block_wifi" translatable="true">ถูกบล็อกบน Wi-Fi</string>
     <string name="ada_app_status_block_md" translatable="true">ถูกบล็อกบนเน็ตมือถือ</string>
@@ -191,12 +166,9 @@
     <string name="rt_re_download" translatable="true">ดาวน์โหลดรายการบล็อคอีกครั้ง</string>
     <string name="lbl_advanced" translatable="true">ขั้นสูง</string>
     <string name="rbl_parental_control_desc" description="The text appears as blocklists description in configure screen" translatable="true">บล็อกเนื้อหาสำหรับผู้ใหญ่และเนื้อหาละเมิดลิขสิทธิ์ การพนันและการหาคู่ออนไลน์ และโซเชียลมีเดีย</string>
-    <string name="radio_sky_btn" translatable="true">⛅ ท้องฟ้า</string>
-    <string name="radio_max_btn" translatable="true">🪂 แม็กซ์</string>
     <string name="dc_local_block_enabled" translatable="true">เปิดใช้งานแล้ว</string>
     <string name="lbbs_search" translatable="true">ค้นหาโดเมนในรายการบล็อค</string>
     <string name="dc_refresh_toast" translatable="true">รีเฟรชเสร็จสิ้น</string>
-    <string name="lbbs_enabled" translatable="true">เปิดใช้งานแล้ว</string>
     <string name="bad_config_reason_unknown_attribute" translatable="true">ไม่ทราบคุณสมบัติ</string>
     <string name="lbbs_heading" translatable="true">กำหนดค่ารายการบล็อกมากกว่า 195 รายการ</string>
     <string name="brbs_backup_restore_desc" translatable="true">ไม่ทำงานข้ามเวอร์ชันแอป</string>
@@ -227,9 +199,7 @@
     <string name="dns_proxy_dialog_message" translatable="true">ชื่อแอป: %1$s \n \nที่อยู่ IP: %2$s \n \nหมายเลขพอร์ต: %3$s</string>
     <string name="fapps_filter_parent_installed" translatable="true">ติดตั้งแล้ว</string>
     <string name="fapps_filter_categories_heading" translatable="true">หมวดหมู่</string>
-    <string name="fapps_info_isolate_msg" translatable="true">บล็อคทั้งหมด ยกเว้น IP ที่เชื่อถือได้</string>
     <string name="fapps_info_dialog_positive_btn" translatable="true">ตกลง</string>
-    <string name="fapps_info_exclude_msg" translatable="true">ไม่รวมทั้ง DNS + ไฟร์วอลล์</string>
     <string name="firewall_rule_block_univ_ip" translatable="true">IP / พอร์ต (สากล)</string>
     <string name="firewall_rule_exempt_dns_proxied" translatable="true">DNS พร็อกซี</string>
     <string name="firewall_rule_block_http" translatable="true">HTTP ที่ไม่ปลอดภัย</string>
@@ -252,7 +222,6 @@
     <string name="notification_action_dns_mode" translatable="true">DNS</string>
     <string name="notification_action_dns_firewall_mode" translatable="true">DNS + ไฟร์วอลล์</string>
     <string name="dns_mode_info_title" translatable="true">DNS</string>
-    <string name="firewall_mode_info_title" translatable="true">ไฟร์วอลล์</string>
     <string name="alert_permission_accessibility" translatable="true">การอนุญาต-การเข้าถึง</string>
     <string name="download_update_dialog_message_ok_title" translatable="true">อัพเดทล่าสุด!</string>
     <string name="download_update_dialog_failure_title" translatable="true">มีบางอย่างผิดปกติ!</string>
@@ -301,10 +270,6 @@
     <string name="ctbs_app_info_not_available_toast" translatable="true">ไม่พบหน้าการตั้งค่าแอป</string>
     <string name="dns_proxy_ip_address" translatable="true">ที่อยู่ IP</string>
     <string name="fapps_firewall_filter_isolate" translatable="true">โดดเดี่ยว</string>
-    <string name="fapps_info_dialog_message" translatable="true">บล็อกแอปไม่ให้เชื่อมต่ออินเทอร์เน็ต การจำกัดการเข้าถึงอินเทอร์เน็ตช่วยป้องกันการใช้ข้อมูลที่ไม่จำเป็น รวมทั้งช่วยประหยัดแบตเตอรี่</string>
-    <string name="fapps_info_bypass_msg" translatable="true">ข้ามกฎไฟร์วอลล์สากล</string>
-    <string name="fapps_unmetered_block_dialog_title" translatable="true">บล็อคแบบไม่มีมิเตอร์</string>
-    <string name="ada_app_status_block" translatable="true">ถูกบล็อก</string>
     <string name="notif_download_cancel_content" translatable="true">การดาวน์โหลดถูกยกเลิก</string>
     <string name="lbl_create" translatable="true">สร้าง</string>
     <string name="lbl_qr_code" translatable="true">QR Code</string>
@@ -329,7 +294,6 @@
     <string name="lbl_fast" translatable="true">เร็ว</string>
     <string name="lbl_slow" translatable="true">ช้า</string>
     <string name="lbl_add" translatable="true">แอป</string>
-    <string name="lbl_app_wise" translatable="true">ต่อ แอป</string>
     <string name="lbl_sec" translatable="true">วินาที</string>
     <string name="lbl_min" translatable="true">นาที</string>
     <string name="lbl_hour" translatable="true">ชม</string>
@@ -345,7 +309,6 @@
     <string name="orbot_install_dialog_neutral" translatable="true">เว็บไซต์</string>
     <string name="settings_http_proxy_desc" translatable="true">กำลังส่งต่อไปยัง %1$s</string>
     <string name="cd_dns_crypt_relay_heading" translatable="true">รีเลย์</string>
-    <string name="fapps_metered_unblock_dialog_message" translatable="true">อนุญาตการเชื่อมต่อบนเครือข่ายแบบคิดค่าบริการตามปริมาณ (มือถือ) สำหรับแอปที่อยู่ในรายการหรือไม่?</string>
     <string name="univ_accessibility_crash_dialog_positive" translatable="true">ไปที่การตั้งค่า</string>
     <string name="firewall_rule_exempt_orbot_setup" translatable="true">การตั้งค่า Orbot</string>
     <string name="parse_error_reason" translatable="true">ไม่สามารถแยกวิเคราะห์ %1$s “%2$s” ได้</string>
@@ -357,7 +320,6 @@
     <string name="lbl_blocked" translatable="true">ถูกบล็อค</string>
     <string name="lbl_disabled" translatable="true">พิการ</string>
     <string name="lbl_domain" translatable="true">โดเมน</string>
-    <string name="finish" translatable="true">เสร็จ</string>
     <string name="lbl_cancel" translatable="true">ยกเลิก</string>
     <string name="lbl_apply" translatable="true">นำมาใช้</string>
     <string name="lbl_dismiss" translatable="true">อนุญาตให้ออกไป</string>
@@ -377,9 +339,6 @@
     <string name="hs_download_positive_default" translatable="true">ok</string>
     <string name="univ_firewall_rule_4" translatable="true">บล็อค UDP ยกเว้น DNS และ NTP</string>
     <string name="fapps_filter_clear_btn" translatable="true">ชัดเจน</string>
-    <string name="fapps_metered_unblock_dialog_title" translatable="true">อนุญาตให้ใช้มิเตอร์</string>
-    <string name="fapps_isolate_block_dialog_message" translatable="true">แยกแอปที่อยู่ในรายการหรือไม่?</string>
-    <string name="fapps_metered_block_dialog_message" translatable="true">บล็อกการเชื่อมต่อบนเครือข่ายแบบคิดค่าบริการตามปริมาณ (มือถือ) สำหรับแอปที่ อยู่ในรายการ หรือไม่?</string>
     <string name="other_dns_list_tab3" translatable="true">พร็อกซี DNS</string>
     <string name="firewall_rule_block_app" translatable="true">แอปถูกบล็อค</string>
     <string name="firewall_rule_device_lock" translatable="true">อุปกรณ์ถูกล็อค</string>
@@ -398,7 +357,6 @@
     <string name="brbs_backup_complete_toast" translatable="true">การสำรองข้อมูลเสร็จสิ้น</string>
     <string name="dc_rethink_dns_radio" translatable="true">Rethink DNS</string>
     <string name="dc_entries" translatable="true">%1$s รายการ »</string>
-    <string name="fapps_bypass_block_dialog_message" translatable="true">ข้ามกฎไฟร์วอลล์สากลสำหรับแอปที่อยู่ในรายการหรือไม่?</string>
     <string name="config_add_success_toast" translatable="true">เสร็จแล้ว</string>
     <string name="memory_notification_text">Keepout กำลังประสบปัญหาหน่วยความจำต่ำ การดำเนินการของระบบอาจมีจำกัด</string>
     <string name="allow" translatable="true">อนุญาต</string>
@@ -413,7 +371,6 @@
     <string name="always_on_dialog_stop_message" translatable="true">VPN แบบเปิดตลอดเวลาเปิดใช้งานสำหรับ Keepout แล้ว คุณแน่ใจหรือไม่? ว่าต้องการหยุด Keepout</string>
     <string name="always_on_dialog_lockdown_stop_message" translatable="true">Keepout กำลังรัน VPN ในโหมด Lockdown หากหยุดการทำงาน จะส่งผลให้สูญเสียการเชื่อมต่ออินเทอร์เน็ตบนโปรไฟล์ผู้ใช้รายนี้ คุณต้องการดำเนินการต่อหรือไม่ ?</string>
     <string name="always_on_dialog_positive" translatable="true">หยุด</string>
-    <string name="always_on_dialog_neutral" translatable="true">การตั้งค่า</string>
     <string name="private_dns_dialog_heading" translatable="true">ปิดการใช้งาน DNS ส่วนตัว</string>
     <string name="doh_custom_url_remove_dialog_title" translatable="true">ลบจุดสิ้นสุด DoH หรือไม่?</string>
     <string name="doh_custom_url_remove_dialog_message" translatable="true">ลบจุดสิ้นสุด DNS ผ่าน Https จากการกำหนดค่าที่บันทึกไว้</string>
@@ -447,7 +404,6 @@
     <string name="orbot_no_app_toast" translatable="true">เพิ่มแอปอย่างน้อยหนึ่งแอปเพื่อเปิดใช้งาน Orbot</string>
     <string name="settings_orbot_notification_content" translatable="true">ความล้มเหลวในการเริ่ม Tor-as-a-Proxy เปิดแอป Orbot เพื่อเริ่มใช้งานด้วยตนเอง</string>
     <string name="settings_general_header" translatable="true">ทั่วไป</string>
-    <string name="settings_general_customize" translatable="true">ปรับแต่ง</string>
     <string name="settings_network_all_networks_desc" translatable="true">เมื่อเปิดใช้งาน Keepout จะใช้เครือข่ายทั้งหมดที่มีเพื่อเชื่อมต่ออินเทอร์เน็ต หากไม่เป็นเช่นนั้น จะใช้เครือข่ายใดก็ตามที่ Android ถือว่า ใช้งานอยู่</string>
     <string name="settings_check_update_heading" translatable="true">ตรวจสอบการอัปเดตแอป</string>
     <string name="settings_import_export_desc" translatable="true">สำรองหรือกู้คืนข้อมูลแอปและการตั้งค่าด้วยตนเอง</string>
@@ -472,7 +428,6 @@
     <string name="hsf_vpn_prepare_failure" translatable="true">ขาดการอนุญาต VPN หรือแอปอื่นอยู่ในโหมดเปิดใช้งาน VPN ตลอดเวลา</string>
     <string name="hsf_notification_permission_failure" translatable="true">เปิดใช้งานการอนุญาตการแจ้งเตือนจากหน้าจอการตั้งค่า</string>
     <string name="hsf_pause_vpn_failure" translatable="true">หยุดชั่วคราวไม่ได้: คิดใหม่ไม่ได้ใช้งาน</string>
-    <string name="dc_local_block_desc_1" translatable="true">เลือกจากรายการบล็อกมากกว่า 195 รายการ คลิกที่นี่เพื่อดาวน์โหลดหรือกำหนดค่ารายการบล็อก</string>
     <string name="dc_dns_website_heading" translatable="true">แสดงไอคอนเว็บไซต์ในบันทึก DNS (ทดลอง)</string>
     <string name="dc_dns_leaks_heading" translatable="true">ป้องกันการรั่วไหลของ DNS</string>
     <string name="dc_proxy_dns_heading" translatable="true">ไม่เคยใช้พร็อกซี DNS</string>
@@ -503,7 +458,6 @@
     <string name="cd_dns_proxy_mode_external" translatable="true">ภายนอก</string>
     <string name="cd_dns_proxy_error_text_2" translatable="true">ช่วงพอร์ตควรอยู่ระหว่าง 1024–65535</string>
     <string name="cd_dns_proxy_error_text_3" translatable="true">พอร์ตไม่ถูกต้อง</string>
-    <string name="cd_dns_crypt_name_default" translatable="true">DNSCrypt</string>
     <string name="cd_dns_crypt_name" translatable="true">DNSCrypt %1$s</string>
     <string name="cd_dns_crypt_dialog_name" translatable="true">ชื่อ</string>
     <string name="cd_dns_crypt_dialog_desc" translatable="true">คำอธิบาย (ไม่บังคับ)</string>
@@ -511,18 +465,9 @@
     <string name="ctbs_app_other_apps" translatable="true">%1$s + %2$s แอปอื่นๆ</string>
     <string name="ctbs_block_other_apps" translatable="true">กฎที่ใช้กับ %1$s จะใช้ได้กับแอปอื่นๆ อีก %2$s ด้วย</string>
     <string name="hs_download_positive_website" translatable="true">เยี่ยมชมเว็บไซต์</string>
-    <string name="univ_view_blocked_ip" translatable="true">กฎ IP และพอร์ต</string>
-    <string name="univ_firewall_heading" translatable="true">กฎไฟร์วอลล์สากล</string>
-    <string name="app_ip_domain_rules" translatable="true">กฎ IP / โดเมนต่อแอป</string>
-    <string name="app_ip_domain_rules_desc" translatable="true">แก้ไขกฎ IP / โดเมนของแต่ละแอป</string>
     <string name="dns_query_latency" translatable="true">%1$sms</string>
     <string name="dns_proxy_port" translatable="true">หมายเลขพอร์ต</string>
     <string name="fapps_filter_parent_system" translatable="true">ระบบ</string>
-    <string name="fapps_unmetered_unblock_dialog_message">อนุญาตให้เชื่อมต่อบนเครือข่ายแบบไม่จำกัดปริมาณ (WiFi) สำหรับแอปที่ อยู่ในรายการ หรือไม่?</string>
-    <string name="fapps_bypass_dns_firewall_dialog_title" translatable="true">ข้ามแอปพลิเคชั่น</string>
-    <string name="fapps_unblock_dialog_title" translatable="true">อนุญาตแอป</string>
-    <string name="fapps_unblock_dialog_message" translatable="true">อนุญาตการเชื่อมต่อสำหรับแอปที่อยู่ในรายการหรือไม่?</string>
-    <string name="fapps_isolate_block_dialog_title" translatable="true">แยกแอป</string>
     <string name="rules_load_failure_heading" translatable="true">บันทึก</string>
     <string name="network_log_app_name_unknown" translatable="true">ไม่ทราบ</string>
     <string name="system_dns_connection_failure" translatable="true">ไม่สามารถระบุเซิร์ฟเวอร์ DNS ปัจจุบันได้</string>
@@ -547,7 +492,6 @@
     <string name="firewall_rule_bypass_dns_firewall_desc" translatable="true">This connection was allowed because the source app is set to bypass dns and firewall rules.<br/><br/> To change go to App-specific Firewall screen.</string>
     <string name="firewall_rule_dns_blocked_desc" translatable="true">This connection was blocked because the domain is blocked by user-preferred DNS.<br/><br/> To change this behaviour go to Configure DNS tab.</string>
     <string name="firewall_rule_exempt_dns_proxied_desc" translatable="true">This DNS connection was proxied and forwarded to user-preferred DNS endpoint.<br/><br/> To change disable Prevent DNS leaks from DNS Configure screen.</string>
-    <string name="notif_dialog_pause_dialog_positive" translatable="true">ประวัติย่อ</string>
     <string name="notif_channel_desc_firewall_alerts" translatable="true">การแจ้งเตือนเกี่ยวกับข้อผิดพลาดและสิ่งผิดปกติของไฟร์วอลล์</string>
     <string name="firewall_rule_exempt_app_bypass_univ_desc" translatable="true">This connection was allowed because the source app is set to bypass universal firewall rules.<br/><br/> To change go to App-specific Firewall screen.</string>
     <string name="category_name_others" translatable="true">อื่น</string>
@@ -602,8 +546,6 @@
     <string name="crypt_adguard_family_desc" translatable="true">Adguard DNS พร้อมการค้นหาปลอดภัยและการบล็อกเนื้อหาสำหรับผู้ใหญ่</string>
     <string name="crypt_relay_us" translatable="true">รีเลย์ DNS ที่ไม่เปิดเผยตัวตนซึ่งโฮสต์ในสหรัฐอเมริกา - ลอสแองเจลิส รัฐแคลิฟอร์เนีย จัดทำโดย https://cryptostrom.is/</string>
     <string name="crypt_relay_singapore" translatable="true">แอปที่ถูกข้ามไป</string>
-    <string name="settings_socks5_heading" translatable="true">ตั้งค่าพร็อกซี SOCKS5</string>
-    <string name="hsf_vpn_dialog_header" translatable="true">ความสนใจ!</string>
     <string name="config_delete_dialog_title" translatable="true">ลบ</string>
     <string name="wireguard_apps_proxy_map_desc" translatable="true">ส่วนหนึ่งของ %1$s</string>
     <string name="crypt_quad9_desc" translatable="true">Quad9 (anycast) ไม่มี–dnssec/ไม่มี–log/ไม่มี–ตัวกรอง/ecs 9.9.9.12 – 149.112.112.12</string>
@@ -615,7 +557,6 @@
     <string name="lbl_allowed_ips" translatable="true">IP ที่ได้รับอนุญาต</string>
     <string name="lbl_optional" translatable="true">(ไม่จำเป็น)</string>
     <string name="slide_2_desc" translatable="true">Keepout เป็นวิธีที่ง่ายที่สุดในการตรวจสอบกิจกรรมเครือข่าย หลีกเลี่ยงการเซ็นเซอร์อินเทอร์เน็ตและแอปไฟร์วอลล์บนอุปกรณ์ Android ของคุณ</string>
-    <string name="rethink_max_desc" translatable="true">มากกว่า 50 ตำแหน่ง เป็นส่วนตัวมากขึ้น ตัวแก้ไขแบบวนซ้ำทำงานบน fly.io</string>
     <string name="exclude_apps_from_proxy">ข้ามแอปจากพร็อกซีทั้งหมด</string>
     <string name="exclude_apps_from_proxy_failure_toast">แอปนี้ข้ามพร็อกซี</string>
     <string name="rt_filter_parent_selected" translatable="true">เลือกแล้ว</string>
@@ -631,7 +572,6 @@
     <string name="alert_firewall_accessibility_regrant_explanation" translatable="true">บริการการเข้าถึง Keepout หยุดทำงานหรือขัดข้อง ไปที่การตั้งค่าและบังคับหยุด Keepout และเริ่มใหม่อีกครั้งเพื่อใช้ฟีเจอร์ บล็อกแอปใดๆ ที่ไม่ได้ใช้งาน
 \n
 \nKeepout ใช้บริการการเข้าถึงเพื่อติดตามว่าแอปใดใช้งานอยู่ (เบื้องหน้า) เทียบกับแอปที่ไม่ได้ใช้งาน (เบื้องหลัง)</string>
-    <string name="firewall_act_universal_tab" translatable="true">สากล</string>
     <string name="dns_crypt_url_remove_dialog_message" translatable="true">ลบตัวแก้ไข DNSCrypt จากการกำหนดค่าที่บันทึกไว้</string>
     <string name="download_update_dialog_message" translatable="true">สามารถดาวน์โหลดแอปพลิเคชันเวอร์ชันใหม่ได้จากเว็บไซต์ คุณต้องการดำเนินการต่อหรือไม่?</string>
     <string name="download_update_dialog_message_success" translatable="true">ดาวน์โหลดรายการบล็อคสำเร็จแล้ว</string>
@@ -644,9 +584,6 @@
 \nTCP Proxy: Keepout ส่งต่อเฉพาะการเชื่อมต่อ TCP ของแอป ที่รวมอยู่ ไปยัง Orbot
 \nHTTP Proxy: Keepout สร้างอุโมงค์ HTTP CONNECT ไปยัง Orbot และส่งต่อเฉพาะการเชื่อมต่อ TCP ของแอป ที่รวมอยู่</string>
     <string name="settings_dns_proxy_dialog_header" translatable="true">ตั้งค่าพร็อกซี SOCKS5</string>
-    <string name="hsf_vpn_dialog_message" translatable="true">Keepout ต้องได้รับอนุญาตในการตั้งค่า VPN ในพื้นที่เพื่อเข้ารหัสคำขอ DNS ของอุปกรณ์ ดำเนินการตรวจสอบเครือข่าย และบังคับใช้กฎไฟร์วอลล์
-\n
-\nKeepout จะไม่รวบรวมข้อมูลหรือสอดส่องคุณในทางใดทางหนึ่ง</string>
     <string name="about_bug_no_log_dialog_message" translatable="true">ไม่สามารถดึงข้อมูลบันทึกข้อผิดพลาดได้ คุณต้องการรายงานข้อผิดพลาดด้วยตนเองหรือไม่?</string>
     <string name="rt_filter_desc" translatable="true">กำลังแสดง %1$s รายการบล็อค</string>
     <string name="about_mail_bugreport_subject" translatable="true">[คิดใหม่]: รายงานจุดบกพร่อง</string>
@@ -655,10 +592,8 @@
     <string name="cd_dns_crypt_dialog_heading" translatable="true">เพิ่มตัวแก้ไข DNSCrypt หรือรีเลย์</string>
     <string name="cd_dnscrypt_relay_heading" translatable="true">รีเลย์</string>
     <string name="cd_doh_dialog_heading" translatable="true">เพิ่ม DNS ผ่าน HTTPS</string>
-    <string name="univ_firewall_rule_8" translatable="true">บล็อกการรับส่งข้อมูลพอร์ต 80 (HTTP ที่ไม่ปลอดภัย)</string>
     <string name="brbs_backup_desc" translatable="true">การตั้งค่าแอปสำรองข้อมูล เครือข่าย และบันทึก DNS</string>
     <string name="brbs_backup_dialog_failure_message" translatable="true">ไม่สามารถสำรองข้อมูลได้ ลองอีกครั้งหรือไม่?</string>
-    <string name="fapps_bypass_dns_firewall_dialog_message" translatable="true">ข้ามกฎ DNS และไฟร์วอลล์สากลสำหรับแอปที่แสดงรายการไว้หรือไม่?</string>
     <string name="settings_local_blocklist_in_use" translatable="true">%1$s รายการบล็อคที่ใช้งานอยู่</string>
     <string name="fapps_firewall_filter_excluded" translatable="true">ไม่รวม</string>
     <string name="bad_config_reason_invalid_value" translatable="true">ค่าไม่ถูกต้อง</string>
@@ -681,9 +616,6 @@
     <string name="home_stopped_most">ถูกบล็อกมากที่สุด</string>
     <string name="home_nothing_stopped">ไม่มีอะไรถูกบล็อกใน 24 ชั่วโมงที่ผ่านมา</string>
     <string name="home_see_statistics">สถิติ</string>
-    <string name="home_apps_caption">Wi-Fi และเน็ตมือถือ แยกตามแอป</string>
-    <string name="home_logs_caption">ทุกการเชื่อมต่อและคำขอ</string>
-    <string name="home_dns_caption">ตัวแปลงชื่อและรายการบล็อก</string>
     <string name="log_detail_protocol">โปรโตคอล</string>
     <string name="log_detail_country">ประเทศ</string>
     <string name="log_detail_address">ที่อยู่</string>

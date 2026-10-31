@@ -16,6 +16,7 @@
 
 package com.bernaferrari.bravedns.ui.compose.dns
 
+import androidx.compose.ui.res.pluralStringResource
 import android.content.Context
 import android.widget.Toast
 import androidx.compose.runtime.Composable
@@ -70,7 +71,7 @@ fun RethinkEndpointRow(
     val preset = RethinkDnsPreset.fromStoredName(endpoint.name)
     val description = when {
         preset == RethinkDnsPreset.Custom && endpoint.blocklistCount > 0 ->
-            stringResource(R.string.rethink_preset_custom_count, endpoint.blocklistCount)
+            pluralStringResource(R.plurals.rethink_preset_custom_count, endpoint.blocklistCount, endpoint.blocklistCount)
         preset != null -> stringResource(preset.descriptionRes())
         else -> endpoint.desc
     }

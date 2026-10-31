@@ -1,6 +1,7 @@
 /* Copyright 2026 RethinkDNS and its authors */
 package com.bernaferrari.bravedns.ui.compose.firewall
 
+import androidx.compose.ui.platform.LocalResources
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -93,8 +94,9 @@ fun FirewallSettingsScreen(
         else -> RethinkUniversalFirewallChange.Applied
     }
 
+    val resources = LocalResources.current
     fun setting(rule: FirewallRuleset, label: Int, description: Int, checked: Boolean, icon: RethinkUniversalFirewallIcon) =
-        RethinkUniversalFirewallSetting(rule.id, context.getString(label), checked, icon, blockedCounts[rule.id] ?: 0, context.getString(description))
+        RethinkUniversalFirewallSetting(rule.id, resources.getString(label), checked, icon, blockedCounts[rule.id] ?: 0, resources.getString(description))
 
     val everyday = listOf(
         setting(FirewallRuleset.RULE1B, R.string.univ_rule_new_apps, R.string.univ_rule_new_apps_desc, newApp, RethinkUniversalFirewallIcon.NewApp),

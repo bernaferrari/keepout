@@ -4,11 +4,8 @@
     <string name="allow">разрешить</string>
     <string name="about_web">Ссылки</string>
     <string name="apps_info_title">Приложения</string>
-    <string name="always_on_dialog_neutral">Настройки</string>
-    <string name="firewall_mode_info_title">Брандмауэр</string>
     <string name="orbot">Orbot</string>
     <string name="notification_action_pause_vpn">ПАУЗА</string>
-    <string name="firewall_act_universal_tab">Универсальные правила</string>
     <string name="settings_dns_proxy_dialog_app">Приложение</string>
     <string name="orbot_website_link">https://guardianproject.info/apps/org.torproject.android/</string>
     <string name="status_failing" description="This text appears if the connection is currently not working correctly. [CHAR_LIMIT=NONE]">Сбой</string>
@@ -44,7 +41,6 @@
     <string name="status_dns_server_down">DNS-сервер не работает</string>
     <string name="app_name" translatable="false">Keepout</string>
     <string name="title_settings">Настройки</string>
-    <string name="finish">Готово</string>
     <string name="hybrid_mode_notification_title">Защищен! Подключен к DNS + брандмауэр.</string>
     <string name="bypass_universal">обход универсальный</string>
     <string name="notification_content" description="Indicates what will happen if the user taps the notification.">Нажмите, чтобы изменить настройки защиты</string>
@@ -79,9 +75,7 @@
     <string name="settings_ip_text_ipv6">IPv6</string>
     <string name="settings_selected_ip_desc">%1$s</string>
     <string name="settings_network_all_networks_desc">Если функция включена, Keepout использует все доступные сети для подключения к интернету. Если нет, то используется та сеть, которая считается активной в Android.</string>
-    <string name="hsf_vpn_dialog_header">Внимание!</string>
     <string name="about_mail_to_string">почта:</string>
-    <string name="cd_dns_crypt_name_default">DNSCrypt</string>
     <string name="cd_dns_crypt_dialog_name">Имя</string>
     <string name="hs_download_positive_default">ok</string>
     <string name="settings_allow_bypass_desc">Разрешить запрашивающим приложениям доступ ко всем доступным сетям. Эти приложения смогут обходить VPN-туннель Keepout по требованию. Некоторым приложениям для аудио/видеоконференций, таким как Zoom и Meet, это может потребоваться для правильной работы.</string>
@@ -90,15 +84,11 @@
     <string name="dc_dns_crypt">DNSCrypt</string>
     <string name="collecting_logs_progress_text">Захват…</string>
     <string name="orbot_explanation">Orbot - это бесплатное прокси-приложение, которое позволяет другим приложениям использовать интернет более безопасно. \nOrbot использует Tor для шифрования вашего интернет-трафика, что помогает вам обойти цензуру и защититься от форм сетевого наблюдения, которые угрожают личной свободе и конфиденциальности. \nTCP Proxy: Keepout перенаправляет в Orbot только TCP-соединения включенных приложений. \nHTTP-прокси: Keepout создает HTTP CONNECT туннель в Orbot и перенаправляет только TCP-соединения включенных приложений.</string>
-    <string name="hsf_vpn_dialog_message">Keepout требуется разрешение на настройку локальной VPN для шифрования DNS-запросов устройства, внедрение сетевого монитора и применение правил брандмауэра.
-\n
-\nKeepout не собирает никакой информации и не шпионит за вами каким-либо образом.</string>
     <string name="conn_track_clear_logs_message">Это приведет к удалению только сетевых журналов, но не правил брандмауэра. Эта операция является необратимой. Хотите продолжить\?</string>
     <string name="other_dns_list_tab1">DoH</string>
     <string name="settings_theme_dialog_themes_3">Темная</string>
     <string name="cd_dns_proxy_mode_internal">Внутренний</string>
     <string name="dns_proxy_remove_success">DNS-прокси удален.</string>
-    <string name="cd_custom_doh_url_name_default">DoH</string>
     <string name="fapps_filter_clear_btn">Очистить</string>
     <string name="rt_dialog_neutral">Продолжить</string>
     <string name="blocklist_update_check_failure">Что-то пошло не так. Повторите попытку позже!</string>
@@ -140,7 +130,6 @@
     <string name="always_on_dialog_positive_btn">Перейдите в настройки</string>
     <string name="unicode_question_sign">❔</string>
     <string name="dns_proxy_remove_dialog_title">Удалить DNS-прокси\?</string>
-    <string name="cd_custom_dns_proxy_name_default">Прокси</string>
     <string name="unicode_warning_sign">⚠</string>
     <string name="refresh_complete"><!-- use dc_refresh_toast --> Повторная синхронизация списка приложений завершена.</string>
     <string name="settings_theme_dialog_themes_2">Светлая</string>
@@ -166,12 +155,7 @@
     <string name="settings_enable_logs">Включить ведение журнала на устройстве</string>
     <string name="settings_lock_down_mode_desc">Некоторые опции отключены, когда VPN находится в режиме блокировки. Смотрите настройки VPN.</string>
     <string name="settings_allow_bypass_heading">Включить видимость сети</string>
-    <string name="settings_socks5_heading">Настройка прокси-сервера SOCKS5</string>
     <string name="whats_new_version_update">&lt;b&gt;Не паникуй 2&lt;/b&gt;&lt;br/&gt;&lt;br/&gt; 1. Новое: захват сетевых ошибок для отчётов пользователей.&lt;br/&gt; 2. Новое: используется системный DNS для неделегированных доменных имён если настройка Предотвращать утечки DNS включена.&lt;br/&gt; 3. Улучшение: подключение к WireGuard теперь использует двойной стек (IPv4 + IPv6).&lt;br/&gt; 4. Улучшение: избежание блокирования элементов пользовательского интерфейса когда сетевой движок не отвечает.&lt;br/&gt; 5. Исправлено: тайм-ауты подключения когда Расширенная DNS фильтрация включена.&lt;br/&gt; 6. Исправлено: эндпоинты узлов WireGuard с доменными именами виснут при сетевых изменениях.&lt;br/&gt;&lt;br/&gt; &lt;a href=https://svc.rethinkdns.com/r/translate&gt;Помогите перевести это приложение&lt;/a&gt;</string>
-    <string name="fapps_info_dialog_message">Блокируйте подключение приложений к интернету. Ограничение доступа к интернету помогает предотвратить необоснованное использование данных, а также экономить заряд батареи.</string>
-    <string name="fapps_unmetered_unblock_dialog_title">Разрешить на бездоговорной основе</string>
-    <string name="fapps_unmetered_block_dialog_message">Блокировать соединения в сети без учета тарифов (WiFi) для приложений , перечисленных в списке\?</string>
-    <string name="fapps_metered_unblock_dialog_title">Разрешение на дозирование</string>
     <string name="dns_proxy_connection_failure">Ошибка подключения к DNS Proxy серверу.</string>
     <string name="system_dns_connection_failure">Невозможно определить текущий DNS-сервер</string>
     <string name="update_complete_snack_message">Загружена новая версия.</string>
@@ -179,7 +163,6 @@
     <string name="pause_text">пауза</string>
     <string name="update_complete_action_snack">ПЕРЕЗАПУСТИТЬ</string>
     <string name="accessibility_notification_content">Служба доступности Keepout остановилась или завершилась сбоем. Блокировка фоновых приложений больше не выполняется. Нажмите для повторного включения.</string>
-    <string name="pause_desc">Примечание: %1$s заблокированные приложения будут продолжать блокироваться.</string>
     <string name="firewall_rule_block_ip">IP / Порт</string>
     <string name="firewall_rule_block_app_new_install">Новое приложение</string>
     <string name="firewall_rule_block_dns_bypass">Обход DNS</string>
@@ -230,31 +213,22 @@
     <string name="category_name_non_app_sys">Системные сервисы</string>
     <string name="new_app_notification_action_toast_deny">Для приложения запрещено сетевое подключение</string>
     <string name="ci_no_rule">Нет правил</string>
-    <string name="ada_app_status_allow">Разрешено</string>
-    <string name="ada_app_status_whitelist">Обходит универсальные правила брандмауэра</string>
-    <string name="ada_noapp_dialog_title">Нет такого приложения</string>
-    <string name="ada_app_status_block">Заблокировано</string>
     <string name="ada_app_status_block_md">Заблокировано в мобильной сети</string>
     <string name="ada_ip_no_connection">В этой категории нет журналов сети.</string>
-    <string name="ada_app_status_exclude">Исключено из DNS и брандмауэра</string>
-    <string name="ada_app_status_isolate">Изолировано: разрешены только доверенные IP и домены</string>
     <string name="network_dns">Системный DNS</string>
     <string name="notif_download_failure_content">Загрузка не удалась. Попробуйте еще раз.</string>
     <string name="notif_download_content_title">Загрузка списка блокировки</string>
     <string name="notif_download_content_text">Загрузка продолжается…</string>
     <string name="notif_download_cancel_content">Загрузка отменена.</string>
     <string name="rbl_parental_control">Родительский контроль</string>
-    <string name="radio_sky_btn">⛅ Быстрый сервер</string>
     <string name="brbs_title">Резервное копирование и восстановление</string>
     <string name="rt_dialog_title">Сохранить изменения</string>
-    <string name="radio_max_btn">🪂 Приватный сервер</string>
     <string name="rt_dialog_message">Вы хотите применить новые настроенные списки блокировки?</string>
     <string name="rt_chip_check_update">Проверить обновления</string>
     <string name="brbs_backup_dialog_message">Резервное копирование настроек приложения, сети и логов DNS в файл. Это перезапустит VPN.</string>
     <string name="brbs_restore_dialog_message">Восстановить настройки приложения, сети и логи DNS из файла резервной копии. Это перезапустит приложение.</string>
     <string name="brbs_restore_dialog_failure_title">Восстановление не удалось</string>
     <string name="rt_filter_desc_subgroups"><![CDATA[Показывает %1$s списки блокировки в группе: %2$s и подгруппе: %3$s]]></string>
-    <string name="lbbs_enabled">Включено</string>
     <string name="rt_list_simple_btn_txt">простой</string>
     <string name="lbl_advanced">Расширенные настройки</string>
     <string name="rethink_sky_desc">Свыше 280-ти местоположений; более высокое время безотказной работы; резолвер работающий на cloudflare.com</string>
@@ -265,7 +239,6 @@
     <string name="brbs_backup_dialog_title">Создайте резервную копию</string>
     <string name="brbs_restore_complete_toast">Восстановление завершено, перезапускаю приложение…</string>
     <string name="brbs_backup_complete_toast">Резервное копирование завершено</string>
-    <string name="rt_download_desc">Скачать списки блокировки (около 60 МБ) для использования этой возможности.</string>
     <string name="rt_filter_hint">Показывать все блоклисты</string>
     <string name="settings_dns_proxy_dialog_header">Установка прокси-сервера SOCKS5</string>
     <string name="settings_http_proxy_desc">Переадресация на %1$s</string>
@@ -295,10 +268,8 @@
     <string name="about_privacy_policy_link">https://www.rethinkdns.com/privacy</string>
     <string name="notification_screen_error">Не удалось запустить экран уведомлений приложения.</string>
     <string name="no_browser_error">Невозможно открыть веб-страницу из браузера.</string>
-    <string name="univ_view_blocked_ip">Правила для IP и портов</string>
     <string name="dns_connected_rethink_plus">Подключено. Используется списков блокировки: %1$s</string>
     <string name="dns_proxy_dialog_message_no_app">IP-адрес: %1$s \n \nНомер порта: %2$s</string>
-    <string name="univ_firewall_rule_3">Блокировать, если приложение неизвестно</string>
     <string name="dns_proxy_name">Имя доверенного лица</string>
     <string name="fapps_filter_parent_installed">Установленные</string>
     <string name="fapps_firewall_filter_excluded">Исключено</string>
@@ -307,10 +278,6 @@
     <string name="univ_accessibility_dialog_positive">Разрешить</string>
     <string name="dns_proxy_ip_address">IP-адрес</string>
     <string name="fapps_firewall_filter_isolate">Изолировано</string>
-    <string name="fapps_unmetered_block_dialog_title">Блокировка при бездоговорном режиме</string>
-    <string name="fapps_unmetered_unblock_dialog_message">Разрешить подключения в сети без учета тарифов (WiFi) для приложений перечисленных в списке\?</string>
-    <string name="fapps_metered_block_dialog_title">Блок на дозированном</string>
-    <string name="fapps_metered_block_dialog_message">Блокировать соединения в (мобильной) тарифицируемой сети для приложений перечисленных в списке\?</string>
     <string name="rules_load_failure_desc">Правила брандмауэра не найдены</string>
     <string name="network_log_app_name_unnamed">Неназванный (%1$s)</string>
     <string name="ci_dialog_error_invalid_ip">Неверный IP-адрес, подсеть или порт.</string>
@@ -330,7 +297,6 @@
     <string name="rt_re_download">Повторная загрузка списков блокировки</string>
     <string name="rt_filter_parent_selected">Выбранные</string>
     <string name="rt_filter_desc"><![CDATA[Показывать %1$s списков блокировки]]></string>
-    <string name="rethink_max_desc">Свыше 50-ти местоположений; более приватный; рекурсивный резолвер работающий на fly.io</string>
     <string name="dc_local_block_enabled">Включено</string>
     <string name="dc_doh">Dns через HTTPS</string>
     <string name="dc_dns_proxy">DNS-прокси</string>
@@ -361,7 +327,6 @@
     <string name="hsf_pause_vpn_failure">Невозможно сделать паузу: Keepout не активен</string>
     <string name="dc_custom_dns_radio">Другие DNS</string>
     <string name="dc_entries">%1$s строк »</string>
-    <string name="dc_local_block_desc_1">Выбирайте из 195+ списков блокировок. Нажмите здесь, чтобы загрузить их или настроить.</string>
     <string name="dc_dns_website_heading">Показывать значок веб-сайта в журналах DNS (экспериментально)</string>
     <string name="about_bug_report_desc">Отправить журнал ошибок по email</string>
     <string name="about_bug_report">Сообщить об ошибке</string>
@@ -381,13 +346,9 @@
     <string name="error_loading_log_file">Ошибка загрузки файла журнала</string>
     <string name="hs_download_positive_website">Посетить веб-сайт</string>
     <string name="hs_download_negative_default">Напомнить позже</string>
-    <string name="univ_firewall_rule_1">Блокировка всех приложений при блокировке устройства</string>
     <string name="univ_firewall_rule_4">Блокировать UDP, кроме DNS и NTP</string>
     <string name="univ_firewall_rule_5">Блокировать при обходе DNS</string>
-    <string name="univ_firewall_rule_6">Блокировать недавно установленные приложения по умолчанию</string>
-    <string name="univ_firewall_rule_8">Блокировать порт 80 (небезопасный трафик HTTP)</string>
     <string name="univ_firewall_rule_9">Блокировать в сети с тарификацией (мобильной)</string>
-    <string name="univ_firewall_rule_10">Блокировать все, кроме обойденных приложений и IP</string>
     <string name="univ_view_blocked_ip_desc">Изменить правила заблокированного или доверенного домена, IP/портов.</string>
     <string name="univ_accessibility_crash_dialog_positive">Перейдите в Настройки</string>
     <string name="dns_connected">Подключено</string>
@@ -398,7 +359,6 @@
     <string name="dns_proxy_dialog_header_dns">Добавить DNS-прокси</string>
     <string name="dns_proxy_port">Номер порта</string>
     <string name="fapps_firewall_filter_bypass_universal">В обход</string>
-    <string name="fapps_metered_unblock_dialog_message">Разрешить соединения в (мобильной) тарифицированной сети для приложений перечисленных в списке\?</string>
     <string name="rules_load_failure_heading">Примечание</string>
     <string name="rules_load_failure_reload">перезагрузить</string>
     <string name="dns_crypt_connection_failure">Ошибка при подключении к серверу DNSCrypt.</string>
@@ -413,7 +373,6 @@
     <string name="firewall_rule_unknown">Источник неизвестен</string>
     <string name="firewall_rule_global_lockdown">Блокировка</string>
     <string name="new_app_bulk_notification_title">Внимание</string>
-    <string name="notif_dialog_pause_dialog_positive">Продолжить</string>
     <string name="notif_channel_vpn_failure">Неактивный VPN</string>
     <string name="notif_channel_firewall_alerts">Предупреждения брандмауэра</string>
     <string name="notif_channel_download">Скачать оповещения</string>
@@ -496,19 +455,6 @@
     <string name="hs_biometeric_title">Разблокировать Keepout</string>
     <string name="hs_biometeric_desc">Используйте биометрическую аутентификацию для разблокировки Keepout</string>
     <string name="hs_biometeric_error">Ошибка биометрической аутентификации</string>
-    <string name="fapps_info_unmetered_msg">Разрешить / заблокировать работу через сети (Wi-Fi).</string>
-    <string name="fapps_info_metered_msg">Разрешить/ запретить работу через мобильную сеть.</string>
-    <string name="fapps_info_bypass_msg">Обход правил универсального брандмауэра.</string>
-    <string name="fapps_info_exclude_msg">Исключить из DNS и брандмауэра.</string>
-    <string name="fapps_info_isolate_msg">Блокировать все, кроме доверенных IP.</string>
-    <string name="fapps_bypass_block_dialog_title">Обходные приложения</string>
-    <string name="fapps_bypass_block_dialog_message">Как обойти правила универсального брандмауэра для приложений из списка <i/> \?</string>
-    <string name="fapps_unblock_dialog_message">Разрешить подключения для перечисленных приложений\?</string>
-    <string name="fapps_unblock_dialog_title">Разрешить приложения</string>
-    <string name="fapps_exclude_block_dialog_title">Исключение приложений</string>
-    <string name="fapps_exclude_block_dialog_message">Исключить приложения из списка <i/> из DNS и брандмауэра\?</string>
-    <string name="fapps_isolate_block_dialog_title">Изолировать приложения</string>
-    <string name="fapps_isolate_block_dialog_message">Изолировать перечисленные приложения\?</string>
     <string name="ci_trust_rule">Доверять</string>
     <string name="ssv_app_network_activity_heading" description="This label will appear on the stats screen as a header for allowed apps." translatable="true">Самые разрешаемые приложения</string>
     <string name="ssv_app_blocked_heading" description="This label will appear on the stats screen as a header for blocked applications." translatable="true">Самые блокируемые приложения</string>
@@ -545,13 +491,10 @@
     <string name="firewall_rule_dns_blocked_desc" translatable="true"><![CDATA[Это соединение было заблокировано, поскольку домен заблокирован предпочитаемым DNS.]]></string>
     <string name="dc_setting_dns_cache_heading" translatable="true">Ускоритель DNS</string>
     <string name="dc_refresh_toast" translatable="true">Обновление завершено</string>
-    <string name="settings_general_customize" translatable="true">Персонализация</string>
     <string name="settings_lock_down_proxy_desc" translatable="true">Невозможно настроить прокси, когда VPN работает в режиме Только DNS.</string>
     <string name="settings_default_dns_heading" translatable="true">Выберите резервный DNS</string>
-    <string name="fapps_bypass_dns_firewall_dialog_title" translatable="true">Обходить приложения</string>
     <string name="settings_default_dns_desc" translatable="true">В редких случаях, когда не удается определить предпочтительный DNS пользователя, используется резервный DNS.</string>
     <string name="cd_dns_alg_desc" translatable="true">Назначение уникального IP-адреса на каждый DNS-запрос.</string>
-    <string name="fapps_bypass_dns_firewall_dialog_message" translatable="true">Обходить универсальные правила DNS &amp; брандмауэра для перечисленных приложений\?</string>
     <string name="firewall_rule_dns_blocked" translatable="true">DNS заблокирован</string>
     <string name="firewall_rule_domain_blocked_univ" translatable="true">Домен (Univ)</string>
     <string name="firewall_rule_domain_trusted_univ_desc" translatable="true"><![CDATA[Это подключение было разрешено, поскольку домен установлен как доверенный в правилах универсального домена.]]></string>
@@ -579,7 +522,6 @@
     <string name="lbl_optional" translatable="true">(необязательно)</string>
     <string name="lbl_allowed_ips" translatable="true">Разрешенные IP-адреса</string>
     <string name="lbl_save" translatable="true">сохранить</string>
-    <string name="fapps_info_bypass_dns_firewall_msg" translatable="true">Обход правил DNS &amp; брандмауэра.</string>
     <string name="bad_config_reason_invalid_key" translatable="true">Некорректный ключ</string>
     <string name="bad_config_reason_invalid_number" translatable="true">Некорректное число</string>
     <string name="bad_config_reason_invalid_value" translatable="true">Некорректное значение</string>
@@ -626,16 +568,12 @@
     <string name="lbl_http_socks5" translatable="true">HTTPS &amp; SOCKS5</string>
     <string name="lbl_fast" translatable="true">быстро</string>
     <string name="lbl_slow" translatable="true">медленно</string>
-    <string name="lbl_app_wise" translatable="true">Правила для каждого приложения</string>
     <string name="lbl_sec" translatable="true">сек</string>
     <string name="lbl_min" translatable="true">мин</string>
     <string name="lbl_persistent_keepalive" translatable="true">Постоянно активированный</string>
     <string name="search_proxy_add_apps" translatable="true">Поиск приложений по названию</string>
     <string name="public_key_copy_toast_msg" translatable="true">Публичный ключ скопирован.</string>
     <string name="cd_doh_dialog_checkbox_desc" translatable="true">Не проверять TLS-сертификаты сервера (включайте только если знаете, что делаете)</string>
-    <string name="app_ip_domain_rules" translatable="true">IP на каждое приложение / Правила домена</string>
-    <string name="univ_firewall_heading" translatable="true">Универсальные правила брандмауэра</string>
-    <string name="app_ip_domain_rules_desc" translatable="true">Изменение IP для каждого приложения / Правил домена.</string>
     <string name="firewall_rule_proxied" translatable="true">Проксировано</string>
     <string name="firewall_rule_proxied_desc" translatable="true"><![CDATA[Это соединение было перенаправлено на выбранный пользователем Proxy.]]></string>
     <string name="ssv_most_contacted_countries_heading" description="This label will appear on the stats screen as a header for most visited domains by country" translatable="true">Большинство связываемых стран</string>
@@ -669,10 +607,7 @@
     <string name="lbl_last" translatable="true">Последний</string>
     <string name="lbl_starting" translatable="true">Запуск</string>
     <string name="lbl_overall" translatable="true">Всего</string>
-    <string name="lbl_anonymous" translatable="true">анонимные</string>
     <string name="lbl_stopped" translatable="true">Остановлен</string>
-    <string name="lbl_private" translatable="true">частные</string>
-    <string name="lbl_secure" translatable="true">безопасные</string>
     <string name="orbot_no_app_toast" translatable="true">Добавьте хотя бы одно приложение, чтобы включить Orbot</string>
     <string name="toast_allow_bypass_disabled" translatable="true">%1$s отключён, так как активны прокси</string>
     <string name="failed_using_default" translatable="true">Не удалось: используется запасной DNS</string>
@@ -806,9 +741,6 @@
     <string name="home_stopped_most">Чаще всего блокировались</string>
     <string name="home_nothing_stopped">За последние 24 часа ничего не заблокировано.</string>
     <string name="home_see_statistics">Статистика</string>
-    <string name="home_apps_caption">Wi-Fi и данные для каждого приложения</string>
-    <string name="home_logs_caption">Все подключения и запросы</string>
-    <string name="home_dns_caption">Резолвер и списки блокировки</string>
     <string name="log_detail_protocol">Протокол</string>
     <string name="log_detail_country">Страна</string>
     <string name="log_detail_address">Адрес</string>

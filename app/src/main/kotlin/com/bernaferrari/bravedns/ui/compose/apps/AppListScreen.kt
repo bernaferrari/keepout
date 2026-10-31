@@ -1,6 +1,7 @@
 /* Copyright 2026 RethinkDNS and its authors */
 package com.bernaferrari.bravedns.ui.compose.apps
 
+import androidx.compose.ui.platform.LocalResources
 import android.content.Context
 import android.widget.Toast
 import androidx.activity.compose.BackHandler
@@ -80,7 +81,7 @@ fun AppListScreen(
     var currentFilters by remember { mutableStateOf(defaultAppFilters()) }
     val snackbar = remember { SnackbarHostState() }
     val undoLabel = stringResource(R.string.lbl_undo)
-    val resources = context.resources
+    val resources = LocalResources.current
     var pendingToggle by remember { mutableStateOf<AndroidFirewallToggleRequest?>(null) }
 
     fun applyFilters(filters: RethinkFirewallFilters) {
@@ -238,7 +239,7 @@ private fun androidFirewallAppListStrings(): RethinkFirewallAppListStrings {
     val skipAll = stringResource(R.string.ada_app_status_bypass_dns_firewall)
     val excluded = stringResource(R.string.fapps_firewall_filter_excluded)
     val lockdown = stringResource(R.string.fapps_firewall_filter_isolate)
-    val resources = LocalContext.current.resources
+    val resources = LocalResources.current
     return RethinkFirewallAppListStrings(
         sortTitle = stringResource(R.string.port_sort_title),
         uidLabel = { stringResource(R.string.port_uid_number, it) },

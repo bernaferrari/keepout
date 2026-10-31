@@ -21,12 +21,10 @@
     <string name="notification_action_pause_vpn" translatable="true">הַשהה</string>
     <string name="notification_action_dns_firewall_mode" translatable="true">DNS + חומת אש</string>
     <string name="dns_mode_info_title" translatable="true">DNS</string>
-    <string name="firewall_mode_info_title" translatable="true">חומת אש</string>
     <string name="custom_url_error_invalid_url" translatable="true">כתובת האתר לא תקינה</string>
     <string name="bsct_app_info" translatable="true">מידע על האפליקציה</string>
     <string name="bsct_block_ip" translatable="true">חסום, סמוך על IP זה עבור אפליקציה זו</string>
     <string name="title_about" translatable="true">אודות</string>
-    <string name="finish" translatable="true">סיום</string>
     <string name="title_settings" translatable="true">הגדרות</string>
     <string name="firewall_mode_notification_title" translatable="true">מוּגָן! מחובר לחומת האש.</string>
     <string name="allow" translatable="true">אפשר</string>
@@ -42,12 +40,10 @@
     <string name="apps_info_title" translatable="true">אפליקציות</string>
     <string name="always_on_dialog_heading" translatable="true">השבת VPN תמידי</string>
     <string name="always_on_dialog_stop_heading" translatable="true">VPN פעיל תמיד</string>
-    <string name="always_on_dialog_neutral" translatable="true">הגדרות</string>
     <string name="private_dns_dialog_heading" translatable="true">כבה DNS פרטי</string>
     <string name="always_on_dialog_positive" translatable="true">עצור</string>
     <string name="firewall_act_network_monitor_tab" translatable="true">רשת</string>
     <string name="private_dns_dialog_positive" translatable="true">מעבר להגדרות</string>
-    <string name="firewall_act_universal_tab" translatable="true">אוניברסליים</string>
     <string name="download_update_dialog_failure_title" translatable="true">משהו השתבש!</string>
     <string name="download_update_dialog_trylater_title" translatable="true">לא ניתן לעדכן כרגע</string>
     <string name="download_update_dialog_trylater_message" translatable="true">לא ניתן לבצע את העדכון כעת, אנא נסה שוב מאוחר יותר.</string>
@@ -69,7 +65,6 @@
     <string name="orbot_title" translatable="true">Orbot ופרוקסי</string>
     <string name="orbot_install_dialog_positive" translatable="true">התקנה</string>
     <string name="settings_general_header" translatable="true">כללי</string>
-    <string name="settings_general_customize" translatable="true">התאמה אישית</string>
     <string name="settings_autostart_bootup_heading" translatable="true">הפעלה אוטומטית בהדלקה (ניסיוני)</string>
     <string name="settings_network_all_networks" translatable="true">השתמש בכל הרשתות הזמינות (ניסיוני)</string>
     <string name="settings_socks5_disabled_error" translatable="true">מחובר %1$s. כבה אותו כדי להמשיך.</string>
@@ -84,7 +79,6 @@
     <string name="settings_ip_text_ipv6" translatable="true">IPv6</string>
     <string name="settings_ip_text_ipv46" translatable="true">אוטומטי</string>
     <string name="firewall_status_unknown" translatable="true">לא ידוע</string>
-    <string name="hsf_vpn_dialog_header" translatable="true">שים לב!</string>
     <string name="about_join_telegram" translatable="true">טלגרם</string>
     <string name="about_bug_no_log_dialog_positive_btn" translatable="true">שליחת דוא״ל</string>
     <string name="about_web" translatable="true">קישורים</string>
@@ -181,7 +175,6 @@
     <string name="lbl_min" translatable="true">דקות</string>
     <string name="lbl_day" translatable="true">ימים</string>
     <string name="lbl_add" translatable="true">הוסף</string>
-    <string name="lbl_app_wise" translatable="true">לאפליקציה</string>
     <string name="lbl_sec" translatable="true">שניות</string>
     <string name="lbl_hour" translatable="true">שעות</string>
     <string name="lbl_insecure" translatable="true">(לא בטוח)</string>
@@ -199,14 +192,11 @@
     <string name="lbl_starting" translatable="true">מתחיל</string>
     <string name="lbl_overall" translatable="true">כללי</string>
     <string name="lbl_stopped" translatable="true">נעצר</string>
-    <string name="lbl_private" translatable="true">פרטי</string>
     <string name="lbl_listen_port" translatable="true">פִּתחת האזנה</string>
     <string name="lbl_preshared_key" translatable="true">מפתח משותף</string>
     <string name="lbl_idle" translatable="true">במנוחה</string>
-    <string name="lbl_anonymous" translatable="true">אנונימי</string>
     <string name="hybrid_mode_with_proxy_notification_title" translatable="true">מוגן! מחובר ל- DNS + Firewall + proxy.</string>
     <string name="failed_using_default" translatable="true">נכשל: משתמש בDNS חלופי</string>
-    <string name="lbl_secure" translatable="true">מאובטח</string>
     <string name="alert_firewall_accessibility_regrant_explanation" translatable="true">שירות הנגישות של Keepout נעצר או קרס. עבור להגדרות, כפה עצירה על Keepout והפעל אותו מחדש כדי להשתמש בתכונת חסום כל אפליקציה שאינה בשימוש.
 \n
 \nKeepout משתמש בשירות נגישות כדי לעקוב אחר אילו אפליקציות נמצאות בשימוש (בחזית) לעומת אלו שאינן בשימוש (ברקע).</string>
@@ -249,7 +239,6 @@
     <string name="settings_enable_logs_desc" translatable="true">אחסן יומני DNS וחומת אש מקומית על המכשיר.</string>
     <string name="settings_enable_logs" translatable="true">אפשר רישום על המכשיר של יומנים</string>
     <string name="settings_lock_down_mode_desc" translatable="true">אפשרויות מסוימות לא זמינות כשהVPN במצב סגר. ראה הגדרות VPN .</string>
-    <string name="settings_socks5_heading" translatable="true">הגדרת פרוקסי SOCKS5</string>
     <string name="orbot_status_arg_2" translatable="true">TCP</string>
     <string name="http_proxy_dialog_heading" translatable="true">קבע פרוקסי HTTP(S) CONNECT</string>
     <string name="http_proxy_dialog_desc" translatable="true">קבע כתובת בצורת &lt;protocol&gt;://&lt;username&gt;:&lt;password&gt;@&lt;domain-or-ip&gt;:&lt;port&gt;&lt;path&gt; לדוגמה: http://proxy.example.com:8080/</string>
@@ -282,7 +271,6 @@
     <string name="whats_new_version_update" translatable="true">&lt;b&gt;טעון במיוחד!&lt;/b&gt;&lt;br/&gt;&lt;br/&gt; 1. &lt;i&gt;תכונה חדשה&lt;/i&gt;: סינון DNS מתקדם; החל את כללי הדומיין רק כאשר יישומים מתחברים.&lt;br/&gt; 2. &lt;i&gt;תכונה חדשה&lt;/i&gt;: אפשר או דחה דומיינים לכל אפליקציה.&lt;br/&gt; 3. &lt;i&gt;תכונה חדשה&lt;/i&gt;: אפשר או דחה דומיינים עבור כל היישומים.&lt;br/&gt; 4. &lt;i&gt;תכונה חדשה&lt;/i&gt;: עקיפת כללי DNS וחומת אש לכל אפליקציה.&lt;br/&gt; 5. &lt;i&gt;תכונה חדשה&lt;/i&gt;: לכידת מנות (PCAP ).&lt;br/&gt; 6. &lt;i&gt;תכונה חדשה&lt;/i&gt;: מגבר DNS; התאחדו בקשות, תגובות מטמון.&lt;br/&gt; 7. &lt;i&gt;תכונה חדשה&lt;/i&gt;: עריכת כללי דומיין ו-IP.&lt;br/&gt; 8. ושינויים קלים אחרים בממשק המשתמש ותיקוני באגים.&lt;br/&gt;&lt;br/ &gt; &lt;a href=https://svc.rethinkdns.com/r/translate&gt;עזור לתרגם את האפליקציה הזו&lt;/a&gt;</string>
     <string name="settings_orbot_notification_action" translatable="true">פתיחת Orbot</string>
     <string name="settings_protocol_translation_dns_inactive" translatable="true">עבור למצב DNS/DNS+חומת אש כדי להפעיל הגדרה זו</string>
-    <string name="hsf_vpn_dialog_message" translatable="true">Keepout זקוק להרשאה להגדיר VPN מקומי כדי להצפין את בקשות ה-DNS של המכשיר, לפקח על הרשת ולאכוף כללי חומת אש.\n\nKeepout לא אוסף שום מידע ולא מרגל אחרי משתמשים בשום צורה.</string>
     <string name="hsf_vpn_prepare_failure" translatable="true">או שהרשאת VPN חסרה, או שאפליקציה אחרת נמצאת במצב VPN תמיד פועל.</string>
     <string name="about_settings_app_info" translatable="true">מידע על האפליקציה</string>
     <string name="cd_dns_crypt_relay_heading" translatable="true">ממסר</string>
@@ -309,7 +297,6 @@
     <string name="logs_card_duration" translatable="true">מאז %1$s</string>
     <string name="dc_custom_dns_radio" translatable="true">DNS אחר</string>
     <string name="dc_rethink_dns_radio" translatable="true">Rethink DNS</string>
-    <string name="dc_local_block_desc_1" translatable="true">בחר מתוך 195+ רשימות חסימה. לחץ כאן כדי להוריד או להגדיר רשימות חסימה.</string>
     <string name="dc_dns_website_heading" translatable="true">הצג סמל אתר ביומני DNS (ניסיוני)</string>
     <string name="dc_dns_leaks_heading" translatable="true">מנע דליפות DNS</string>
     <string name="dc_check_update_heading" translatable="true">התרעה על עדכונים לרשימות החסימה</string>
@@ -344,23 +331,19 @@
     <string name="about_mail_bugreport_share_title" translatable="true">בחר ספק דוא\"ל</string>
     <string name="about_dialog_neutral_button" translatable="true">הצע תכונות</string>
     <string name="hsf_pause_vpn_failure" translatable="true">לא ניתן להשהות: Keepout לא פעיל</string>
-    <string name="cd_custom_dns_proxy_name_default" translatable="true">מתווך</string>
     <string name="cd_custom_dns_proxy_name" translatable="true">פרוקסי %1$s</string>
     <string name="cd_custom_doh_url_name" translatable="true">DoH %1$s</string>
     <string name="notification_screen_error" translatable="true">לא ניתן היה להפעיל את מסך ההתראות של האפליקציה.</string>
     <string name="error_loading_log_file" translatable="true">שגיאה בטעינת קובץ היומן</string>
     <string name="cd_dns_crypt_title" translatable="true">פותרים</string>
-    <string name="cd_custom_doh_url_name_default" translatable="true">DoH</string>
     <string name="cd_custom_dns_proxy_default_app" translatable="true">ללא</string>
     <string name="cd_dns_crypt_dialog_heading" translatable="true">הוסף ממסר או פותר DNSCrypt</string>
     <string name="cd_dns_crypt_resolver_heading" translatable="true">פותר</string>
-    <string name="univ_firewall_rule_8" translatable="true">חסום תעבורת פיתחה 80 (HTTP לא מאובטח)</string>
     <string name="no_browser_error" translatable="true">לא ניתן לפתוח דף אינטרנט מהדפדפן.</string>
     <string name="ctbs_app_other_apps" translatable="true">%1$s + %2$s אפליקציות נוספות</string>
     <string name="cd_dnscrypt_relay_heading" translatable="true">ממסרים</string>
     <string name="ctbs_block_other_apps" translatable="true">כללים החלים עבור %1$s יחולו גם על %2$s אפליקציות אחרות</string>
     <string name="univ_accessibility_dialog_positive" translatable="true">הענקה</string>
-    <string name="univ_view_blocked_ip" translatable="true">כללי Port ו IP</string>
     <string name="univ_firewall_rule_9" translatable="true">חסימה ברשת מדודה (סלולרית)</string>
     <string name="cd_doh_dialog_resolver_url" translatable="true">כתובת אתר של פותר</string>
     <string name="dc_other_dns_heading" translatable="true">סוג</string>
@@ -368,36 +351,26 @@
     <string name="about_mail_to_string" translatable="true">mailto:</string>
     <string name="cd_dns_proxy_error_text_2" translatable="true">טווח הפתחות צריך להיות בין 1024–65535</string>
     <string name="cd_dns_proxy_error_text_3" translatable="true">פתחה לא תקפה</string>
-    <string name="cd_dns_crypt_name_default" translatable="true">DNSCrypt</string>
     <string name="cd_dns_crypt_relay_name" translatable="true">הפניית DNS %1$s</string>
     <string name="cd_doh_dialog_resolver_name" translatable="true">שם פותר</string>
     <string name="cd_doh_dialog_checkbox_desc" translatable="true">אל תאמת אישורי TLS של שרת (אפשר רק אם אתה יודע מה אתה עושה)</string>
     <string name="cd_dns_alg_heading" translatable="true">סינון DNS מתקדם (ניסיוני)</string>
     <string name="hs_download_positive_default" translatable="true">בסדר</string>
     <string name="hs_download_positive_website" translatable="true">ביקור באתר</string>
-    <string name="univ_firewall_rule_6" translatable="true">חסום אפליקציות שהותקנו לאחרונה כברירת מחדל</string>
-    <string name="univ_firewall_rule_10" translatable="true">חסום הכל חוץ מיישומים וכתובות עם מעקף</string>
     <string name="univ_accessibility_crash_dialog_positive" translatable="true">לך להגדרות</string>
     <string name="cd_dns_crypt_name" translatable="true">DNSCrypt %1$s</string>
-    <string name="univ_firewall_rule_1" translatable="true">חסום את כל האפליקציות כשהמכשיר נעול</string>
     <string name="univ_firewall_rule_4" translatable="true">חסום UDP למעט DNS ו-NTP</string>
     <string name="hs_download_negative_default" translatable="true">הזכר לי מאוחר יותר</string>
     <string name="univ_firewall_rule_2" translatable="true">חסום כל אפליקציה שאינה בשימוש</string>
-    <string name="univ_firewall_rule_3" translatable="true">חסום כאשר אפליקציית המקור אינה ידועה</string>
     <string name="univ_firewall_rule_5" translatable="true">חסום כאשר הDNS נעקף</string>
     <string name="univ_accessibility_dialog_negative" translatable="true">סירוב</string>
     <string name="fapps_filter_parent_installed" translatable="true">מותקן</string>
     <string name="fapps_filter_parent_system" translatable="true">מערכת</string>
-    <string name="fapps_unmetered_unblock_dialog_message">אפשר חיבורים ברשת לא מדודה (WiFi) עבור אפליקציות רשומות\?</string>
     <string name="fapps_firewall_filter_bypass_universal" translatable="true">עוקף</string>
     <string name="fapps_firewall_filter_excluded" translatable="true">מוצא מן הכלל</string>
     <string name="fapps_firewall_filter_isolate" translatable="true">מבודדות</string>
     <string name="fapps_info_dialog_positive_btn" translatable="true">אישור</string>
-    <string name="fapps_bypass_block_dialog_title" translatable="true">עקוף ישומים</string>
-    <string name="fapps_unblock_dialog_title" translatable="true">אפשר אפליקציות</string>
     <string name="dns_proxy_dialog_header_dns" translatable="true">הוסף פרוקסי DNS</string>
-    <string name="app_ip_domain_rules" translatable="true">כללי IP / Domain לפי אפליקציה</string>
-    <string name="app_ip_domain_rules_desc" translatable="true">שינוי כללי IP / Domain שלפי אפליקציה.</string>
     <string name="dns_proxy_dialog_message" translatable="true">שם האפליקציה: %1$s \n \nכתובת IP: %2$s \n \nמספר יציאה: %3$s</string>
     <string name="dns_proxy_dialog_message_no_app" translatable="true">כתובת IP: %1$s \n \nמספר יציאה: %2$s</string>
     <string name="dns_query_latency" translatable="true">%1$sמילי-שניות</string>
@@ -406,28 +379,9 @@
     <string name="dns_proxy_port" translatable="true">מספר פתחה</string>
     <string name="fapps_filter_categories_heading" translatable="true">קטגוריות</string>
     <string name="fapps_filter_clear_btn" translatable="true">ניקוי</string>
-    <string name="fapps_info_dialog_message" translatable="true">חסום אפליקציות מלהתחבר לאינטרנט. הגבלת הגישה לאינטרנט עוזרת למנוע שימוש לא רצוי בנתונים, כמו גם לחסוך בסוללה.</string>
-    <string name="fapps_info_unmetered_msg" translatable="true">אפשר/חסום ברשת לא מדודה (WiFi).</string>
-    <string name="fapps_info_metered_msg" translatable="true">אפשר / חסום ברשת מדודה (סלולרית).</string>
-    <string name="fapps_info_bypass_msg" translatable="true">עקוף כללי חומת אש אוניברסלית.</string>
-    <string name="fapps_info_bypass_dns_firewall_msg" translatable="true">עקוף כללי DNS &amp; Firewall.</string>
-    <string name="fapps_info_exclude_msg" translatable="true">החרגה מDNS ומחומת אש.</string>
-    <string name="fapps_info_isolate_msg" translatable="true">חסום את כולם מלבד כתובות IP מהימנות.</string>
-    <string name="fapps_unmetered_unblock_dialog_title" translatable="true">אפשר בלא מדוד</string>
-    <string name="fapps_unmetered_block_dialog_title" translatable="true">חסום בלא מדוד</string>
-    <string name="fapps_metered_block_dialog_title" translatable="true">חסום במדוד</string>
-    <string name="fapps_metered_block_dialog_message" translatable="true">לחסום חיבורים ברשת מדודה (סלולרית) עבור אפליקציות רשומות\?</string>
-    <string name="fapps_metered_unblock_dialog_title" translatable="true">אפשר במדוד</string>
-    <string name="fapps_bypass_block_dialog_message" translatable="true">לעקוף כללי חומת אש אוניברסליים עבור אפליקציות ברשימה\?</string>
-    <string name="fapps_bypass_dns_firewall_dialog_title" translatable="true">עקוף ליישומים</string>
-    <string name="univ_firewall_heading" translatable="true">כללי חומת אש אוניברסליים</string>
-    <string name="fapps_unmetered_block_dialog_message" translatable="true">לחסום חיבורים ברשת לא מדודה (WiFi) עבור אפליקציות רשומות\?</string>
-    <string name="fapps_metered_unblock_dialog_message" translatable="true">האם לאפשר חיבורים ברשת מדודה (סלולרית) עבור אפליקציות רשומות\?</string>
     <string name="rt_filter_desc_subgroups" translatable="true">מציג את רשימות החסימה: %1$s בקבוצה:%2$s ובתת הקבוצה: %3$s</string>
     <string name="parse_error_generic" translatable="true">מחרוזת</string>
     <string name="rt_filter_desc" translatable="true">מציג את רשימות החסימה: %1$s</string>
-    <string name="ada_app_status_isolate" translatable="true">מבודדת: רק כתובות IP ודומיינים מהימנים מורשים</string>
-    <string name="ada_app_status_exclude" translatable="true">מוחרגת מ-DNS ומחומת האש</string>
     <string name="notif_download_cancel_content" translatable="true">הורדה בוטלה.</string>
     <string name="settings_local_blocklist_version" translatable="true">גרסה: V%1$s</string>
     <string name="collecting_logs_progress_text" translatable="true">תופס…</string>
@@ -437,8 +391,6 @@
     <string name="firewall_rule_block_dns_bypass" translatable="true">עוקף DNS</string>
     <string name="firewall_rule_exempt_app_bypass_univ" translatable="true">אפליקציה עוקפת</string>
     <string name="ada_noapp_dialog_positive" translatable="true">אישור</string>
-    <string name="ada_app_status_allow" translatable="true">מאושרת</string>
-    <string name="ada_app_status_block" translatable="true">חסומה</string>
     <string name="notif_download_success_content" translatable="true">הורדה הושלמה בהצלחה.</string>
     <string name="rt_filter_hint" translatable="true">מציג את כל רשימות החסימה</string>
     <string name="parse_error_integer" translatable="true">מספר</string>
@@ -450,22 +402,15 @@
     <string name="intent_launch_error" translatable="true">לא יכל להפעיל %1$s</string>
     <string name="cd_dns_alg_desc" translatable="true">הקצאת IP מיוחד לכל שאילתת DNS</string>
     <string name="rules_load_failure_heading" translatable="true">הערה</string>
-    <string name="fapps_bypass_dns_firewall_dialog_message" translatable="true">לעקוף כללי DNS וחומת אש אוניברסליים בשביל היישומים הרשומים\?</string>
     <string name="other_dns_list_tab1" translatable="true">DoH</string>
     <string name="rules_load_failure_desc" translatable="true">לא נמצאו כללי חומת אש</string>
     <string name="update_complete_snack_message" translatable="true">גרסה חדשה הורדה.</string>
     <string name="pause_text" translatable="true">מושהה</string>
     <string name="accessibility_notification_content" translatable="true">שירות הנגישות של Keepout נעצר או קרס. כבר לא חוסם אפליקציות שברקע. יש ללחוץ כדי לאפשר מחדש.</string>
-    <string name="pause_desc" translatable="true">הערה: %1$s אפליקציות חסומות ימשיכו להיחסם על ידי חומת האש.</string>
     <string name="other_dns_list_tab3" translatable="true">פרוקסי DNS</string>
     <string name="toast_allow_bypass_disabled" translatable="true">%1$s כבוי בגלל שproxies פעילות</string>
     <string name="firewall_rule_exempt_orbot_setup_desc" translatable="true">החיבור הזה אופשר בגלל שהגדרה בלחיצה אחת של Tor-as-a-Proxy באמצעות Orbot הייתה בתהליך.</string>
     <string name="univ_view_blocked_ip_desc" translatable="true">שינוי כללי הדומיינים, כתובות הIP והפתחות החסומים או הבטוחים.</string>
-    <string name="fapps_isolate_block_dialog_title" translatable="true">בידוד יישומים</string>
-    <string name="fapps_exclude_block_dialog_title" translatable="true">החרגת יישומים</string>
-    <string name="fapps_exclude_block_dialog_message" translatable="true">להחריג את היישומים הרשומים מDNS וחומת אש?</string>
-    <string name="fapps_unblock_dialog_message" translatable="true">לאפשר חיבורים בשביל היישומים הרשומים\?</string>
-    <string name="fapps_isolate_block_dialog_message" translatable="true">בידוד היישומים הרשומים\?</string>
     <string name="rules_load_failure_reload" translatable="true">טעינה מחדש</string>
     <string name="system_dns_connection_failure" translatable="true">אי אפשר לקבוע את שרת הDNS הנוכחי</string>
     <string name="copy_clipboard_label" translatable="true">כתובת אתר</string>
@@ -528,7 +473,6 @@
     <string name="new_app_notification_action_deny" translatable="true">המשך לחסום</string>
     <string name="new_app_notification_action_toast_allow" translatable="true">חיבור רשת מותר לאפליקציה</string>
     <string name="new_app_notification_action_toast_deny" translatable="true">חיבור הרשת נדחה עבור האפליקציה</string>
-    <string name="notif_dialog_pause_dialog_positive" translatable="true">המשך</string>
     <string name="notif_channel_vpn_notification" translatable="true">VPN פעיל</string>
     <string name="notif_channel_vpn_failure" translatable="true">VPN לא פעיל</string>
     <string name="notif_channel_firewall_alerts" translatable="true">התראות חומת אש</string>
@@ -556,9 +500,6 @@
     <string name="home_stopped_most">הכי הרבה חסימות</string>
     <string name="home_nothing_stopped">לא נחסם דבר ב-24 השעות האחרונות.</string>
     <string name="home_see_statistics">סטטיסטיקה</string>
-    <string name="home_apps_caption">Wi-Fi ונתונים, לכל אפליקציה</string>
-    <string name="home_logs_caption">כל חיבור וכל בקשה</string>
-    <string name="home_dns_caption">שרת DNS ורשימות חסימה</string>
     <string name="log_detail_protocol">פרוטוקול</string>
     <string name="log_detail_country">מדינה</string>
     <string name="log_detail_address">כתובת</string>

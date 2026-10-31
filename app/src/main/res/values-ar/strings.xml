@@ -28,16 +28,13 @@
     <string name="hs_download_positive_default">موافق</string>
     <string name="about_bug_report">تقرير الشوائب</string>
     <string name="cd_doh_dialog_resolver_name">اسم المحلل</string>
-    <string name="ada_noapp_dialog_title">لا يوجد مثل هذا التطبيق</string>
     <string name="settings_enable_logs_desc">تخزين سجلات DNS وجدار الحماية محليًا على الجهاز.</string>
     <string name="dc_local_block_enabled">‮مُفعّل</string>
     <string name="accessibility_service_description">يستخدم Keepout خدمة إمكانية الوصول لاكتشاف تطبيقات الخلفية وجدار الحماية. لا يقوم Keepout بجمع أو بيع أي معلومات.</string>
-    <string name="rethink_max_desc">أكثر من 50 موقعًا ؛ أكثر خصوصية محلل تكراري يعمل على fly.io</string>
     <string name="orbot_status_arg_3">DNS و TCP</string>
     <string name="category_name_others">أخرى</string>
     <string name="firewall_rule_block_udp_ntp">UDP محظور</string>
     <string name="network_log_app_name_unknown">مجهول</string>
-    <string name="ada_app_status_allow">مسموح</string>
     <string name="always_on_dialog_positive">إيقاف</string>
     <string name="dc_doh">DNS عبر HTTPS</string>
     <string name="rt_re_download">إعادة تنزيل قوائم الحظر</string>
@@ -52,12 +49,10 @@
     <string name="pause_text">متوقف مؤقتاً</string>
     <string name="dns_crypt_relay_remove_success">تم حذف DNSCrypt Relay.</string>
     <string name="fapps_info_dialog_positive_btn">حسنًا</string>
-    <string name="finish">إنهاء</string>
     <string name="firewall_rule_no_rule">لا توجد قاعدة</string>
     <string name="dns_proxy_name">اسم الوكيل</string>
     <string name="about_mail_bugreport_subject">[Rethink]: تقرير الشوائب</string>
     <string name="about_faq">عرض الأسئلة الشائعة</string>
-    <string name="radio_max_btn">🪂 Max</string>
     <string name="about_join_telegram">Telegram</string>
     <string name="settings_ip_text_ipv4">IPv4</string>
     <string name="firewall_rule_unknown">المصدر غير معروف</string>
@@ -90,7 +85,6 @@
     <string name="about_dialog_positive_button">لنذهب</string>
     <string name="ci_block">حظر</string>
     <string name="warning_title" description="Status indicator text shown in a warning notification.">تحذير: تم إلغاء تنشيط Keepout</string>
-    <string name="firewall_mode_info_title">جدار الحماية</string>
     <string name="firewall_act_network_monitor_tab">سجلات الشبكة</string>
     <string name="orbot">Orbot</string>
     <string name="orbot_none">لا شيء (المبدئي)</string>
@@ -107,7 +101,6 @@
     <string name="firewall_rule_exempt_app_bypass_univ">التطبيق الذي تم تجاوزه</string>
     <string name="firewall_rule_exempt_dns_proxied">وكيل DNS</string>
     <string name="ci_no_rule">لا توجد قاعدة</string>
-    <string name="ada_app_status_whitelist">يتجاوز قواعد جدار الحماية العامة</string>
     <string name="rbl_parental_control">مراقبة اهلية</string>
     <string name="rt_dialog_neutral">استمر</string>
     <string name="rt_download">تنزيل قوائم الحظر</string>
@@ -119,15 +112,11 @@
     <string name="local_blocklist_download">تنزيل قوائم الحظر</string>
     <string name="orbot_status_arg_2">TCP</string>
     <string name="settings_custom_downloader_heading">استخدم أداة التنزيل داخل التطبيق</string>
-    <string name="hsf_vpn_dialog_header">انتباه!</string>
     <string name="cd_dns_crypt_title">محللات</string>
     <string name="cd_custom_dns_proxy_default_app">لا شيء</string>
     <string name="hs_download_positive_website">زيارة الموقع</string>
-    <string name="univ_firewall_rule_6">حظر التطبيقات المثبتة حديثًا افتراضيًا</string>
     <string name="dns_info_positive">موافق</string>
     <string name="dns_proxy_port">رقم المنفذ</string>
-    <string name="fapps_unmetered_block_dialog_title">منع على غير المقاييس</string>
-    <string name="fapps_unmetered_unblock_dialog_message">هل تريد السماح بالاتصالات على شبكة (WiFi) غير محدودة القياس لتطبيقات  المدرجة ؟</string>
     <string name="rules_load_failure_reload">إعادة تحميل</string>
     <string name="update_complete_action_snack">إعادة بدء</string>
     <string name="firewall_rule_block_http">HTTP غير آمن</string>
@@ -146,25 +135,19 @@
     <string name="cd_dns_proxy_mode_internal">داخلي</string>
     <string name="dns_proxy_ip_address">عنوان الإنترنت (IP address)</string>
     <string name="dns_proxy_dialog_message_no_app">عنوان IP: %1$s \n \nرقم المنفذ: %2$s</string>
-    <string name="fapps_unmetered_unblock_dialog_title">السماح في حالة عدم القياس</string>
-    <string name="fapps_unmetered_block_dialog_message">هل تريد حظر الاتصالات على شبكة (WiFi) غير المحسوبة لتطبيقات  المدرجة ؟</string>
     <string name="dns_crypt_connection_failure">خطأ في الاتصال بخادم DNSCrypt.</string>
     <string name="accessibility_notification_content">توقفت خدمة إمكانية الوصول Keepout أو تعطلت. لم يعد يحظر التطبيقات التي تعمل في الخلفية. انقر لإعادة التمكين.</string>
     <string name="firewall_rule_block_dns_bypass">تجاوز DNS</string>
     <string name="new_app_notification_content">منع Keepout التطبيق المثبت مؤخرًا ، %1$s.</string>
-    <string name="lbbs_enabled">‮مُفعّل</string>
-    <string name="always_on_dialog_neutral">الإعدادات</string>
     <string name="dns_crypt_relay_remove_dialog_title">هل تريد حذف DNSCrypt Relay؟</string>
     <string name="download_update_dialog_title">تحديث جديد!</string>
     <string name="settings_proxy_header">وكيل</string>
     <string name="settings_https_disabled_error">متصل بـ %1$s. قم بإيقاف تشغيله للمتابعة.</string>
     <string name="settings_http_proxy_desc">إعادة توجيه إلى %1$s</string>
     <string name="about_mail_bugreport_share_title">حدد مزود البريد الإلكتروني</string>
-    <string name="cd_dns_crypt_name_default">DNSCrypt</string>
     <string name="ctbs_block_other_apps">القواعد المطبقة على %1$s ستنطبق أيضًا على تطبيقات أخرى %2$s</string>
     <string name="univ_firewall_rule_4">حظر UDP باستثناء DNS و NTP</string>
     <string name="univ_firewall_rule_9">حظر على شبكة (جوال) مقننة</string>
-    <string name="fapps_metered_unblock_dialog_title">السماح في المقياس</string>
     <string name="system_dns_connection_failure">لا يمكن تحديد خادم DNS الحالي</string>
     <string name="firewall_rule_exempt_orbot_setup">إعداد Orbot</string>
     <string name="firewall_rule_no_rule_desc">لا توجد قواعد جدار حماية مطابقة لهذا الاتصال.</string>
@@ -176,7 +159,6 @@
     <string name="brbs_restore_no_uri_toast">فشلت الاستعادة ؛ حاول مرة أخرى</string>
     <string name="hybrid_mode_notification_title">محمي! متصل بـ DNS + جدار الحماية.</string>
     <string name="apps_info_title">التطبيقات</string>
-    <string name="firewall_act_universal_tab">عالمي</string>
     <string name="download_update_dialog_message_success">تم تنزيل قائمة الحظر بنجاح.</string>
     <string name="download_update_dialog_trylater_message">لا يمكن تنفيذ التحديث الآن ، يرجى المحاولة مرة أخرى لاحقًا.</string>
     <string name="orbot_stop_dialog_negative">أوقف Orbot</string>
@@ -185,7 +167,6 @@
     <string name="dc_block_heading">قواعد</string>
     <string name="dc_local_block_heading">قوائم الحظر على الجهاز</string>
     <string name="about_bug_no_log_dialog_message">تعذر جلب سجلات التعطل. هل تريد الإبلاغ عن الخطأ الخاص بك يدويًا؟</string>
-    <string name="univ_firewall_rule_1">حظر جميع التطبيقات عندما يكون الجهاز مقفلًا</string>
     <string name="dns_proxy_connection_failure">خطأ في الاتصال بخادم DNS Proxy.</string>
     <string name="firewall_rule_block_ip_univ_desc">حظرت قاعدة جدار الحماية التي وضعها المستخدم  الوجهة IP / المنفذ . <br/> <br/> للتغيير ، انتقل إلى علامة التبويب  العالمي .</string>
     <string name="ada_app_status_unknown">غير معروف</string>
@@ -195,7 +176,6 @@
     <string name="settings_theme_dialog_themes_2">إضاءة</string>
     <string name="lbl_proceed">متابعة</string>
     <string name="dc_dns_website_desc">يجلب ايقونات مواقع الويب من  nextdns.io  و  duckduckgo.com . يستهلك ما يصل إلى 350 ميغابايت في مساحة القرص</string>
-    <string name="cd_custom_doh_url_name_default">DoH</string>
     <string name="cd_dns_proxy_mode_external">خارجي</string>
     <string name="cd_dns_crypt_resolver_heading">محلل</string>
     <string name="univ_accessibility_dialog_positive">السماح</string>
@@ -221,22 +201,17 @@
     <string name="notif_channel_vpn_notification">نشط VPN</string>
     <string name="category_name_sys_components">مكونات النظام</string>
     <string name="category_name_sys_apps">تطبيقات النظام</string>
-    <string name="ada_app_status_exclude">مستثنى من DNS وجدار الحماية</string>
     <string name="notif_download_failure_content">التحميل فشل. حاول مرة أخرى.</string>
-    <string name="rt_download_desc">قم بتنزيل قوائم الحظر (حوالي 60 ميجابايت) لاستخدام هذه الميزة.</string>
     <string name="lbbs_update_check">التحقق من التحديثات</string>
     <string name="brbs_restore_title">استعادة</string>
     <string name="brbs_restore_dialog_failure_title">فشلت الاستعادة</string>
     <string name="http_proxy_dialog_heading">قم بتعيين وكيل HTTP(S) CONNECT</string>
-    <string name="settings_socks5_heading">إعداد وكيل SOCKS5</string>
     <string name="orbot_install_dialog_message">يجلب Orbot ميزات ووظائف Tor إلى Android.</string>
     <string name="about_bug_no_log_dialog_positive_btn">أرسل بريد الكتروني</string>
     <string name="cd_custom_doh_url_name">DoH %1$s</string>
     <string name="cd_doh_dialog_resolver_url">URL محلل</string>
     <string name="univ_firewall_rule_5">حظر عند تجاوز DNS</string>
-    <string name="univ_firewall_rule_10">حظر الكل باستثناء التطبيقات وعناوين IP التي تم تجاوزها</string>
     <string name="fapps_filter_parent_system">النظام</string>
-    <string name="fapps_metered_unblock_dialog_message">هل تريد السماح بالاتصالات على شبكة (جوال) محدودة القياس لتطبيقات  المدرجة ؟</string>
     <string name="settings_local_blocklist_in_use">%1$s قوائم الحظر قيد الاستخدام</string>
     <string name="firewall_rule_block_app_exception">خطأ</string>
     <string name="notif_channel_desc_firewall_alerts">تنبيه بشأن أخطاء جدار الحماية والأمور الشاذة</string>
@@ -261,8 +236,6 @@
     <string name="about_bug_no_log_dialog_title">تقرير الشوائب</string>
     <string name="about_website">قم بزيارة rethinkdns.com</string>
     <string name="cd_custom_dns_proxy_name">وكيل %1$s</string>
-    <string name="univ_firewall_rule_3">حظر عندما يكون التطبيق المصدر غير معروف</string>
-    <string name="univ_firewall_rule_8">حظر حركة مرور المنفذ 80 (HTTP غير الآمن)</string>
     <string name="univ_accessibility_crash_dialog_positive">اذهب للاعدادات</string>
     <string name="dns_connected">متصّل</string>
     <string name="rules_load_failure_heading">ملحوظة</string>
@@ -275,15 +248,12 @@
     <string name="download_update_dialog_message_ok">أنت بالفعل على أحدث إصدار.</string>
     <string name="orbot_install_dialog_neutral">موقع الكتروني</string>
     <string name="settings_network_all_networks_desc">عند التمكين ، يستخدم Keepout جميع الشبكات المتاحة للاتصال بالإنترنت. إذا لم يكن كذلك ، فإنه يستخدم أي شبكة يعتبرها  نشطة  بواسطة Android.</string>
-    <string name="dc_local_block_desc_1">اختر من بين 195+ قائمة حظر. انقر هنا لتنزيل أو تكوين قوائم الحظر.</string>
     <string name="about_bug_report_dialog_positive_btn">أرسل بريد الكتروني</string>
     <string name="lbl_add">أضِف</string>
     <string name="about_mail_subject">[Rethink]:</string>
     <string name="dns_connected_rethink_plus">متصل. %1$s قوائم الحظر قيد الاستخدام</string>
-    <string name="fapps_metered_block_dialog_title">كتلة على المقننة</string>
     <string name="copy_clipboard_label">عنوان الرابط</string>
     <string name="settings_local_blocklist_version">الإصدار %1$s</string>
-    <string name="pause_desc">ملاحظة: سيستمر جدار حماية التطبيقات %1$s المحظورة.</string>
     <string name="firewall_rule_bypass_universal_ip">تجاوز IP</string>
     <string name="notif_channel_proxy_failure">تنبيهات الوكيل</string>
     <string name="bsac_title_desc">تنطبق القواعد على هذا التطبيق فقط.</string>
@@ -305,26 +275,21 @@
     <string name="settings_general_header">جنرال لواء</string>
     <string name="settings_socks_forwarding_desc">إعادة التوجيه إلى %1$s: %2$s ، %3$s</string>
     <string name="about_github">المساهمة على GitHub</string>
-    <string name="univ_view_blocked_ip">IP &amp; Port قواعد</string>
     <string name="about_version_install_source">v%1$s (%2$s)</string>
     <string name="dns_proxy_desc">%1$s: %2$s ، %3$s</string>
     <string name="dns_query_latency">%1$s مللي ثانية</string>
     <string name="fapps_filter_parent_installed">مُثبت</string>
-    <string name="fapps_metered_block_dialog_message">هل تريد حظر الاتصالات على شبكة (جوال) محدودة القياس لتطبيقات  المدرجة ؟</string>
     <string name="notif_channel_vpn_failure">VPN غير نشط</string>
-    <string name="ada_app_status_block">محظور</string>
     <string name="notif_download_success_content">تم التنزيل بنجاح.</string>
     <string name="rt_dialog_title">حفظ التغييرات</string>
     <string name="rt_dialog_message">هل تريد تطبيق قوائم الحظر المكونة حديثًا؟</string>
     <string name="brbs_restore_dialog_failure_positive">أعد محاولة الاستعادة</string>
-    <string name="radio_sky_btn">⛅ Sky</string>
     <string name="notification_action_dns_firewall_mode">DNS + جدار الحماية</string>
     <string name="doh_custom_url_remove_dialog_title">حذف نقطة نهاية DoH؟</string>
     <string name="settings_autostart_bootup_heading">بدء التشغيل التلقائي عند التشغيل (تجريبي)</string>
     <string name="settings_dns_proxy_dialog_app_desc">سيتم استبعاد التطبيق المحدد من VPN للسماح له باتصالات الوكيل نيابة عنك.</string>
     <string name="settings_app_list_default_app">لا شيء</string>
     <string name="dc_custom_dns_radio">DNS آخر</string>
-    <string name="cd_custom_dns_proxy_name_default">البروكسي</string>
     <string name="cd_dns_proxy_error_text_1">عنوان IP غير صالح</string>
     <string name="univ_firewall_rule_2">حظر أي تطبيق ليس قيد الاستخدام</string>
     <string name="univ_view_blocked_ip_desc">تعديل المجال المحظور أو الموثوق به، قواعد IP / Port.</string>
@@ -366,7 +331,6 @@
     <string name="firewall_rule_block_app_univ_mobile_desc">حظرت قاعدة جدار الحماية الشاملة من قِبل المستخدم هذا التطبيق   عند محاولة الاتصال على شبكة  Metered  (Mobile). <br/> <br/> للتغيير انتقل إلى  يونيفرسال  التبويب.</string>
     <string name="ada_app_metered">مقننة</string>
     <string name="dns_proxy_dialog_header_dns">أضف وكيل DNS</string>
-    <string name="fapps_info_dialog_message">منع التطبيقات من الاتصال بالإنترنت. يساعد تقييد الوصول إلى الإنترنت على منع الاستخدام غير المبرر للبيانات، فضلاً عن الحفاظ على البطارية.</string>
     <string name="firewall_rule_block_app_new_install">تطبيق جديد</string>
     <string name="firewall_rule_device_lock_desc">تم حظر هذا الاتصال بسبب قفل جهاز   في ذلك الوقت. <br/> <br/> لتغيير هذا السلوك ، انتقل إلى علامة التبويب  العالمي .</string>
     <string name="firewall_rule_unknown_desc">تم جدار حماية هذا الاتصال لأنه تعذر تحديد التطبيق المصدر  . <br/> <br/> لتغيير هذا السلوك ، انتقل إلى علامة التبويب  العالمي .</string>
@@ -376,7 +340,6 @@
     <string name="firewall_rule_exempt_orbot_setup_desc">تم السماح بهذا الاتصال لأن تهيئة Tor-as-a-proxy بنقرة واحدة من خلال Orbot كانت جارية.</string>
     <string name="firewall_rule_block_http_desc">تم حظر هذا الاتصال لأنه من المحتمل أنه استخدم  HTTP غير آمن . <br/> <br/> للتغيير انتقل إلى علامة التبويب  العالمي .</string>
     <string name="new_app_notification_action_toast_allow">الاتصال بالشبكة مسموح به للتطبيق</string>
-    <string name="notif_dialog_pause_dialog_positive">استكمل</string>
     <string name="firewall_rule_trusted_ip_desc">تم السماح بهذا الاتصال لأنه تم تعيين عنوان IP الوجهة   لتجاوز جميع القواعد الخاصة بالتطبيق. <br/> <br/> للتغيير ، انتقل إلى شاشة جدار الحماية  الخاصة بالتطبيق .</string>
     <string name="firewall_rule_block_dns_bypass_desc">تم حظر هذا الاتصال لأن التطبيق المصدر   تجاوز DNS المفضل للمستخدم <br/> <br/> لتغيير هذا السلوك ، انتقل إلى علامة التبويب  العالمي .</string>
     <string name="firewall_rule_global_lockdown_desc">تم حظر هذا الاتصال بسبب تعيين القفل العام. <br/> <br/> للتغيير انتقل إلى علامة التبويب  العالمي .</string>
@@ -386,7 +349,6 @@
     <string name="ada_noapp_dialog_message">معلومات التطبيق مفقودة. ربما تم إلغاء تثبيت هذا التطبيق؟</string>
     <string name="ada_noapp_dialog_positive">حسنًا</string>
     <string name="ada_app_status_block_wifi">محظور على Wi-Fi</string>
-    <string name="ada_app_status_isolate">معزول: يُسمح فقط بعناوين IP والنطاقات الموثوقة</string>
     <string name="rt_edit_dialog_positive">تحرير</string>
     <string name="rt_chip_update_available">تحديث متوفر</string>
     <string name="brbs_restore_dialog_message">قم باستعادة إعدادات التطبيق، والشبكة وسجلات نظام dns من نسخة احتياطيّة. سيؤدي هذا إلى إعادة تشغيل التطبيق.</string>
@@ -448,9 +410,6 @@
     <string name="dc_dns_leaks_desc">عند التمكين ، تلتقط Keepout جميع الحزم الموجودة على المنفذ 53 وتعيد توجيهها إلى نقطة نهاية DNS التي يحددها المستخدم</string>
     <string name="cd_dns_crypt_dialog_desc">وصف (اختياري)</string>
     <string name="firewall_status_whitelisted">يتجاوز قواعد جدار الحماية العالمية</string>
-    <string name="hsf_vpn_dialog_message">يحتاج Keepout إلى إذن لإعداد VPN محلي لتشفير طلبات DNS الخاصة بالجهاز ، وتنفيذ مراقبة الشبكة ، وفرض قواعد جدار الحماية.
-\n
-\nلا يجمع Keepout أي معلومات أو يتجسس عليك بأي شكل من الأشكال.</string>
     <string name="cd_dns_proxy_error_text_2">يجب أن يتراوح نطاق المنفذ بين 1024 و 65535</string>
     <string name="cd_dns_crypt_dialog_stamp">ختم</string>
     <string name="about_mail_to">hello@celzero.com</string>
@@ -499,7 +458,6 @@
     <string name="bypass_dns_firewall" translatable="true">تجاوزDNS وجدار الحماية</string>
     <string name="bsct_block_domain" translatable="true">حظر ، تجاوز  النطاقات  من أجل  هذا التطبيق </string>
     <string name="settings_lock_down_proxy_desc" translatable="true">لا يمكن إعداد الوكلاء عند تشغيل VPN في وضع DNS فقط.</string>
-    <string name="settings_general_customize" translatable="true">تخصيص</string>
     <string name="lbl_logs" translatable="true">السجلات</string>
     <string name="settings_default_dns_heading" translatable="true">أختر DNS الاحتياطي</string>
     <string name="lbl_cancel" translatable="true">إلغاء</string>
@@ -516,17 +474,12 @@
     <string name="lbl_qr_code" translatable="true">رمز QR</string>
     <string name="lbl_network" translatable="true">الشبكة</string>
     <string name="lbl_starting" translatable="true">البدء</string>
-    <string name="lbl_private" translatable="true">خاص</string>
-    <string name="lbl_secure" translatable="true">آمن</string>
-    <string name="lbl_anonymous" translatable="true">مجهول</string>
     <string name="lbl_peer" translatable="true">نظير</string>
     <string name="dot_custom_url_remove_dialog_message" translatable="true">حذف DNS عبر نقطة نهاية TLS من التكوين المحفوظ.</string>
-    <string name="fapps_info_bypass_msg" translatable="true">تجاوز قواعد جدار الحماية العالمي.</string>
     <string name="failed_using_default" translatable="true">فشل: استخدام DNS الإحتياطي</string>
     <string name="hs_biometeric_title" translatable="true">إلغاء قفل Keepout</string>
     <string name="hs_biometeric_error" translatable="true">خطأ في المصادقة البيومترية</string>
     <string name="cd_dns_alg_heading" translatable="true">تصفية DNS المتقدمة (تجريبي)</string>
-    <string name="fapps_info_isolate_msg" translatable="true">حظر الكل باستثناء عناوين IPs الموثوقة.</string>
     <string name="config_delete_dialog_title" translatable="true">احذف</string>
     <string name="lbl_addresses" translatable="true">العناوين</string>
     <string name="lbl_dns_servers" translatable="true">خوادم DNS</string>
@@ -543,12 +496,10 @@
     <string name="lbl_http" translatable="true">HTTP</string>
     <string name="lbl_fast" translatable="true">سريع</string>
     <string name="lbl_slow" translatable="true">بطيء</string>
-    <string name="lbl_app_wise" translatable="true">لكل تطبيق</string>
     <string name="lbl_http_socks5" translatable="true">HTTPS و SOCKS5</string>
     <string name="lbl_insecure" translatable="true">(غير آمن)</string>
     <string name="lbl_optional" translatable="true">(اختياري)</string>
     <string name="lbl_save" translatable="true">احفظ</string>
-    <string name="fapps_info_bypass_dns_firewall_msg" translatable="true">تجاوز قواعد DNS وجدار الحماية.</string>
     <string name="hs_biometeric_desc" translatable="true">استخدم المصادقة البيومترية لإلغاء قفل Keepout</string>
     <string name="lbl_status" translatable="true">الحالة</string>
     <string name="lbl_remove" translatable="true">أزِل</string>
@@ -557,7 +508,6 @@
     <string name="settings_connectivity_checks" translatable="true">إجراء فحوصات الإتصال</string>
     <string name="settings_connectivity_checks_desc" translatable="true">يتم إرسال فحوصات الإتصال للتأكد من إمكانية الوصول.</string>
     <string name="orbot_no_app_toast" translatable="true">إضافة تطبيق واحد على الأقل لتمكين Orbot</string>
-    <string name="univ_firewall_heading" translatable="true">قواعد جدار الحماية العالمية</string>
     <string name="firewall_rule_trusted_domain" translatable="true">النطاق الموثوق به (التطبيق)</string>
     <string name="dc_refresh_toast" translatable="true">اكتمل التحديث</string>
     <string name="ada_app_status_bypass_dns_firewall" translatable="true">يتجاوز قواعد DNS وجدار الحماية العامة</string>
@@ -651,7 +601,6 @@
     <string name="cd_split_dns_heading" translatable="true">تقسيم DNS (تجريبي)</string>
     <string name="cd_split_dns_desc" translatable="true">إعادة توجيه إستعلامات DNS من التطبيقات الوكيلة إلى خوادم DNS الخاصة بالوكيل.</string>
     <string name="cd_treat_dns_rules_firewall_heading" translatable="true">معاملة قواعد DNS كقواعد جدار الحماية (تجريبي)</string>
-    <string name="fapps_bypass_block_dialog_title" translatable="true">تجاوز التطبيقات</string>
     <string name="fail_open_network_title" translatable="true">لا تتوقف عند فقدان الشبكة</string>
     <string name="fail_open_network_desc" translatable="true">عند تعطيله، يقوم Keepout بإيقاف جميع البيانات عند عدم توفر أي إتصال، كما هو الحال في وضع الطائرة.</string>
     <string name="home_last_24_hours">آخر 24 ساعة</string>
@@ -666,9 +615,6 @@
     <string name="home_stopped_most">الأكثر حظرًا</string>
     <string name="home_nothing_stopped">لم يُحظر أي شيء خلال آخر 24 ساعة.</string>
     <string name="home_see_statistics">الإحصائيات</string>
-    <string name="home_apps_caption">Wi-Fi والبيانات لكل تطبيق</string>
-    <string name="home_logs_caption">كل اتصال وكل استعلام</string>
-    <string name="home_dns_caption">المحلّل وقوائم الحظر</string>
     <string name="log_detail_protocol">البروتوكول</string>
     <string name="log_detail_country">البلد</string>
     <string name="log_detail_address">العنوان</string>
@@ -712,8 +658,6 @@
     <string name="dns_recent_lookups">آخر الاستعلامات</string>
     <string name="dns_no_lookups_yet">لا توجد استعلامات بعد</string>
     <string name="cd_doh_dialog_checkbox_desc" translatable="true">لا تتحقق من صحة شهادات TLS الخاصة بالخادم (فعِّل هذا الخيار فقط إذا كنت تعرف ما تفعله)</string>
-    <string name="fapps_bypass_dns_firewall_dialog_title" translatable="true">تجاوز التطبيقات</string>
-    <string name="fapps_isolate_block_dialog_title" translatable="true">اعزل التطبيقات</string>
     <string name="firewall_rule_private_dns" translatable="true">DNS خاص</string>
     <string name="firewall_rule_proxied" translatable="true">موكّل</string>
     <string name="lbl_action" translatable="true">الإجراء</string>

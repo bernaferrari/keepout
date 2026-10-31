@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="finish">തീര്ക്കുക</string>
-    <string name="always_on_dialog_neutral">ക്രമീകരണങ്ങള്‍</string>
     <string name="settings_theme_heading">രൂപം</string>
     <string name="title_settings">ക്രമീകരണങ്ങൾ</string>
     <string name="txt_home" translatable="true">പൂമുഖം</string>
@@ -19,7 +17,6 @@
     <string name="lbl_blocked" translatable="true">തടഞ്ഞു</string>
     <string name="lbl_disabled" translatable="true">അപ്രാപ്തമാക്കി</string>
     <string name="lbl_action_required" translatable="true">നടപടി ആവശ്യമാണ്</string>
-    <string name="lbbs_enabled" translatable="true">പ്രവർത്തനക്ഷമമാക്കി</string>
     <string name="notification_action_stop_vpn" translatable="true">നിർത്തുക</string>
     <string name="always_on_dialog_positive_btn" translatable="true">ക്രമീകരണങ്ങളിലേക്ക് പോകുക</string>
     <string name="always_on_dialog_positive" translatable="true">നിർത്തുക</string>
@@ -49,9 +46,6 @@
     <string name="home_stopped_most">ഏറ്റവുമധികം തടഞ്ഞത്</string>
     <string name="home_nothing_stopped">കഴിഞ്ഞ 24 മണിക്കൂറിൽ ഒന്നും തടഞ്ഞിട്ടില്ല.</string>
     <string name="home_see_statistics">സ്ഥിതിവിവരക്കണക്കുകൾ</string>
-    <string name="home_apps_caption">ഓരോ ആപ്പിനും Wi-Fi, ഡാറ്റ</string>
-    <string name="home_logs_caption">എല്ലാ കണക്ഷനുകളും ലുക്കപ്പുകളും</string>
-    <string name="home_dns_caption">റിസോൾവറും ബ്ലോക്ക്‌ലിസ്റ്റുകളും</string>
     <string name="log_detail_protocol">പ്രോട്ടോക്കോൾ</string>
     <string name="log_detail_country">രാജ്യം</string>
     <string name="log_detail_address">വിലാസം</string>

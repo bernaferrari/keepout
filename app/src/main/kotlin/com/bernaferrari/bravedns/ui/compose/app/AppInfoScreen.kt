@@ -15,6 +15,7 @@
  */
 package com.bernaferrari.bravedns.ui.compose.app
 
+import androidx.compose.ui.platform.LocalResources
 import android.widget.Toast
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
@@ -375,7 +376,7 @@ private fun appInfoStrings(): RethinkAppInfoStrings {
     val wifiBlocked = stringResource(R.string.app_state_wifi_blocked)
     val mobileAllowed = stringResource(R.string.app_state_mobile_allowed)
     val mobileBlocked = stringResource(R.string.app_state_mobile_blocked)
-    val resources = LocalContext.current.resources
+    val resources = LocalResources.current
     return RethinkAppInfoStrings(
         unavailable = stringResource(R.string.ada_noapp_dialog_message),
         loading = stringResource(R.string.lbl_loading),

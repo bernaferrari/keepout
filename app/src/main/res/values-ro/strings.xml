@@ -4,7 +4,6 @@
     <string name="title_statistics" translatable="true">Statistici</string>
     <string name="txt_home" translatable="true">Acasă</string>
     <string name="accessibility_service_description" translatable="true">Keepout utilizează serviciul de accesibilitate pentru a detecta și proteja aplicațiile care rulează în fundal. Keepout nu colectează și nu vinde nici o informație.</string>
-    <string name="finish" translatable="true">Termină</string>
     <string name="lbl_cancel" translatable="true">Anulează</string>
     <string name="lbl_blocked" translatable="true">Blocate</string>
     <string name="lbl_domain_rules" translatable="true">Reguli domeniu</string>
@@ -20,7 +19,6 @@
     <string name="lbl_socks5" translatable="true">SOCKS5</string>
     <string name="lbl_slow" translatable="true">lent</string>
     <string name="lbl_add" translatable="true">Adaugă</string>
-    <string name="lbl_app_wise" translatable="true">per aplicatie</string>
     <string name="lbl_sec" translatable="true">sec.</string>
     <string name="lbl_min" translatable="true">min.</string>
     <string name="lbl_hour" translatable="true">oră</string>
@@ -59,8 +57,6 @@
     <string name="crypt_adguard_family_desc" translatable="true">DNS AdGuard cu căutare securizată și blocare conținut pentru adulți.</string>
     <string name="crypt_cleanbrowsing_family_desc" translatable="true">Blochează accesul la toate website-urile pornografice, pentru adulți sau cu conținut explicit. Blochează toate conexiunile prin proxy sau VPN folosite pentru a ocoli filtrele. Website-urile cu conținut mixt (precum Reddit) sunt, de asemenea, blocate. Google, Bing și YouTube sunt setate pe Safe Mode.</string>
     <string name="cleanbrowsing_adult_dns_desc" translatable="true">Filtrul Adult blochează accesul la toate website-urile pornografice, pentru adulți sau cu conținut explicit. Nu blochează conexiunile prin proxy sau VPN și nici website-urile cu conținut mixt. Website-urile precum Reddit sunt permise. Google și Bing sunt setate pe SafeMode.</string>
-    <string name="lbl_secure" translatable="true">securizat</string>
-    <string name="lbl_anonymous" translatable="true">anonim</string>
     <string name="untracked" translatable="true">neurmărit</string>
     <string name="bypass_dns_firewall" translatable="true">ocolește dns și firewall</string>
     <string name="warning_title" description="Status indicator text shown in a warning notification." translatable="true">Atentie: Keepout a fost dezactivat</string>
@@ -86,7 +82,6 @@
     <string name="lbl_dns_servers" translatable="true">Servere DNS</string>
     <string name="lbl_ip_rules" translatable="true">Reguli IP</string>
     <string name="lbl_stopped" translatable="true">Oprit</string>
-    <string name="lbl_private" translatable="true">privat</string>
     <string name="lbl_idle" translatable="true">Inactiv</string>
     <string name="lbl_peer" translatable="true">Pereche</string>
     <string name="lbl_split" translatable="true">Ramificat</string>
@@ -107,12 +102,10 @@
     <string name="status_no_internet" translatable="true">Fără internet</string>
     <string name="notification_action_dns_mode" translatable="true">DNS</string>
     <string name="dns_mode_info_title" translatable="true">DNS</string>
-    <string name="firewall_mode_info_title" translatable="true">Firewall</string>
     <string name="apps_info_title" translatable="true">Aplicații</string>
     <string name="custom_url_error_invalid_url" translatable="true">URL invalid</string>
     <string name="bsct_app_info" translatable="true">Informații aplicație</string>
     <string name="always_on_dialog_positive_btn" translatable="true">Mergi la Setări</string>
-    <string name="always_on_dialog_neutral" translatable="true">Setări</string>
     <string name="private_dns_dialog_positive" translatable="true">Mergi la Setări</string>
     <string name="download_update_dialog_title" translatable="true">Actualizare nouă!</string>
     <string name="download_update_dialog_failure_title" translatable="true">Ceva n-a mers bine!</string>
@@ -122,7 +115,6 @@
     <string name="orbot_status_arg_2" translatable="true">TCP</string>
     <string name="orbot_install_dialog_title" translatable="true">Instalezi Orbot?</string>
     <string name="orbot_install_dialog_neutral" translatable="true">website</string>
-    <string name="settings_general_customize" translatable="true">Personalizare</string>
     <string name="settings_check_update_heading" translatable="true">Caută actualizări</string>
     <string name="settings_theme_heading" translatable="true">Aspect</string>
     <string name="settings_app_list_default_app" translatable="true">Nici una</string>
@@ -154,7 +146,6 @@
     <string name="always_on_dialog_heading" translatable="true">Dezactivează VPN Permanent</string>
     <string name="always_on_dialog" translatable="true">\"VPN Permanent\" este activat pe acest dispozitiv. Pentru a porni Keepout, mergi la setările aplicației și dezactivează \"VPN Permanent\".</string>
     <string name="always_on_dialog_stop_heading" translatable="true">VPN Permanent</string>
-    <string name="firewall_act_universal_tab" translatable="true">Universal</string>
     <string name="download_update_dialog_trylater_message" translatable="true">Nu se poate actualiza acum, încearcă din nou mai târziu.</string>
     <string name="search_proxy_add_apps" translatable="true">Caută aplicații după nume</string>
     <string name="info_dialog_copy_toast_msg" translatable="true">Adresă IP copiată.</string>
@@ -202,7 +193,6 @@
     <string name="settings_allow_bypass_desc" translatable="true">Permite aplicațiilor să acceseze toate rețelele disponibile. La nevoie, aceste aplicații pot ocoli tunelul VPN Keepout. Unele aplicații de audio/video conferință precum Zoom și Meet au nevoie de asta pentru a funcționa corespunzător.</string>
     <string name="settings_lock_down_mode_desc" translatable="true">Anumite opțiuni sunt dezactivate când VPN e în modul lockdown. Vezi setările VPN.</string>
     <string name="settings_lock_down_proxy_desc" translatable="true">Nu pot fi setate proxy-uri când VPN rulează în modul DNS-only.</string>
-    <string name="settings_socks5_heading" translatable="true">Setări Proxy SOCKS5</string>
     <string name="settings_https_heading" translatable="true">Setări Proxy HTTP(S) CONNECT</string>
     <string name="settings_https_desc" translatable="true">Transmite conexiunile la endpoint-ul HTTP(S) CONNECT.</string>
     <string name="orbot_socks5" translatable="true">Proxy TCP-only</string>
@@ -314,11 +304,7 @@
     <string name="collecting_logs_progress_text" translatable="true">Se capturează…</string>
     <string name="vpn_profile_error" translatable="true">Nu pot deschide profilul VPN.</string>
     <string name="cd_dns_crypt_title" translatable="true">Rezolvatori</string>
-    <string name="cd_custom_doh_url_name_default" translatable="true">DoH</string>
     <string name="cd_custom_doh_url_name" translatable="true">DoH %1$s</string>
-    <string name="hsf_vpn_dialog_header" translatable="true">Atenție!</string>
-    <string name="hsf_vpn_dialog_message" translatable="true">Keepout cere permisiunea de a stabili o VPN locală pentru a cripta cererile DNS ale dispozitivului, a implementa monitorizarea rețelei și a impune regulile Firewall-ului.\n\nKeepout nu colectează informații și nu vă spionează în nici un fel.</string>
-    <string name="dc_local_block_desc_1" translatable="true">Alege din peste 195 liste de blocat. Click aici pentru descărcarea sau configurarea lor.</string>
     <string name="dc_dns_leaks_desc" translatable="true">Când este activat, Keepout capturează toate pachetele la portul 53 și le înaintează la un endpoint setat de utilizator</string>
     <string name="about_bug_report" translatable="true">Raportare bug</string>
     <string name="about_bug_report_dialog_positive_btn" translatable="true">Trimite e-mail</string>
@@ -327,7 +313,6 @@
     <string name="about_connect" translatable="true">Contact</string>
     <string name="about_dialog_positive_button" translatable="true">Să începem</string>
     <string name="notification_screen_error" translatable="true">Nu pot deschide ecranul Notificări Aplicație.</string>
-    <string name="cd_custom_dns_proxy_name_default" translatable="true">Proxy</string>
     <string name="cd_custom_dns_proxy_name" translatable="true">Proxy %1$s</string>
     <string name="cd_custom_dns_proxy_default_app" translatable="true">Nici una</string>
     <string name="cd_dns_proxy_mode_internal" translatable="true">Intern</string>
@@ -335,7 +320,6 @@
     <string name="cd_dns_proxy_error_text_1" translatable="true">Adresă IP nevalidă</string>
     <string name="cd_dns_proxy_error_text_2" translatable="true">Portul trebuie să fie în intervalul 1024–65535</string>
     <string name="cd_dns_proxy_error_text_3" translatable="true">Portul nu e valid</string>
-    <string name="cd_dns_crypt_name_default" translatable="true">DNSCrypt</string>
     <string name="cd_dns_crypt_name" translatable="true">DNSCrypt %1$s</string>
     <string name="cd_dns_crypt_relay_name" translatable="true">Releu DNS %1$s</string>
     <string name="cd_dns_crypt_dialog_heading" translatable="true">Adaugă Rezolvatorul sau Releul DNSCrypt</string>
@@ -361,24 +345,14 @@
     <string name="dns_proxy_dialog_message_no_app" translatable="true">Adresă IP: %1$s\n\nNumăr port: %2$s</string>
     <string name="dns_proxy_dialog_header_dns" translatable="true">Adaugă Proxy DNS</string>
     <string name="fapps_firewall_filter_bypass_universal" translatable="true">Cu ocolire</string>
-    <string name="fapps_info_dialog_message" translatable="true">Blochează conectarea la internet a aplicațiilor. Limitarea accesului la internet previne consumul inutil de date și economisește bateria.</string>
-    <string name="univ_firewall_rule_1" translatable="true">Blochează toate aplicațiile când dispozitivul este blocat</string>
     <string name="univ_firewall_rule_2" translatable="true">Blochează toate aplicațiile care rulează în fundal</string>
-    <string name="univ_firewall_rule_3" translatable="true">Blochează aplicațiile din surse necunoscute</string>
     <string name="univ_firewall_rule_4" translatable="true">Blochează UDP cu excepția DNS și NTP</string>
     <string name="univ_firewall_rule_5" translatable="true">Blochează când DNS este ocolit</string>
-    <string name="univ_firewall_rule_6" translatable="true">Blochează aplicațiile nou instalate (prestabilit)</string>
-    <string name="univ_firewall_rule_8" translatable="true">Blochează traficul prin portul 80 (HTTP nesecurizat)</string>
     <string name="univ_firewall_rule_9" translatable="true">Blochează în rețelele contorizate (mobile)</string>
-    <string name="univ_firewall_rule_10" translatable="true">Blochează tot, cu excepția aplicațiilor și IP-urilor cu ocolire</string>
-    <string name="univ_view_blocked_ip" translatable="true">Reguli pentru IP-uri și porturi</string>
     <string name="univ_view_blocked_ip_desc" translatable="true">Modifică domeniile, IP-urile și porturile blocate sau de încredere.</string>
     <string name="univ_accessibility_crash_dialog_positive" translatable="true">Mergi la Setări</string>
     <string name="univ_accessibility_dialog_positive" translatable="true">Permite</string>
     <string name="univ_accessibility_dialog_negative" translatable="true">Interzice</string>
-    <string name="univ_firewall_heading" translatable="true">Reguli universale pentru firewall</string>
-    <string name="app_ip_domain_rules" translatable="true">Reguli de IP/domeniu per aplicație</string>
-    <string name="app_ip_domain_rules_desc" translatable="true">Modifică regulile de IP/Domeniu pentru fiecare aplicație.</string>
     <string name="dns_connected_rethink_plus" translatable="true">Conectat. Se utilizează lista de blocat %1$s</string>
     <string name="dns_connected" translatable="true">Conectat</string>
     <string name="dns_info_positive" translatable="true">Ok</string>
@@ -393,18 +367,8 @@
     <string name="fapps_filter_parent_system" translatable="true">Sistem</string>
     <string name="fapps_firewall_filter_excluded" translatable="true">Excluse</string>
     <string name="fapps_firewall_filter_isolate" translatable="true">Izolate</string>
-    <string name="fapps_info_unmetered_msg" translatable="true">Permite/Blochează în rețelele necontorizate (WiFi).</string>
-    <string name="fapps_info_metered_msg" translatable="true">Permite/Blochează în rețelele contorizate (Mobile).</string>
-    <string name="fapps_info_bypass_msg" translatable="true">Ocolește regulile universale ale Firewall-ului.</string>
-    <string name="fapps_info_bypass_dns_firewall_msg" translatable="true">Ocolește regulile DNS și Firewall.</string>
-    <string name="fapps_info_exclude_msg" translatable="true">Exclude din ambele: DNS și Firewall.</string>
     <string name="fapps_filter_clear_btn" translatable="true">Șterge</string>
-    <string name="fapps_info_isolate_msg" translatable="true">Blochează tot cu excepția IP-urilor de încredere.</string>
     <string name="fapps_info_dialog_positive_btn" translatable="true">Okay</string>
-    <string name="fapps_unmetered_unblock_dialog_title" translatable="true">Permite în rețele necontorizate</string>
-    <string name="fapps_unmetered_block_dialog_title" translatable="true">Blochează în rețele necontorizate</string>
-    <string name="fapps_unmetered_unblock_dialog_message">Permiți conexiunile în rețele necontorizate (WiFi) pentru aplicațiile din listă\?</string>
-    <string name="fapps_unmetered_block_dialog_message" translatable="true">Blochezi conexiunile în rețele necontorizate (WiFi) pentru aplicațiile din listă\?</string>
     <string name="rules_load_failure_heading" translatable="true">Notă</string>
     <string name="network_log_app_name_unknown" translatable="true">Necunoscut</string>
     <string name="accessibility_notification_content" translatable="true">Serviciul de accesibilitate Keepout s-a oprit sau blocat. Ca urmare, aplicațiile în fundal nu mai sunt blocate. Tap pentru a reactiva.</string>
@@ -418,20 +382,6 @@
     <string name="new_app_notification_action_toast_deny" translatable="true">Conexiune de rețea refuzată pentru aplicație</string>
     <string name="notif_channel_vpn_failure" translatable="true">VPN inactivă</string>
     <string name="notif_channel_desc_firewall_alerts" translatable="true">Notificare la erori și anomalii ale Firewall-ului</string>
-    <string name="fapps_bypass_block_dialog_message" translatable="true">Ocolești regulile universale de Firewall pentru aplicațiile din listă\?</string>
-    <string name="fapps_bypass_dns_firewall_dialog_title" translatable="true">Aplicații cu ocolire</string>
-    <string name="fapps_bypass_dns_firewall_dialog_message" translatable="true">Ocolești regulile universale la DNS și Firewall pentru aplicațiile din listă\?</string>
-    <string name="fapps_unblock_dialog_title" translatable="true">Permite aplicații</string>
-    <string name="fapps_exclude_block_dialog_title" translatable="true">Exclude aplicații</string>
-    <string name="fapps_unblock_dialog_message" translatable="true">Permiți conexiunile pentru aplicațiile din listă\?</string>
-    <string name="fapps_exclude_block_dialog_message" translatable="true">Excluzi aplicațiile din listă de la Firewall și DNS?</string>
-    <string name="fapps_isolate_block_dialog_title" translatable="true">Izolare aplicatii</string>
-    <string name="fapps_isolate_block_dialog_message" translatable="true">Izolezi aplicațiile din listă\?</string>
-    <string name="fapps_metered_block_dialog_title" translatable="true">Blocare în rețele contorizate</string>
-    <string name="fapps_metered_unblock_dialog_title" translatable="true">Permis în rețele contorizate</string>
-    <string name="fapps_metered_unblock_dialog_message" translatable="true">Permiți conexiunile în rețelele contorizate (mobile) pentru aplicațiile din listă\?</string>
-    <string name="fapps_metered_block_dialog_message" translatable="true">Blochezi conexiunile în rețelele contorizate (mobile) pentru aplicațiile din listă\?</string>
-    <string name="fapps_bypass_block_dialog_title" translatable="true">Aplicații cu ocolire</string>
     <string name="rules_load_failure_desc" translatable="true">Nu ai fost găsite reguli pentru Firewall</string>
     <string name="rules_load_failure_reload" translatable="true">Reîncărcare</string>
     <string name="network_log_app_name_unnamed" translatable="true">Fără nume (%1$s)</string>
@@ -446,7 +396,6 @@
     <string name="settings_local_blocklist_version" translatable="true">Versiune: v%1$s</string>
     <string name="toast_allow_bypass_disabled" translatable="true">%1$s este deactivat dacă proxy-urile sunt active</string>
     <string name="pause_text" translatable="true">în pauză</string>
-    <string name="pause_desc" translatable="true">Notă: %1$s aplicații blocate vor fi protejate de firewall în continuare.</string>
     <string name="other_dns_list_tab1" translatable="true">DoH</string>
     <string name="firewall_rule_no_rule" translatable="true">Fără reguli</string>
     <string name="firewall_rule_block_app" translatable="true">Aplicație blocată</string>
@@ -504,7 +453,6 @@
     <string name="new_app_notification_content" translatable="true">Keepout a blocat aplicația instalată recent, %1$s.</string>
     <string name="new_app_notification_action_deny" translatable="true">Continuă blocarea</string>
     <string name="new_app_notification_action_toast_allow" translatable="true">Conexiune de rețea permisă pentru aplicație</string>
-    <string name="notif_dialog_pause_dialog_positive" translatable="true">Continuă</string>
     <string name="notif_channel_vpn_notification" translatable="true">VPN activă</string>
     <string name="notif_channel_desc_vpn_notification" translatable="true">Notificare când Keepout este activ și rulează în fundal</string>
     <string name="notif_channel_desc_vpn_failure" translatable="true">Notificare când Keepout este oprit de Android sau de alte aplicații VPN</string>
@@ -534,21 +482,13 @@
     <string name="unknown_error" translatable="true">Eroare necunoscută</string>
     <string name="invalid_file_error" translatable="true">fișierul nu e valid</string>
     <string name="routing_remaining_apps" translatable="true">Se direcționează aplicațiile rămase</string>
-    <string name="rt_download_desc" translatable="true">Descarcă listele de blocat (aprox. 60Mb) pentru a utiliza această opțiune.</string>
     <string name="rt_filter_parent_selected" translatable="true">Selectat</string>
-    <string name="radio_max_btn" translatable="true">🪂 Max</string>
     <string name="rt_filter_desc" translatable="true"><![CDATA[Se arată listele de blocat %1$s]]></string>
-    <string name="ada_noapp_dialog_title" translatable="true">Nu există această aplicație</string>
     <string name="ada_noapp_dialog_message" translatable="true">Nu există informații despre aplicație. Posibil să fi fost dezinstalată?</string>
     <string name="ada_noapp_dialog_positive" translatable="true">Okay</string>
     <string name="ada_ip_no_connection" translatable="true">Nu există înregistrări în jurnal pentru această categorie.</string>
-    <string name="ada_app_status_whitelist" translatable="true">Ocolește regulile universale de firewall</string>
-    <string name="ada_app_status_isolate" translatable="true">Izolată: sunt permise doar IP-uri și domenii de încredere</string>
-    <string name="ada_app_status_exclude" translatable="true">Exclusă din DNS și firewall</string>
     <string name="ada_app_status_block_md" translatable="true">Blocată pe date mobile</string>
     <string name="ada_app_status_block_wifi" translatable="true">Blocată pe Wi-Fi</string>
-    <string name="ada_app_status_block" translatable="true">Blocată</string>
-    <string name="ada_app_status_allow" translatable="true">Permisă</string>
     <string name="ada_app_status_bypass_dns_firewall" translatable="true">Ocolește regulile universale de DNS și firewall</string>
     <string name="ada_app_status_unknown" translatable="true">Necunoscută</string>
     <string name="ada_app_metered" translatable="true">Contorizat</string>
@@ -584,7 +524,6 @@
     <string name="rt_re_download" translatable="true">Re-descărcare liste de blocat</string>
     <string name="rt_list_simple_btn_txt" translatable="true">Simplu</string>
     <string name="lbl_advanced" translatable="true">Avansat</string>
-    <string name="lbbs_enabled" translatable="true">Activată</string>
     <string name="lbbs_configure" translatable="true">Configurează</string>
     <string name="lbbs_copy" translatable="true">Copiază ca URL RDNS+</string>
     <string name="lbbs_search" translatable="true">Caută domenii în lista de blocat</string>
@@ -602,11 +541,9 @@
     <string name="brbs_backup_dialog_failure_title" translatable="true">Nu s-a realizat copia de rezervă</string>
     <string name="brbs_backup_dialog_failure_positive" translatable="true">Reîncearcă crearea unei copii de rezervă</string>
     <string name="brbs_backup_dialog_failure_message" translatable="true">Nu s-a realizat copia de rezervă. Mai încerci o dată?</string>
-    <string name="radio_sky_btn" translatable="true">⛅ Sky</string>
     <string name="rt_filter_hint" translatable="true">Se arată toate listele de blocat</string>
     <string name="rt_filter_desc_subgroups" translatable="true"><![CDATA[Se arată listele de blocat %1$sîn grupul: %2$s și subgrupul: %3$s]]></string>
     <string name="rethink_sky_desc" translatable="true">280+ locații; uptime ridicat; resolver stub rulând pe cloudflare.com</string>
-    <string name="rethink_max_desc" translatable="true">50+ locații; mai multă intimitate; resolver recursiv rulând pe fly.io</string>
     <string name="dc_setting_dns_cache_heading" translatable="true">Booster DNS</string>
     <string name="dc_setting_dns_cache_desc" translatable="true">Grupează cererile, memorează răspunsurile, rezolvă cu promptitudine erorile</string>
     <string name="dc_refresh_toast" translatable="true">Reîmprospătare completă</string>
@@ -771,9 +708,6 @@
     <string name="home_stopped_most">Cele mai blocate</string>
     <string name="home_nothing_stopped">Nimic nu a fost blocat în ultimele 24 de ore.</string>
     <string name="home_see_statistics">Statistici</string>
-    <string name="home_apps_caption">Wi-Fi și date, pentru fiecare aplicație</string>
-    <string name="home_logs_caption">Fiecare conexiune și interogare</string>
-    <string name="home_dns_caption">Rezolvator și liste de blocat</string>
     <string name="log_detail_protocol">Protocol</string>
     <string name="log_detail_country">Țară</string>
     <string name="log_detail_address">Adresă</string>

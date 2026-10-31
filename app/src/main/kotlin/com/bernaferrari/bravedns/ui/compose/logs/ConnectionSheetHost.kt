@@ -329,6 +329,7 @@ fun ConnectionSheetHost(
     }
     val title = domain ?: request.domain ?: request.ipAddress ?: appName
     val copiedMessage = stringResource(R.string.copied_clipboard)
+    val copyAddressLabel = stringResource(R.string.connection_copy_address)
 
     RethinkConnectionSheet(
         model = RethinkConnectionSheetModel(
@@ -379,7 +380,7 @@ fun ConnectionSheetHost(
             request.packageName?.let { AppIcon(it, appName = request.appName) } ?: appUid?.let { AppIcon(it) }
         },
         onCopyAddress = {
-            UIUtils.clipboardCopy(context, title, context.getString(R.string.connection_copy_address))
+            UIUtils.clipboardCopy(context, title, copyAddressLabel)
             scope.launch { snackbar.showSnackbar(copiedMessage) }
         },
         onOpenApp = appUid?.let { uid -> navigation.onOpenApp?.let { open -> { navigate { open(uid) } } } },

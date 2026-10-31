@@ -47,8 +47,6 @@
     <string name="lbl_starting" translatable="true">Spúšťa sa</string>
     <string name="lbl_overall" translatable="true">Celkový</string>
     <string name="lbl_stopped" translatable="true">Zastavený</string>
-    <string name="lbl_private" translatable="true">súkromný</string>
-    <string name="lbl_secure" translatable="true">bezpečný</string>
     <string name="lbl_peer" translatable="true">Peer</string>
     <string name="allow" translatable="true">povoliť</string>
     <string name="block" translatable="true">blokovať</string>
@@ -71,7 +69,6 @@
     <string name="notification_action_dns_mode" translatable="true">DNS</string>
     <string name="notification_action_dns_firewall_mode" translatable="true">DNS + Firewall</string>
     <string name="dns_mode_info_title" translatable="true">DNS</string>
-    <string name="firewall_mode_info_title" translatable="true">Firewall</string>
     <string name="apps_info_title" translatable="true">Aplikácie</string>
     <string name="alert_permission_accessibility" translatable="true">Povolenie - Prístupnosť</string>
     <string name="default_dns_name" translatable="true">RDNS Predvolený</string>
@@ -87,18 +84,15 @@
     <string name="always_on_dialog_stop_heading" translatable="true">Vždy zapnutá VPN</string>
     <string name="always_on_dialog_stop_message" translatable="true">Pre Keepout je povolená vždy zapnutá VPN. Ste si istý, že napriek tomu chcete zastaviť Keepout?</string>
     <string name="always_on_dialog_positive" translatable="true">Zastaviť</string>
-    <string name="always_on_dialog_neutral" translatable="true">Nastavenia</string>
     <string name="private_dns_dialog_heading" translatable="true">Vypni Súkromné DNS</string>
     <string name="private_dns_dialog_desc" translatable="true">Nastavenia Rethink DNS sú prepísané súkromným DNS systému Android.
 \n
 \nAk chcete použiť Rethink DNS, prejdite do nastavení systému Android a vypnite možnosť „Súkromné DNS“.</string>
     <string name="private_dns_dialog_positive" translatable="true">Chodte do Nastavení</string>
-    <string name="firewall_act_universal_tab" translatable="true">univerzálny</string>
     <string name="firewall_act_network_monitor_tab" translatable="true">Sieť</string>
     <string name="title_about" translatable="true">O Aplikácií</string>
     <string name="title_settings" translatable="true">Nastavenia</string>
     <string name="accessibility_service_description" translatable="true">Keepout používa službu dostupnosti na detekciu aplikácií na pozadí a brány firewall. Keepout nezhromažďuje ani nepredáva žiadne informácie.</string>
-    <string name="finish" translatable="true">Skončiť</string>
     <string name="lbl_cancel" translatable="true">Zrušiť</string>
     <string name="lbl_apply" translatable="true">Potvrdiť</string>
     <string name="lbl_dismiss" translatable="true">Odmietnuť</string>
@@ -108,10 +102,8 @@
     <string name="hybrid_mode_notification_title" translatable="true">Ste Chránený! Pripojený s DNS + Firewalom.</string>
     <string name="lbl_add" translatable="true">pridaj</string>
     <string name="status_failing" description="This text appears if the connection is currently not working correctly. [CHAR_LIMIT=NONE]" translatable="true">Zlyháva</string>
-    <string name="lbl_app_wise" translatable="true">pre jednu aplikáciu</string>
     <string name="lbl_sec" translatable="true">sekúnd</string>
     <string name="status_exposed" description="This is a large message in a scary color.  It indicates that DNS queries can be surveilled or modified in transit." translatable="true">Nechránené</string>
-    <string name="lbl_anonymous" translatable="true">anonymný</string>
     <string name="slide_2_desc" translatable="true">Keepout je najjednoduchší spôsob, ako monitorovať sieťovú aktivitu, obísť internetovú cenzúru a firewall na vašom zariadení so systémom Android.</string>
     <string name="universal_firewall_explanation" translatable="true">Aplikujte firewalové pravidlá na všetky aplikácie na základe udalostí zariadenia, napríklad firewall keď je zariadenie uzamknuté alebo keď sa konkrétna aplikácia nepoužíva.</string>
     <string name="untracked" translatable="true">nesleduj</string>
@@ -170,7 +162,6 @@
     <string name="settings_lock_down_mode_desc" translatable="true">Niektoré možnosti sú vypnuté, keď je VPN v režime uzamknutia. Pozrite si nastavenia VPN.</string>
     <string name="settings_lock_down_proxy_desc" translatable="true">Nemožno nastaviť proxy servery, keď VPN beží v režime iba DNS.</string>
     <string name="settings_proxy_header" translatable="true">proxy</string>
-    <string name="settings_socks5_heading" translatable="true">Nastavenie SOCKS5 Proxy</string>
     <string name="settings_https_heading" translatable="true">Nastavenie HTTP(S) CONNECT Proxy</string>
     <string name="settings_https_desc" translatable="true">Pošli spojenia cez HTTP(S) CONNECT zariadenie.</string>
     <string name="orbot_bs_status_1" translatable="true">Pošli %1$s pripojenie k Orbot.</string>
@@ -212,9 +203,6 @@
     <string name="home_stopped_most">Najčastejšie blokované</string>
     <string name="home_nothing_stopped">Za posledných 24 hodín nebolo nič zablokované.</string>
     <string name="home_see_statistics">Štatistiky</string>
-    <string name="home_apps_caption">Wi-Fi a dáta pre každú aplikáciu</string>
-    <string name="home_logs_caption">Každé pripojenie a dopyt</string>
-    <string name="home_dns_caption">Resolver a blokovacie zoznamy</string>
     <string name="log_detail_protocol">Protokol</string>
     <string name="log_detail_country">Krajina</string>
     <string name="log_detail_address">Adresa</string>

@@ -8,7 +8,6 @@
     <string name="notification_content" description="Indicates what will happen if the user taps the notification.">Zum Ändern der Schutzeinstellung tippen</string>
     <string name="universal_firewall_explanation">Firewall-Regeln auf alle Apps anwenden basierend auf der Grundlage von Geräteereignissen, z. B. Firewall, wenn das Gerät gesperrt ist oder wenn eine bestimmte App nicht verwendet wird.</string>
     <string name="accessibility_service_description">Keepout verwendet den Dienst für Barrierefreiheit, um Hintergrund-Apps zu erkennen und per Firewall einzudämmen. Keepout erfasst und verkauft keine Daten.</string>
-    <string name="finish">Fertig</string>
     <string name="slide_2_desc">Keepout ist das einfachste Mittel, um Netzwerkaktivitäten zu überwachen, Internetzensur zu umgehen und Apps auf deinem Android-Gerät mit einer Firewall einzudämmen.</string>
     <string name="rdns_plus">RDNS Plus</string>
     <string name="block">blockieren</string>
@@ -29,7 +28,6 @@
     <string name="notification_action_dns_mode">DNS</string>
     <string name="notification_action_dns_firewall_mode">DNS + Firewall</string>
     <string name="dns_mode_info_title">DNS</string>
-    <string name="firewall_mode_info_title">Firewall</string>
     <string name="apps_info_title">Apps</string>
     <string name="alert_permission_accessibility">Berechtigung - Barrierefreiheit</string>
     <string name="alert_firewall_accessibility_explanation">Keepout verwendet den Dienst für Barrierefreiheit, um zu verfolgen, welche Anwendungen in Gebrauch sind (im Vordergrund) und welche nicht (im Hintergrund). \n \nKeepout erfasst keine Daten und spioniert dich in keiner Weise aus.</string>
@@ -110,7 +108,6 @@
     <string name="orbot_install_dialog_neutral">Webseite</string>
     <string name="settings_socks5_disabled_error">Verbunden mit %1$s. Ausschalten, um fortzufahren.</string>
     <string name="settings_autostart_bootup_desc">RethinkDNS beim Einschalten des Geräts starten, wenn es beim Herunterfahren lief.</string>
-    <string name="settings_socks5_heading">SOCKS5-Proxy einrichten</string>
     <string name="orbot_bs_status_4">Tor-as-a-Proxy (Orbot) mit einem Klick einrichten.</string>
     <string name="orbot_stop_dialog_neutral">DNS ändern</string>
     <string name="orbot_title">Orbot und Proxys</string>
@@ -137,14 +134,12 @@
     <string name="orbot_http">HTTP Proxy</string>
     <string name="orbot_bs_status_1">Weiterleitung von %1$s Verbindungen an Orbot.</string>
     <string name="isolate">isolieren</string>
-    <string name="always_on_dialog_neutral">Einstellungen</string>
     <string name="settings_theme_heading">Erscheinungsbild</string>
     <string name="settings_http_proxy_desc">Weiterleitung an %1$s</string>
     <string name="settings_http_proxy_toast_success">HTTP-Proxy ist eingestellt</string>
     <string name="settings_dns_proxy_dialog_header">SOCKS5 (TCP) Proxy einstellen</string>
     <string name="settings_dns_proxy_dialog_app">App</string>
     <string name="pause_text">pausiert</string>
-    <string name="pause_desc">Hinweis: %1$s blockierte Anwendungen werden weiterhin mit einer Firewall versehen.</string>
     <string name="other_dns_list_tab1">DoH</string>
     <string name="other_dns_list_tab3">Dns-Proxy</string>
     <string name="firewall_rule_block_app">App gesperrt</string>
@@ -213,7 +208,6 @@
     <string name="settings_check_update_heading">Nach App-Updates suchen</string>
     <string name="settings_custom_downloader_desc">Wenn deaktiviert, wird der in Android integrierte Download Manager verwendet</string>
     <string name="bypass_universal">Pauschale Umgehung</string>
-    <string name="firewall_act_universal_tab">Universell</string>
     <string name="new_app_bulk_notification_title">Achtung</string>
     <string name="notif_channel_download">Download Warnung</string>
     <string name="notif_channel_desc_vpn_notification">Informieren, wenn Keepout aktiv ist und im Hintergrund läuft</string>
@@ -229,18 +223,13 @@
     <string name="category_name_others">Sonstige</string>
     <string name="category_name_non_app_sys">System Dienstleistungen</string>
     <string name="ci_dialog_error_invalid_ip">Ungültige IP-Adresse, Subnetz oder Port.</string>
-    <string name="ada_noapp_dialog_title">Keine solche App</string>
     <string name="ci_no_rule">Keine Regel</string>
     <string name="ci_block">Blockieren</string>
     <string name="ada_noapp_dialog_message">App-Informationen fehlen. Vielleicht wurde diese App deinstalliert?</string>
     <string name="ada_noapp_dialog_positive">OK</string>
-    <string name="ada_app_status_allow">Erlaubt</string>
     <string name="ada_ip_no_connection">Keine Netzwerkprotokolle für diese Kategorie.</string>
-    <string name="ada_app_status_block">Blockiert</string>
     <string name="ada_app_status_block_wifi">Im WLAN blockiert</string>
-    <string name="ada_app_status_isolate">Isoliert: nur vertrauenswürdige IPs und Domains erlaubt</string>
     <string name="ada_app_status_unknown">Unbekannt</string>
-    <string name="ada_app_status_whitelist">Umgeht die universellen Firewall-Regeln</string>
     <string name="rbl_parental_control" description="The text appears as part of the blocklist setup screen as categories or headlines">Elterliche Kontrolle</string>
     <string name="rbl_privacy" description="The text appears as part of the blocklist setup screen as categories or headlines">Datenschutz</string>
     <string name="notif_download_cancel_content">Download abgebrochen.</string>
@@ -250,18 +239,13 @@
     <string name="rt_chip_update_available">Aktualisierung verfügbar</string>
     <string name="rt_chip_check_update">Nach Updates suchen</string>
     <string name="rt_re_download">Blocklisten erneut herunterladen</string>
-    <string name="rt_download_desc">Blocklisten herunterladen (ca. 60 MB), um diese Funktion zu nutzen.</string>
-    <string name="radio_sky_btn">⛅ Himmel</string>
-    <string name="radio_max_btn">🪂 Max</string>
     <string name="rt_filter_hint">Zeige alle Blocklisten</string>
     <string name="rt_filter_desc"><![CDATA[Zeige %1$s Blockierlisten an]]></string>
-    <string name="rethink_max_desc">50+ Standorte; mehr Privatsphäre; rekursiver Resolver läuft auf fly.io</string>
     <string name="rt_filter_desc_subgroups"><![CDATA[Zeige %1$s Blocklisten in Gruppe: %2$s und Untergruppe: %3$s]]></string>
     <string name="rethink_sky_desc">280+ Standorte; höhere Betriebszeit; Stub-Resolver läuft auf cloudflare.com</string>
     <string name="dc_doh">DNS über HTTPS</string>
     <string name="dc_dns_crypt">DNSCrypt</string>
     <string name="dc_dns_proxy">DNS-Proxy</string>
-    <string name="lbbs_enabled">Aktiviert</string>
     <string name="lbbs_search">Domains in Blocklisten suchen</string>
     <string name="lbbs_update_check">Nach Updates suchen</string>
     <string name="lbbs_heading">195+ Blocklisten konfigurieren</string>
@@ -281,7 +265,6 @@
     <string name="brbs_restore_no_uri_toast">Wiederherstellung fehlgeschlagen; versuche es nochmal</string>
     <string name="brbs_restore_dialog_failure_title">Wiederherstellung fehlgeschlagen</string>
     <string name="category_name_installed">Installierte Apps</string>
-    <string name="ada_app_status_exclude">Von DNS und Firewall ausgeschlossen</string>
     <string name="rbl_parental_control_desc" description="The text appears as blocklists description in configure screen">Sperre Inhalte für Erwachsene und Raubkopien, Online-Glücksspiele und -Dating sowie soziale Medien.</string>
     <string name="rt_dialog_message">Möchtest du neu konfigurierte Blocklisten anwenden?</string>
     <string name="rt_dialog_neutral">Weiter</string>
@@ -296,7 +279,6 @@
     <string name="new_app_notification_action_deny">Weiter blockieren</string>
     <string name="new_app_notification_action_toast_allow">Erlaubte Netzwerkverbindung für die App</string>
     <string name="new_app_notification_action_toast_deny">Netzwerkverbindung für die App verweigert</string>
-    <string name="notif_dialog_pause_dialog_positive">Fortfahren</string>
     <string name="notif_dialog_pause_dialog_negative">Verwerfen</string>
     <string name="notif_channel_desc_firewall_alerts">Warnung vor Firewall-Fehlern und Anomalien</string>
     <string name="ada_app_status_block_md">Bei mobilen Daten blockiert</string>
@@ -325,8 +307,6 @@
     <string name="brbs_backup_dialog_failure_positive">Wiederholung der Sicherung</string>
     <string name="rsv_blocklist_count_text" description="This label will appear in rethink configure simple view screen which shows number of blocklists for each category">%1$s Blocklisten</string>
     <string name="brbs_backup_dialog_failure_message">Das Backup konnte nicht erstellt werden. Erneut versuchen\?</string>
-    <string name="hsf_vpn_dialog_message">Keepout benötigt die Berechtigung, ein lokales VPN einzurichten, um die DNS-Anfragen des Geräts zu verschlüsseln, einen Netzwerkmonitor zu implementieren und Firewall-Regeln durchzusetzen.\n\nKeepout sammelt keine Informationen und spioniert dich in keiner Weise aus.</string>
-    <string name="hsf_vpn_dialog_header">Achtung!</string>
     <string name="hsf_vpn_prepare_failure">Entweder fehlt die VPN-Berechtigung oder eine andere Anwendung befindet sich im Always-on-VPN-Modus.</string>
     <string name="lbl_proceed">Fortfahren</string>
     <string name="hsf_notification_permission_failure">Erteile die Berechtigung für Benachrichtigungen in den Android-Einstellungen</string>
@@ -350,8 +330,6 @@
     <string name="notification_screen_error">App-Benachrichtigungs-Bildschirm konnte nicht geöffnet werden.</string>
     <string name="error_loading_log_file">Fehler beim Laden der Protokolldatei</string>
     <string name="collecting_logs_progress_text">Erfassen…</string>
-    <string name="cd_custom_doh_url_name_default">DoH</string>
-    <string name="cd_dns_crypt_name_default">DNSCrypt</string>
     <string name="cd_dns_crypt_name">DNSCrypt %1$s</string>
     <string name="cd_dns_crypt_dialog_heading">DNSCrypt Resolver oder Relay hinzufügen</string>
     <string name="cd_dns_crypt_resolver_heading">Resolver</string>
@@ -395,7 +373,6 @@
     <string name="about_dialog_neutral_button">Funktion vorschlagen</string>
     <string name="vpn_profile_error">VPN-Profil konnte nicht gestartet werden.</string>
     <string name="cd_custom_doh_url_name">DoH %1$s</string>
-    <string name="cd_custom_dns_proxy_name_default">Proxy</string>
     <string name="cd_custom_dns_proxy_name">Proxy %1$s</string>
     <string name="cd_custom_dns_proxy_default_ip">127.0.0.1</string>
     <string name="cd_custom_dns_proxy_default_app">Keine</string>
@@ -411,22 +388,15 @@
     <string name="hs_download_positive_default">ok</string>
     <string name="hs_download_positive_website">Webseite besuchen</string>
     <string name="hs_download_negative_default">Später erinnern</string>
-    <string name="univ_firewall_rule_1">Alle Apps blockieren, wenn das Gerät gesperrt ist</string>
     <string name="univ_firewall_rule_2">Alle nicht verwendeten Apps blockieren</string>
-    <string name="univ_firewall_rule_3">Blockieren, wenn die Quell-App unbekannt ist</string>
     <string name="univ_firewall_rule_4">UDP außer DNS und NTP blockieren</string>
     <string name="univ_firewall_rule_5">Blockieren, wenn DNS umgangen wird</string>
-    <string name="univ_firewall_rule_6">Neu installierte Apps standardmäßig blockieren</string>
-    <string name="univ_firewall_rule_8">Datenverkehr über Port 80 (unsicheres HTTP) blockieren</string>
     <string name="univ_firewall_rule_9">Im getakteten (mobilen) Netzwerk blockieren</string>
-    <string name="univ_firewall_rule_10">Alle außer den ausgenommenen Apps und IPs blockieren</string>
-    <string name="univ_view_blocked_ip">IP- &amp; Port-Regeln</string>
     <string name="cd_dns_proxy_error_text_3">Ungültiger Port</string>
     <string name="about_bug_report_desc">Absturzprotokolle per E-Mail senden</string>
     <string name="dc_custom_dns_radio">Anderer DNS</string>
     <string name="dc_rethink_dns_radio">Rethink DNS</string>
     <string name="dc_entries">%1$s Einträge »</string>
-    <string name="dc_local_block_desc_1">Wähle aus über 195 Blocklisten. Tippe hier, um Blocklisten herunterzuladen oder zu konfigurieren.</string>
     <string name="dc_local_block_heading">Geräteinterne Blocklisten</string>
     <string name="intent_launch_error">Konnte %1$s nicht starten</string>
     <string name="cd_dns_crypt_title">Resolver</string>
@@ -435,9 +405,6 @@
     <string name="dns_proxy_desc_no_app">%1$s:%2$s</string>
     <string name="fapps_filter_parent_system">System</string>
     <string name="fapps_firewall_filter_excluded">Ausgeschlossen</string>
-    <string name="fapps_unmetered_block_dialog_message">Verbindungen in Netzwerken ohne Datenlimit (WiFi) für die auf aufgeführten Apps blockieren?</string>
-    <string name="fapps_unmetered_unblock_dialog_message">Verbindungen in Netzwerken ohne Datenlimit (WiFi) für die auf aufgeführten Apps erlauben?</string>
-    <string name="fapps_metered_block_dialog_title">Bei getaktet blockieren</string>
     <string name="unicode_question_sign">❔</string>
     <string name="rules_load_failure_heading">Anmerkung</string>
     <string name="network_log_app_name_unknown">Unbekannt</string>
@@ -449,7 +416,6 @@
     <string name="settings_local_blocklist_dialog_positive">Downloads</string>
     <string name="update_complete_snack_message">Neue Version heruntergeladen.</string>
     <string name="dns_proxy_dialog_message_no_app">IP-Adresse: %1$s\n\nPort-Nummer: %2$s</string>
-    <string name="fapps_info_dialog_message">Den Internetzugang von Apps blockieren. Durch die Einschränkung des Internetzugangs lassen sich unerwünschter Datenverbrauch vermeiden und der Akku schonen.</string>
     <string name="dc_check_update_heading">Zur Aktualisierung der Blockliste auffordern</string>
     <string name="univ_view_blocked_ip_desc">Blockierte oder vertrauenswürdige Domain- und IP-/Port-Regeln ändern.</string>
     <string name="univ_accessibility_crash_dialog_positive">Gehe zu Einstellungen</string>
@@ -468,9 +434,6 @@
     <string name="fapps_filter_clear_btn">Leeren</string>
     <string name="fapps_filter_parent_installed">Installiert</string>
     <string name="fapps_info_dialog_positive_btn">OK</string>
-    <string name="fapps_metered_block_dialog_message">Verbindungen in kostenpflichtigen Netzwerken (Mobilfunknetze) für die auf aufgeführten Apps blockieren?</string>
-    <string name="fapps_metered_unblock_dialog_title">Bei getaktet erlauben</string>
-    <string name="fapps_metered_unblock_dialog_message">Verbindungen in kostenpflichtigen Netzwerken (Mobilfunknetze) für die auf aufgeführten Apps erlauben?</string>
     <string name="rules_load_failure_desc">Keine Firewall-Regeln gefunden</string>
     <string name="rules_load_failure_reload">Neu laden</string>
     <string name="system_dns_connection_failure">Der aktuelle DNS-Server kann nicht ermittelt werden</string>
@@ -481,13 +444,6 @@
     <string name="hs_biometeric_error">Fehler bei der biometrischen Authentifizierung</string>
     <string name="fapps_firewall_filter_bypass_universal">Umgangen</string>
     <string name="fapps_firewall_filter_isolate">Isoliert</string>
-    <string name="fapps_info_exclude_msg">Sowohl von DNS + Firewall ausschließen.</string>
-    <string name="fapps_bypass_block_dialog_title">Apps umgehen</string>
-    <string name="fapps_unblock_dialog_message">Verbindungen für aufgelistete Apps erlauben\?</string>
-    <string name="fapps_exclude_block_dialog_title">Apps ausschließen</string>
-    <string name="fapps_isolate_block_dialog_title">Apps isolieren</string>
-    <string name="fapps_isolate_block_dialog_message">Aufgelistete Apps isolieren\?</string>
-    <string name="fapps_exclude_block_dialog_message">Aufgelistete Apps von DNS und Firewall ausschließen\?</string>
     <string name="unicode_warning_sign">⚠</string>
     <string name="ci_trust_rule">Vertrauen</string>
     <string name="ssv_app_blocked_heading" description="This label will appear on the stats screen as a header for blocked applications." translatable="true">Meistblockierte Apps</string>
@@ -495,24 +451,17 @@
     <string name="ssv_most_contacted_ips_heading" description="This label will appear on the stats screen as a header for most visited ips" translatable="true">Meistkontaktierte IPs</string>
     <string name="ssv_most_blocked_ips_heading" description="This label will appear on the stats screen as a header for most blocked ips" translatable="true">Meistblockierte IPs</string>
     <string name="ssv_see_more">Alle anzeigen</string>
-    <string name="fapps_bypass_block_dialog_message">Universelle Firewall-Regeln für aufgelistete Apps umgehen\?</string>
     <string name="ssv_most_contacted_domain_heading" description="This label will appear on the stats screen as a header for most visited domains" translatable="true">Meistkontaktierte Domains</string>
     <string name="hs_biometeric_title">Keepout entsperren</string>
     <string name="hs_biometeric_desc">Biometrische Authentifizierung zum Entsperren von Keepout verwenden</string>
     <string name="ssv_most_blocked_domain_heading" description="This label will appear on the stats screen as a header for most blocked domains" translatable="true">Meistblockierte Domains</string>
-    <string name="fapps_unblock_dialog_title">Anwendungen zulassen</string>
-    <string name="fapps_info_isolate_msg">Alle IPs außer vertrauenswürdigen blockieren.</string>
-    <string name="fapps_info_bypass_msg">Universelle Firewall-Regeln umgehen.</string>
     <string name="copy_clipboard_label">URL</string>
-    <string name="fapps_unmetered_block_dialog_title" translatable="true">Bei ungetaktet blockieren</string>
-    <string name="fapps_info_metered_msg" translatable="true">Zulassen / Blockieren in gebührenpflichtigen Netzen (mobile Netze).</string>
     <string name="ssv_toast_start_rethink" description="This label will appear on the stats screen as toast to start Rethink app" translatable="true">Starten Sie Keepout, um fortzufahren</string>
     <string name="lbl_allowed" translatable="true">Erlaubt</string>
     <string name="lbl_blocked" translatable="true">Blockiert</string>
     <string name="lbl_disabled" translatable="true">Deaktiviert</string>
     <string name="lbl_action_required" translatable="true">Aktion erforderlich</string>
     <string name="lbl_domain" translatable="true">Domain</string>
-    <string name="fapps_info_unmetered_msg" translatable="true">Zulassen / Blockieren in gebührenfreien Netzen (WLAN).</string>
     <string name="firewall_rule_exempt_dns_proxied" translatable="true">DNS durch Proxy geleitet</string>
     <string name="firewall_rule_block_domain" translatable="true">Domäne (App)</string>
     <string name="firewall_rule_block_domain_desc" translatable="true"><![CDATA[Eine benutzerdefinierte Firewall-Regel hat die Domain blockiert.]]></string>
@@ -523,14 +472,11 @@
     <string name="lbl_all" translatable="true">Alle</string>
     <string name="lbl_ip_rules" translatable="true">IP-Regeln</string>
     <string name="lbl_domain_rules" translatable="true">Domain-Regeln</string>
-    <string name="fapps_unmetered_unblock_dialog_title" translatable="true">Bei ungetaktet zulassen</string>
     <string name="firewall_rule_trusted_domain" translatable="true">Vertrauenswürdige Domäne (App)</string>
     <string name="cd_no_rules_text" translatable="true">Keine Domain-Regeln.</string>
     <string name="bypass_dns_firewall" translatable="true">DNS &amp; Firewall umgehen</string>
-    <string name="settings_general_customize" translatable="true">Anpassen</string>
     <string name="settings_default_dns_heading" translatable="true">Ausweich-DNS auswählen</string>
     <string name="cd_dns_alg_heading" translatable="true">Erweiterte DNS-Filterung (experimentell)</string>
-    <string name="fapps_bypass_dns_firewall_dialog_title" translatable="true">Apps umgehen</string>
     <string name="firewall_rule_dns_blocked" translatable="true">DNS blockiert</string>
     <string name="lbl_configure" translatable="true">Konfigurieren</string>
     <string name="lbl_rules" translatable="true">Regeln</string>
@@ -541,7 +487,6 @@
     <string name="brbs_backup_restore_desc" translatable="true">Funktioniert nicht über verschiedene App-Versionen hinweg</string>
     <string name="bsct_block_domain" translatable="true">Blockieren, Domain(s) für diese App vertrauen</string>
     <string name="settings_lock_down_proxy_desc" translatable="true">Proxies können nicht aufgesetzt werden, während das VPN im DNS only - Modus läuft.</string>
-    <string name="fapps_bypass_dns_firewall_dialog_message" translatable="true">Sollen universelle DNS- &amp; Firewall-Regeln für aufgelisteten Apps umgangen werden\?</string>
     <string name="firewall_rule_domain_trusted_univ" translatable="true">Vertrauenswürdige Domäne (Univ)</string>
     <string name="firewall_rule_dns_blocked_desc" translatable="true"><![CDATA[Diese Verbindung wurde blockiert, da die Domain vom benutzer bevorzugten DNS blockiert wird.]]></string>
     <string name="ada_app_bypass_dns_firewall" translatable="true">Umgehe DNS &amp; Firewall</string>
@@ -571,7 +516,6 @@
     <string name="lbl_addresses" translatable="true">Adressen</string>
     <string name="lbl_active" translatable="true">Aktiv</string>
     <string name="lbl_dns_servers" translatable="true">DNS-Server</string>
-    <string name="lbl_app_wise" translatable="true">pro App</string>
     <string name="lbl_public_key" translatable="true">Öffentlicher Schlüssel</string>
     <string name="lbl_private_key" translatable="true">Privater Schlüssel</string>
     <string name="lbl_select_all" translatable="true">Alles auswählen</string>
@@ -583,13 +527,11 @@
     <string name="parse_error_inet_address" translatable="true">IP-Adresse</string>
     <string name="crypt_adguard_desc" translatable="true">Schützt dein Gerät vor Schadsoftware und mehr.</string>
     <string name="wireguard_description" translatable="true">WireGuard als ein Proxy.</string>
-    <string name="univ_firewall_heading" translatable="true">Universelle Firewall-Regeln</string>
     <string name="lbl_allowed_ips" translatable="true">Zulässige IPs</string>
     <string name="bad_config_reason_invalid_number" translatable="true">Ungültige Nummer</string>
     <string name="add_remove_apps" translatable="true">Hinzufügen / Entfernen (%1$s Apps)</string>
     <string name="bad_extension_error" translatable="true">Datei muss .conf oder .zip sein</string>
     <string name="parse_error_integer" translatable="true">Nummer</string>
-    <string name="fapps_info_bypass_dns_firewall_msg" translatable="true">DNS &amp; Firewall-Regeln umgehen.</string>
     <string name="setup_wireguard" translatable="true">WireGuard einrichten</string>
     <string name="crypt_relay_singapore" translatable="true">Anonymisiertes DNS-Relay, gehostet in Singapur.</string>
     <string name="lbl_hour" translatable="true">Std</string>
@@ -598,7 +540,6 @@
     <string name="lbl_optional" translatable="true">(optional)</string>
     <string name="public_key_copy_toast_msg" translatable="true">Öffentlicher Schlüssel kopiert.</string>
     <string name="bad_config_reason_unknown_attribute" translatable="true">Unbekanntes Attribut</string>
-    <string name="app_ip_domain_rules_desc" translatable="true">Pro App-IP / Domain-Regeln ändern.</string>
     <string name="bad_config_reason_missing_attribute" translatable="true">Fehlendes Attribut</string>
     <string name="bad_config_explanation_positive_number" translatable="true">: Muss positiv sein</string>
     <string name="bad_config_reason_missing_section" translatable="true">Fehlende Sektion</string>
@@ -622,7 +563,6 @@
     <string name="config_delete_dialog_desc">Bist du sicher, dass du diese Konfiguration löschen möchten?</string>
     <string name="parse_error_generic" translatable="true">Zeichenkette</string>
     <string name="generic_error" translatable="true">Unbekannter Fehler „%s“</string>
-    <string name="app_ip_domain_rules" translatable="true">Pro App-IP / Domain-Regeln</string>
     <string name="bad_config_error" translatable="true">%1$s in %2$s</string>
     <string name="parse_error_inet_endpoint" translatable="true">Endpunkt</string>
     <string name="no_configs_error" translatable="true">Keine Konfigurationen gefunden</string>
@@ -635,11 +575,8 @@
     <string name="lbl_remove" translatable="true">Entfernen</string>
     <string name="lbl_stopped" translatable="true">Gestoppt</string>
     <string name="lbl_overall" translatable="true">Insgesamt</string>
-    <string name="lbl_private" translatable="true">privat</string>
-    <string name="lbl_secure" translatable="true">sicher</string>
     <string name="lbl_split" translatable="true">Aufteilen</string>
     <string name="lbl_idle" translatable="true">Leerlauf</string>
-    <string name="lbl_anonymous" translatable="true">anonym</string>
     <string name="lbl_starting" translatable="true">Wird gestartet</string>
     <string name="failed_using_default" translatable="true">Fehlgeschlagen: Verwendung von Fallback-DNS</string>
     <string name="dot_custom_url_remove_dialog_title" translatable="true">DoT Endpunkt löschen?</string>
@@ -796,9 +733,6 @@
     <string name="home_stopped_most">Am häufigsten gestoppt</string>
     <string name="home_nothing_stopped">In den letzten 24 Stunden wurde nichts blockiert.</string>
     <string name="home_see_statistics">Statistiken</string>
-    <string name="home_apps_caption">WLAN und mobile Daten, App für App</string>
-    <string name="home_logs_caption">Jede Verbindung und Anfrage</string>
-    <string name="home_dns_caption">Resolver und Blocklisten</string>
     <string name="log_detail_protocol">Protokoll</string>
     <string name="log_detail_country">Land</string>
     <string name="log_detail_address">Adresse</string>

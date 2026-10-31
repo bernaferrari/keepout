@@ -3,7 +3,6 @@
     <string name="title_about" translatable="true">Haqida</string>
     <string name="title_settings" translatable="true">Sozlamalar</string>
     <string name="txt_home" translatable="true">Uy</string>
-    <string name="finish" translatable="true">Yakunlash</string>
     <string name="lbl_all" translatable="true">Hammasi</string>
     <string name="lbl_allowed" translatable="true">Ruxsat berildi</string>
     <string name="lbl_blocked" translatable="true">Bloklandi</string>
@@ -32,7 +31,6 @@
     <string name="lbl_allowed_ips" translatable="true">Ruxsat berilgan IPlar</string>
     <string name="lbl_save" translatable="true">saqlash</string>
     <string name="lbl_stopped" translatable="true">To\'xtatildi</string>
-    <string name="lbl_secure" translatable="true">xavfsiz</string>
     <string name="lbl_test" translatable="true">test</string>
     <string name="allow" translatable="true">ruxsat berish</string>
     <string name="block" translatable="true">bloklash</string>

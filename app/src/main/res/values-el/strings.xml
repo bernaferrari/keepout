@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="finish" translatable="true">Τέλος</string>
     <string name="lbl_cancel" translatable="true">Ακύρωση</string>
     <string name="lbl_apply" translatable="true">Εφαρμογή</string>
     <string name="lbl_dismiss" translatable="true">Απόρριψη</string>
@@ -33,8 +32,6 @@
     <string name="lbl_starting" translatable="true">Ξεκινώντας</string>
     <string name="lbl_overall" translatable="true">Συνολικά</string>
     <string name="lbl_stopped" translatable="true">Σταμάτησε</string>
-    <string name="lbl_private" translatable="true">private</string>
-    <string name="lbl_secure" translatable="true">ασφαλής</string>
     <string name="allow" translatable="true">επιτρέπουν τη δυνατότητα</string>
     <string name="bypass_universal" translatable="true">γενική παράκαμψη</string>
     <string name="exclude" translatable="true">αποκλείστε το</string>
@@ -58,9 +55,7 @@
     <string name="lbl_proceed" translatable="true">Συνεχίστε</string>
     <string name="lbl_private_key" translatable="true">Ιδιωτικό κλειδί</string>
     <string name="lbl_add" translatable="true">προσθήκη</string>
-    <string name="lbl_app_wise" translatable="true">ανά εφαρμογή</string>
     <string name="lbl_day" translatable="true">ημέρα</string>
-    <string name="lbl_anonymous" translatable="true">ανώνυμος</string>
     <string name="slide_2_desc" translatable="true">Το Keepout είναι ο ευκολότερος τρόπος για να παρακολουθείτε τη δραστηριότητα του δικτύου, παρακάμπτοντας τη λογοκρισία του Διαδικτύου, και τις εφαρμογές μεσω του τείχους προστασίας στην Android συσκευή σας.</string>
     <string name="dns_mode_notification_title" translatable="true">Προστατεύεσαι! Συνδεθήκατε με ενα γρήγορο και ασφαλές DNS.</string>
     <string name="bypass_dns_firewall" translatable="true">παράκαμψη dns &amp; τείχος προστασίας</string>
@@ -70,9 +65,7 @@
     <string name="lbl_domain" translatable="true">Τομέας</string>
     <string name="lbl_socks5" translatable="true">SOCKS5</string>
     <string name="lbl_http" translatable="true">HTTP</string>
-    <string name="firewall_mode_info_title" translatable="true">Τείχος προστασίας</string>
     <string name="always_on_dialog_positive" translatable="true">Διακοπή</string>
-    <string name="always_on_dialog_neutral" translatable="true">Ρυθμίσεις</string>
     <string name="lbl_http_socks5" translatable="true">HTTPS &amp; SOCKS5</string>
     <string name="lbl_preshared_key" translatable="true">Preshared κλειδί</string>
     <string name="lbl_peer" translatable="true">Peer</string>
@@ -104,7 +97,6 @@
 \n
 \nΓια να χρησιμοποιήσετε το DNS του Keepout μεταβείτε στις Ρυθμίσεις του Android και απενεργοποιήστε το \"Private DNS\".</string>
     <string name="private_dns_dialog_positive" translatable="true">Μεταβείτε στις Ρυθμίσεις</string>
-    <string name="firewall_act_universal_tab" translatable="true">καθολικό</string>
     <string name="doh_custom_url_remove_dialog_title" translatable="true">Διαγραφή τελικού σημείου DoH;</string>
     <string name="doh_custom_url_remove_dialog_message" translatable="true">Διαγράψτε το DNS over Https endpoints από την αποθηκευμένη ρύθμιση παραμέτρων.</string>
     <string name="doh_custom_url_remove_success" translatable="true">Το τελικό σημείο διαγράφηκε.</string>
@@ -127,9 +119,6 @@
     <string name="home_stopped_most">Μπλόκαραν περισσότερο</string>
     <string name="home_nothing_stopped">Τίποτα δεν αποκλείστηκε τις τελευταίες 24 ώρες.</string>
     <string name="home_see_statistics">Στατιστικά</string>
-    <string name="home_apps_caption">Wi-Fi και δεδομένα, ανά εφαρμογή</string>
-    <string name="home_logs_caption">Κάθε σύνδεση και αίτημα</string>
-    <string name="home_dns_caption">Διακομιστής DNS και λίστες αποκλεισμού</string>
     <string name="log_detail_protocol">Πρωτόκολλο</string>
     <string name="log_detail_country">Χώρα</string>
     <string name="log_detail_address">Διεύθυνση</string>
