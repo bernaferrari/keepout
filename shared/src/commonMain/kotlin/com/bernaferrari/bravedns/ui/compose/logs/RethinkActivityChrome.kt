@@ -34,7 +34,6 @@ fun RethinkActivityViewSwitch(
         modifier = modifier.padding(end = SharedDimensions.spacingXs),
         fillWidth = false,
         compact = true,
-        unselectedContainerColor = MaterialTheme.colorScheme.surfaceContainerHighest,
     )
 }
 

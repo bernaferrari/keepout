@@ -245,7 +245,6 @@ private fun RethinkStatisticsWindowSelector(
         modifier = modifier,
         fillWidth = !inTopBar,
         compact = inTopBar,
-        unselectedContainerColor = if (inTopBar) MaterialTheme.colorScheme.surfaceContainerHighest else MaterialTheme.colorScheme.surfaceContainerLow,
     )
 }
 

@@ -87,20 +87,19 @@ fun <T> RethinkConnectedChoiceGroup(
     onDeselect: (() -> Unit)? = null,
     labels: RethinkChoiceLabels = RethinkChoiceLabels.Always,
     /**
-     * Unselected segments sit a tone above whatever they're on (screen, cards, sheets, and the
-     * lifted rows inside sheets), so every option reads as a button, not a label.
+     * The family standard (SDK Monitor, Calcula, WiFi Weakspot, QuietGuard, Wordkeep): unselected segments in
+     * the highest container tone, which stands off every surface (screen, cards, sheets, lifted rows), and
+     * the chosen one solid in primary.
      */
-    unselectedContainerColor: Color = if (LocalRethinkListContainerColor.current != null) {
-        MaterialTheme.colorScheme.surfaceContainerHighest
-    } else {
-        MaterialTheme.colorScheme.surfaceContainerHigh
-    },
+    unselectedContainerColor: Color = MaterialTheme.colorScheme.surfaceContainerHighest,
     /** Shorter segments with smaller type, for a group that sits inside a top bar. */
     compact: Boolean = false,
+    selectedContainerColor: Color = MaterialTheme.colorScheme.primary,
+    selectedContentColor: Color = MaterialTheme.colorScheme.onPrimary,
 ) {
     val adaptiveLabels = fillWidth && !iconOnly && labels == RethinkChoiceLabels.Always
     if (!adaptiveLabels || options.any { it.icon == null }) {
-        ChoiceRow(options, selected, onSelect, modifier, fillWidth, iconOnly, onDeselect, labels, unselectedContainerColor, compact)
+        ChoiceRow(options, selected, onSelect, modifier, fillWidth, iconOnly, onDeselect, labels, unselectedContainerColor, compact, selectedContainerColor, selectedContentColor)
         return
     }
     // Icons carry the meaning, so when the labels don't fit their segments the text goes and the icons stay.
@@ -115,7 +114,7 @@ fun <T> RethinkConnectedChoiceGroup(
         val labelsFit = options.all { option ->
             with(density) { measurer.measure(option.label, style, maxLines = 1).size.width.toDp() } + chrome <= segment
         }
-        ChoiceRow(options, selected, onSelect, Modifier, fillWidth = true, iconOnly = !labelsFit, onDeselect, labels, unselectedContainerColor, compact)
+        ChoiceRow(options, selected, onSelect, Modifier, fillWidth = true, iconOnly = !labelsFit, onDeselect, labels, unselectedContainerColor, compact, selectedContainerColor, selectedContentColor)
     }
 }
 
@@ -132,6 +131,8 @@ private fun <T> ChoiceRow(
     labels: RethinkChoiceLabels,
     unselectedContainerColor: Color,
     compact: Boolean,
+    selectedContainerColor: Color,
+    selectedContentColor: Color,
 ) {
     Row(
         modifier = modifier
@@ -141,8 +142,8 @@ private fun <T> ChoiceRow(
         verticalAlignment = Alignment.CenterVertically,
     ) {
         val colors = ToggleButtonDefaults.colors(
-            checkedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
-            checkedContentColor = MaterialTheme.colorScheme.onSecondaryContainer,
+            checkedContainerColor = selectedContainerColor,
+            checkedContentColor = selectedContentColor,
             containerColor = unselectedContainerColor,
             contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
         )

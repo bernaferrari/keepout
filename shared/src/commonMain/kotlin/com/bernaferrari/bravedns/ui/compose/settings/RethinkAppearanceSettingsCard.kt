@@ -152,7 +152,6 @@ fun RethinkAppearanceSettingsCard(
                         onModeSelected(mode)
                     },
                     modifier = Modifier.padding(SharedDimensions.cardPadding),
-                    unselectedContainerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
                 )
             }
             Surface(
