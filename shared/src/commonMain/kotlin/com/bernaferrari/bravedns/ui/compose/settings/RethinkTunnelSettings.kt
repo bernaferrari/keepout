@@ -41,6 +41,8 @@ data class RethinkTunnelSettingRow(
     val checked: Boolean = false,
     val enabled: Boolean = true,
     val icon: RethinkTunnelSettingIcon = RethinkTunnelSettingIcon.Settings,
+    /** The row's own glyph; a group shows icons only when every row has one. */
+    val leadingIcon: ImageVector? = null,
 )
 
 data class RethinkTunnelSettingsStrings(
@@ -71,7 +73,7 @@ fun RethinkTunnelSettingsScreen(
 ) {
     RethinkTopBarLazyColumnScreen(
         title = strings.title,
-        subtitle = strings.subtitle,
+        subtitle = strings.subtitle.takeIf { it.isNotBlank() },
         onBackClick = onBackClick,
         modifier = modifier,
         listState = listState,
@@ -141,10 +143,7 @@ private fun RethinkTunnelSettingGroup(
 ) {
     // A leading icon on only some rows staggers the text column; icons appear only when every
     // row in the group can carry one.
-    val showIcons = rows.isNotEmpty() && rows.all {
-        it.kind != RethinkTunnelSettingKind.Toggle &&
-            (it.icon == RethinkTunnelSettingIcon.NetworkCheck || it.icon == RethinkTunnelSettingIcon.Security)
-    }
+    val showIcons = rows.isNotEmpty() && rows.all { it.leadingIcon != null }
     RethinkListGroup {
         rows.forEachIndexed { index, row ->
             val position = cardPositionFor(index, lastIndexOverride ?: rows.lastIndex)
@@ -154,6 +153,7 @@ private fun RethinkTunnelSettingGroup(
                     checked = row.checked,
                     onCheckedChange = { onToggleChange(row.id, it) },
                     supporting = row.description,
+                    leadingIcon = row.leadingIcon.takeIf { showIcons },
                     position = position,
                     highlighted = focusedRowId == row.id,
                     enabled = row.enabled,
@@ -162,7 +162,7 @@ private fun RethinkTunnelSettingGroup(
                 RethinkListItem(
                     headline = row.title,
                     supporting = row.description,
-                    leadingIcon = row.icon.toImageVector().takeIf { showIcons },
+                    leadingIcon = row.leadingIcon.takeIf { showIcons },
                     position = position,
                     highlighted = focusedRowId == row.id,
                     enabled = row.enabled,
@@ -172,11 +172,4 @@ private fun RethinkTunnelSettingGroup(
         }
         footer?.invoke()
     }
-}
-
-private fun RethinkTunnelSettingIcon.toImageVector(): ImageVector = when (this) {
-    RethinkTunnelSettingIcon.Settings -> MaterialSymbols.Filled.Settings
-    RethinkTunnelSettingIcon.Tune -> MaterialSymbols.Filled.Tune
-    RethinkTunnelSettingIcon.NetworkCheck -> MaterialSymbols.Filled.NetworkCheck
-    RethinkTunnelSettingIcon.Security -> MaterialSymbols.Filled.Shield
 }

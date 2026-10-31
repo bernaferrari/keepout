@@ -15,6 +15,7 @@
  */
 package com.bernaferrari.bravedns.ui.compose.settings
 
+import com.bernaferrari.bravedns.ui.icons.MaterialSymbols
 import android.content.Context
 import android.widget.Toast
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -233,12 +234,6 @@ fun TunnelSettingsScreen(
 
     val dialTimeoutDesc =
         if (dialTimeoutMin > 0) UIUtils.getDurationInHumanReadableFormat(context, dialTimeoutMin * SECONDS_PER_MINUTE) else disabledText
-    val topBarSubtitle =
-        stringResource(
-            R.string.two_argument_colon,
-            stringResource(R.string.vpn_policy_title),
-            vpnPolicyDesc
-        )
 
     // VPN Policy Dialog
     if (showVpnPolicyDialog) {
@@ -318,6 +313,7 @@ fun TunnelSettingsScreen(
     val coreRows = listOf(
         RethinkTunnelSettingRow(
             id = "network_allow_bypass",
+            leadingIcon = MaterialSymbols.Filled.Public,
             title = stringResource(R.string.settings_allow_bypass_heading),
             description = stringResource(R.string.settings_allow_bypass_desc),
             kind = RethinkTunnelSettingKind.Toggle,
@@ -326,6 +322,7 @@ fun TunnelSettingsScreen(
         ),
         RethinkTunnelSettingRow(
             id = "network_fail_open",
+            leadingIcon = MaterialSymbols.Filled.PauseCircle,
             title = stringResource(R.string.fail_open_network_title),
             description = stringResource(R.string.fail_open_network_desc),
             kind = RethinkTunnelSettingKind.Toggle,
@@ -334,6 +331,7 @@ fun TunnelSettingsScreen(
         ),
         RethinkTunnelSettingRow(
             id = "network_allow_lan",
+            leadingIcon = MaterialSymbols.Filled.SettingsEthernet,
             title = stringResource(R.string.settings_allow_lan_heading),
             description = stringResource(R.string.settings_allow_lan_desc),
             kind = RethinkTunnelSettingKind.Toggle,
@@ -343,6 +341,7 @@ fun TunnelSettingsScreen(
         ),
         RethinkTunnelSettingRow(
             id = "network_all_networks",
+            leadingIcon = MaterialSymbols.Filled.NetworkCheck,
             title = stringResource(R.string.settings_network_all_networks),
             description = stringResource(R.string.settings_network_all_networks_desc),
             kind = RethinkTunnelSettingKind.Toggle,
@@ -352,6 +351,7 @@ fun TunnelSettingsScreen(
         ),
         RethinkTunnelSettingRow(
             id = "network_exclude_apps_proxy",
+            leadingIcon = MaterialSymbols.Filled.ConversionPath,
             title = stringResource(R.string.settings_exclude_apps_in_proxy),
             description = stringResource(R.string.settings_exclude_apps_in_proxy_desc),
             kind = RethinkTunnelSettingKind.Toggle,
@@ -361,6 +361,7 @@ fun TunnelSettingsScreen(
         ),
         RethinkTunnelSettingRow(
             id = "network_protocol_translation",
+            leadingIcon = MaterialSymbols.Filled.SyncAlt,
             title = stringResource(R.string.settings_protocol_translation),
             description = stringResource(R.string.settings_protocol_translation_desc),
             kind = RethinkTunnelSettingKind.Toggle,
@@ -371,34 +372,35 @@ fun TunnelSettingsScreen(
     )
     val advancedRows = buildList {
         // Fallback DNS lives in DNS › Advanced (same defaultDnsUrl preference).
-        add(RethinkTunnelSettingRow("network_vpn_policy", stringResource(R.string.vpn_policy_title), vpnPolicyDesc, RethinkTunnelSettingKind.Action))
-        add(RethinkTunnelSettingRow("network_ip_protocol", stringResource(R.string.settings_ip_dialog_title), stringResource(R.string.settings_selected_ip_desc, ipDesc), RethinkTunnelSettingKind.Action, enabled = vpnPolicy != POLICY_FIXED))
+        add(RethinkTunnelSettingRow("network_vpn_policy", stringResource(R.string.vpn_policy_title), vpnPolicyDesc, RethinkTunnelSettingKind.Action, leadingIcon = MaterialSymbols.Filled.Tune))
+        add(RethinkTunnelSettingRow("network_ip_protocol", stringResource(R.string.settings_ip_dialog_title), stringResource(R.string.settings_selected_ip_desc, ipDesc), RethinkTunnelSettingKind.Action, enabled = vpnPolicy != POLICY_FIXED, leadingIcon = MaterialSymbols.Filled.Pin))
         if (showConnectivityChecksOption) {
-            add(RethinkTunnelSettingRow("network_connectivity_checks", stringResource(R.string.settings_connectivity_checks), stringResource(R.string.settings_connectivity_checks_desc), RethinkTunnelSettingKind.Action))
+            add(RethinkTunnelSettingRow("network_connectivity_checks", stringResource(R.string.settings_connectivity_checks), stringResource(R.string.settings_connectivity_checks_desc), RethinkTunnelSettingKind.Action, leadingIcon = MaterialSymbols.Filled.NetworkCheck))
         }
         if (showPingIps) {
-            add(RethinkTunnelSettingRow("network_ping_ips", stringResource(R.string.settings_ping_ips), kind = RethinkTunnelSettingKind.Action, icon = RethinkTunnelSettingIcon.NetworkCheck))
+            add(RethinkTunnelSettingRow("network_ping_ips", stringResource(R.string.settings_ping_ips), kind = RethinkTunnelSettingKind.Action, icon = RethinkTunnelSettingIcon.NetworkCheck, leadingIcon = MaterialSymbols.Filled.NetworkCheck))
         }
-        add(RethinkTunnelSettingRow("network_mobile_metered", stringResource(R.string.settings_treat_mobile_metered), stringResource(R.string.settings_treat_mobile_metered_desc), RethinkTunnelSettingKind.Toggle, meteredOnlyMobile, icon = RethinkTunnelSettingIcon.Tune))
-        add(RethinkTunnelSettingRow("network_wg_listen_port", stringResource(R.string.settings_wg_listen_port), stringResource(R.string.settings_wg_listen_port_desc), RethinkTunnelSettingKind.Toggle, listenPortFixed, icon = RethinkTunnelSettingIcon.Tune))
-        add(RethinkTunnelSettingRow("network_wg_lockdown", stringResource(R.string.settings_wg_lockdown), stringResource(R.string.settings_wg_lockdown_desc), RethinkTunnelSettingKind.Toggle, wgLockdown, icon = RethinkTunnelSettingIcon.Tune))
-        add(RethinkTunnelSettingRow("network_endpoint_independence", stringResource(R.string.settings_endpoint_independence), stringResource(R.string.settings_endpoint_independence_desc), RethinkTunnelSettingKind.Toggle, endpointIndependence, icon = RethinkTunnelSettingIcon.Tune))
+        add(RethinkTunnelSettingRow("network_mobile_metered", stringResource(R.string.settings_treat_mobile_metered), stringResource(R.string.settings_treat_mobile_metered_desc), RethinkTunnelSettingKind.Toggle, meteredOnlyMobile, icon = RethinkTunnelSettingIcon.Tune, leadingIcon = MaterialSymbols.Filled.SignalCellularAlt))
+        add(RethinkTunnelSettingRow("network_wg_listen_port", stringResource(R.string.settings_wg_listen_port), stringResource(R.string.settings_wg_listen_port_desc), RethinkTunnelSettingKind.Toggle, listenPortFixed, icon = RethinkTunnelSettingIcon.Tune, leadingIcon = MaterialSymbols.Filled.VpnKey))
+        add(RethinkTunnelSettingRow("network_wg_lockdown", stringResource(R.string.settings_wg_lockdown), stringResource(R.string.settings_wg_lockdown_desc), RethinkTunnelSettingKind.Toggle, wgLockdown, icon = RethinkTunnelSettingIcon.Tune, leadingIcon = MaterialSymbols.Filled.Lock))
+        add(RethinkTunnelSettingRow("network_endpoint_independence", stringResource(R.string.settings_endpoint_independence), stringResource(R.string.settings_endpoint_independence_desc), RethinkTunnelSettingKind.Toggle, endpointIndependence, icon = RethinkTunnelSettingIcon.Tune, leadingIcon = MaterialSymbols.Filled.CallSplit))
         if (endpointIndependence) {
-            add(RethinkTunnelSettingRow("network_allow_incoming_wg", stringResource(R.string.settings_allow_incoming_wg_packets), stringResource(R.string.settings_allow_incoming_wg_packets_desc), RethinkTunnelSettingKind.Toggle, allowIncoming, icon = RethinkTunnelSettingIcon.Tune))
+            add(RethinkTunnelSettingRow("network_allow_incoming_wg", stringResource(R.string.settings_allow_incoming_wg_packets), stringResource(R.string.settings_allow_incoming_wg_packets_desc), RethinkTunnelSettingKind.Toggle, allowIncoming, icon = RethinkTunnelSettingIcon.Tune, leadingIcon = MaterialSymbols.Filled.Download))
         }
-        add(RethinkTunnelSettingRow("network_tcp_keep_alive", stringResource(R.string.settings_tcp_keep_alive), stringResource(R.string.settings_tcp_keep_alive_desc), RethinkTunnelSettingKind.Toggle, tcpKeepAlive, icon = RethinkTunnelSettingIcon.Tune))
-        add(RethinkTunnelSettingRow("network_jumbo_packets", stringResource(R.string.settings_jumbo_packets), stringResource(R.string.settings_jumbo_packets_desc), RethinkTunnelSettingKind.Toggle, useMaxMtu, enabled = vpnPolicy != POLICY_FIXED && !persistentState.routeRethinkInRethink, icon = RethinkTunnelSettingIcon.Tune))
+        add(RethinkTunnelSettingRow("network_tcp_keep_alive", stringResource(R.string.settings_tcp_keep_alive), stringResource(R.string.settings_tcp_keep_alive_desc), RethinkTunnelSettingKind.Toggle, tcpKeepAlive, icon = RethinkTunnelSettingIcon.Tune, leadingIcon = MaterialSymbols.Filled.Timer))
+        add(RethinkTunnelSettingRow("network_jumbo_packets", stringResource(R.string.settings_jumbo_packets), stringResource(R.string.settings_jumbo_packets_desc), RethinkTunnelSettingKind.Toggle, useMaxMtu, enabled = vpnPolicy != POLICY_FIXED && !persistentState.routeRethinkInRethink, icon = RethinkTunnelSettingIcon.Tune, leadingIcon = MaterialSymbols.Filled.AutoAwesome))
         if (isAtleastQ()) {
-            add(RethinkTunnelSettingRow("network_vpn_metered", stringResource(R.string.settings_vpn_builder_metered), stringResource(R.string.settings_vpn_builder_metered_desc), RethinkTunnelSettingKind.Toggle, tunnelMetered, icon = RethinkTunnelSettingIcon.Tune))
+            add(RethinkTunnelSettingRow("network_vpn_metered", stringResource(R.string.settings_vpn_builder_metered), stringResource(R.string.settings_vpn_builder_metered_desc), RethinkTunnelSettingKind.Toggle, tunnelMetered, icon = RethinkTunnelSettingIcon.Tune, leadingIcon = MaterialSymbols.Filled.VpnLock))
         }
-        add(RethinkTunnelSettingRow("network_custom_lan_ip", stringResource(R.string.custom_lan_ip_title), stringResource(R.string.custom_lan_ip_desc), RethinkTunnelSettingKind.Action))
+        add(RethinkTunnelSettingRow("network_custom_lan_ip", stringResource(R.string.custom_lan_ip_title), stringResource(R.string.custom_lan_ip_desc), RethinkTunnelSettingKind.Action, leadingIcon = MaterialSymbols.Filled.Http))
     }
 
     RethinkTunnelSettingsScreen(
         listState = listState,
         strings = RethinkTunnelSettingsStrings(
             title = stringResource(R.string.lbl_network),
-            subtitle = topBarSubtitle,
+            // The policy already reads on its own row below.
+            subtitle = "",
             lockdownDescription = stringResource(R.string.settings_lock_down_mode_desc),
             advanced = stringResource(R.string.lbl_advanced),
             dialTimeout = stringResource(R.string.settings_dial_timeout),

@@ -358,22 +358,22 @@
     <string name="lbl_view" translatable="true">View</string>
     <string name="settings_udp_block" translatable="true">Block UDP (except DNS)</string>
     <string name="settings_exclude_apps_in_proxy" translatable="true">Exclude proxy apps</string>
-    <string name="settings_exclude_apps_in_proxy_desc" translatable="true">Exclude apps that act as proxy providers.</string>
+    <string name="settings_exclude_apps_in_proxy_desc" translatable="true">Apps that provide a proxy, like Orbot, skip Keepout.</string>
     <string name="settings_protocol_translation" translatable="true">Protocol translation</string>
     <string name="settings_protocol_translation_desc" translatable="true">Translate UDP traffic to TCP when needed.</string>
     <string name="settings_ping_ips" translatable="true">Ping IPs</string>
     <string name="settings_treat_mobile_metered" translatable="true">Treat mobile data as metered</string>
     <string name="settings_treat_mobile_metered_desc" translatable="true">Apply metered network behavior to mobile data.</string>
-    <string name="settings_wg_listen_port" translatable="true">WireGuard listen port</string>
-    <string name="settings_wg_listen_port_desc" translatable="true">Allow setting a custom listen port.</string>
+    <string name="settings_wg_listen_port" translatable="true">Fixed WireGuard port</string>
+    <string name="settings_wg_listen_port_desc" translatable="true">Lets you choose the port WireGuard listens on.</string>
     <string name="settings_wg_lockdown" translatable="true">WireGuard lockdown</string>
     <string name="settings_wg_lockdown_desc" translatable="true">Restrict traffic to the WireGuard interface only.</string>
     <string name="settings_endpoint_independence" translatable="true">Endpoint-independent mapping</string>
-    <string name="settings_endpoint_independence_desc" translatable="true">Prefer endpoint-independent NAT behavior.</string>
+    <string name="settings_endpoint_independence_desc" translatable="true">Keeps the same outside port per app, which helps calls and games connect.</string>
     <string name="settings_tcp_keep_alive" translatable="true">TCP keep-alive</string>
     <string name="settings_tcp_keep_alive_desc" translatable="true">Keep idle TCP connections alive.</string>
-    <string name="settings_vpn_builder_metered" translatable="true">Use metered VPN</string>
-    <string name="settings_vpn_builder_metered_desc" translatable="true">Treat the VPN connection as metered.</string>
+    <string name="settings_vpn_builder_metered" translatable="true">Metered VPN</string>
+    <string name="settings_vpn_builder_metered_desc" translatable="true">Android treats Keepout\'s VPN as a metered connection.</string>
     <string name="settings_dial_timeout" translatable="true">Dial timeout</string>
 
 
@@ -397,15 +397,15 @@
     <string name="settings_connectivity_checks" translatable="true">Perform connectivity checks</string>
     <string name="settings_connectivity_checks_desc" translatable="true">Check which servers Keepout can reach right now.</string>
 
-    <string name="settings_allow_lan_heading" translatable="true">Do not route private IPs (experimental)</string>
-    <string name="settings_allow_lan_desc" translatable="true">Exclude LAN, loopback, multicast, link-local routes from Keepout\'s VPN tunnel.</string>
+    <string name="settings_allow_lan_heading" translatable="true">Skip local traffic</string>
+    <string name="settings_allow_lan_desc" translatable="true">Local network, loopback and multicast addresses don\'t go through Keepout. Experimental.</string>
 
 
 
     <string name="settings_exclude_proxy_apps_heading" translatable="true">Loopback proxy forwarder apps</string>
 
-    <string name="settings_allow_bypass_heading" translatable="true">Enable network visibility</string>
-    <string name="settings_allow_bypass_desc" translatable="true">Allow requesting apps to access all available networks. These apps may bypass Keepout\'s VPN tunnel on-demand. Some audio/video conference apps like Zoom and Meet may require this to function properly.</string>
+    <string name="settings_allow_bypass_heading" translatable="true">Let apps see all networks</string>
+    <string name="settings_allow_bypass_desc" translatable="true">Some video-call apps (Zoom, Meet) need it. Apps that use it can go around Keepout.</string>
     <string name="settings_lock_down_mode_desc" translatable="true">Some options are off while the VPN is in lockdown mode. See VPN settings.</string>
     <string name="settings_lock_down_proxy_desc" translatable="true">Proxies can\'t be set up while the VPN runs in DNS-only mode.</string>
     <string name="settings_proxy_header" translatable="true">Proxy</string>
@@ -467,8 +467,8 @@
     <string name="settings_autostart_bootup_heading" translatable="true">Auto-start on power-up (experimental)</string>
     <string name="settings_autostart_bootup_desc" translatable="true">On device power-up, start Keepout if it was running before shut down.</string>
 
-    <string name="settings_network_all_networks" translatable="true">Use all available networks (experimental)</string>
-    <string name="settings_network_all_networks_desc" translatable="true">Keepout connects over all available networks. When off, it uses the network Android marks as active.</string>
+    <string name="settings_network_all_networks" translatable="true">Use every network</string>
+    <string name="settings_network_all_networks_desc" translatable="true">Connects over all available networks, not only the one Android marks active. Experimental.</string>
 
     <string name="settings_check_update_heading" translatable="true">Check for app updates</string>
     <string name="settings_check_update_desc" translatable="true">Automatically check for app updates once a week.</string>
@@ -528,7 +528,7 @@
     <string name="settings_theme_dialog_themes_2" translatable="true">Light</string>
     <string name="settings_theme_dialog_themes_3" translatable="true">Dark</string>
 
-    <string name="settings_ip_dialog_title" translatable="true">Choose IP version</string>
+    <string name="settings_ip_dialog_title" translatable="true">IP version</string>
     <string name="settings_ip_dialog_ipv4" translatable="true">IPv4 (default)</string>
     <string name="settings_ip_dialog_ipv6" translatable="true">IPv6 (experimental)</string>
     <string name="settings_ip_dialog_ipv46" translatable="true">Auto (experimental)</string>
@@ -1418,8 +1418,8 @@
 
     <string name="local_blocklist_delete_desc" translatable="true">Delete on-device blocklists?</string>
 
-    <string name="fail_open_network_title" translatable="true">Stall on network loss</string>
-    <string name="fail_open_network_desc" translatable="true">Keepout holds all traffic while there is no connectivity, like in airplane mode.</string>
+    <string name="fail_open_network_title" translatable="true">Hold traffic while offline</string>
+    <string name="fail_open_network_desc" translatable="true">When there is no network (like in airplane mode), connections wait instead of failing.</string>
 
     <string name="about_license" translatable="true">Licensed under Apache-2.0</string>
 
@@ -1541,8 +1541,8 @@
     <string name="no_events_desc" translatable="false">Events appear here once the app starts recording activity.</string>
 
     <!-- Custom LAN IPs -->
-    <string name="custom_lan_ip_title" translatable="false">Custom LAN IPs for VPN</string>
-    <string name="custom_lan_ip_desc" translatable="false">Override default VPN LAN gateway, router, and DNS addresses.</string>
+    <string name="custom_lan_ip_title" translatable="false">VPN addresses</string>
+    <string name="custom_lan_ip_desc" translatable="false">The gateway, router and DNS addresses inside Keepout\'s VPN.</string>
     <string name="custom_lan_ip_auto_desc" translatable="false">Use automatically assigned VPN LAN IPs.</string>
     <string name="custom_lan_ip_manual_desc" translatable="false">Manually configure LAN IPs for gateway, router, and DNS.</string>
     <string name="custom_lan_ip_gateway" translatable="false">Gateway</string>
