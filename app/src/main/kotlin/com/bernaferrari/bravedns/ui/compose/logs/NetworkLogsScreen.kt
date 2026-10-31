@@ -461,6 +461,8 @@ private fun LogControls(
             )
             RethinkToolbarIconToggle(
                 icon = MaterialSymbols.Filled.FilterList,
+                // Same 40dp as the compact verdict group beside it.
+                size = SharedDimensions.buttonHeightSm,
                 contentDescription = stringResource(R.string.activity_filters),
                 selected = filtersActive,
                 showSelectedDot = true,
@@ -637,7 +639,6 @@ private fun logAppFilterStrings(appCount: Int) = RethinkLogAppFilterStrings(
     searchPlaceholder = stringResource(R.string.search_apps_count_placeholder, appCount),
     clear = stringResource(R.string.fapps_filter_clear_btn),
     clearSearchDescription = stringResource(R.string.cd_clear_search),
-    dismissDescription = stringResource(R.string.lbl_dismiss),
     loading = stringResource(R.string.lbl_loading),
 )
 

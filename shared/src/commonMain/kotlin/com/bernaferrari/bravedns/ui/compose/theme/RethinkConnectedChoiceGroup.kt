@@ -1,6 +1,14 @@
 /* Copyright 2026 RethinkDNS and its authors */
 package com.bernaferrari.bravedns.ui.compose.theme
 
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.Job
+import androidx.compose.runtime.rememberUpdatedState
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.graphics.Color
 import androidx.compose.animation.animateContentSize
 import androidx.compose.material3.ButtonDefaults
@@ -96,10 +104,29 @@ fun <T> RethinkConnectedChoiceGroup(
     compact: Boolean = false,
     selectedContainerColor: Color = MaterialTheme.colorScheme.primary,
     selectedContentColor: Color = MaterialTheme.colorScheme.onPrimary,
+    /**
+     * For a group that re-queries a whole list (a time window, a verdict filter): the new choice
+     * shows at once, and [onSelect] fires once the segment has settled, so the list swap doesn't
+     * land mid-animation and stutter it.
+     */
+    settleBeforeSelect: Boolean = false,
 ) {
+    val motion = LocalRethinkMotion.current
+    val scope = rememberCoroutineScope()
+    var shown by remember(selected) { mutableStateOf(selected) }
+    var commit by remember { mutableStateOf<Job?>(null) }
+    val currentOnSelect by rememberUpdatedState(onSelect)
+    val select: (T) -> Unit = if (!settleBeforeSelect || motion.reducedMotion) onSelect else { value ->
+        shown = value
+        commit?.cancel()
+        commit = scope.launch {
+            delay(motion.durationMedium.toLong())
+            currentOnSelect(value)
+        }
+    }
     val adaptiveLabels = fillWidth && !iconOnly && labels == RethinkChoiceLabels.Always
     if (!adaptiveLabels || options.any { it.icon == null }) {
-        ChoiceRow(options, selected, onSelect, modifier, fillWidth, iconOnly, onDeselect, labels, unselectedContainerColor, compact, selectedContainerColor, selectedContentColor)
+        ChoiceRow(options, shown, select, modifier, fillWidth, iconOnly, onDeselect, labels, unselectedContainerColor, compact, selectedContainerColor, selectedContentColor)
         return
     }
     // Icons carry the meaning, so when the labels don't fit their segments the text goes and the icons stay.
@@ -114,7 +141,7 @@ fun <T> RethinkConnectedChoiceGroup(
         val labelsFit = options.all { option ->
             with(density) { measurer.measure(option.label, style, maxLines = 1).size.width.toDp() } + chrome <= segment
         }
-        ChoiceRow(options, selected, onSelect, Modifier, fillWidth = true, iconOnly = !labelsFit, onDeselect, labels, unselectedContainerColor, compact, selectedContainerColor, selectedContentColor)
+        ChoiceRow(options, shown, select, Modifier, fillWidth = true, iconOnly = !labelsFit, onDeselect, labels, unselectedContainerColor, compact, selectedContainerColor, selectedContentColor)
     }
 }
 

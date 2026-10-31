@@ -3,6 +3,7 @@
 
 package com.bernaferrari.bravedns.ui.compose.logs
 
+import androidx.compose.foundation.layout.height
 import com.bernaferrari.bravedns.ui.compose.theme.RethinkSheetHeader
 import com.bernaferrari.bravedns.ui.compose.common.RethinkLoadingState
 import com.bernaferrari.bravedns.ui.compose.theme.RethinkIconWell
@@ -62,7 +63,6 @@ data class RethinkLogAppFilterStrings(
     val searchPlaceholder: String,
     val clear: String,
     val clearSearchDescription: String,
-    val dismissDescription: String,
     val loading: String,
 )
 
@@ -119,9 +119,12 @@ fun RethinkLogAppFilterDialog(
         contentPadding = PaddingValues(horizontal = SharedDimensions.spacingMd, vertical = SharedDimensions.spacingSm),
         verticalSpacing = SharedDimensions.spacingGridTile,
         includeBottomSpacer = false,
-    ) { dismissSheet ->
+        // Fully open at one fixed height: loading -> list never resizes the sheet, and it never
+        // settles half-open once the list arrives.
+        expandOnShow = true,
+    ) {
         Column(
-            modifier = Modifier.fillMaxWidth().heightIn(max = SharedDimensions.sheetContentMaxHeight),
+            modifier = Modifier.fillMaxWidth().height(SharedDimensions.sheetContentMaxHeight),
             verticalArrangement = Arrangement.spacedBy(SharedDimensions.spacingGridTile),
         ) {
                 RethinkSearchField(
@@ -130,13 +133,10 @@ fun RethinkLogAppFilterDialog(
                     placeholder = strings.searchPlaceholder,
                     onClearQuery = { onSearchQueryChange("") },
                     clearQueryContentDescription = strings.clearSearchDescription,
-                    closeWhenEmptyContentDescription = strings.dismissDescription,
-                    onCloseWhenEmpty = dismissSheet,
                     modifier = Modifier.fillMaxWidth(),
                     containerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
                     textStyle = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Medium),
-                    iconSize = SharedDimensions.iconSizeXs,
-                    trailingIconSize = SharedDimensions.iconSizeXs,
+                    // The field's own 20dp glyphs: 16dp read as specks beside 16sp text.
                     trailingIconButtonSize = SharedDimensions.touchTargetMin,
                 )
                 if (selectedId != null) {

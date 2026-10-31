@@ -18,16 +18,22 @@ class SettingsSearchIndexTest {
         assertEquals(RethinkRoute.MiscSettings("general_autostart"), SettingsSearchDestination.General("general_autostart").route())
         assertEquals(RethinkRoute.DnsAdvanced("dns_advanced_default_dns"), SettingsSearchDestination.Dns("dns_advanced_default_dns").route())
         assertEquals(RethinkRoute.DnsDetail("dns_mode_rethink"), SettingsSearchDestination.Dns("dns_mode_rethink").route())
-        assertEquals(RethinkRoute.AppearanceSettings, SettingsSearchDestination.Appearance.route())
-        assertEquals(RethinkRoute.AppLockSettings, SettingsSearchDestination.AppLock.route())
-        assertEquals(RethinkRoute.Diagnostics, SettingsSearchDestination.Diagnostics.route())
-        assertEquals(RethinkRoute.AdvancedSettings, SettingsSearchDestination.Developer.route())
+    }
+
+    @Test
+    fun foldedScreens_openTheScreenThatHoldsThem_atTheirSection() {
+        // App lock is a section of General; Diagnostics and Developer of Logs & diagnostics.
+        assertEquals(RethinkRoute.MiscSettings(GENERAL_APP_LOCK), SettingsSearchDestination.AppLock.route())
+        assertEquals(RethinkRoute.LoggingSettings(LOGGING_DIAGNOSTICS), SettingsSearchDestination.Diagnostics.route())
+        assertEquals(RethinkRoute.LoggingSettings(LOGGING_DEVELOPER), SettingsSearchDestination.Developer.route())
     }
 
     @Test
     fun inPlaceDestinations_haveNoRoute() {
-        // Notifications opens Android's settings; Backup & restore is a sheet over the hub.
+        // Notifications opens Android's settings; Backup & restore is a sheet over the hub;
+        // Appearance is inline on the hub, which scrolls to it.
         assertNull(SettingsSearchDestination.Notifications.route())
         assertNull(SettingsSearchDestination.Backup.route())
+        assertNull(SettingsSearchDestination.Appearance.route())
     }
 }

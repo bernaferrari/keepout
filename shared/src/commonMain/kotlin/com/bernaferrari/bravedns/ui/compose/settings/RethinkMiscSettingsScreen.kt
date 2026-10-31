@@ -45,7 +45,7 @@ data class RethinkMiscSettingsStrings(
 )
 
 /**
- * Shared toggle-list settings screen (Settings › General, Settings › Logging). Hosts keep
+ * Shared toggle-list settings screen (Settings › General, Settings › Logs & diagnostics). Hosts keep
  * preference persistence and platform actions; the backup, website and about rows show only when
  * their callback is set (the Settings hub has its own Backup & restore and About rows now).
  */
@@ -66,16 +66,7 @@ fun RethinkMiscSettingsScreen(
     val motion = LocalRethinkMotion.current
     val listState = rememberLazyListState()
     val hasAbout = onOpenWebsite != null || onOpenAbout != null
-    // Item order: backup (optional), toggles, additional (optional), about (optional).
-    val backupIndex = if (onBackupRestore != null) 0 else null
-    val togglesIndex = if (onBackupRestore != null) 1 else 0
-    val aboutIndex = if (hasAbout) togglesIndex + 1 + (if (additionalSettings != null) 1 else 0) else null
-    val focusedSection = when (focusedSettingId) {
-        null -> null
-        "general_backup", "general_backup_restore" -> backupIndex
-        "general_about", "general_website" -> aboutIndex
-        else -> togglesIndex
-    }
+    val focusedSection = focusedItem(focusedSettingId, toggles, onBackupRestore != null, additionalSettings != null, hasAbout)
     LaunchedEffect(focusedSection) {
         focusedSection?.let {
             if (motion.reducedMotion) listState.scrollToItem(it) else listState.animateScrollToItem(it)
@@ -143,6 +134,28 @@ fun RethinkMiscSettingsScreen(
                 }
             }
         }
+    }
+}
+
+/**
+ * The list item [focusedSettingId] lives in. Item order: backup (optional), toggles, additional
+ * (optional), about (optional). An id that is no toggle names a section the host added (App lock,
+ * Diagnostics, …), so it lands on the additional item.
+ */
+private fun focusedItem(
+    focusedSettingId: String?,
+    toggles: List<RethinkMiscToggle>,
+    hasBackup: Boolean,
+    hasAdditional: Boolean,
+    hasAbout: Boolean,
+): Int? {
+    val togglesIndex = if (hasBackup) 1 else 0
+    return when (focusedSettingId) {
+        null -> null
+        "general_backup", "general_backup_restore" -> if (hasBackup) 0 else null
+        "general_about", "general_website" -> if (hasAbout) togglesIndex + 1 + (if (hasAdditional) 1 else 0) else null
+        in toggles.map { it.id } -> togglesIndex
+        else -> if (hasAdditional) togglesIndex + 1 else togglesIndex
     }
 }
 

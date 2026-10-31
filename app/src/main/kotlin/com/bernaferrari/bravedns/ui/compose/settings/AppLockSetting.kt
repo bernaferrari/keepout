@@ -1,6 +1,7 @@
 /* Copyright 2026 RethinkDNS and its authors */
 package com.bernaferrari.bravedns.ui.compose.settings
 
+import androidx.compose.ui.Modifier
 import android.os.SystemClock
 import androidx.biometric.BiometricManager
 import androidx.biometric.BiometricPrompt
@@ -35,10 +36,10 @@ private const val LOCK_AUTHENTICATORS =
  * check: whoever is here has already unlocked Keepout.
  */
 @Composable
-fun AppLockSettingScreen(
+fun AppLockSettingSection(
     persistentState: PersistentState,
     eventLogger: EventLogger,
-    onBackClick: (() -> Unit)? = null,
+    modifier: Modifier = Modifier,
 ) {
     val context = LocalContext.current
     var current by remember { mutableStateOf(BioMetricType.fromValue(persistentState.biometricAuthType)) }
@@ -81,23 +82,22 @@ fun AppLockSettingScreen(
         )
     }
 
-    RethinkAppLockSettingsScreen(
+    RethinkAppLockSection(
         selected = current.toShared(),
         options = listOf(
             RethinkAppLockOption(RethinkAppLockTimeout.Off, stringResource(R.string.app_lock_off)),
-            RethinkAppLockOption(RethinkAppLockTimeout.EveryTime, stringResource(R.string.app_lock_every_time), stringResource(R.string.app_lock_every_time_desc)),
-            RethinkAppLockOption(RethinkAppLockTimeout.FiveMinutes, stringResource(R.string.app_lock_after_minutes, 5), stringResource(R.string.app_lock_after_desc)),
-            RethinkAppLockOption(RethinkAppLockTimeout.FifteenMinutes, stringResource(R.string.app_lock_after_minutes, 15), stringResource(R.string.app_lock_after_desc)),
+            RethinkAppLockOption(RethinkAppLockTimeout.EveryTime, stringResource(R.string.app_lock_every_time)),
+            RethinkAppLockOption(RethinkAppLockTimeout.FiveMinutes, stringResource(R.string.app_lock_after_minutes, 5)),
+            RethinkAppLockOption(RethinkAppLockTimeout.FifteenMinutes, stringResource(R.string.app_lock_after_minutes, 15)),
         ),
         strings = RethinkAppLockSettingsStrings(
-            title = stringResource(R.string.app_lock_title),
             explanation = stringResource(R.string.app_lock_explanation),
-            section = stringResource(R.string.app_lock_section),
+            section = stringResource(R.string.app_lock_title),
             unavailable = stringResource(R.string.app_lock_unavailable),
         ),
         available = available,
         onSelect = { select(it.toBioMetricType()) },
-        onBackClick = onBackClick,
+        modifier = modifier,
     )
 }
 

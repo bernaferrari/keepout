@@ -39,12 +39,19 @@
     <string name="rules_choose_app_empty">No matching apps</string>
 
     <!-- Settings hub: Protection · App · Advanced · About -->
-    <string name="settings_section_app">App</string>
     <string name="settings_proxy_vpn">Proxy &amp; VPN</string>
     <string name="settings_proxy_vpn_desc">WireGuard, SOCKS5, HTTP proxy and Tor</string>
     <string name="settings_notifications">Notifications</string>
-    <string name="settings_logging_title">Logging</string>
+    <!-- Settings hub: Logging, Diagnostics and (debug) Developer share one screen. -->
+    <string name="settings_logs_diagnostics_title">Logs &amp; diagnostics</string>
+    <!-- Settings hub: what the General row holds. -->
+    <string name="settings_general_summary">App lock, backup and more</string>
+    <!-- General: section over Backup & restore and Notifications. -->
+    <string name="settings_general_more_section">Data &amp; notifications</string>
+    <string name="settings_notifications_desc">Choose alerts in Android\'s settings</string>
     <string name="settings_logging_section">On this device</string>
+    <!-- Logs & diagnostics: log retention and packet capture. -->
+    <string name="settings_logging_keep_section">Keeping logs</string>
     <string name="settings_developer_title">Developer</string>
     <string name="settings_about_keepout">About %1$s</string>
 
@@ -56,13 +63,10 @@
 
     <!-- App lock -->
     <string name="app_lock_title">App lock</string>
-    <string name="app_lock_explanation">Ask for your fingerprint, face or screen lock when Keepout opens. While Keepout is locked, its notification hides the Pause and Stop actions.</string>
-    <string name="app_lock_section">Ask for the screen lock</string>
+    <string name="app_lock_explanation">Ask for your fingerprint, face or screen lock when Keepout opens: always, or only once it\'s been away 5 or 15 minutes. While locked, its notification hides Pause and Stop.</string>
     <string name="app_lock_off">Off</string>
-    <string name="app_lock_every_time">Every time</string>
-    <string name="app_lock_every_time_desc">Whenever you open Keepout</string>
-    <string name="app_lock_after_minutes">After %1$d minutes</string>
-    <string name="app_lock_after_desc">When Keepout opens and you haven\'t unlocked it in that long</string>
+    <string name="app_lock_every_time">Always</string>
+    <string name="app_lock_after_minutes">%1$d min</string>
     <string name="app_lock_unavailable">Set a screen lock in Android settings first. App lock uses it, so you can\'t be locked out.</string>
     <string name="app_lock_confirm_title">Turn on app lock</string>
 
@@ -82,6 +86,5 @@
     <string name="wireguard_empty_message">Send chosen apps through your own VPN server. Import its config file, scan its QR code or type it in.</string>
     <string name="proxy_orbot_explainer">Routes chosen apps through Tor. Requires Orbot.</string>
     <!-- Short Settings tile labels; the screens keep their full titles. -->
-    <string name="settings_tile_backup">Backup</string>
     <string name="settings_tile_censorship">Censorship</string>
 </resources>

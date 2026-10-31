@@ -3,6 +3,7 @@
 
 package com.bernaferrari.bravedns.ui.compose.settings
 
+import com.bernaferrari.bravedns.ui.compose.theme.RethinkFormSection
 import com.bernaferrari.bravedns.ui.icons.MaterialSymbols
 
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -13,7 +14,6 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import com.bernaferrari.bravedns.ui.compose.theme.CardPosition
 import com.bernaferrari.bravedns.ui.compose.theme.RethinkListGroup
 import com.bernaferrari.bravedns.ui.compose.theme.RethinkSwitchListItem
-import com.bernaferrari.bravedns.ui.compose.theme.RethinkTopBarLazyColumnScreen
 
 data class RethinkAdvancedSettingsStrings(
     val title: String,
@@ -25,9 +25,11 @@ data class RethinkAdvancedSettingsStrings(
     val panicDescription: String,
 )
 
-/** Shared debug/advanced toggle screen. Hosts retain feature persistence and debug gating. */
+/** The debug-only engine toggles, as a section of Logs & diagnostics. Hosts keep persistence and gating. */
 @Composable
-fun RethinkAdvancedSettingsScreen(
+fun RethinkDeveloperToggles(
+    /** Developer tools (stats, database, flight recorder), listed above the toggles. */
+    tools: List<RethinkSettingsLink>,
     strings: RethinkAdvancedSettingsStrings,
     experimentalEnabled: Boolean,
     autoDialEnabled: Boolean,
@@ -35,21 +37,14 @@ fun RethinkAdvancedSettingsScreen(
     onExperimentalChange: (Boolean) -> Unit,
     onAutoDialChange: (Boolean) -> Unit,
     onPanicChange: (Boolean) -> Unit,
-    onBackClick: (() -> Unit)? = null,
     modifier: Modifier = Modifier,
 ) {
-    RethinkTopBarLazyColumnScreen(
-        title = strings.title,
-        subtitle = strings.subtitle,
-        onBackClick = onBackClick,
-        modifier = modifier,
-    ) {
-        item {
-            RethinkListGroup {
-                AdvancedToggleRow(strings.experimentalTitle, null, MaterialSymbols.Filled.Science, experimentalEnabled, CardPosition.First, onExperimentalChange)
-                AdvancedToggleRow(strings.autoDialTitle, strings.autoDialDescription, MaterialSymbols.Filled.Tune, autoDialEnabled, CardPosition.Middle, onAutoDialChange)
-                AdvancedToggleRow(strings.panicTitle, strings.panicDescription, MaterialSymbols.Filled.Warning, panicEnabled, CardPosition.Last, onPanicChange, warning = true)
-            }
+    RethinkFormSection(strings.title, description = strings.subtitle, modifier = modifier) {
+        RethinkSettingsLinkRows(tools)
+        RethinkListGroup {
+            AdvancedToggleRow(strings.experimentalTitle, null, MaterialSymbols.Filled.Science, experimentalEnabled, CardPosition.First, onExperimentalChange)
+            AdvancedToggleRow(strings.autoDialTitle, strings.autoDialDescription, MaterialSymbols.Filled.Tune, autoDialEnabled, CardPosition.Middle, onAutoDialChange)
+            AdvancedToggleRow(strings.panicTitle, strings.panicDescription, MaterialSymbols.Filled.Warning, panicEnabled, CardPosition.Last, onPanicChange, warning = true)
         }
     }
 }

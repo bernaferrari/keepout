@@ -52,15 +52,13 @@ import com.bernaferrari.bravedns.ui.compose.app.KeepoutConnectionsScreen
 import com.bernaferrari.bravedns.ui.compose.configure.ConfigureScreen
 import com.bernaferrari.bravedns.ui.compose.configure.SettingsSearchDestination
 import com.bernaferrari.bravedns.ui.compose.configure.route
-import com.bernaferrari.bravedns.ui.compose.settings.AppearanceSettingsScreen
-import com.bernaferrari.bravedns.ui.compose.settings.AppLockSettingScreen
-import com.bernaferrari.bravedns.ui.compose.settings.DiagnosticsScreen
+import com.bernaferrari.bravedns.ui.compose.settings.AppearanceSettingsSection
+import com.bernaferrari.bravedns.ui.compose.settings.DiagnosticsActions
 import com.bernaferrari.bravedns.ui.compose.settings.LoggingSettingsScreen
 import com.bernaferrari.bravedns.ui.compose.events.EventsScreen
 import com.bernaferrari.bravedns.ui.compose.firewall.FirewallSettingsScreen
 import com.bernaferrari.bravedns.ui.compose.home.HomeScreen
 
-import com.bernaferrari.bravedns.ui.compose.settings.AdvancedSettingsScreen
 import com.bernaferrari.bravedns.ui.compose.settings.AntiCensorshipScreen
 import com.bernaferrari.bravedns.ui.compose.settings.AppLockScreen
 import com.bernaferrari.bravedns.ui.compose.settings.AppLockResult
@@ -599,12 +597,6 @@ fun HomeScreenRoot(
             entry<RethinkRoute.FirewallSettings> { args -> firewallContent(args.focusKey) }
             // The universal toggles moved onto the Firewall screen; old stacks and intents land there.
             entry<RethinkRoute.UniversalFirewall> { firewallContent("") }
-            entry<RethinkRoute.AdvancedSettings> {
-                AdvancedSettingsScreen(
-                    persistentState = persistentState,
-                    onBackClick = { nav.popBackStack() }
-                )
-            }
             entry<RethinkRoute.AntiCensorship> {
                 AntiCensorshipScreen(
                     persistentState = persistentState,
@@ -626,6 +618,7 @@ fun HomeScreenRoot(
                 MiscSettingsScreen(
                     persistentState = persistentState,
                     eventLogger = appInfoEventLogger,
+                    onNotificationsClick = aboutActions.onNotificationClick,
                     initialFocusKey = args.focusKey.takeIf { it.isNotBlank() },
                     onBackClick = { nav.popBackStack() },
                 )
@@ -898,41 +891,30 @@ fun HomeScreenRoot(
                             else -> destination.route()?.let { nav.push(it) }
                         }
                     },
-                )
-            }
-            entry<RethinkRoute.AppearanceSettings> {
-                AppearanceSettingsScreen(
-                    persistentState = persistentState,
-                    eventLogger = appInfoEventLogger,
-                    onThemeModeChanged = onThemeModeChanged,
-                    onThemeColorChanged = onThemeColorChanged,
-                    onBackClick = { nav.popBackStack() },
-                )
-            }
-            entry<RethinkRoute.AppLockSettings> {
-                AppLockSettingScreen(
-                    persistentState = persistentState,
-                    eventLogger = appInfoEventLogger,
-                    onBackClick = { nav.popBackStack() },
+                    appearance = {
+                        AppearanceSettingsSection(
+                            persistentState = persistentState,
+                            eventLogger = appInfoEventLogger,
+                            onThemeModeChanged = onThemeModeChanged,
+                            onThemeColorChanged = onThemeColorChanged,
+                        )
+                    },
                 )
             }
             entry<RethinkRoute.LoggingSettings> { args ->
                 LoggingSettingsScreen(
                     persistentState = persistentState,
                     eventLogger = appInfoEventLogger,
+                    diagnostics = DiagnosticsActions(
+                        isDebug = isDebug,
+                        onEventLogs = { nav.push(RethinkRoute.Events) },
+                        onAppLogs = { nav.push(RethinkRoute.ConsoleLogs) },
+                        onConnectivityChecks = { nav.push(RethinkRoute.PingTest) },
+                        onNetworkStats = aboutActions.onStatsClick,
+                        onDatabase = { nav.push(RethinkRoute.Database) },
+                        onFlightRecorder = aboutActions.onFlightRecordClick,
+                    ),
                     initialFocusKey = args.focusKey.takeIf { it.isNotBlank() },
-                    onBackClick = { nav.popBackStack() },
-                )
-            }
-            entry<RethinkRoute.Diagnostics> {
-                DiagnosticsScreen(
-                    isDebug = isDebug,
-                    onEventLogsClick = { nav.push(RethinkRoute.Events) },
-                    onAppLogsClick = { nav.push(RethinkRoute.ConsoleLogs) },
-                    onConnectivityChecksClick = { nav.push(RethinkRoute.PingTest) },
-                    onNetworkStatsClick = aboutActions.onStatsClick,
-                    onDatabaseClick = { nav.push(RethinkRoute.Database) },
-                    onFlightRecorderClick = aboutActions.onFlightRecordClick,
                     onBackClick = { nav.popBackStack() },
                 )
             }

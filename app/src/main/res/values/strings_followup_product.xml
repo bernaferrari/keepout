@@ -17,10 +17,6 @@
     <string name="dns_rule_invalid_query">This query cannot be saved as an exact domain rule.</string>
     <string name="dns_rule_save_failed">Could not save the domain rule. Try again.</string>
     <string name="dns_rule_saving">Saving domain rule…</string>
-    <string name="stats_close_connections">Close all active connections</string>
-    <string name="stats_close_connections_description">Closes current connections for all apps. Apps may reconnect immediately. Protection stays on.</string>
-    <string name="stats_close_connections_stopped">Protection stopped. No connections were closed.</string>
-    <string name="stats_close_connections_failed">Could not request connection closure. Try again.</string>
     <string name="console_clear_failed">Could not delete console logs. Try again.</string>
     <string name="dns_rule_scope_uid">UID %1$d</string>
     <string name="console_clearing_description">Deleting console logs…</string>

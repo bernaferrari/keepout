@@ -1,5 +1,11 @@
 package com.bernaferrari.bravedns.ui.compose.statistics
 
+import androidx.compose.ui.unit.sp
+import androidx.compose.ui.unit.TextUnit
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.text.rememberTextMeasurer
+import androidx.compose.foundation.layout.BoxWithConstraints
 import com.bernaferrari.bravedns.ui.compose.theme.RethinkMetric
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -13,7 +19,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import com.bernaferrari.bravedns.ui.compose.theme.SectionHeader
 import com.bernaferrari.bravedns.ui.compose.theme.SharedDimensions
 import com.bernaferrari.bravedns.ui.compose.theme.rethinkConnectedRowShape
@@ -41,25 +46,37 @@ fun RethinkUsageOverviewCard(
         SectionHeader(title = overallLabel)
         // IntrinsicSize.Min + fillMaxHeight keeps the three tiles equal height even when one
         // value or label wraps (large font scales, long translations).
-        Row(
-            Modifier.fillMaxWidth().height(IntrinsicSize.Min),
-            horizontalArrangement = Arrangement.spacedBy(SharedDimensions.spacingGridTile),
-        ) {
-            // Neutral values: in this app red and green mean blocked and allowed, not direction.
-            UsageTile(downloadLabel, overview.download, MaterialTheme.colorScheme.onSurface, 0, Modifier.weight(1f).fillMaxHeight())
-            UsageTile(uploadLabel, overview.upload, MaterialTheme.colorScheme.onSurface, 1, Modifier.weight(1f).fillMaxHeight())
-            UsageTile(connectionsLabel, overview.connections, MaterialTheme.colorScheme.onSurface, 2, Modifier.weight(1f).fillMaxHeight())
+        BoxWithConstraints(Modifier.fillMaxWidth()) {
+            // One value size for the row: the largest that fits the widest value, so "602.9 MB"
+            // never sits smaller than "13.5 MB" beside it.
+            val measurer = rememberTextMeasurer()
+            val density = LocalDensity.current
+            val base = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.SemiBold, fontFeatureSettings = "tnum")
+            val minSize = MaterialTheme.typography.titleSmall.fontSize
+            val values = listOf(overview.download, overview.upload, overview.connections)
+            val tileText = (maxWidth - SharedDimensions.spacingGridTile * 2) / 3 - SharedDimensions.cardPaddingSm * 2
+            val widest = values.maxOf { with(density) { measurer.measure(it, base, maxLines = 1).size.width.toDp() } }
+            val valueSize = if (widest <= tileText) base.fontSize else (base.fontSize.value * (tileText / widest)).coerceAtLeast(minSize.value).sp
+            Row(
+                Modifier.fillMaxWidth().height(IntrinsicSize.Min),
+                horizontalArrangement = Arrangement.spacedBy(SharedDimensions.spacingGridTile),
+            ) {
+                // Neutral values: in this app red and green mean blocked and allowed, not direction.
+                UsageTile(downloadLabel, overview.download, valueSize, 0, Modifier.weight(1f).fillMaxHeight())
+                UsageTile(uploadLabel, overview.upload, valueSize, 1, Modifier.weight(1f).fillMaxHeight())
+                UsageTile(connectionsLabel, overview.connections, valueSize, 2, Modifier.weight(1f).fillMaxHeight())
+            }
         }
     }
 }
 
 @Composable
-private fun UsageTile(label: String, value: String, valueColor: Color, index: Int, modifier: Modifier) {
+private fun UsageTile(label: String, value: String, valueSize: TextUnit, index: Int, modifier: Modifier) {
     Surface(modifier = modifier, shape = rethinkConnectedRowShape(index, count = 3), color = MaterialTheme.colorScheme.surfaceContainerLow) {
         RethinkMetric(
             value = value,
             label = label,
-            valueColor = valueColor,
+            valueFontSize = valueSize,
             modifier = Modifier.padding(horizontal = SharedDimensions.cardPaddingSm, vertical = SharedDimensions.cardPadding),
         )
     }

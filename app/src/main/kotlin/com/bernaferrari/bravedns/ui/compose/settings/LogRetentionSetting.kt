@@ -1,5 +1,6 @@
 package com.bernaferrari.bravedns.ui.compose.settings
 
+import com.bernaferrari.bravedns.ui.icons.MaterialSymbols
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Text
@@ -15,7 +16,7 @@ import com.bernaferrari.bravedns.util.LogRetention
 import org.koin.compose.koinInject
 
 @Composable
-internal fun LogRetentionSetting(persistentState: PersistentState) {
+internal fun LogRetentionSetting(persistentState: PersistentState, position: CardPosition = CardPosition.Single) {
     val scheduler = koinInject<WorkScheduler>()
     var selected by remember { mutableStateOf(LogRetention.fromHours(persistentState.logRetentionHours)) }
     var showOptions by remember { mutableStateOf(false) }
@@ -24,7 +25,8 @@ internal fun LogRetentionSetting(persistentState: PersistentState) {
         headline = title,
         supporting = if (selected.hours < 24) androidx.compose.ui.res.pluralStringResource(R.plurals.port_hours, selected.hours, selected.hours)
             else androidx.compose.ui.res.pluralStringResource(R.plurals.port_days, selected.hours / 24, selected.hours / 24),
-        position = CardPosition.Single,
+        leadingIcon = MaterialSymbols.Filled.Timer,
+        position = position,
         onClick = { showOptions = true },
     )
     val labels = LogRetention.entries.associateWith { option ->

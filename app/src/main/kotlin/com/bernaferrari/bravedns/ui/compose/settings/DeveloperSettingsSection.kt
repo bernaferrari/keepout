@@ -11,18 +11,16 @@ import com.bernaferrari.bravedns.R
 import com.bernaferrari.bravedns.RethinkDnsApplication.Companion.DEBUG
 import com.bernaferrari.bravedns.service.PersistentState
 
+/** Debug builds only: the engine's experimental toggles, last on Logs & diagnostics. */
 @Composable
-fun AdvancedSettingsScreen(
-    persistentState: PersistentState,
-    onBackClick: (() -> Unit)? = null,
-) {
+fun DeveloperSettingsSection(persistentState: PersistentState, tools: List<RethinkSettingsLink>) {
     if (!DEBUG) return
     var experimentalEnabled by remember { mutableStateOf(persistentState.nwEngExperimentalFeatures) }
     var autoDialEnabled by remember { mutableStateOf(persistentState.autoDialsParallel) }
     var panicEnabled by remember { mutableStateOf(persistentState.panicRandom) }
-    RethinkAdvancedSettingsScreen(
+    RethinkDeveloperToggles(
+        tools = tools,
         strings = RethinkAdvancedSettingsStrings(
-            // Debug builds only; "Advanced" is now the Settings group this sits in.
             title = stringResource(R.string.settings_developer_title),
             subtitle = stringResource(R.string.adv_set_experimental_desc),
             experimentalTitle = stringResource(R.string.adv_set_experimental_title),
@@ -37,6 +35,5 @@ fun AdvancedSettingsScreen(
         onExperimentalChange = { experimentalEnabled = it; persistentState.nwEngExperimentalFeatures = it },
         onAutoDialChange = { autoDialEnabled = it; persistentState.autoDialsParallel = it },
         onPanicChange = { panicEnabled = it; persistentState.panicRandom = it },
-        onBackClick = onBackClick,
     )
 }

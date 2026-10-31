@@ -94,7 +94,8 @@ fun RethinkLargeTopBar(
                         // Body, not label: a sentence under a display-size title reads as prose.
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        modifier = Modifier.padding(bottom = LargeTitleBottomPadding),
+                        // A small step down from the title, so the two read as a pair, not one block.
+                        modifier = Modifier.padding(top = SharedDimensions.spacingXs, bottom = LargeTitleBottomPadding),
                     )
                 }
             }

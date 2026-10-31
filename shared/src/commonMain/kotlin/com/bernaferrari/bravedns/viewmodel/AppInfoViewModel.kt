@@ -92,18 +92,6 @@ class AppInfoViewModel(
         AppRuleChange(before, AppRuleSnapshot(uid, next.firewall, next.connection))
     }
 
-    /**
-     * Put back the exact rule [change] replaced, mode included. Only while the app still holds
-     * what [change] wrote: a later edit (another tap, App detail, Select mode) stands. True when
-     * it restored.
-     */
-    suspend fun undo(change: AppRuleChange): Boolean = bulkUpdateMutex.withLock {
-        if (snapshot(change.after.uid) != change.after) return@withLock false
-        val before = change.before
-        firewallRules.updateFirewallStatus(before.uid, before.firewall, before.connection)
-        true
-    }
-
     private suspend fun snapshot(uid: Int) =
         AppRuleSnapshot(uid, firewallRules.firewallStatus(uid), firewallRules.connectionStatus(uid))
 

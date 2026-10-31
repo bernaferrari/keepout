@@ -1,6 +1,7 @@
 /* Copyright 2026 RethinkDNS and its authors */
 package com.bernaferrari.bravedns.ui.compose.logs
 
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
@@ -61,7 +62,8 @@ fun RethinkLogFiltersSheet(
     strings: RethinkLogFiltersStrings,
     onDismiss: () -> Unit,
 ) {
-    RethinkModalBottomSheet(onDismissRequest = onDismiss) { dismiss ->
+    // Short enough to open fully; half-open it hid Reason under the navigation bar.
+    RethinkModalBottomSheet(onDismissRequest = onDismiss, expandOnShow = true) { dismiss ->
         RethinkSheetHeader(title = strings.title)
         Text(strings.type, style = MaterialTheme.typography.titleSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
         RethinkConnectedChoiceGroup(
@@ -77,17 +79,20 @@ fun RethinkLogFiltersSheet(
             appSummary?.let { Triple(strings.app, it, onApp) },
             reasonSummary?.let { Triple(strings.reason, it, onReason) },
         )
-        rows.forEachIndexed { index, (headline, summary, open) ->
-            RethinkListItem(
-                headline = headline,
-                supporting = summary,
-                position = cardPositionFor(index, rows.lastIndex),
-                showTrailingChevron = true,
-                onClick = {
-                    dismiss()
-                    open()
-                },
-            )
+        // App and Reason are one grouped list: the rows' own 2dp gap, not the sheet's section spacing.
+        Column {
+            rows.forEachIndexed { index, (headline, summary, open) ->
+                RethinkListItem(
+                    headline = headline,
+                    supporting = summary,
+                    position = cardPositionFor(index, rows.lastIndex),
+                    showTrailingChevron = true,
+                    onClick = {
+                        dismiss()
+                        open()
+                    },
+                )
+            }
         }
     }
 }

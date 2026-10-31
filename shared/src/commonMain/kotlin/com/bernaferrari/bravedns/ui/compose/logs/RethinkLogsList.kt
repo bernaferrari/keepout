@@ -3,6 +3,7 @@
 
 package com.bernaferrari.bravedns.ui.compose.logs
 
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.padding
 import com.bernaferrari.bravedns.ui.compose.common.RethinkErrorState
 import com.bernaferrari.bravedns.ui.compose.common.RethinkEmptyState
@@ -68,7 +69,11 @@ fun RethinkLogFilterRow(
         selected = selected,
         onSelect = onSelected,
         modifier = modifier.fillMaxWidth(),
+        // Compact and hugging its content: a filter strip under the Log · Insights header.
+        fillWidth = false,
+        compact = true,
         labels = RethinkChoiceLabels.SelectedLabel,
+        settleBeforeSelect = true,
     )
 }
 
@@ -89,7 +94,8 @@ fun RethinkLogList(
         verticalArrangement = Arrangement.spacedBy(SharedDimensions.spacingGridTile),
     ) {
         when (state) {
-            RethinkLogListState.Loading -> item { RethinkLoadingState(strings.loading, LogStateModifier, contained = true) }
+            // Loading has nothing to frame: the indicator sits centered in the list's free space.
+            RethinkLogListState.Loading -> item { RethinkLoadingState(strings.loading, Modifier.fillParentMaxSize().wrapContentHeight()) }
             RethinkLogListState.Empty -> item { RethinkLogEmpty(strings.empty) }
             is RethinkLogListState.Error -> item { RethinkErrorState(strings.error, LogStateModifier, retryLabel = strings.retry, onRetry = state.onRetry, contained = true) }
             is RethinkLogListState.Content -> itemsIndexed(state.rows, key = { _, row -> row.id }) { index, row ->
@@ -122,7 +128,9 @@ fun RethinkPagedLogList(
         verticalArrangement = Arrangement.spacedBy(SharedDimensions.spacingGridTile),
     ) {
         when (state) {
-            RethinkPagedLogListState.Loading -> item("logs_loading") { RethinkLoadingState(strings.loading, LogStateModifier, contained = true) }
+            RethinkPagedLogListState.Loading -> item("logs_loading") {
+                RethinkLoadingState(strings.loading, Modifier.fillParentMaxSize().wrapContentHeight())
+            }
             RethinkPagedLogListState.Empty -> item("logs_empty") { RethinkLogEmpty(strings.empty) }
             is RethinkPagedLogListState.Error -> item("logs_load_error") {
                 RethinkErrorState(strings.error, LogStateModifier, retryLabel = strings.retry, onRetry = state.onRetry, contained = true)

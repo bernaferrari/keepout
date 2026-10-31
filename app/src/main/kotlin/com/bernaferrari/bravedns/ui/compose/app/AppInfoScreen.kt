@@ -165,8 +165,11 @@ fun AppInfoScreen(
     val appName = info?.appName?.takeIf { it.isNotBlank() } ?: info?.packageName.orEmpty()
     val undoLabel = stringResource(R.string.lbl_undo)
 
-    /** Write [status]/[connection] now (optimistically), then offer Undo back to what it was. */
-    fun applyFirewallRule(status: FirewallStatus, connection: ConnectionStatus, message: String) {
+    /**
+     * Write [status]/[connection] now (optimistically). With a [message], offer Undo back to what it
+     * was; without one (the Wi-Fi and mobile data tiles, whose second tap is the undo) just apply.
+     */
+    fun applyFirewallRule(status: FirewallStatus, connection: ConnectionStatus, message: String? = null) {
         val app = info ?: return
         if (status == FirewallStatus.EXCLUDE && FirewallManager.isUnknownPackage(uid)) {
             showToastUiCentered(context, excludeNoPackageErrToast, Toast.LENGTH_LONG)
@@ -183,6 +186,18 @@ fun AppInfoScreen(
         val next = epoch + 1
         epoch = next
         snackbar.currentSnackbarData?.dismiss()
+        if (message == null) {
+            scope.launch {
+                busy = true
+                try {
+                    withContext(Dispatchers.IO + NonCancellable) { FirewallManager.updateFirewallStatus(app.uid, status, connection) }
+                    logChange(eventLogger, app, status, connection)
+                } finally {
+                    busy = false
+                }
+            }
+            return
+        }
         scope.launchReversibleRuleMutation(
             snackbarHostState = snackbar,
             editedMessage = message,
@@ -204,10 +219,6 @@ fun AppInfoScreen(
         )
     }
 
-    val blockedWifiMessage = stringResource(R.string.app_done_blocked_wifi, appName)
-    val allowedWifiMessage = stringResource(R.string.connection_done_allowed_wifi, appName)
-    val blockedMobileMessage = stringResource(R.string.app_done_blocked_mobile, appName)
-    val allowedMobileMessage = stringResource(R.string.connection_done_allowed_mobile, appName)
     val tempAllowedMessage = stringResource(R.string.connection_done_allowed_temporarily, appName)
     val tempEndedMessage = stringResource(R.string.app_temp_access_ended)
 
@@ -273,11 +284,11 @@ fun AppInfoScreen(
             onBackClick = onBackClick,
             onWifiClick = {
                 val next = connStatus.toggledWifi()
-                applyFirewallRule(FirewallStatus.NONE, next, if (next.wifiBlocked) blockedWifiMessage else allowedWifiMessage)
+                applyFirewallRule(FirewallStatus.NONE, next)
             },
             onMobileClick = {
                 val next = connStatus.toggledMobile()
-                applyFirewallRule(FirewallStatus.NONE, next, if (next.mobileBlocked) blockedMobileMessage else allowedMobileMessage)
+                applyFirewallRule(FirewallStatus.NONE, next)
             },
             onModeChange = { mode ->
                 modeChange(appStatus, connStatus, baselineConnStatus, mode)?.let { (status, connection) ->
@@ -419,6 +430,7 @@ private data class AppInfoLoad(
 
 /** The app behind [uid], or null when it isn't installed (or was uninstalled). */
 private suspend fun loadAppInfo(uid: Int, wireguardAppsProxyMapDesc: String, appConfig: AppConfig): AppInfoLoad? {
+    FirewallManager.ensureLoaded()
     val info = FirewallManager.getAppInfoByUid(uid)
     if (info == null || info.tombstoneTs > 0) return null
     val proxy = ProxyManager.getProxyIdForApp(uid).takeIf { it.isNotEmpty() && it != ID_NONE }

@@ -3,6 +3,8 @@ package com.bernaferrari.bravedns.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.paging.LoadState
+import androidx.paging.LoadStates
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.bernaferrari.bravedns.data.AppConnection
@@ -154,7 +156,9 @@ class SummaryStatisticsViewModel(
     private fun Flow<SummaryCardLists>.toPagingData(
         select: (SummaryCardLists) -> List<AppConnection>
     ): Flow<PagingData<AppConnection>> =
-        map { PagingData.from(select(it)) }.cachedIn(viewModelScope)
+        // Explicit finished load states: without them an empty list never leaves the
+        // presenter's initial Loading state, and an empty card spins forever.
+        map { PagingData.from(select(it), sourceLoadStates = LoadedStates) }.cachedIn(viewModelScope)
 
     private val TimeCategory.durationMillis: Long
         get() = when (this) {
@@ -182,3 +186,10 @@ class SummaryStatisticsViewModel(
         const val ONE_WEEK_MILLIS = 7 * ONE_DAY_MILLIS
     }
 }
+
+/** Summary cards are complete lists: nothing left to load in any direction. */
+private val LoadedStates = LoadStates(
+    refresh = LoadState.NotLoading(endOfPaginationReached = true),
+    prepend = LoadState.NotLoading(endOfPaginationReached = true),
+    append = LoadState.NotLoading(endOfPaginationReached = true),
+)

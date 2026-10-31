@@ -1,6 +1,8 @@
 /* Copyright 2024 RethinkDNS and its authors */
 package com.bernaferrari.bravedns.ui.compose.configure
 
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.activity.compose.BackHandler
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
@@ -17,23 +19,30 @@ import com.bernaferrari.bravedns.ui.icons.MaterialSymbols
 import com.bernaferrari.bravedns.ui.icons.keepout.KeepoutIcons
 
 /**
- * The Settings tab: Protection (DNS, Firewall, Proxy & VPN) as colored tiles, App (Appearance, App
- * lock, Notifications, Backup & restore, General) and Advanced (Network, Anti-censorship, Logging,
- * Diagnostics, and Developer in debug builds), then About. Apps and the log are tabs of their own.
+ * The Settings tab: Appearance inline at the top, Protection (DNS, Firewall, Proxy & VPN) and
+ * Advanced (Network, Censorship, Logs & diagnostics) as colored tiles, then General (start on boot,
+ * app lock, backup, notifications) and About as rows. Apps and the log are tabs.
  *
- * [onOpen] receives every destination; Backup & restore opens its sheet here, over the hub.
+ * [onOpen] receives every destination; Backup & restore opens its sheet here, over the hub, and
+ * Appearance scrolls the hub to its inline section.
  */
 @Composable
 fun ConfigureScreen(
     isDebug: Boolean,
     onOpen: (SettingsSearchDestination) -> Unit,
+    appearance: @Composable () -> Unit,
 ) {
     var query by rememberSaveable { mutableStateOf("") }
     var searchOpen by rememberSaveable { mutableStateOf(false) }
     var showBackupSheet by rememberSaveable { mutableStateOf(false) }
+    var revealAppearance by remember { mutableIntStateOf(0) }
     BackHandler(enabled = searchOpen) { searchOpen = false; query = "" }
     fun open(destination: SettingsSearchDestination) {
-        if (destination == SettingsSearchDestination.Backup) showBackupSheet = true else onOpen(destination)
+        when (destination) {
+            SettingsSearchDestination.Backup -> showBackupSheet = true
+            SettingsSearchDestination.Appearance -> revealAppearance++
+            else -> onOpen(destination)
+        }
     }
     fun selectSearch(destination: SettingsSearchDestination) {
         searchOpen = false
@@ -65,23 +74,16 @@ fun ConfigureScreen(
             entry("firewall", stringResource(R.string.lbl_firewall), KeepoutIcons.Firewall, SettingsSearchDestination.Firewall(), ConfigureAccents.firewall, listOf("firewall", "rules", "allow", "block")),
             entry("proxy", stringResource(R.string.settings_proxy_vpn), MaterialSymbols.Filled.ConversionPath, SettingsSearchDestination.Proxy(), ConfigureAccents.proxy, listOf("proxy", "socks5", "orbot", "wireguard", "vpn")),
         ), RethinkConfigureLayout.GridFour),
-        // App: how Keepout itself looks and behaves, as tiles like the other groups.
-        RethinkConfigureSection(stringResource(R.string.settings_section_app), listOf(
-            entry("appearance", stringResource(R.string.settings_theme_heading), MaterialSymbols.Filled.Palette, SettingsSearchDestination.Appearance, ConfigureAccents.appearance, listOf("theme", "dark", "color")),
-            entry("app_lock", stringResource(R.string.app_lock_title), MaterialSymbols.Filled.Lock, SettingsSearchDestination.AppLock, ConfigureAccents.appLock, listOf("lock", "biometric", "fingerprint")),
-            entry("notifications", stringResource(R.string.settings_notifications), MaterialSymbols.Filled.Notifications, SettingsSearchDestination.Notifications, ConfigureAccents.notifications, listOf("notifications", "alerts")),
-            entry("backup", stringResource(R.string.settings_tile_backup), MaterialSymbols.Filled.Backup, SettingsSearchDestination.Backup, ConfigureAccents.backup, listOf("backup", "restore")),
-            entry("general", stringResource(R.string.settings_general_header).replaceFirstChar { it.titlecase() }, MaterialSymbols.Filled.Tune, SettingsSearchDestination.General(), ConfigureAccents.settings, listOf("general", "boot", "updates")),
+        // Advanced: engine knobs and troubleshooting, the same three-tile shape as Protection.
+        RethinkConfigureSection(stringResource(R.string.lbl_advanced), listOf(
+            entry("network", stringResource(R.string.lbl_network), MaterialSymbols.Filled.VpnLock, SettingsSearchDestination.Network(), ConfigureAccents.network, listOf("network", "vpn", "tunnel")),
+            entry("anti-censorship", stringResource(R.string.settings_tile_censorship), MaterialSymbols.Filled.DominoMask, SettingsSearchDestination.AntiCensorship, ConfigureAccents.antiCensorship, listOf("anti censorship", "dpi")),
+            entry("logging", stringResource(R.string.settings_logs_diagnostics_title), MaterialSymbols.Filled.History, SettingsSearchDestination.Logging(), ConfigureAccents.logs, listOf("logs", "logging", "diagnostics", "event logs", "ping")),
         ), RethinkConfigureLayout.GridFour),
-        // Advanced: engine knobs and troubleshooting, as tiles like Protection.
-        RethinkConfigureSection(stringResource(R.string.lbl_advanced), buildList {
-            add(entry("network", stringResource(R.string.lbl_network), MaterialSymbols.Filled.VpnLock, SettingsSearchDestination.Network(), ConfigureAccents.network, listOf("network", "vpn", "tunnel")))
-            add(entry("anti-censorship", stringResource(R.string.settings_tile_censorship), MaterialSymbols.Filled.DominoMask, SettingsSearchDestination.AntiCensorship, ConfigureAccents.antiCensorship, listOf("anti censorship", "dpi")))
-            add(entry("logging", stringResource(R.string.settings_logging_title), MaterialSymbols.Filled.History, SettingsSearchDestination.Logging(), ConfigureAccents.logs, listOf("logs", "logging")))
-            add(entry("diagnostics", stringResource(R.string.about_diagnostics), MaterialSymbols.Filled.BugReport, SettingsSearchDestination.Diagnostics, ConfigureAccents.diagnostics, listOf("diagnostics", "event logs", "ping")))
-            if (isDebug) add(entry("developer", stringResource(R.string.settings_developer_title), MaterialSymbols.Filled.Science, SettingsSearchDestination.Developer, ConfigureAccents.advanced, listOf("experimental", "debug")))
-        }, RethinkConfigureLayout.GridFour),
+        // After the grids: two plain rows (Appearance sits inline above everything; see appearanceAfter).
         RethinkConfigureSection("", listOf(
+            entry("general", stringResource(R.string.settings_general_header).replaceFirstChar { it.titlecase() }, MaterialSymbols.Filled.Tune, SettingsSearchDestination.General(), ConfigureAccents.settings, listOf("general", "boot", "updates", "lock", "backup", "notifications"))
+                .copy(subtitle = stringResource(R.string.settings_general_summary)),
             entry("about", stringResource(R.string.settings_about_keepout, appName), MaterialSymbols.Filled.Info, SettingsSearchDestination.About, ConfigureAccents.about, listOf("about", "version")),
         ), RethinkConfigureLayout.List),
     )
@@ -117,6 +119,10 @@ fun ConfigureScreen(
         ),
         searchOpen = searchOpen, query = query,
         onSearchOpenChange = { searchOpen = it; if (!it) query = "" }, onQueryChange = { query = it },
+        appearanceContent = appearance,
+        // Appearance leads: the one thing most people change here, and it shows at a glance.
+        appearanceAfter = 0,
+        revealAppearance = revealAppearance,
     )
     if (showBackupSheet) BackupRestoreSheet(onDismiss = { showBackupSheet = false })
 }

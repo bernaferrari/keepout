@@ -1,6 +1,7 @@
 /* Copyright 2026 RethinkDNS and its authors */
 package com.bernaferrari.bravedns.ui.compose.theme
 
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -79,6 +80,8 @@ fun RethinkMetric(
     size: RethinkMetricSize = RethinkMetricSize.Default,
     horizontalAlignment: Alignment.Horizontal = Alignment.Start,
     labelMaxLines: Int = 2,
+    /** A size shared with sibling metrics so a row of them reads at one size; replaces auto-size. */
+    valueFontSize: TextUnit = TextUnit.Unspecified,
 ) {
     Column(
         modifier = modifier.semantics(mergeDescendants = true) {},
@@ -91,12 +94,12 @@ fun RethinkMetric(
         Text(
             value,
             style = (if (size == RethinkMetricSize.Large) typography.headlineSmall else typography.titleLarge)
-                .copy(fontFeatureSettings = "tnum"),
+                .copy(fontFeatureSettings = "tnum", fontSize = valueFontSize),
             fontWeight = FontWeight.SemiBold,
             color = valueColor,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
-            autoSize = if (size == RethinkMetricSize.Default) {
+            autoSize = if (size == RethinkMetricSize.Default && valueFontSize == TextUnit.Unspecified) {
                 TextAutoSize.StepBased(minFontSize = typography.titleSmall.fontSize, maxFontSize = typography.titleLarge.fontSize)
             } else {
                 null

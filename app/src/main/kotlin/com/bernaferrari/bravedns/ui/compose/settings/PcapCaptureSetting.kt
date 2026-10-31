@@ -1,5 +1,6 @@
 package com.bernaferrari.bravedns.ui.compose.settings
 
+import com.bernaferrari.bravedns.ui.icons.MaterialSymbols
 import Logger
 import android.content.Intent
 import androidx.compose.foundation.layout.*
@@ -26,7 +27,7 @@ import org.koin.compose.koinInject
 import java.io.File
 
 @Composable
-internal fun PcapCaptureSetting(operationDispatcher: CoroutineDispatcher = Dispatchers.IO) {
+internal fun PcapCaptureSetting(position: CardPosition = CardPosition.Single, operationDispatcher: CoroutineDispatcher = Dispatchers.IO) {
     val manager = koinInject<PcapCaptureManager>()
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
@@ -57,7 +58,7 @@ internal fun PcapCaptureSetting(operationDispatcher: CoroutineDispatcher = Dispa
         }
     }
     RethinkListItem(headline = title, supporting = stringResource(R.string.port_capture_description),
-        position = CardPosition.Single, onClick = { open = true; perform { true } })
+        leadingIcon = MaterialSymbols.Filled.SettingsEthernet, position = position, onClick = { open = true; perform { true } })
     if (open) com.bernaferrari.bravedns.ui.compose.theme.RethinkDialogScaffold(
         onDismissRequest = { open = false },
         title = title,

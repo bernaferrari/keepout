@@ -62,17 +62,11 @@ sealed interface RethinkRoute : NavKey {
     @Serializable data object OrbotAppSelect : RethinkRoute
     @Serializable data object TcpProxy : RethinkRoute
     @Serializable data class TunnelSettings(val focusKey: String = "") : RethinkRoute
+    /** Settings › General: behavior, app lock, backup and notifications. */
     @Serializable data class MiscSettings(val focusKey: String = "") : RethinkRoute
-    @Serializable data object AdvancedSettings : RethinkRoute
     @Serializable data object AntiCensorship : RethinkRoute
-    /** Settings › App: theme and color. */
-    @Serializable data object AppearanceSettings : RethinkRoute
-    /** Settings › App: when Keepout asks for the screen lock. */
-    @Serializable data object AppLockSettings : RethinkRoute
-    /** Settings › Advanced: what Keepout records on this device. */
+    /** Settings › Advanced › Logs & diagnostics: logging, troubleshooting and (debug) developer tools. */
     @Serializable data class LoggingSettings(val focusKey: String = "") : RethinkRoute
-    /** Settings › Advanced: event and app logs, ping test and other troubleshooting tools. */
-    @Serializable data object Diagnostics : RethinkRoute
     @Serializable data object AppLock : RethinkRoute
     @Serializable data object PingTest : RethinkRoute
     @Serializable data object Database : RethinkRoute
@@ -132,9 +126,7 @@ fun RethinkRoute.rootDestination(): RethinkRootDestination? = when (this) {
     RethinkRoute.BlockFreeDns, RethinkRoute.Blocklists, is RethinkRoute.FirewallSettings,
     RethinkRoute.UniversalFirewall, is RethinkRoute.CustomRules, is RethinkRoute.ProxySettings,
     RethinkRoute.OrbotAppSelect, RethinkRoute.TcpProxy, is RethinkRoute.TunnelSettings,
-    is RethinkRoute.MiscSettings, RethinkRoute.AdvancedSettings, RethinkRoute.AntiCensorship,
-    RethinkRoute.AppearanceSettings, RethinkRoute.AppLockSettings, is RethinkRoute.LoggingSettings,
-    RethinkRoute.Diagnostics,
+    is RethinkRoute.MiscSettings, RethinkRoute.AntiCensorship, is RethinkRoute.LoggingSettings,
     RethinkRoute.PingTest, RethinkRoute.Database, RethinkRoute.WireGuard,
     RethinkRoute.RpnAvailability, RethinkRoute.RpnCountries, RethinkRoute.RpnAccount,
     RethinkRoute.RpnSettings, RethinkRoute.Checkout,
@@ -274,7 +266,6 @@ val rethinkNavSavedStateConfiguration =
                     subclass(RethinkRoute.TcpProxy::class, RethinkRoute.TcpProxy.serializer())
                     subclass(RethinkRoute.TunnelSettings::class, RethinkRoute.TunnelSettings.serializer())
                     subclass(RethinkRoute.MiscSettings::class, RethinkRoute.MiscSettings.serializer())
-                    subclass(RethinkRoute.AdvancedSettings::class, RethinkRoute.AdvancedSettings.serializer())
                     subclass(RethinkRoute.AntiCensorship::class, RethinkRoute.AntiCensorship.serializer())
                     subclass(RethinkRoute.AppLock::class, RethinkRoute.AppLock.serializer())
                     subclass(RethinkRoute.PingTest::class, RethinkRoute.PingTest.serializer())
@@ -294,10 +285,7 @@ val rethinkNavSavedStateConfiguration =
                     subclass(RethinkRoute.RpnServerDetails::class, RethinkRoute.RpnServerDetails.serializer())
                     subclass(RethinkRoute.ConfigureRethinkBasic::class, RethinkRoute.ConfigureRethinkBasic.serializer())
                     subclass(RethinkRoute.Activity::class, RethinkRoute.Activity.serializer())
-                    subclass(RethinkRoute.AppearanceSettings::class, RethinkRoute.AppearanceSettings.serializer())
-                    subclass(RethinkRoute.AppLockSettings::class, RethinkRoute.AppLockSettings.serializer())
                     subclass(RethinkRoute.LoggingSettings::class, RethinkRoute.LoggingSettings.serializer())
-                    subclass(RethinkRoute.Diagnostics::class, RethinkRoute.Diagnostics.serializer())
                 }
             }
     }

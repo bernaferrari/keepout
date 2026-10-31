@@ -18,6 +18,7 @@
 package com.bernaferrari.bravedns.ui
 
 
+import com.bernaferrari.bravedns.ui.compose.configure.LOGGING_DEVELOPER
 import androidx.compose.material3.LoadingIndicator
 import Logger
 import Logger.LOG_TAG_APP_UPDATE
@@ -447,7 +448,7 @@ class HomeScreenActivity : FragmentActivity() {
                                 homeNavRequest = RethinkRoute.AntiCensorship
                             },
                             onConfigureAdvancedClick = {
-                                homeNavRequest = RethinkRoute.AdvancedSettings
+                                homeNavRequest = RethinkRoute.LoggingSettings(LOGGING_DEVELOPER)
                             },
                             onNavigateToLogs = { searchQuery ->
                                 homeNavRequest = RethinkRoute.NetworkLogs(searchQuery)

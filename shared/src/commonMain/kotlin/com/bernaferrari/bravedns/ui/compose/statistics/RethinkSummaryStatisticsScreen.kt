@@ -3,6 +3,14 @@
 
 package com.bernaferrari.bravedns.ui.compose.statistics
 
+import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.PaddingValues
+import com.bernaferrari.bravedns.ui.compose.theme.CompactEmptyState
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.lazy.LazyListScope
+import com.bernaferrari.bravedns.ui.compose.logs.RethinkActivityTopBar
+import com.bernaferrari.bravedns.ui.compose.theme.RethinkLazyColumnScreenScaffold
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import com.bernaferrari.bravedns.ui.compose.common.RethinkLoadingState
@@ -143,49 +151,38 @@ fun RethinkSummaryStatisticsScreen(
     modifier: Modifier = Modifier,
     actions: (@Composable () -> Unit)? = null,
     /**
-     * The Activity tab's Log · Insights switch. It shares the top bar with the compact window
-     * tabs: the switch while the full-width tabs are on screen, the tabs once they scroll away.
+     * The Activity tab's Log · Insights switch, shown under a small "Activity" bar
+     * ([RethinkActivityTopBar]) in place of the large title.
      */
     viewSwitch: (@Composable () -> Unit)? = null,
 ) {
-    // Once the window selector scrolls away, the window rides in the top bar so it stays visible and switchable.
     val listState = rememberLazyListState()
     val selectorHidden by remember { derivedStateOf { listState.firstVisibleItemIndex > 0 } }
     val reducedMotion = LocalRethinkMotion.current.reducedMotion
-    RethinkAdaptiveWidth(modifier) { widthClass ->
-        RethinkTopBarLazyColumnScreen(
-            title = strings.title,
-            modifier = Modifier.fillMaxWidth(),
-            listState = listState,
-            topBarActions = {
-                if (viewSwitch != null) {
-                    AnimatedVisibility(
-                        visible = !selectorHidden,
-                        enter = if (reducedMotion) EnterTransition.None else fadeIn() + scaleIn(initialScale = 0.9f),
-                        exit = if (reducedMotion) ExitTransition.None else fadeOut() + scaleOut(targetScale = 0.9f),
-                    ) {
-                        viewSwitch()
-                    }
-                }
-                AnimatedVisibility(
-                    visible = selectorHidden,
-                    enter = if (reducedMotion) EnterTransition.None else fadeIn() + scaleIn(initialScale = 0.9f),
-                    exit = if (reducedMotion) ExitTransition.None else fadeOut() + scaleOut(targetScale = 0.9f),
-                ) {
-                    RethinkStatisticsWindowSelector(
-                        selectedWindow,
-                        strings,
-                        onWindowSelected,
-                        Modifier.padding(end = SharedDimensions.spacingSm),
-                        inTopBar = true,
-                    )
-                }
-                actions?.invoke()
-            },
+    // Once the window selector scrolls away, its compact copy rides in the top bar.
+    val barActions: @Composable RowScope.() -> Unit = {
+        AnimatedVisibility(
+            visible = selectorHidden,
+            enter = if (reducedMotion) EnterTransition.None else fadeIn() + scaleIn(initialScale = 0.9f),
+            exit = if (reducedMotion) ExitTransition.None else fadeOut() + scaleOut(targetScale = 0.9f),
         ) {
+            RethinkStatisticsWindowSelector(
+                selectedWindow,
+                strings,
+                onWindowSelected,
+                Modifier.padding(end = SharedDimensions.spacingSm),
+            )
+        }
+        actions?.invoke()
+    }
+    RethinkAdaptiveWidth(modifier) { widthClass ->
+        val body: LazyListScope.() -> Unit = {
             // The window scopes everything below it, including the usage totals, so it leads.
-            item {
-                RethinkStatisticsWindowSelector(selectedWindow, strings, onWindowSelected)
+            // In the Activity tab it sits in the header instead (see below).
+            if (viewSwitch == null) {
+                item {
+                    RethinkStatisticsWindowSelector(selectedWindow, strings, onWindowSelected)
+                }
             }
             item {
                 RethinkUsageOverviewCard(
@@ -196,7 +193,18 @@ fun RethinkSummaryStatisticsScreen(
                     connectionsLabel = strings.connections,
                 )
             }
-            if (widthClass.isExpanded) {
+            // Nothing anywhere yet: one calm state instead of the same empty card per section.
+            val nothingYet = sections.isNotEmpty() && sections.all { it.rows.isEmpty() }
+            if (nothingYet) {
+                item(key = "insights_state") {
+                    if (sections.any { it.isLoading }) {
+                        // No card around a loader: it sits centered in the space under the totals.
+                        RethinkLoadingState(label = "", modifier = Modifier.fillParentMaxHeight(INSIGHTS_LOADING_HEIGHT).wrapContentHeight())
+                    } else {
+                        RethinkEmptyState(icon = MaterialSymbols.Filled.Monitoring, title = strings.noLogs, contained = true)
+                    }
+                }
+            } else if (widthClass.isExpanded) {
                 sections.chunked(2).forEach { pair ->
                     item(key = pair.joinToString(separator = "|") { it.id }) {
                         Row(
@@ -219,8 +227,50 @@ fun RethinkSummaryStatisticsScreen(
                 }
             }
         }
+        if (viewSwitch != null) {
+            // In the Activity tab: the same header as the Log view, with the window in its
+            // trailing slot (where the Log keeps its menu). It never scrolls away or moves, so
+            // the period everything below covers is always in view and in reach.
+            RethinkLazyColumnScreenScaffold(
+                modifier = Modifier.fillMaxWidth(),
+                topBar = {
+                    RethinkActivityTopBar(
+                        viewSwitch = viewSwitch,
+                        actions = {
+                            RethinkStatisticsWindowSelector(
+                                selectedWindow,
+                                strings,
+                                onWindowSelected,
+                                Modifier.padding(end = SharedDimensions.spacingMd),
+                            )
+                            actions?.invoke()
+                        },
+                    )
+                },
+                listState = listState,
+                // Same gap under the header as the Log view's filter strip.
+                contentPadding = PaddingValues(
+                    start = SharedDimensions.screenPaddingHorizontal,
+                    end = SharedDimensions.screenPaddingHorizontal,
+                    top = SharedDimensions.spacingXs,
+                    bottom = SharedDimensions.spacing3xl,
+                ),
+                content = body,
+            )
+        } else {
+            RethinkTopBarLazyColumnScreen(
+                title = strings.title,
+                modifier = Modifier.fillMaxWidth(),
+                listState = listState,
+                topBarActions = barActions,
+                content = body,
+            )
+        }
     }
 }
+
+/** Share of the viewport the loader centers in: roughly what is left under the header and totals. */
+private const val INSIGHTS_LOADING_HEIGHT = 0.6f
 
 private fun RethinkSummaryStatisticsStrings.windowOptions() = listOf(
     RethinkStatisticsWindow.OneHour to oneHour,
@@ -234,8 +284,6 @@ private fun RethinkStatisticsWindowSelector(
     strings: RethinkSummaryStatisticsStrings,
     onWindowSelected: (RethinkStatisticsWindow) -> Unit,
     modifier: Modifier = Modifier,
-    /** The same tabs, compact, for the collapsed top bar once the full-width row scrolls away. */
-    inTopBar: Boolean = false,
 ) {
     val options = strings.windowOptions()
     RethinkConnectedChoiceGroup(
@@ -243,8 +291,10 @@ private fun RethinkStatisticsWindowSelector(
         selected = selectedWindow,
         onSelect = onWindowSelected,
         modifier = modifier,
-        fillWidth = !inTopBar,
-        compact = inTopBar,
+        // Compact and hugging its content, wherever it sits (the header, the collapsed top bar).
+        fillWidth = false,
+        compact = true,
+        settleBeforeSelect = true,
     )
 }
 
@@ -281,7 +331,14 @@ private fun RethinkSummaryStatisticsSectionCard(
         )
         when {
             section.isLoading && section.rows.isEmpty() -> RethinkLoadingState(label = "", contained = true)
-            section.rows.isEmpty() -> RethinkEmptyState(icon = MaterialSymbols.Filled.Info, title = strings.noLogs, contained = true)
+            // Others have data: this one is a single slim line, like App detail's empty activity.
+            section.rows.isEmpty() -> Surface(
+                shape = RoundedCornerShape(SharedDimensions.groupCornerRadius),
+                color = MaterialTheme.colorScheme.surfaceContainerLow,
+                modifier = Modifier.fillMaxWidth(),
+            ) {
+                CompactEmptyState(message = strings.noLogs, icon = MaterialSymbols.Filled.Info)
+            }
             else -> RethinkListGroup {
                 displayedRows.forEachIndexed { index, row ->
                     val isExpanded = expandedCountryId == row.id

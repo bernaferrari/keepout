@@ -147,7 +147,6 @@ internal fun demoLogAppFilterStrings(appCount: Int) = RethinkLogAppFilterStrings
     searchPlaceholder = "Search $appCount apps",
     clear = "Clear",
     clearSearchDescription = "Clear search",
-    dismissDescription = "Dismiss",
     loading = "Loading apps",
 )
 
@@ -342,8 +341,7 @@ internal val demoFirewallAppListStrings = RethinkFirewallAppListStrings(
         RethinkFirewallFilter.BlockedMobile -> "Blocked on mobile data"
     } },
     statusLabel = { status -> when (status) {
-        RethinkFirewallAppStatus.Allowed -> ""
-        RethinkFirewallAppStatus.Blocked -> "Blocked"
+        RethinkFirewallAppStatus.Allowed, RethinkFirewallAppStatus.Blocked -> ""
         RethinkFirewallAppStatus.Bypass -> "Skips universal rules"
         RethinkFirewallAppStatus.SkipAllFiltering -> "Skips all filtering"
         RethinkFirewallAppStatus.Excluded -> "Excluded"

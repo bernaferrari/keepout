@@ -1,6 +1,12 @@
 /* Copyright 2026 RethinkDNS and its authors */
 package com.bernaferrari.bravedns.ui.compose.apps
 
+import androidx.compose.foundation.layout.Box
+import androidx.compose.ui.unit.em
+import androidx.compose.ui.unit.sp
+import androidx.compose.ui.unit.TextUnit
+import androidx.compose.ui.text.rememberTextMeasurer
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.EnterTransition
@@ -35,7 +41,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.selection.selectableGroup
-import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ButtonDefaults
@@ -52,16 +57,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.semantics.LiveRegionMode
@@ -72,7 +77,6 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.bernaferrari.bravedns.ui.compose.common.RethinkAdaptiveWidth
@@ -94,7 +98,6 @@ import com.bernaferrari.bravedns.ui.compose.theme.RethinkStatusColors
 import com.bernaferrari.bravedns.ui.compose.theme.RethinkSwitchListItem
 import com.bernaferrari.bravedns.ui.compose.theme.SharedDimensions
 import com.bernaferrari.bravedns.ui.compose.theme.cardPositionFor
-import com.bernaferrari.bravedns.ui.compose.theme.rethinkGroupedListPairShape
 import com.bernaferrari.bravedns.ui.compose.theme.rethinkListItemColors
 import com.bernaferrari.bravedns.ui.icons.MaterialSymbols
 import com.bernaferrari.bravedns.ui.icons.keepout.KeepoutIcons
@@ -160,7 +163,7 @@ data class RethinkAppInfoStrings(
     val mobile: String,
     val allowed: String,
     val blocked: String,
-    /** "Metered Wi‑Fi counts as mobile data." The firewall decides by metered, not by radio. */
+    /** "Wi‑Fi from a phone hotspot … counts as mobile data." The firewall decides by metered, not by radio. */
     val meteredFootnote: String,
     val temporaryAllow: String,
     /** "Stop temporary access · 12 min left" */
@@ -296,9 +299,9 @@ fun RethinkAppInfoScreen(
             when {
                 // The lookup is a quick local read: show nothing rather than flash a spinner or "missing".
                 state.loading -> Spacer(Modifier.fillMaxSize())
-                !state.appAvailable -> LazyColumn(Modifier.fillMaxSize(), contentPadding = AppInfoPadding) {
-                    // Only after the lookup finished: the top bar already offers back.
-                    item { RethinkEmptyState(icon = MaterialSymbols.Filled.Apps, title = strings.unavailable) }
+                // Only after the lookup finished: centered in the screen; the top bar already offers back.
+                !state.appAvailable -> Box(Modifier.fillMaxSize().padding(AppInfoPadding), contentAlignment = Alignment.Center) {
+                    RethinkEmptyState(icon = MaterialSymbols.Filled.Apps, title = strings.unavailable)
                 }
                 widthClass.isExpanded -> Row(
                     // Wide windows: access and handling in one column, traffic and rules in the other.
@@ -368,31 +371,37 @@ private fun RethinkAppInfoState.statusIcon(): ImageVector = when (statusTone) {
     }
 }
 
-/** The one answer to "can it use the internet?", replacing the old heading + chip. */
+/**
+ * The one answer to "can it use the internet?": a pill in the status colour on a soft wash of it,
+ * then any detail as plain text. Announced politely when it changes.
+ */
 @Composable
 private fun RethinkAppStatusLine(state: RethinkAppInfoState) {
     val color by animateColorAsState(state.statusTone.color(), label = "app_status_color")
     Column(
         Modifier
             .fillMaxWidth()
-            .padding(horizontal = SharedDimensions.spacingXs, vertical = SharedDimensions.spacingXs)
             .semantics(mergeDescendants = true) { liveRegion = LiveRegionMode.Polite },
-        verticalArrangement = Arrangement.spacedBy(SharedDimensions.spacingXs),
+        verticalArrangement = Arrangement.spacedBy(SharedDimensions.spacingSm),
     ) {
-        Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(SharedDimensions.spacingSm)) {
-            Icon(state.statusIcon(), null, tint = color, modifier = Modifier.size(SharedDimensions.iconSizeMd))
-            Text(state.status, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.SemiBold, color = color)
+        Surface(shape = RoundedCornerShape(SharedDimensions.cornerRadiusFull), color = color.copy(alpha = STATUS_WASH_ALPHA)) {
+            Row(
+                Modifier.padding(start = SharedDimensions.spacingMd, end = SharedDimensions.spacingLg, top = SharedDimensions.spacingSm, bottom = SharedDimensions.spacingSm),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(SharedDimensions.spacingSm),
+            ) {
+                Icon(state.statusIcon(), null, tint = color, modifier = Modifier.size(SharedDimensions.iconSizeSm))
+                Text(state.status, style = MaterialTheme.typography.labelLarge, fontWeight = FontWeight.SemiBold, color = color)
+            }
         }
         state.statusDetail?.takeIf { it.isNotBlank() }?.let {
-            Text(
-                it,
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                modifier = Modifier.padding(start = SharedDimensions.iconSizeMd + SharedDimensions.spacingSm),
-            )
+            Text(it, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
         }
     }
 }
+
+/** How strongly the status pill's background tints toward its status colour. */
+private const val STATUS_WASH_ALPHA = 0.14f
 
 /** Wi‑Fi and mobile data, temporary access when something is blocked, and the metered footnote. */
 @Composable
@@ -436,10 +445,21 @@ private fun RethinkAppNetworkPair(
     onWifiClick: () -> Unit,
     onMobileClick: () -> Unit,
 ) {
-    // Compact horizontal network cards with the grouped-list gap. IntrinsicSize.Min keeps both
-    // tiles the same height when one label wraps to two lines.
+    // Two standalone tiles, 8dp apart — the same gap the section leaves above the temporary-access
+    // button, so the block reads as one even grid. IntrinsicSize.Min keeps both tiles the same
+    // height should a label still need two lines.
+    BoxWithConstraints(Modifier.fillMaxWidth()) {
+    // One label size for both tiles, the largest that keeps "Mobile data" on one line, so a
+    // narrow phone or a large font doesn't stack it into a tall, bulky pill.
+    val measurer = rememberTextMeasurer()
+    val density = LocalDensity.current
+    val base = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.SemiBold)
+    val textRoom = (maxWidth - SharedDimensions.spacingSm) / 2 - NetworkTileChrome
+    val widest = listOf(strings.wifi, strings.mobile).maxOf { with(density) { measurer.measure(it, base, maxLines = 1).size.width.toDp() } }
+    val labelSize = if (widest <= textRoom) base.fontSize else
+        (base.fontSize.value * (textRoom / widest)).coerceAtLeast(MaterialTheme.typography.titleSmall.fontSize.value).sp
     Row(
-        horizontalArrangement = Arrangement.spacedBy(SharedDimensions.spacingGridTile),
+        horizontalArrangement = Arrangement.spacedBy(SharedDimensions.spacingSm),
         modifier = Modifier.fillMaxWidth().height(IntrinsicSize.Min),
     ) {
         RethinkAppNetworkTile(
@@ -450,8 +470,8 @@ private fun RethinkAppNetworkPair(
             stateDescription = strings.wifiState(state.wifiBlocked),
             allowedIcon = MaterialSymbols.Filled.Wifi,
             blockedIcon = MaterialSymbols.Filled.WifiOff,
-            shape = rethinkGroupedListPairShape(isLeadingTile = true, position = CardPosition.Single),
             enabled = state.enabled,
+            labelSize = labelSize,
             modifier = Modifier.weight(1f).fillMaxHeight(),
             onClick = onWifiClick,
         )
@@ -463,13 +483,18 @@ private fun RethinkAppNetworkPair(
             stateDescription = strings.mobileState(state.mobileBlocked),
             allowedIcon = MaterialSymbols.Filled.MobiledataArrows,
             blockedIcon = MaterialSymbols.Filled.MobiledataOff,
-            shape = rethinkGroupedListPairShape(isLeadingTile = false, position = CardPosition.Single),
             enabled = state.enabled,
+            labelSize = labelSize,
             modifier = Modifier.weight(1f).fillMaxHeight(),
             onClick = onMobileClick,
         )
     }
+    }
 }
+
+/** Everything in a network tile beside its label: 16dp start, 24dp icon, 12dp gap, 16dp end. */
+private val NetworkTileChrome = SharedDimensions.spacingLg + SharedDimensions.iconSizeMd +
+    SharedDimensions.spacingMd + SharedDimensions.spacingLg
 
 /**
  * Compact allow/block network card: at least list-item-large tall, the icon on the segment itself, and
@@ -484,21 +509,23 @@ private fun RethinkAppNetworkTile(
     stateDescription: String,
     allowedIcon: ImageVector,
     blockedIcon: ImageVector,
-    shape: Shape,
     enabled: Boolean,
+    labelSize: TextUnit,
     modifier: Modifier = Modifier,
     onClick: () -> Unit,
 ) {
-    val density = LocalDensity.current
     val motion = LocalRethinkMotion.current
     val haptics = LocalHapticFeedback.current
     val colorSpec: AnimationSpec<Color> = tween(motion.durationMedium, easing = FastOutSlowInEasing)
-    val baseRounded = shape as? RoundedCornerShape ?: RoundedCornerShape(SharedDimensions.cornerRadiusXl)
-    val animatedShape = RoundedCornerShape(
-        topStart = animateCorner(baseRounded.topStart, SharedDimensions.cornerRadius2xl, blocked, density),
-        topEnd = animateCorner(baseRounded.topEnd, SharedDimensions.cornerRadius2xl, blocked, density),
-        bottomEnd = animateCorner(baseRounded.bottomEnd, SharedDimensions.cornerRadius2xl, blocked, density),
-        bottomStart = animateCorner(baseRounded.bottomStart, SharedDimensions.cornerRadius2xl, blocked, density),
+    // Allowed sits at the group radius; blocked morphs to a full pill, matching the
+    // temporary-access button beneath it. The pill radius is half the measured height (a two-line
+    // label makes the tile taller), never an oversized clamp, so the morph stays linear.
+    val density = LocalDensity.current
+    var tileHeight by remember { mutableStateOf(AppInfoActionMinHeight) }
+    val corner by animateDpAsState(
+        targetValue = if (blocked) tileHeight / 2 else SharedDimensions.groupCornerRadius,
+        animationSpec = tween(motion.durationMedium, easing = FastOutSlowInEasing),
+        label = "app_network_tile_corner",
     )
     val containerColor by animateColorAsState(
         targetValue = if (blocked) MaterialTheme.colorScheme.errorContainer else MaterialTheme.colorScheme.surfaceContainerHigh,
@@ -527,18 +554,21 @@ private fun RethinkAppNetworkTile(
         },
         enabled = enabled,
         // One stop for TalkBack: "Wi‑Fi: blocked", a switch whose double-tap allows it.
-        modifier = modifier.heightIn(min = AppInfoActionMinHeight).semantics(mergeDescendants = true) {
+        modifier = modifier
+            .heightIn(min = AppInfoActionMinHeight)
+            .onSizeChanged { tileHeight = with(density) { it.height.toDp() } }
+            .semantics(mergeDescendants = true) {
             role = Role.Switch
             this.stateDescription = stateDescription
         },
-        shape = animatedShape,
+        shape = RoundedCornerShape(corner),
         color = containerColor,
     ) {
         Row(
             modifier = Modifier
                 .fillMaxSize()
-                // 16dp in from the start, like the list rows' leading icons below it.
-                .padding(start = SharedDimensions.spacingLg, end = SharedDimensions.spacingMd, top = SharedDimensions.spacingMd, bottom = SharedDimensions.spacingMd),
+                // Even rhythm: 16dp at both edges, 12dp top and bottom and from icon to text.
+                .padding(horizontal = SharedDimensions.spacingLg, vertical = SharedDimensions.spacingMd),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(SharedDimensions.spacingMd),
         ) {
@@ -557,7 +587,8 @@ private fun RethinkAppNetworkTile(
             ) {
                 Text(
                     text = label,
-                    style = MaterialTheme.typography.titleMedium,
+                    // Line height follows the label size, so a wrapped label stays one tight block over its status.
+                    style = MaterialTheme.typography.titleMedium.copy(fontSize = labelSize, lineHeight = 1.2.em),
                     fontWeight = FontWeight.SemiBold,
                     color = contentColor,
                     maxLines = 2,
@@ -587,23 +618,6 @@ private fun RethinkAppNetworkTile(
             }
         }
     }
-}
-
-@Composable
-private fun animateCorner(
-    base: CornerSize,
-    targetDp: Dp,
-    blocked: Boolean,
-    density: Density,
-): CornerSize {
-    val basePx = base.toPx(Size(100f, 100f), density)
-    val baseDp = with(density) { basePx.toDp() }
-    val currentDp by animateDpAsState(
-        targetValue = if (blocked) targetDp else baseDp,
-        animationSpec = tween(LocalRethinkMotion.current.durationMedium, easing = FastOutSlowInEasing),
-        label = "app_network_tile_corner",
-    )
-    return CornerSize(currentDp)
 }
 
 /** Blocked destinations first; each opens the Connection sheet, then "See all activity". */
@@ -642,19 +656,6 @@ private fun RethinkAppActivitySection(state: RethinkAppInfoState, strings: Rethi
                         headline = strings.seeAllActivity,
                         leadingIcon = MaterialSymbols.Filled.History,
                         position = cardPositionFor(last, last),
-                        showTrailingChevron = true,
-                        onClick = seeAll,
-                    )
-                }
-            }
-        }
-        if (items != null && items.isEmpty()) {
-            actions.onSeeAllActivity?.let { seeAll ->
-                RethinkListGroup {
-                    RethinkListItem(
-                        headline = strings.seeAllActivity,
-                        leadingIcon = MaterialSymbols.Filled.History,
-                        position = CardPosition.Single,
                         showTrailingChevron = true,
                         onClick = seeAll,
                     )

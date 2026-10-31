@@ -47,23 +47,29 @@ sealed interface SettingsSearchDestination {
     data object About : SettingsSearchDestination
 }
 
-/** The screen a destination opens, or null for one handled in place (Notifications, Backup). */
+/** Focus keys of the sections other screens were folded into. */
+const val GENERAL_APP_LOCK = "general_app_lock"
+const val LOGGING_DIAGNOSTICS = "logging_diagnostics"
+const val LOGGING_DEVELOPER = "logging_developer"
+
+/** The screen a destination opens, or null for one handled in place (Notifications, Backup, Appearance). */
 fun SettingsSearchDestination.route(): RethinkRoute? = when (this) {
     // Expert DNS settings live on DNS › Advanced (WS4); the rest on the DNS screen.
     is SettingsSearchDestination.Dns ->
         if (isDnsAdvancedFocusKey(focusKey)) RethinkRoute.DnsAdvanced(focusKey) else RethinkRoute.DnsDetail(focusKey)
     is SettingsSearchDestination.Firewall -> RethinkRoute.FirewallSettings(focusKey)
     is SettingsSearchDestination.Proxy -> RethinkRoute.ProxySettings(focusKey)
-    SettingsSearchDestination.Appearance -> RethinkRoute.AppearanceSettings
-    SettingsSearchDestination.AppLock -> RethinkRoute.AppLockSettings
+    // App lock is a section of General; Appearance is inline on the hub (handled in place).
+    SettingsSearchDestination.AppLock -> RethinkRoute.MiscSettings(GENERAL_APP_LOCK)
     is SettingsSearchDestination.General -> RethinkRoute.MiscSettings(focusKey)
     is SettingsSearchDestination.Network -> RethinkRoute.TunnelSettings(focusKey)
     SettingsSearchDestination.AntiCensorship -> RethinkRoute.AntiCensorship
     is SettingsSearchDestination.Logging -> RethinkRoute.LoggingSettings(focusKey)
-    SettingsSearchDestination.Diagnostics -> RethinkRoute.Diagnostics
-    SettingsSearchDestination.Developer -> RethinkRoute.AdvancedSettings
+    // Diagnostics and (debug) Developer are sections of Logs & diagnostics.
+    SettingsSearchDestination.Diagnostics -> RethinkRoute.LoggingSettings(LOGGING_DIAGNOSTICS)
+    SettingsSearchDestination.Developer -> RethinkRoute.LoggingSettings(LOGGING_DEVELOPER)
     SettingsSearchDestination.About -> RethinkRoute.About
-    SettingsSearchDestination.Notifications, SettingsSearchDestination.Backup -> null
+    SettingsSearchDestination.Notifications, SettingsSearchDestination.Backup, SettingsSearchDestination.Appearance -> null
 }
 
 data class SettingsSearchIndexEntry(
@@ -79,14 +85,13 @@ data class SettingsSearchIndexEntry(
 @Composable
 fun buildSettingsSearchIndex(isDebug: Boolean): List<SettingsSearchIndexEntry> {
     val protection = stringResource(R.string.lbl_protection)
-    val app = stringResource(R.string.settings_section_app)
     val advanced = stringResource(R.string.lbl_advanced)
     val dns = stringResource(R.string.lbl_dns)
     val proxy = stringResource(R.string.settings_proxy_vpn)
     val network = stringResource(R.string.lbl_network)
     val general = stringResource(R.string.settings_general_header).replaceFirstChar { it.titlecase() }
     val firewall = stringResource(R.string.lbl_firewall)
-    val logging = stringResource(R.string.settings_logging_title)
+    val logging = stringResource(R.string.settings_logs_diagnostics_title)
     val appearance = stringResource(R.string.settings_theme_heading)
 
     val topLevel =
@@ -94,16 +99,16 @@ fun buildSettingsSearchIndex(isDebug: Boolean): List<SettingsSearchIndexEntry> {
             SettingsSearchIndexEntry("top.dns", dns, stringResource(R.string.dns_mode_info_title), "$protection > $dns", MaterialSymbols.Filled.Dns, SettingsSearchDestination.Dns(), listOf("dns", "resolver", "blocklist", "ads", "trackers")),
             SettingsSearchIndexEntry("top.firewall", firewall, stringResource(R.string.universal_firewall_explanation), "$protection > $firewall", KeepoutIcons.Firewall, SettingsSearchDestination.Firewall(), listOf("firewall", "rules", "allow", "block", "universal")),
             SettingsSearchIndexEntry("top.proxy", proxy, stringResource(R.string.settings_proxy_vpn_desc), "$protection > $proxy", MaterialSymbols.Filled.ConversionPath, SettingsSearchDestination.Proxy(), listOf("proxy", "vpn", "socks5", "http proxy", "orbot", "tor", "wireguard")),
-            SettingsSearchIndexEntry("top.appearance", appearance, stringResource(R.string.settings_theme_color_desc), "$app > $appearance", MaterialSymbols.Filled.Palette, SettingsSearchDestination.Appearance, listOf("theme", "dark", "light", "color", "appearance")),
-            SettingsSearchIndexEntry("top.app_lock", stringResource(R.string.app_lock_title), stringResource(R.string.hs_biometeric_desc), "$app > ${stringResource(R.string.app_lock_title)}", MaterialSymbols.Filled.Lock, SettingsSearchDestination.AppLock, listOf("lock", "biometric", "fingerprint", "face", "pin", "password", "security")),
-            SettingsSearchIndexEntry("top.notifications", stringResource(R.string.settings_notifications), stringResource(R.string.about_settings_notification), "$app > ${stringResource(R.string.settings_notifications)}", MaterialSymbols.Filled.Notifications, SettingsSearchDestination.Notifications, listOf("notifications", "alerts")),
-            SettingsSearchIndexEntry("top.backup", stringResource(R.string.brbs_title), stringResource(R.string.settings_import_export_desc), "$app > ${stringResource(R.string.brbs_title)}", MaterialSymbols.Filled.Backup, SettingsSearchDestination.Backup, listOf("backup", "restore", "export", "import")),
-            SettingsSearchIndexEntry("top.general", general, stringResource(R.string.settings_autostart_bootup_heading), "$app > $general", MaterialSymbols.Filled.Tune, SettingsSearchDestination.General(), listOf("general", "boot", "startup", "updates")),
+            SettingsSearchIndexEntry("top.appearance", appearance, stringResource(R.string.settings_theme_color_desc), appearance, MaterialSymbols.Filled.Palette, SettingsSearchDestination.Appearance, listOf("theme", "dark", "light", "color", "appearance")),
+            SettingsSearchIndexEntry("top.app_lock", stringResource(R.string.app_lock_title), stringResource(R.string.hs_biometeric_desc), "$general > ${stringResource(R.string.app_lock_title)}", MaterialSymbols.Filled.Lock, SettingsSearchDestination.AppLock, listOf("lock", "biometric", "fingerprint", "face", "pin", "password", "security")),
+            SettingsSearchIndexEntry("top.notifications", stringResource(R.string.settings_notifications), stringResource(R.string.about_settings_notification), "$general > ${stringResource(R.string.settings_notifications)}", MaterialSymbols.Filled.Notifications, SettingsSearchDestination.Notifications, listOf("notifications", "alerts")),
+            SettingsSearchIndexEntry("top.backup", stringResource(R.string.brbs_title), stringResource(R.string.settings_import_export_desc), "$general > ${stringResource(R.string.brbs_title)}", MaterialSymbols.Filled.Backup, SettingsSearchDestination.Backup, listOf("backup", "restore", "export", "import")),
+            SettingsSearchIndexEntry("top.general", general, stringResource(R.string.settings_autostart_bootup_heading), general, MaterialSymbols.Filled.Tune, SettingsSearchDestination.General(), listOf("general", "boot", "startup", "updates")),
             SettingsSearchIndexEntry("top.network", network, stringResource(R.string.firewall_act_network_monitor_tab), "$advanced > $network", MaterialSymbols.Filled.VpnLock, SettingsSearchDestination.Network(), listOf("network", "vpn", "metered", "lan", "wifi", "mobile")),
             SettingsSearchIndexEntry("top.anti_censorship", stringResource(R.string.anti_censorship_title), stringResource(R.string.anti_censorship_desc), "$advanced > ${stringResource(R.string.anti_censorship_title)}", MaterialSymbols.Filled.DominoMask, SettingsSearchDestination.AntiCensorship, listOf("anti censorship", "dpi")),
             SettingsSearchIndexEntry("top.logging", logging, stringResource(R.string.settings_enable_logs_desc), "$advanced > $logging", MaterialSymbols.Filled.History, SettingsSearchDestination.Logging(), listOf("logs", "logging", "retention", "pcap")),
-            SettingsSearchIndexEntry("top.diagnostics", stringResource(R.string.about_diagnostics), stringResource(R.string.diagnostics_desc), "$advanced > ${stringResource(R.string.about_diagnostics)}", MaterialSymbols.Filled.BugReport, SettingsSearchDestination.Diagnostics, listOf("diagnostics", "event logs", "console", "ping", "troubleshoot")),
-            if (isDebug) SettingsSearchIndexEntry("top.developer", stringResource(R.string.settings_developer_title), stringResource(R.string.adv_set_experimental_desc), "$advanced > ${stringResource(R.string.settings_developer_title)}", MaterialSymbols.Filled.Science, SettingsSearchDestination.Developer, listOf("experimental", "debug", "advanced")) else null,
+            SettingsSearchIndexEntry("top.diagnostics", stringResource(R.string.about_diagnostics), stringResource(R.string.diagnostics_desc), "$advanced > $logging", MaterialSymbols.Filled.BugReport, SettingsSearchDestination.Diagnostics, listOf("diagnostics", "event logs", "console", "ping", "troubleshoot")),
+            if (isDebug) SettingsSearchIndexEntry("top.developer", stringResource(R.string.settings_developer_title), stringResource(R.string.adv_set_experimental_desc), "$advanced > $logging", MaterialSymbols.Filled.Science, SettingsSearchDestination.Developer, listOf("experimental", "debug", "advanced")) else null,
             SettingsSearchIndexEntry("top.about", stringResource(R.string.settings_about_keepout, stringResource(R.string.app_name)), stringResource(R.string.settings_misc_about_desc), stringResource(R.string.settings_about_keepout, stringResource(R.string.app_name)), MaterialSymbols.Filled.Info, SettingsSearchDestination.About, listOf("about", "version", "licenses", "website")),
         )
 
@@ -180,11 +185,11 @@ fun buildSettingsSearchIndex(isDebug: Boolean): List<SettingsSearchIndexEntry> {
             searchEntry("network.dial_timeout", R.string.settings_dial_timeout, R.string.lbl_network, "$advanced > $network > ${stringResource(R.string.settings_dial_timeout)}", MaterialSymbols.Filled.Settings, SettingsSearchDestination.Network("network_dial_timeout"), listOf("timeout"))
         )
 
-    val generalPath = "$app > $general"
+    val generalPath = general
     val loggingPath = "$advanced > $logging"
     val appEntries =
         listOf(
-            searchEntry("app.theme_color", R.string.settings_theme_color_heading, R.string.settings_theme_color_desc, "$app > $appearance", MaterialSymbols.Filled.Palette, SettingsSearchDestination.Appearance, listOf("color", "palette", "dynamic color")),
+            searchEntry("app.theme_color", R.string.settings_theme_color_heading, R.string.settings_theme_color_desc, appearance, MaterialSymbols.Filled.Palette, SettingsSearchDestination.Appearance, listOf("color", "palette", "dynamic color")),
             searchEntry("general.autostart", R.string.settings_autostart_bootup_heading, R.string.settings_autostart_bootup_desc, generalPath, MaterialSymbols.Filled.PlayArrow, SettingsSearchDestination.General("general_autostart"), listOf("boot", "startup")),
             searchEntry("general.tombstone", R.string.tombstone_app_title, R.string.tombstone_app_desc, generalPath, MaterialSymbols.Filled.DeleteOutline, SettingsSearchDestination.General("general_tombstone"), listOf("remember uninstalled")),
             searchEntry("general.app_updates", R.string.settings_check_update_heading, R.string.settings_check_update_desc, generalPath, MaterialSymbols.Filled.SystemUpdate, SettingsSearchDestination.General("general_app_updates"), listOf("updates")),

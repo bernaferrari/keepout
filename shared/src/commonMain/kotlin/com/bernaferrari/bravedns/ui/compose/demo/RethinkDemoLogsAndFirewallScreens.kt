@@ -1,6 +1,7 @@
 /* Copyright 2026 RethinkDNS and its authors */
 package com.bernaferrari.bravedns.ui.compose
 
+import com.bernaferrari.bravedns.ui.compose.theme.SharedDimensions
 import com.bernaferrari.bravedns.ui.icons.MaterialSymbols
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
@@ -80,6 +81,8 @@ internal fun DemoLogsScreen(
                         )
                         RethinkToolbarIconToggle(
                             icon = MaterialSymbols.Filled.FilterList,
+                            // Same 40dp as the compact verdict group beside it.
+                            size = SharedDimensions.buttonHeightSm,
                             contentDescription = "Reason",
                             selected = selectedRules.isNotEmpty(),
                             count = selectedRules.size,
@@ -475,7 +478,7 @@ internal fun DemoAppInfoScreen(modifier: Modifier, app: RethinkFirewallApp?, onB
         strings = RethinkAppInfoStrings(
             unavailable = "This app is no longer installed", loading = "Loading",
             internetAccess = "Internet access", wifi = "Wi‑Fi", mobile = "Mobile data",
-            allowed = "Allowed", blocked = "Blocked", meteredFootnote = "Metered Wi‑Fi counts as mobile data.",
+            allowed = "Allowed", blocked = "Blocked", meteredFootnote = "Wi‑Fi from a phone hotspot (any metered Wi‑Fi) counts as mobile data.",
             temporaryAllow = "Allow for 15 minutes", stopTemporaryAccess = { "Stop temporary access · $it min left" },
             recentActivity = "Recent activity", seeAllActivity = "See all activity", noRecentActivity = "Nothing in the last 24 hours",
             rules = "Rules", ipRules = "IP rules", domainRules = "Domain rules",

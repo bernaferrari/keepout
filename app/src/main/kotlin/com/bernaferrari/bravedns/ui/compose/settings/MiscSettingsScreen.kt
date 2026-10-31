@@ -1,6 +1,15 @@
 /* Copyright 2026 RethinkDNS and its authors */
 package com.bernaferrari.bravedns.ui.compose.settings
 
+import com.bernaferrari.bravedns.ui.compose.database.BackupRestoreSheet
+import com.bernaferrari.bravedns.ui.icons.MaterialSymbols
+import com.bernaferrari.bravedns.ui.compose.theme.CardPosition
+import com.bernaferrari.bravedns.ui.compose.theme.RethinkListItem
+import com.bernaferrari.bravedns.ui.compose.theme.RethinkListGroup
+import com.bernaferrari.bravedns.ui.compose.theme.RethinkFormSection
+import com.bernaferrari.bravedns.ui.compose.theme.SharedDimensions
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -25,17 +34,19 @@ import com.bernaferrari.bravedns.util.Utilities.isAtleastQ
 import com.bernaferrari.bravedns.util.Utilities.isFdroidFlavour
 
 /**
- * Settings › App › General: how Keepout itself behaves (start on boot, uninstalled apps, update
- * checks, crash reports). Backup & restore and About are rows on the Settings hub; logging has its
- * own screen ([LoggingSettingsScreen]).
+ * Settings › General: everything about Keepout itself on one screen — how it behaves (start on
+ * boot, uninstalled apps, update checks, crash reports), App lock, then Backup & restore and the
+ * system notification settings. Logging lives on Logs & diagnostics ([LoggingSettingsScreen]).
  */
 @Composable
 fun MiscSettingsScreen(
     persistentState: PersistentState,
     eventLogger: EventLogger,
+    onNotificationsClick: () -> Unit,
     initialFocusKey: String? = null,
     onBackClick: (() -> Unit)? = null,
 ) {
+    var showBackupSheet by rememberSaveable { mutableStateOf(false) }
     var autoStartEnabled by remember { mutableStateOf(persistentState.prefAutoStartBootUp) }
     var tombstoneEnabled by remember { mutableStateOf(persistentState.tombstoneApps) }
     var checkUpdatesEnabled by remember { mutableStateOf(persistentState.checkForAppUpdate) }
@@ -62,19 +73,47 @@ fun MiscSettingsScreen(
             }
             logSettingChange(eventLogger, "General setting", id, enabled)
         },
+        additionalSettings = {
+            Column(verticalArrangement = Arrangement.spacedBy(SharedDimensions.spacingLg)) {
+                AppLockSettingSection(persistentState, eventLogger)
+                RethinkFormSection(stringResource(R.string.settings_general_more_section)) {
+                    RethinkListGroup {
+                        // Opens a sheet in place; chevrons are reserved for navigation.
+                        RethinkListItem(
+                            headline = stringResource(R.string.brbs_title),
+                            supporting = stringResource(R.string.settings_import_export_desc),
+                            leadingIcon = MaterialSymbols.Filled.Backup,
+                            position = CardPosition.First,
+                            onClick = { showBackupSheet = true },
+                        )
+                        RethinkListItem(
+                            headline = stringResource(R.string.settings_notifications),
+                            supporting = stringResource(R.string.settings_notifications_desc),
+                            leadingIcon = MaterialSymbols.Filled.Notifications,
+                            position = CardPosition.Last,
+                            onClick = onNotificationsClick,
+                        )
+                    }
+                }
+            }
+        },
         onBackClick = onBackClick,
         focusedSettingId = initialFocusKey?.takeIf { it.isNotBlank() },
     )
+    if (showBackupSheet) BackupRestoreSheet(onDismiss = { showBackupSheet = false })
 }
 
 /**
- * Settings › Advanced › Logging: what Keepout records on this device (connection and DNS logs, how
- * long they're kept, provider details for addresses, packet capture) and the firewall bubble.
+ * Settings › Advanced › Logs & diagnostics: what Keepout records on this device (connection and DNS
+ * logs, how long they're kept, provider details, packet capture, the firewall bubble), then the
+ * troubleshooting tools (event logs, app logs, connectivity checks) and, in debug builds, the
+ * developer tools and engine toggles.
  */
 @Composable
 fun LoggingSettingsScreen(
     persistentState: PersistentState,
     eventLogger: EventLogger,
+    diagnostics: DiagnosticsActions,
     initialFocusKey: String? = null,
     onBackClick: (() -> Unit)? = null,
 ) {
@@ -88,7 +127,7 @@ fun LoggingSettingsScreen(
     )
     RethinkMiscSettingsScreen(
         strings = settingsListStrings(
-            title = stringResource(R.string.settings_logging_title),
+            title = stringResource(R.string.settings_logs_diagnostics_title),
             section = stringResource(R.string.settings_logging_section),
         ),
         toggles = toggles,
@@ -100,11 +139,50 @@ fun LoggingSettingsScreen(
             }
             logSettingChange(eventLogger, "Logging setting", id, enabled)
         },
-        additionalSettings = { Column { LogRetentionSetting(persistentState); PcapCaptureSetting() } },
+        additionalSettings = {
+            Column(verticalArrangement = Arrangement.spacedBy(SharedDimensions.spacingLg)) {
+                RethinkFormSection(stringResource(R.string.settings_logging_keep_section)) {
+                    RethinkListGroup {
+                        LogRetentionSetting(persistentState, CardPosition.First)
+                        PcapCaptureSetting(CardPosition.Last)
+                    }
+                }
+                RethinkSettingsLinkGroup(
+                    stringResource(R.string.diagnostics_section_troubleshoot),
+                    listOf(
+                        RethinkSettingsLink("events", stringResource(R.string.event_logs_title), MaterialSymbols.Filled.History, diagnostics.onEventLogs, stringResource(R.string.diagnostics_event_logs_desc)),
+                        RethinkSettingsLink("console", stringResource(R.string.console_log_title), MaterialSymbols.Filled.Terminal, diagnostics.onAppLogs, stringResource(R.string.diagnostics_app_logs_desc)),
+                        RethinkSettingsLink("ping", stringResource(R.string.settings_connectivity_checks), MaterialSymbols.Filled.NetworkCheck, diagnostics.onConnectivityChecks, stringResource(R.string.settings_connectivity_checks_desc)),
+                    ),
+                )
+                if (diagnostics.isDebug) {
+                    DeveloperSettingsSection(
+                        persistentState,
+                        tools = listOf(
+                            // Stats opens a dialog and the recorder starts at once: actions in place, no chevron.
+                            RethinkSettingsLink("stats", stringResource(R.string.title_statistics), MaterialSymbols.Filled.InsertChart, diagnostics.onNetworkStats, opensScreen = false),
+                            RethinkSettingsLink("database", stringResource(R.string.title_database_dump), MaterialSymbols.Filled.Database, diagnostics.onDatabase),
+                            RethinkSettingsLink("flight", stringResource(R.string.about_flight_recorder), MaterialSymbols.Filled.Report, diagnostics.onFlightRecorder, opensScreen = false),
+                        ),
+                    )
+                }
+            }
+        },
         onBackClick = onBackClick,
         focusedSettingId = initialFocusKey?.takeIf { it.isNotBlank() },
     )
 }
+
+/** Where Logs & diagnostics' troubleshooting rows go; the host owns navigation and dialogs. */
+class DiagnosticsActions(
+    val isDebug: Boolean,
+    val onEventLogs: () -> Unit,
+    val onAppLogs: () -> Unit,
+    val onConnectivityChecks: () -> Unit,
+    val onNetworkStats: () -> Unit,
+    val onDatabase: () -> Unit,
+    val onFlightRecorder: () -> Unit,
+)
 
 /** Only title and section are shown when the backup and about rows are off. */
 private fun settingsListStrings(title: String, section: String) = RethinkMiscSettingsStrings(

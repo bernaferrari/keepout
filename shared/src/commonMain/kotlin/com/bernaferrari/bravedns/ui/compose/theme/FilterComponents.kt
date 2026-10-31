@@ -38,7 +38,7 @@ fun RethinkSearchField(
     containerColor: Color = MaterialTheme.colorScheme.surfaceContainerLow, textStyle: TextStyle = MaterialTheme.typography.bodyLarge,
     leadingIconTint: Color = MaterialTheme.colorScheme.primary, iconSize: Dp = SharedDimensions.iconSizeSm,
     trailingIconSize: Dp = iconSize, trailingIconButtonSize: Dp? = null, clearQueryContentDescription: String? = null,
-    closeWhenEmptyContentDescription: String? = null, onClearQuery: (() -> Unit)? = null, onCloseWhenEmpty: (() -> Unit)? = null,
+    onClearQuery: (() -> Unit)? = null,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     /** Replaces the search glyph (e.g. with the scoped app's icon); null removes the leading slot. */
     leadingContent: (@Composable () -> Unit)? = { Icon(MaterialSymbols.Filled.Search, null, Modifier.size(iconSize), leadingIconTint) },
@@ -46,13 +46,15 @@ fun RethinkSearchField(
     value = query, onValueChange = onQueryChange, modifier = modifier, singleLine = true, enabled = enabled, textStyle = textStyle,
     keyboardOptions = keyboardOptions,
     placeholder = { Text(placeholder, maxLines = 1, overflow = TextOverflow.Ellipsis) }, leadingIcon = leadingContent,
-    trailingIcon = {
-        val action = if (query.isNotEmpty()) onClearQuery ?: { onQueryChange("") } else onCloseWhenEmpty
-        val actionModifier = trailingIconButtonSize?.let { requestedSize ->
-            Modifier.size(requestedSize.coerceAtLeast(SharedDimensions.touchTargetMin))
-        } ?: Modifier
-        if (action != null) IconButton(action, actionModifier) {
-            Icon(MaterialSymbols.Filled.Close, if (query.isNotEmpty()) clearQueryContentDescription else closeWhenEmptyContentDescription, Modifier.size(trailingIconSize))
+    // Clear appears only when there is something to clear.
+    trailingIcon = if (query.isEmpty()) null else {
+        {
+            val actionModifier = trailingIconButtonSize?.let { requestedSize ->
+                Modifier.size(requestedSize.coerceAtLeast(SharedDimensions.touchTargetMin))
+            } ?: Modifier
+            IconButton(onClearQuery ?: { onQueryChange("") }, actionModifier) {
+                Icon(MaterialSymbols.Filled.Close, clearQueryContentDescription, Modifier.size(trailingIconSize))
+            }
         }
     },
     shape = shape, colors = TextFieldDefaults.colors(focusedContainerColor = containerColor, unfocusedContainerColor = containerColor, focusedIndicatorColor = Color.Transparent, unfocusedIndicatorColor = Color.Transparent, disabledIndicatorColor = Color.Transparent),

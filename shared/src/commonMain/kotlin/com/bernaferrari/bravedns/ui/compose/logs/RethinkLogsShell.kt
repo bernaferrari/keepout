@@ -57,9 +57,10 @@ data class RethinkLogsStrings(
 /**
  * Shared top-level Logs navigation, tabs, and overflow behaviour.
  *
- * As the Activity tab's Log view, [viewSwitch] (Log · Insights) takes the top bar and the
- * connections/lookups switch moves to a labelled row over the filters. Without it (a log pushed
- * with a search, e.g. from Insights) the compact switch stays in the top bar.
+ * As the Activity tab's Log view, [viewSwitch] (Log · Insights) sits under the top bar
+ * ([RethinkActivityTopBar]) and the connections/lookups switch moves to a labelled row over the
+ * filters. Without it (a log pushed with a search, e.g. from Insights) the compact switch stays
+ * in the top bar.
  *
  * A host that filters by type itself (the Activity log: type lives in its Filters sheet) passes
  * [content] instead of [networkContent]/[dnsContent], and the shell shows no type switch at all.
@@ -87,14 +88,17 @@ fun RethinkLogsScreenShell(
         modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         containerColor = MaterialTheme.colorScheme.surface,
         topBar = {
-            RethinkTopBar(
+            if (viewSwitch != null) {
+                RethinkActivityTopBar(
+                    viewSwitch = viewSwitch,
+                    actions = { RethinkLogsOverflow(toolbarActions, strings, additionalOverflowItems) },
+                )
+            } else RethinkTopBar(
                 title = strings.title,
                 onBackClick = onBackClick,
                 scrollBehavior = scrollBehavior,
                 actions = {
-                    if (viewSwitch != null) {
-                        viewSwitch()
-                    } else if (content == null) {
+                    if (content == null) {
                         RethinkLogsTabSwitch(
                             selected = tab,
                             networkLabel = strings.network,

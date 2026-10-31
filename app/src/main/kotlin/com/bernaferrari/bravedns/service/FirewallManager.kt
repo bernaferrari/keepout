@@ -623,6 +623,19 @@ object FirewallManager : KoinComponent {
         publishAppList()
     }
 
+    /** True once [load] has filled the in-memory app cache at least once this process. */
+    @Volatile
+    private var loadedOnce = false
+
+    /**
+     * Fill the app cache if nothing has yet. UI that reads an app straight after a cold start
+     * (App detail, opened before any refresh) would otherwise find a cached-but-empty map and
+     * report an installed app as missing. Never called on the connection hot path.
+     */
+    suspend fun ensureLoaded() {
+        if (!loadedOnce) load()
+    }
+
     suspend fun load(): Int {
         temporaryAllowances.invalidate()
         val apps = db.getAppInfo()
@@ -630,6 +643,7 @@ object FirewallManager : KoinComponent {
             appInfos.clear()
             apps.forEach { appInfos.put(it.uid, it) }
         }
+        loadedOnce = true
         publishAppList()
         if (apps.isEmpty()) {
             Logger.w(LOG_TAG_FIREWALL, "no apps found in db, no app-based rules to load")

@@ -1,6 +1,7 @@
 /* Copyright 2026 RethinkDNS and its authors */
 package com.bernaferrari.bravedns.ui.compose.theme
 
+import androidx.compose.ui.layout.layout
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
@@ -78,7 +79,16 @@ fun SectionHeaderWithSubtitle(
             )
             trailing?.invoke()
             if (actionLabel != null && onAction != null) {
-                TextButton(onClick = onAction, contentPadding = PaddingValues(horizontal = SharedDimensions.spacingSm, vertical = 0.dp)) {
+                // Keeps its 48dp touch target but adds no height to the header, so a section with
+                // "Show all" sits as close to its content as one without.
+                TextButton(
+                    onClick = onAction,
+                    contentPadding = PaddingValues(horizontal = SharedDimensions.spacingSm, vertical = 0.dp),
+                    modifier = Modifier.layout { measurable, constraints ->
+                        val placeable = measurable.measure(constraints.copy(minHeight = 0))
+                        layout(placeable.width, 0) { placeable.place(0, -placeable.height / 2) }
+                    },
+                ) {
                     Text(actionLabel, style = MaterialTheme.typography.labelLarge, fontWeight = FontWeight.SemiBold, color = color, letterSpacing = 0.1.sp)
                 }
             }

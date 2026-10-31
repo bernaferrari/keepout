@@ -16,7 +16,6 @@ import com.bernaferrari.bravedns.database.EventType
 import com.bernaferrari.bravedns.database.Severity
 import com.bernaferrari.bravedns.service.EventLogger
 import com.bernaferrari.bravedns.service.PersistentState
-import com.bernaferrari.bravedns.ui.compose.theme.RethinkTopBarLazyColumnScreen
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -131,42 +130,33 @@ private fun RethinkAppearanceMode.toAndroid() = when (this) {
 }
 
 /**
- * Settings › App › Appearance: theme mode and color on their own screen (the Settings hub is
- * navigation only). Writes the same preferences the hub's inline card did, then tells the host.
+ * Theme mode and color, inline on the Settings hub (two controls don't earn a screen of their own).
+ * Writes the preferences, then tells the host so the theme changes at once.
  */
 @Composable
-fun AppearanceSettingsScreen(
+fun AppearanceSettingsSection(
     persistentState: PersistentState,
     eventLogger: EventLogger,
     onThemeModeChanged: ((Int) -> Unit)? = null,
     onThemeColorChanged: ((Int) -> Unit)? = null,
-    onBackClick: (() -> Unit)? = null,
 ) {
     var theme by remember { mutableStateOf(persistentState.theme) }
     var preset by remember { mutableStateOf(persistentState.themeColorPreset) }
-    RethinkTopBarLazyColumnScreen(
-        title = stringResource(R.string.settings_theme_heading),
-        onBackClick = onBackClick,
-    ) {
-        item {
-            AppearanceSettingsCard(
-                themePreference = theme,
-                colorPresetId = preset,
-                onAppearanceModeSelected = { mode ->
-                    val themeId = mode.toThemePreference()
-                    theme = themeId
-                    persistentState.theme = themeId
-                    onThemeModeChanged?.invoke(themeId)
-                    eventLogger.log(EventType.UI_SETTING_CHANGED, Severity.LOW, "Appearance", EventSource.UI, true, "Theme set to ${mode.name.lowercase()}")
-                },
-                onColorPresetSelected = { selected ->
-                    preset = selected.id
-                    persistentState.themeColorPreset = selected.id
-                    onThemeColorChanged?.invoke(selected.id)
-                    eventLogger.log(EventType.UI_SETTING_CHANGED, Severity.LOW, "Appearance color", EventSource.UI, true, "Color preset set to ${selected.name.lowercase()}")
-                },
-                showSectionHeader = false,
-            )
-        }
-    }
+    AppearanceSettingsCard(
+        themePreference = theme,
+        colorPresetId = preset,
+        onAppearanceModeSelected = { mode ->
+            val themeId = mode.toThemePreference()
+            theme = themeId
+            persistentState.theme = themeId
+            onThemeModeChanged?.invoke(themeId)
+            eventLogger.log(EventType.UI_SETTING_CHANGED, Severity.LOW, "Appearance", EventSource.UI, true, "Theme set to ${mode.name.lowercase()}")
+        },
+        onColorPresetSelected = { selected ->
+            preset = selected.id
+            persistentState.themeColorPreset = selected.id
+            onThemeColorChanged?.invoke(selected.id)
+            eventLogger.log(EventType.UI_SETTING_CHANGED, Severity.LOW, "Appearance color", EventSource.UI, true, "Color preset set to ${selected.name.lowercase()}")
+        },
+    )
 }

@@ -1,6 +1,17 @@
 /* Copyright 2026 RethinkDNS and its authors */
 package com.bernaferrari.bravedns.ui.compose.configure
 
+import androidx.compose.ui.unit.Dp
+import com.bernaferrari.bravedns.ui.compose.theme.LocalRethinkMotion
+import androidx.compose.ui.unit.sp
+import androidx.compose.ui.unit.TextUnit
+import androidx.compose.runtime.staticCompositionLocalOf
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.text.rememberTextMeasurer
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.IntrinsicSize
+import androidx.compose.foundation.layout.BoxWithConstraints
 import com.bernaferrari.bravedns.ui.compose.theme.rethinkListItemColors
 
 import com.bernaferrari.bravedns.ui.compose.theme.RethinkSearchField
@@ -60,8 +71,6 @@ import com.bernaferrari.bravedns.ui.compose.theme.SharedDimensions
 import com.bernaferrari.bravedns.ui.compose.theme.cardPositionFor
 import com.bernaferrari.bravedns.ui.compose.theme.rethinkGroupedListPairShape
 import com.bernaferrari.bravedns.ui.compose.theme.rethinkGroupedGridCellShape
-import androidx.compose.ui.text.style.LineBreak
-import androidx.compose.ui.text.style.Hyphens
 
 enum class RethinkConfigureLayout { GridFour, GridTriad, List }
 
@@ -107,8 +116,12 @@ fun RethinkConfigureScreen(
     onSearchOpenChange: (Boolean) -> Unit,
     onQueryChange: (String) -> Unit,
     modifier: Modifier = Modifier,
-    /** Optional appearance block shown after the sections (theme mode + color swatches). */
+    /** Optional appearance block (theme mode + color swatches), shown inline on the hub. */
     appearanceContent: (@Composable () -> Unit)? = null,
+    /** How many [sections] come before [appearanceContent]; the rest follow it. */
+    appearanceAfter: Int = sections.size,
+    /** Bump to scroll the hub to [appearanceContent] (a search result for theme or color). */
+    revealAppearance: Int = 0,
 ) {
     val searchScroll = TopAppBarDefaults.pinnedScrollBehavior()
     val browseScroll = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
@@ -175,8 +188,19 @@ fun RethinkConfigureScreen(
         },
     ) { padding ->
         RethinkAdaptiveWidth(Modifier.fillMaxSize().padding(padding)) { widthClass ->
+            BoxWithConstraints(Modifier.fillMaxSize()) {
+            val titleSize = rememberGridTitleSize(sections, widthClass.isExpanded, maxWidth)
+            CompositionLocalProvider(LocalConfigureTitleSize provides titleSize) {
+            val listState = rememberLazyListState()
+            val reducedMotion = LocalRethinkMotion.current.reducedMotion
+            LaunchedEffect(revealAppearance) {
+                if (revealAppearance > 0 && appearanceContent != null) {
+                    val index = appearanceAfter.coerceIn(0, sections.size)
+                    if (reducedMotion) listState.scrollToItem(index) else listState.animateScrollToItem(index)
+                }
+            }
             LazyColumn(
-                state = rememberLazyListState(),
+                state = listState,
                 modifier = Modifier.fillMaxSize(),
                 // The root navigation owns the system/navigation-bar inset. Keep a deliberate tail here
                 // as well: the final expressive tile is taller than a list row and needs room to scroll
@@ -190,17 +214,21 @@ fun RethinkConfigureScreen(
                 verticalArrangement = Arrangement.spacedBy(SharedDimensions.spacingLg),
             ) {
                 if (showBrowse) {
-                    // Protection controls lead; theming is a one-time preference and sits last.
-                    sections.forEach { section -> item { ConfigureSection(section, widthClass) } }
+                    // Protection controls lead; theming is a one-time preference and sits low.
+                    val split = appearanceAfter.coerceIn(0, sections.size)
+                    sections.take(split).forEach { section -> item { ConfigureSection(section, widthClass) } }
                     appearanceContent?.let { content ->
-                        item { content() }
+                        item(key = "appearance") { content() }
                     }
+                    sections.drop(split).forEach { section -> item { ConfigureSection(section, widthClass) } }
                     item { Spacer(Modifier.height(SharedDimensions.spacingSm)) }
                 } else {
                     item {
                         if (results.isEmpty()) NoResults(strings) else SearchResults(results, query)
                     }
                 }
+            }
+            }
             }
         }
     }
@@ -265,7 +293,7 @@ private fun AdaptiveTileGrid(entries: List<RethinkConfigureEntry>, columns: Int)
     Column(verticalArrangement = Arrangement.spacedBy(SharedDimensions.spacingGridTile)) {
         rows.forEachIndexed { rowIndex, row ->
             Row(
-                Modifier.fillMaxWidth(),
+                Modifier.fillMaxWidth().height(IntrinsicSize.Min),
                 horizontalArrangement = Arrangement.spacedBy(SharedDimensions.spacingGridTile),
             ) {
                 // A short last row stretches its tiles across, so an odd count never leaves a hole.
@@ -273,7 +301,7 @@ private fun AdaptiveTileGrid(entries: List<RethinkConfigureEntry>, columns: Int)
                     GridTile(
                         entry,
                         rethinkGroupedGridCellShape(column, row.size, cardPositionFor(rowIndex, rows.lastIndex)),
-                        Modifier.weight(1f),
+                        Modifier.weight(1f).fillMaxHeight(),
                         rowIndex * columns + column,
                     )
                 }
@@ -289,9 +317,10 @@ private fun AdaptiveTileGrid(entries: List<RethinkConfigureEntry>, columns: Int)
     secondShape: Shape,
     startIndex: Int,
 ) {
-    Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(SharedDimensions.spacingGridTile)) {
-        GridTile(first, firstShape, Modifier.weight(1f), startIndex)
-        GridTile(second, secondShape, Modifier.weight(1f), startIndex + 1)
+    // IntrinsicSize.Min + fillMaxHeight: the two tiles of a row are always one height.
+    Row(Modifier.fillMaxWidth().height(IntrinsicSize.Min), horizontalArrangement = Arrangement.spacedBy(SharedDimensions.spacingGridTile)) {
+        GridTile(first, firstShape, Modifier.weight(1f).fillMaxHeight(), startIndex)
+        GridTile(second, secondShape, Modifier.weight(1f).fillMaxHeight(), startIndex + 1)
     }
 }
 @Composable private fun GridTile(entry: RethinkConfigureEntry, shape: Shape, modifier: Modifier, index: Int) {
@@ -305,22 +334,20 @@ private fun AdaptiveTileGrid(entries: List<RethinkConfigureEntry>, columns: Int)
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = SharedDimensions.spacingMd, vertical = SharedDimensions.cardPadding),
+                // 16dp in, like the list rows (General, About) on the same screen, so every icon lines up.
+                .padding(horizontal = SharedDimensions.spacingLg, vertical = SharedDimensions.cardPadding),
             verticalAlignment = Alignment.CenterVertically,
-            // Tight enough that a long half-width title ("Anti-censorship") breaks at its hyphen.
             horizontalArrangement = Arrangement.spacedBy(SharedDimensions.spacingSmMd),
         ) {
             ConfigureIconWell(colors) { entry.icon() }
             Column(modifier = Modifier.weight(1f)) {
-                // Same type roles as RethinkListItem so grid tiles and list rows on this screen
-                // read as one family; two lines survive large font scales.
+                // Same type role as RethinkListItem, at the screen's shared size: one line, always.
                 Text(
                     entry.title,
-                    // Long words hyphenate at syllables instead of breaking anywhere.
-                    style = MaterialTheme.typography.bodyLarge.copy(hyphens = Hyphens.Auto, lineBreak = LineBreak.Heading),
+                    style = MaterialTheme.typography.bodyLarge.copy(fontSize = LocalConfigureTitleSize.current),
                     fontWeight = FontWeight.Medium,
                     color = colors.title,
-                    maxLines = 2,
+                    maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                 )
                 entry.subtitle?.let { subtitle ->
@@ -336,6 +363,30 @@ private fun AdaptiveTileGrid(entries: List<RethinkConfigureEntry>, columns: Int)
         }
     }
 }
+
+/**
+ * One title size for every grid tile: the largest that keeps the longest half-width title on one
+ * line beside its icon, so a narrow phone or large font never hyphenates a title or makes one tile
+ * taller than its neighbour. Wide windows keep the full size.
+ */
+@Composable
+private fun rememberGridTitleSize(sections: List<RethinkConfigureSection>, expanded: Boolean, width: Dp): TextUnit {
+    val measurer = rememberTextMeasurer()
+    val density = LocalDensity.current
+    val titleStyle = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Medium)
+    val halfTile = (width - SharedDimensions.screenPaddingHorizontal * 2 - SharedDimensions.spacingGridTile) / 2
+    val besideIcon = halfTile - SharedDimensions.spacingLg * 2 - SharedDimensions.iconContainerMd - SharedDimensions.spacingSmMd
+    val widest = sections
+        .filter { it.layout != RethinkConfigureLayout.List }
+        .flatMap { section -> if (section.layout == RethinkConfigureLayout.GridTriad) section.entries.take(2) else section.entries }
+        .maxOfOrNull { with(density) { measurer.measure(it.title, titleStyle, maxLines = 1).size.width.toDp() } }
+    if (expanded || widest == null || widest <= besideIcon) return titleStyle.fontSize
+    return (titleStyle.fontSize.value * (besideIcon / widest)).coerceAtLeast(MaterialTheme.typography.labelLarge.fontSize.value).sp
+}
+
+/** The one title size every grid tile on this screen uses (decided once, from the longest title). */
+private val LocalConfigureTitleSize = staticCompositionLocalOf { TextUnit.Unspecified }
+
 @Composable private fun EntryList(entries: List<RethinkConfigureEntry>) = Column {
     entries.forEachIndexed { index, entry ->
         ConfigureListRow(entry, cardPositionFor(index, entries.lastIndex))

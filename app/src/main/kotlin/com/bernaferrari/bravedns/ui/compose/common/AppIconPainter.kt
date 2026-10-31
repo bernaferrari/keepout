@@ -16,6 +16,7 @@
 package com.bernaferrari.bravedns.ui.compose.common
 
 import android.content.Context
+import java.util.concurrent.ConcurrentHashMap
 import android.content.pm.PackageManager
 import android.util.LruCache
 import androidx.compose.foundation.Image
@@ -84,6 +85,9 @@ private object AppIconCache {
     }
 }
 
+/** Resolved uid -> package names (found ones only, so a later install still resolves). */
+private val UidPackageCache = ConcurrentHashMap<Int, String>()
+
 /**
  * Painter for an installed app's launcher icon, decoded once and served from [AppIconCache].
  * With [fallbackToDefault], the themed default icon shows only once the lookup finished without
@@ -100,8 +104,10 @@ fun rememberAppIconPainter(
 @Composable
 fun rememberAppIconPainter(uid: Int, fallbackToDefault: Boolean = false): Painter? {
     val context = LocalContext.current
-    // null while resolving; "" once resolved to no package.
-    val packageName by produceState<String?>(initialValue = null, uid) {
+    // null while resolving; "" once resolved to no package. A uid seen before resolves on the
+    // first frame, so rows rebuilt by a filter or window change don't blank their icon.
+    val packageName by produceState(initialValue = UidPackageCache[uid], uid) {
+        if (value != null) return@produceState
         value =
             withContext(Dispatchers.IO) {
                 val candidateUids = listOf(uid, FirewallManager.appId(uid, mainUserOnly = true)).distinct()
@@ -109,7 +115,7 @@ fun rememberAppIconPainter(uid: Int, fallbackToDefault: Boolean = false): Painte
                     ?: candidateUids.firstNotNullOfOrNull {
                         Utilities.getPackageInfoForUid(context, it)?.firstOrNull()
                     }
-            }.orEmpty()
+            }?.also { UidPackageCache[uid] = it }.orEmpty()
     }
     return rememberResolvedAppIconPainter(packageName, appName = null, fallbackToDefault = fallbackToDefault)
 }

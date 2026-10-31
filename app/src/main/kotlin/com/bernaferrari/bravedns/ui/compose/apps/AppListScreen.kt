@@ -146,7 +146,7 @@ fun AppListScreen(
     }
     val haptics = LocalHapticFeedback.current
 
-    /** One row's Wi‑Fi / mobile data tap: write it now, then offer Undo back to the app's exact rule. */
+    /** One row's Wi‑Fi / mobile data tap: write it now. No Undo: tapping the switch again is the undo. */
     fun commitConnectionToggle(app: RethinkFirewallApp, wifi: Boolean) {
         // As App detail's tiles: the toggle haptic follows the state being left.
         val wasBlocked = if (wifi) app.wifiBlocked else app.mobileBlocked
@@ -154,12 +154,7 @@ fun AppListScreen(
         scope.launch {
             val change = withContext(Dispatchers.IO + NonCancellable) { viewModel.toggleNetwork(app.uid, wifi) }
             logToggle(eventLogger, app, change.after.connection.name)
-            val message = resources.getString(networkToggleMessage(change.after.connection, wifi), app.appName)
             snackbar.currentSnackbarData?.dismiss()
-            if (snackbar.showRuleUndoSnackbar(message, undoLabel)) {
-                val restored = withContext(Dispatchers.IO + NonCancellable) { viewModel.undo(change) }
-                if (restored) logToggle(eventLogger, app, change.before.connection.name, undo = true)
-            }
         }
     }
 
@@ -322,8 +317,8 @@ private fun androidFirewallAppListStrings(): RethinkFirewallAppListStrings {
         },
         statusLabel = { status ->
             when (status) {
-                RethinkFirewallAppStatus.Allowed -> ""
-                RethinkFirewallAppStatus.Blocked -> blocked
+                // The row's own red switches already say blocked; badges only name what they can't show.
+                RethinkFirewallAppStatus.Allowed, RethinkFirewallAppStatus.Blocked -> ""
                 RethinkFirewallAppStatus.Bypass -> bypass
                 RethinkFirewallAppStatus.SkipAllFiltering -> skipAll
                 RethinkFirewallAppStatus.Excluded -> excluded
@@ -370,14 +365,6 @@ private fun dataUsageText(app: AppInfo): String? {
         download = formatByteCount(app.downloadBytes),
         upload = formatByteCount(app.uploadBytes),
     )
-}
-
-/** The snackbar line for a row tap that left the app with [connection]. */
-private fun networkToggleMessage(connection: AppConnectionStatus, wifi: Boolean): Int = when {
-    wifi && (connection == AppConnectionStatus.Unmetered || connection == AppConnectionStatus.Both) -> R.string.app_done_blocked_wifi
-    wifi -> R.string.connection_done_allowed_wifi
-    connection == AppConnectionStatus.Metered || connection == AppConnectionStatus.Both -> R.string.app_done_blocked_mobile
-    else -> R.string.connection_done_allowed_mobile
 }
 
 private fun logToggle(eventLogger: EventLogger, app: RethinkFirewallApp, connection: String, undo: Boolean = false) {
