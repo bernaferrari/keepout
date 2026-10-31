@@ -122,12 +122,8 @@ fun RethinkFirewallSettingsScreen(
         listState = listState,
     ) {
         item(key = "rules") {
-            Text(
-                strings.explanation,
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                modifier = Modifier.padding(horizontal = SharedDimensions.spacingXs, vertical = SharedDimensions.spacingSm),
-            )
+            // The sections below say what each switch does; a caption here read as if it
+            // described the Rules row ("every app" over a row for one app or all).
             RethinkListGroup {
                 RethinkListItem(
                     headline = rulesCount?.let(strings.rulesWithCount) ?: strings.rulesTitle,

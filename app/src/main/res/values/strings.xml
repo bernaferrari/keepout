@@ -766,13 +766,13 @@
 
     <!-- Universal Firewall-->
     <string name="univ_firewall_rule_1" translatable="true">Block all apps when device is locked</string>
-    <string name="univ_firewall_rule_2" translatable="true">Block apps I\'m not using</string>
+    <string name="univ_firewall_rule_2" translatable="true">Block background apps</string>
     <string name="univ_firewall_rule_3" translatable="true">Block when source app is unknown</string>
-    <string name="univ_firewall_rule_4" translatable="true">Block UDP except DNS and NTP</string>
-    <string name="univ_firewall_rule_5" translatable="true">Block apps that skip Keepout\'s DNS</string>
+    <string name="univ_firewall_rule_4" translatable="true">Block UDP</string>
+    <string name="univ_firewall_rule_5" translatable="true">Block DNS bypass</string>
     <string name="univ_firewall_rule_6" translatable="true">Block newly installed apps by default</string>
     <string name="univ_firewall_rule_8" translatable="true">Block port 80 (insecure HTTP) traffic</string>
-    <string name="univ_firewall_rule_9" translatable="true">Block all apps on mobile data</string>
+    <string name="univ_firewall_rule_9" translatable="true">Block mobile data</string>
     <string name="univ_firewall_rule_10" translatable="true">Lockdown: block everything except apps and IPs you\'ve allowed</string>
 
     <string name="univ_view_blocked_ip" translatable="true">Rules</string>
