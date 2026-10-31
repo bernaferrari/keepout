@@ -277,8 +277,6 @@
     <string name="lbl_public_key" translatable="true">คีย์สาธารณะ</string>
     <string name="lbl_addresses" translatable="true">ที่อยู่</string>
     <string name="lbl_dns_servers" translatable="true">DNS Servers</string>
-    <string name="lbl_ip_rules" translatable="true">กฎระเบียบทรัพย์สินทางปัญญา</string>
-    <string name="lbl_domain_rules" translatable="true">กฎของโดเมน</string>
     <string name="lbl_delete" translatable="true">ลบ</string>
     <string name="lbl_proceed" translatable="true">ดำเนินการ</string>
     <string name="lbl_private_key" translatable="true">คีย์ส่วนตัว</string>

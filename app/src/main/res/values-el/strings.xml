@@ -49,8 +49,6 @@
     <string name="title_statistics" translatable="true">Στατιστικά</string>
     <string name="txt_home" translatable="true">Αρχική σελίδα</string>
     <string name="accessibility_service_description" translatable="true">Το Keepout χρησιμοποιεί την υπηρεσία προσβασιμότητας και το τείχος προστασίας για τον εντοπισμό εφαρμογών παρασκηνίου.Το Keepout δεν συλλέγει ούτε πωλεί καμία πληροφορία.</string>
-    <string name="lbl_ip_rules" translatable="true">Κανόνες IP</string>
-    <string name="lbl_domain_rules" translatable="true">Κανόνες domain</string>
     <string name="lbl_delete" translatable="true">Διαγραφή</string>
     <string name="lbl_proceed" translatable="true">Συνεχίστε</string>
     <string name="lbl_private_key" translatable="true">Ιδιωτικό κλειδί</string>

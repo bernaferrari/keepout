@@ -23,8 +23,6 @@
     <string name="lbl_public_key" translatable="true">Публічны ключ</string>
     <string name="lbl_addresses" translatable="true">Адрасы</string>
     <string name="lbl_dns_servers" translatable="true">DNS-серверы</string>
-    <string name="lbl_ip_rules" translatable="true">Правілы IP-адрасоў</string>
-    <string name="lbl_domain_rules" translatable="true">Правілы даменаў</string>
     <string name="lbl_delete" translatable="true">Выдаліць</string>
     <string name="lbl_proceed" translatable="true">Працягнуць</string>
     <string name="lbl_private_key" translatable="true">Прыватны ключ</string>

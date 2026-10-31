@@ -31,7 +31,6 @@
     <string name="lbl_rules" translatable="true">قوانین</string>
     <string name="lbl_configure" translatable="true">پیکربندی</string>
     <string name="lbl_logs" translatable="true">گزارشها</string>
-    <string name="lbl_domain_rules" translatable="true">قوانین دامنه</string>
     <string name="status_failing" description="This text appears if the connection is currently not working correctly. [CHAR_LIMIT=NONE]" translatable="true">ناموفق</string>
     <string name="title_statistics" translatable="true">آمار</string>
     <string name="lbl_dismiss" translatable="true">نادیده گرفتن</string>
@@ -40,7 +39,6 @@
     <string name="lbl_blocked" translatable="true">مسدود شده</string>
     <string name="lbl_disabled" translatable="true">غیرفعال شده</string>
     <string name="lbl_action_required" translatable="true">اقدام لازم است</string>
-    <string name="lbl_ip_rules" translatable="true">قوانین IP</string>
     <string name="lbl_domain" translatable="true">دامنه</string>
     <string name="lbl_cancel" translatable="true">لغو</string>
     <string name="lbl_apply" translatable="true">اعمال</string>

@@ -475,8 +475,6 @@
     <string name="lbl_blocked" translatable="true">Bloqueada</string>
     <string name="lbl_domain" translatable="true">Domínio</string>
     <string name="lbl_action_required" translatable="true">Requer ação</string>
-    <string name="lbl_ip_rules" translatable="true">Regras de IP</string>
-    <string name="lbl_domain_rules" translatable="true">Regras de domínio</string>
     <string name="firewall_rule_trusted_domain" translatable="true">Domínio confiável (aplicação)</string>
     <string name="firewall_rule_block_domain" translatable="true">Domínio (aplicação)</string>
     <string name="cd_no_rules_text" translatable="true">Sem regras de domínio.</string>

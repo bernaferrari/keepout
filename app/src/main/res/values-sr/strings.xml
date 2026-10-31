@@ -22,10 +22,8 @@
     <string name="lbl_wireguard" translatable="true">WireGuard</string>
     <string name="lbl_public_key" translatable="true">Јавни кључ</string>
     <string name="lbl_addresses" translatable="true">Адресе</string>
-    <string name="lbl_domain_rules" translatable="true">Правила домена</string>
     <string name="lbl_delete" translatable="true">Обриши</string>
     <string name="lbl_dns_servers" translatable="true">DNS сервери</string>
-    <string name="lbl_ip_rules" translatable="true">IP правила</string>
     <string name="lbl_listen_port" translatable="true">Надгледај порт</string>
     <string name="lbl_mtu" translatable="true">MTU</string>
     <string name="lbl_auto" translatable="true">(аутоматско)</string>

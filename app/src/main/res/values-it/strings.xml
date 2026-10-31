@@ -478,8 +478,6 @@
     <string name="lbl_disabled" translatable="true">Disabilitato</string>
     <string name="lbl_domain" translatable="true">Dominio</string>
     <string name="lbl_action_required" translatable="true">Azione richiesta</string>
-    <string name="lbl_ip_rules" translatable="true">Regole IP</string>
-    <string name="lbl_domain_rules" translatable="true">Regole dominio</string>
     <string name="firewall_rule_dns_blocked_desc" translatable="true">Questa connessione è stata bloccata perché il dominio <i/> è bloccato dal DNS preferito dall\'utente.<br/><br/> Per modificare questo comportamento, accedere alla scheda Configura DNS.</string>
     <string name="ada_app_bypass_dns_firewall" translatable="true">Aggira DNS e firewall</string>
     <string name="lbl_rules" translatable="true">Regole</string>

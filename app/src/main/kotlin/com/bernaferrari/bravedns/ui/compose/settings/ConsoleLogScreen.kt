@@ -6,6 +6,11 @@
  */
 package com.bernaferrari.bravedns.ui.compose.settings
 
+import com.bernaferrari.bravedns.ui.icons.MaterialSymbols
+import com.bernaferrari.bravedns.ui.compose.common.RethinkEmptyState
+import androidx.compose.ui.Alignment
+import androidx.compose.foundation.layout.Box
+import androidx.paging.LoadState
 import Logger
 import Logger.LOG_TAG_BUG_REPORT
 import androidx.compose.foundation.layout.PaddingValues
@@ -149,6 +154,13 @@ fun ConsoleLogScreen(
 @Composable
 private fun ConsoleLogList(viewModel: ConsoleLogViewModel) {
     val items = viewModel.logs.collectAsLazyPagingItems()
+    // Nothing logged (yet): say so, centered, instead of an empty black screen.
+    if (items.itemCount == 0 && items.loadState.refresh !is LoadState.Loading) {
+        Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+            RethinkEmptyState(icon = MaterialSymbols.Filled.Terminal, title = stringResource(R.string.lbl_no_logs))
+        }
+        return
+    }
     LazyColumn(
         modifier = Modifier.fillMaxSize().padding(horizontal = SharedDimensions.screenPaddingHorizontal),
         contentPadding = PaddingValues(bottom = SharedDimensions.spacing3xl),

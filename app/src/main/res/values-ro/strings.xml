@@ -6,7 +6,6 @@
     <string name="accessibility_service_description" translatable="true">Keepout utilizează serviciul de accesibilitate pentru a detecta și proteja aplicațiile care rulează în fundal. Keepout nu colectează și nu vinde nici o informație.</string>
     <string name="lbl_cancel" translatable="true">Anulează</string>
     <string name="lbl_blocked" translatable="true">Blocate</string>
-    <string name="lbl_domain_rules" translatable="true">Reguli domeniu</string>
     <string name="lbl_delete" translatable="true">Șterge</string>
     <string name="lbl_proceed" translatable="true">Continuă</string>
     <string name="lbl_private_key" translatable="true">Cheie privată</string>
@@ -80,7 +79,6 @@
     <string name="lbl_public_key" translatable="true">Cheia publică</string>
     <string name="lbl_addresses" translatable="true">Adrese</string>
     <string name="lbl_dns_servers" translatable="true">Servere DNS</string>
-    <string name="lbl_ip_rules" translatable="true">Reguli IP</string>
     <string name="lbl_stopped" translatable="true">Oprit</string>
     <string name="lbl_idle" translatable="true">Inactiv</string>
     <string name="lbl_peer" translatable="true">Pereche</string>

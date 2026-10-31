@@ -340,7 +340,6 @@
     <string name="category_name_sys_apps" translatable="true">Systeem Apps</string>
     <string name="category_name_non_app_sys" translatable="true">Systeemdiensten</string>
     <string name="category_name_installed" translatable="true">Geïnstalleerde apps</string>
-    <string name="lbl_ip_rules" translatable="true">IP regels</string>
     <string name="bypass_dns_firewall" translatable="true">Omzeil dns &amp; firewall</string>
     <string name="dc_other_dns_heading" translatable="true">type</string>
     <string name="bypass_universal" translatable="true">Omzeil Universeel</string>
@@ -373,7 +372,6 @@
     <string name="category_name_others" translatable="true">Overig</string>
     <string name="lbl_mtu" translatable="true">MTU</string>
     <string name="lbl_private_key" translatable="true">Privésleutel</string>
-    <string name="lbl_domain_rules" translatable="true">Domein regels</string>
     <string name="lbl_auto" translatable="true">(auto)</string>
     <string name="lbl_select_all" translatable="true">Alles selecteren</string>
     <string name="lbl_active" translatable="true">Actief</string>

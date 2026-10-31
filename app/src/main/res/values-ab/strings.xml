@@ -18,8 +18,6 @@
     <string name="lbl_configure" translatable="true">Алымшәырлалар</string>
     <string name="lbl_logs" translatable="true">Ащəажəламқəа</string>
     <string name="lbl_network" translatable="true">жәлар</string>
-    <string name="lbl_ip_rules" translatable="true">IP А kebijakanқəа</string>
-    <string name="lbl_domain_rules" translatable="true">Адомеинқәа рԥынаҵқәқәа</string>
     <string name="slide_2_desc" translatable="true">Keepout ащхъа цәааракны иҟоуп аnetwork activity ашәашәаларц, Internet censorship агьежьцәаларц, насгьы аphone\'s applications ашәашәаларц.</string>
     <string name="allow" translatable="true">Аишьамшьа</string>
     <string name="block" translatable="true">Алакьаҧшра</string>

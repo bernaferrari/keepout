@@ -16,8 +16,6 @@
     <string name="lbl_rules" translatable="true">Mga patakaran</string>
     <string name="lbl_configure" translatable="true">I-configure</string>
     <string name="lbl_logs" translatable="true">tala</string>
-    <string name="lbl_ip_rules" translatable="true">Mga Patakaran sa IP</string>
-    <string name="lbl_domain_rules" translatable="true">Mga Patakaran sa Domain</string>
     <string name="slide_2_desc" translatable="true">Ang Keepout ay ang pinakamadaling paraan upang magmonitor ng network activity, mag-bypass ng Internet censorship, at firewall apps sa iyong Android device.</string>
     <string name="rdns_plus" translatable="true">RDNS Plus</string>
     <string name="allow" translatable="true">pahintulutan</string>

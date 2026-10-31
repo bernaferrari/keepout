@@ -152,7 +152,7 @@ fun LoggingSettingsScreen(
                     listOf(
                         RethinkSettingsLink("events", stringResource(R.string.event_logs_title), MaterialSymbols.Filled.History, diagnostics.onEventLogs, stringResource(R.string.diagnostics_event_logs_desc)),
                         RethinkSettingsLink("console", stringResource(R.string.console_log_title), MaterialSymbols.Filled.Terminal, diagnostics.onAppLogs, stringResource(R.string.diagnostics_app_logs_desc)),
-                        RethinkSettingsLink("ping", stringResource(R.string.settings_connectivity_checks), MaterialSymbols.Filled.NetworkCheck, diagnostics.onConnectivityChecks, stringResource(R.string.settings_connectivity_checks_desc)),
+                        RethinkSettingsLink("ping", stringResource(R.string.diagnostics_connectivity_check), MaterialSymbols.Filled.NetworkCheck, diagnostics.onConnectivityChecks, stringResource(R.string.settings_connectivity_checks_desc)),
                     ),
                 )
                 if (diagnostics.isDebug) {

@@ -24,8 +24,6 @@
     <string name="lbl_public_key" translatable="true">کلید عمومی</string>
     <string name="lbl_addresses" translatable="true">آدرس ها</string>
     <string name="lbl_dns_servers" translatable="true">DNS سرورهای</string>
-    <string name="lbl_ip_rules" translatable="true">قوانین IP</string>
-    <string name="lbl_domain_rules" translatable="true">قوانین دامنه</string>
     <string name="lbl_delete" translatable="true">حذف</string>
     <string name="lbl_proceed" translatable="true">سلام خوبی</string>
 </resources>

@@ -372,6 +372,7 @@ fun AppInfoScreen(
 
 @Composable
 private fun appInfoStrings(): RethinkAppInfoStrings {
+    val noRules = stringResource(R.string.app_rules_none)
     val wifiAllowed = stringResource(R.string.app_state_wifi_allowed)
     val wifiBlocked = stringResource(R.string.app_state_wifi_blocked)
     val mobileAllowed = stringResource(R.string.app_state_mobile_allowed)
@@ -392,9 +393,15 @@ private fun appInfoStrings(): RethinkAppInfoStrings {
         seeAllActivity = stringResource(R.string.app_see_all_activity),
         noRecentActivity = stringResource(R.string.app_no_recent_activity),
         rules = stringResource(R.string.lbl_rules),
-        ipRules = stringResource(R.string.lbl_ip_rules),
-        domainRules = stringResource(R.string.lbl_domain_rules),
-        specialHandling = stringResource(R.string.app_special_handling),
+        domainAndIpRules = stringResource(R.string.app_rules_row),
+        rulesSummary = { domains, ips ->
+            when {
+                domains == null || ips == null -> null
+                domains == 0 && ips == 0 -> noRules
+                else -> resources.getQuantityString(R.plurals.app_rules_domains, domains, domains) + " · " +
+                    resources.getQuantityString(R.plurals.app_rules_ips, ips, ips)
+            }
+        },
         modeTitle = stringResource(R.string.ada_app_mode_title),
         normal = stringResource(R.string.ada_app_mode_normal),
         normalDescription = stringResource(R.string.ada_app_mode_normal_desc),

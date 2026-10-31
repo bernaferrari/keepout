@@ -468,8 +468,6 @@
     <string name="lbl_disabled" translatable="true">Desactivado</string>
     <string name="lbl_domain" translatable="true">Dominio</string>
     <string name="lbl_action_required" translatable="true">Acción requerida</string>
-    <string name="lbl_ip_rules" translatable="true">Reglas IP</string>
-    <string name="lbl_domain_rules" translatable="true">Reglas del dominio</string>
     <string name="lbl_dismiss" translatable="true">Salir</string>
     <string name="lbl_allowed" translatable="true">Permitidas</string>
     <string name="lbl_cancel" translatable="true">Cancelar</string>

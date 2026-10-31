@@ -309,8 +309,6 @@
     <string name="lbl_dismiss" translatable="true">தள்ளுபடி</string>
     <string name="lbl_all" translatable="true">அனைத்தும்</string>
     <string name="lbl_domain" translatable="true">களம்</string>
-    <string name="lbl_ip_rules" translatable="true">ஐபி விதிகள்</string>
-    <string name="lbl_domain_rules" translatable="true">டொமைன் விதிகள்</string>
     <string name="notif_download_success_content" translatable="true">வெற்றிகரமாக பதிவிறக்கவும்.</string>
     <string name="rbl_parental_control" description="The text appears as part of the blocklist setup screen as categories or headlines" translatable="true">பெற்றோர் கட்டுப்பாடு</string>
     <string name="settings_http_proxy_error_text3" translatable="true">ஓச்ட்பெயர் காலியாக உள்ளது</string>

@@ -41,8 +41,6 @@
     <string name="accessibility_service_description" translatable="true">Keepout sử dụng dịch vụ trợ năng để phát hiện và tường lửa các ứng dụng nền. Keepout không thu thập hoặc bán bất kỳ thông tin nào.</string>
     <string name="lbl_dismiss" translatable="true">Bỏ qua</string>
     <string name="lbl_action_required" translatable="true">Yêu cầu hành động</string>
-    <string name="lbl_ip_rules" translatable="true">Quy tắc IP</string>
-    <string name="lbl_domain_rules" translatable="true">Quy tắc tên miền</string>
     <string name="isolate" translatable="true">Cách ly</string>
     <string name="untracked" translatable="true">không bị theo dõi</string>
     <string name="universal_firewall_explanation" translatable="true">Áp dụng các quy tắc tường lửa trên tất cả các ứng dụng dựa trên các hoạt động của thiết bị, chẳng hạn như bật tường lửa khi thiết bị đang khóa màn hình hoặc khi một ứng dụng cụ thể không được sử dụng.</string>

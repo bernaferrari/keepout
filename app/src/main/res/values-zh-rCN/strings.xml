@@ -464,9 +464,7 @@
     <string name="ssv_toast_start_rethink" description="This label will appear on the stats screen as toast to start Rethink app">启动 Keepout 以继续</string>
     <string name="lbl_all" translatable="true">全部</string>
     <string name="lbl_blocked" translatable="true">拦截</string>
-    <string name="lbl_domain_rules" translatable="true">域名规则</string>
     <string name="lbl_cancel" translatable="true">取消</string>
-    <string name="lbl_ip_rules" translatable="true">IP 规则</string>
     <string name="lbl_apply" translatable="true">应用</string>
     <string name="lbl_domain" translatable="true">域名</string>
     <string name="lbl_dismiss" translatable="true">关闭</string>

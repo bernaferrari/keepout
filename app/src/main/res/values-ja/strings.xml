@@ -10,8 +10,6 @@
     <string name="lbl_rules" translatable="true">ルール</string>
     <string name="lbl_configure" translatable="true">構成</string>
     <string name="lbl_logs" translatable="true">ログ</string>
-    <string name="lbl_ip_rules" translatable="true">IP ルール</string>
-    <string name="lbl_domain_rules" translatable="true">ドメインルール</string>
     <string name="rdns_plus" translatable="true">RDNS Plus</string>
     <string name="allow" translatable="true">許可</string>
     <string name="untracked" translatable="true">未追跡</string>

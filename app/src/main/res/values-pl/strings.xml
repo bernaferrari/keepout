@@ -117,8 +117,6 @@
     <string name="lbl_blocked" translatable="true">Zablokowane</string>
     <string name="lbl_disabled" translatable="true">Wyłączone</string>
     <string name="lbl_action_required" translatable="true">Wymagane działanie</string>
-    <string name="lbl_ip_rules" translatable="true">Reguły IP</string>
-    <string name="lbl_domain_rules" translatable="true">Reguły Domen</string>
     <string name="download_update_dialog_message_ok" translatable="true">Jesteś już na najnowszej wersji.</string>
     <string name="download_update_dialog_message_success" translatable="true">Pobrano listy blokowania.</string>
     <string name="settings_enable_logs" translatable="true">Włącz logowanie na urządzeniu</string>

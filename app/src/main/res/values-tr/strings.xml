@@ -465,8 +465,6 @@
     <string name="lbl_all" translatable="true">Tümü</string>
     <string name="lbl_allowed" translatable="true">İzin verildi</string>
     <string name="lbl_disabled" translatable="true">Devre Dışı</string>
-    <string name="lbl_ip_rules" translatable="true">IP Kuralları</string>
-    <string name="lbl_domain_rules" translatable="true">Alan Adı Kuralları</string>
     <string name="lbl_blocked" translatable="true">Engellenen</string>
     <string name="lbl_action_required" translatable="true">Eylem Gerekli</string>
     <string name="bad_config_explanation_pka" translatable="true">: Pozitif olmalı ve 65535\'ten fazla olmamalıdır</string>

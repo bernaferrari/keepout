@@ -451,9 +451,7 @@
     <string name="lbl_allowed" translatable="true">Permitidos</string>
     <string name="lbl_blocked" translatable="true">Bloqueados</string>
     <string name="lbl_all" translatable="true">Todos</string>
-    <string name="lbl_domain_rules" translatable="true">Regras de domínio</string>
     <string name="lbl_action_required" translatable="true">Ação necessária</string>
-    <string name="lbl_ip_rules" translatable="true">Regras de IP</string>
     <string name="lbl_domain" translatable="true">Domínio</string>
     <string name="lbl_dismiss" translatable="true">Descartar</string>
     <string name="lbl_configure" translatable="true">Configurar</string>

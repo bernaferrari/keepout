@@ -172,9 +172,10 @@ data class RethinkAppInfoStrings(
     val seeAllActivity: String,
     val noRecentActivity: String,
     val rules: String,
-    val ipRules: String,
-    val domainRules: String,
-    val specialHandling: String,
+    /** "Domain and IP rules": the one row that opens this app's Rules screen. */
+    val domainAndIpRules: String = "Domain and IP rules",
+    /** Under it: "2 domains · 1 IP", or "None yet"; null counts are still loading. */
+    val rulesSummary: (domains: Int?, ips: Int?) -> String? = { d, i -> if (d == null || i == null) null else "$d domains · $i IPs" },
     /** The sheet's title: "How Keepout treats this app". */
     val modeTitle: String,
     val normal: String,
@@ -256,17 +257,24 @@ fun RethinkAppInfoScreen(
             item(key = "activity") { RethinkAppActivitySection(state, strings, actions) }
         }
         val rules: LazyListScope.() -> Unit = {
+            // One group for how the firewall treats this app: its rules (one screen, Domains · IPs)
+            // and its handling mode.
             item(key = "rules") {
                 RethinkFormSection(strings.rules) {
                     RethinkListGroup {
-                        RethinkAppNavigationRow(strings.domainRules, state.domainRuleCount, MaterialSymbols.Filled.Link, CardPosition.First, actions.onDomainRules)
-                        RethinkAppNavigationRow(strings.ipRules, state.ipRuleCount, MaterialSymbols.Filled.Pin, CardPosition.Last, actions.onIpRules)
+                        val onlyIps = state.domainRuleCount == 0 && (state.ipRuleCount ?: 0) > 0
+                        RethinkListItem(
+                            headline = strings.domainAndIpRules,
+                            supporting = strings.rulesSummary(state.domainRuleCount, state.ipRuleCount),
+                            leadingIcon = MaterialSymbols.Filled.Rule,
+                            position = CardPosition.First,
+                            showTrailingChevron = true,
+                            onClick = if (onlyIps) actions.onIpRules else actions.onDomainRules,
+                        )
+                        RethinkAppHandlingRow(state, strings, CardPosition.Last, onOpen = { showModes = true })
                     }
                 }
             }
-        }
-        val handling: LazyListScope.() -> Unit = {
-            item(key = "handling") { RethinkAppSpecialHandling(state, strings, onOpen = { showModes = true }) }
         }
         val more: LazyListScope.() -> Unit = {
             item(key = "more") {
@@ -310,7 +318,6 @@ fun RethinkAppInfoScreen(
                 ) {
                     LazyColumn(Modifier.weight(1f).fillMaxHeight(), contentPadding = AppInfoPadding, verticalArrangement = Arrangement.spacedBy(SharedDimensions.spacingMd)) {
                         access()
-                        handling()
                         more()
                     }
                     LazyColumn(Modifier.weight(1f).fillMaxHeight(), contentPadding = AppInfoPadding, verticalArrangement = Arrangement.spacedBy(SharedDimensions.spacingMd)) {
@@ -326,7 +333,6 @@ fun RethinkAppInfoScreen(
                     access()
                     activity()
                     rules()
-                    handling()
                     more()
                 }
             }
@@ -665,17 +671,6 @@ private fun RethinkAppActivitySection(state: RethinkAppInfoState, strings: Rethi
     }
 }
 
-@Composable
-private fun RethinkAppNavigationRow(title: String, count: Int?, icon: ImageVector, position: CardPosition, onClick: () -> Unit) {
-    RethinkListItem(
-        headline = if (count != null) "$title · $count" else title,
-        leadingIcon = icon,
-        position = position,
-        showTrailingChevron = true,
-        onClick = onClick,
-    )
-}
-
 private fun RethinkAppMode.icon(): ImageVector = when (this) {
     RethinkAppMode.Normal -> MaterialSymbols.Filled.GppGood
     RethinkAppMode.TrustedOnly -> MaterialSymbols.Filled.Verified
@@ -701,26 +696,22 @@ private fun RethinkAppInfoStrings.description(mode: RethinkAppMode): String = wh
 }
 
 /**
- * The current mode, always visible as its own row (highlighted when it isn't Normal). Tapping it
- * opens the five modes as the familiar radio group; nothing changes until Apply.
+ * The current mode as a row of the Rules group (highlighted when it isn't Normal). Tapping it opens
+ * the five modes as one radio group; nothing changes until Apply.
  */
 @Composable
-private fun RethinkAppSpecialHandling(state: RethinkAppInfoState, strings: RethinkAppInfoStrings, onOpen: () -> Unit) {
-    RethinkFormSection(strings.specialHandling) {
-        RethinkListGroup {
-            RethinkListItem(
-                headline = strings.label(state.mode),
-                supporting = strings.description(state.mode),
-                leadingIcon = state.mode.icon(),
-                position = CardPosition.Single,
-                highlighted = state.mode != RethinkAppMode.Normal,
-                colors = rethinkListItemColors(highlightContainerColor = MaterialTheme.colorScheme.secondaryContainer),
-                showTrailingChevron = true,
-                enabled = state.enabled,
-                onClick = onOpen,
-            )
-        }
-    }
+private fun RethinkAppHandlingRow(state: RethinkAppInfoState, strings: RethinkAppInfoStrings, position: CardPosition, onOpen: () -> Unit) {
+    RethinkListItem(
+        headline = strings.label(state.mode),
+        supporting = strings.description(state.mode),
+        leadingIcon = state.mode.icon(),
+        position = position,
+        highlighted = state.mode != RethinkAppMode.Normal,
+        colors = rethinkListItemColors(highlightContainerColor = MaterialTheme.colorScheme.secondaryContainer),
+        showTrailingChevron = true,
+        enabled = state.enabled,
+        onClick = onOpen,
+    )
 }
 
 /**

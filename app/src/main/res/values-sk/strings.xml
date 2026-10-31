@@ -17,8 +17,6 @@
     <string name="lbl_public_key" translatable="true">Verejný Kľúč</string>
     <string name="lbl_addresses" translatable="true">Adresa</string>
     <string name="lbl_dns_servers" translatable="true">DNS Server</string>
-    <string name="lbl_ip_rules" translatable="true">IP Pravidlá</string>
-    <string name="lbl_domain_rules" translatable="true">Pravidlá Domény</string>
     <string name="lbl_delete" translatable="true">Vymazať</string>
     <string name="lbl_proceed" translatable="true">Pokračuj</string>
     <string name="lbl_private_key" translatable="true">Súkromný kľúč</string>

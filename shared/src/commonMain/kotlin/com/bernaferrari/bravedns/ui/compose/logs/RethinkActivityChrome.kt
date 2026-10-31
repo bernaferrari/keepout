@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.offset
-import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -40,8 +39,7 @@ import com.bernaferrari.bravedns.ui.icons.MaterialSymbols
 
 /**
  * The Activity tab's **Log · Insights** switch, set as the top bar's title: the bottom bar
- * already says "Activity", so the header spends its one row on the choice instead. The chosen
- * view reads in full ink, the other muted; both stay labelled and are tabs to TalkBack.
+ * already says "Activity", so the header spends its one row on the choice instead.
  */
 @Composable
 fun RethinkActivityViewSwitch(
@@ -50,6 +48,27 @@ fun RethinkActivityViewSwitch(
     logLabel: String,
     insightsLabel: String,
     modifier: Modifier = Modifier,
+) = RethinkTitleSwitch(
+    options = listOf(RethinkTitleSwitchOption(RethinkActivityView.Log, logLabel), RethinkTitleSwitchOption(RethinkActivityView.Insights, insightsLabel)),
+    selected = selected,
+    onSelect = onSelect,
+    modifier = modifier,
+)
+
+/** One word of a [RethinkTitleSwitch]; [count] reads after it, small and quiet ("Domains 12"). */
+data class RethinkTitleSwitchOption<T>(val value: T, val label: String, val count: Int? = null)
+
+/**
+ * Two or three views of one screen as its title (Log · Insights, Domains · IPs): the chosen one in
+ * full ink, the others muted, all bold so switching only shifts ink and nothing changes width.
+ * Each word is a tab to TalkBack.
+ */
+@Composable
+fun <T> RethinkTitleSwitch(
+    options: List<RethinkTitleSwitchOption<T>>,
+    selected: T,
+    onSelect: (T) -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     val motion = LocalRethinkMotion.current
     Row(
@@ -57,32 +76,45 @@ fun RethinkActivityViewSwitch(
         horizontalArrangement = Arrangement.spacedBy(SharedDimensions.spacingXs),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        listOf(RethinkActivityView.Log to logLabel, RethinkActivityView.Insights to insightsLabel).forEach { (view, label) ->
-            val isSelected = view == selected
+        options.forEach { option ->
+            val isSelected = option.value == selected
             val color by animateColorAsState(
                 // Muted = the same ink at reduced alpha, so the gap holds in light and dark.
                 targetValue = MaterialTheme.colorScheme.onSurface.copy(alpha = if (isSelected) 1f else MUTED_VIEW_ALPHA),
                 animationSpec = if (motion.reducedMotion) snap() else tween(motion.durationMedium),
-                label = "activity_view_color",
+                label = "title_switch_color",
             )
-            Text(
-                text = label,
-                style = MaterialTheme.typography.headlineSmall,
-                // Both bold, so switching only shifts ink and the words never change width.
-                fontWeight = FontWeight.Bold,
-                color = color,
-                maxLines = 1,
+            Box(
                 modifier = Modifier
                     .clip(RoundedCornerShape(SharedDimensions.cornerRadiusMd))
-                    .selectable(selected = isSelected, role = Role.Tab, onClick = { onSelect(view) })
+                    .selectable(selected = isSelected, role = Role.Tab, onClick = { onSelect(option.value) })
                     .heightIn(min = SharedDimensions.touchTargetMin)
-                    .wrapContentHeight(Alignment.CenterVertically)
                     .padding(horizontal = SharedDimensions.spacingXs),
-            )
+                contentAlignment = Alignment.CenterStart,
+            ) {
+                // The count sits on the word's baseline, like a footnote figure, not mid-height.
+                Row(horizontalArrangement = Arrangement.spacedBy(SharedDimensions.spacingXs)) {
+                    Text(
+                        option.label, style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.Bold, color = color, maxLines = 1,
+                        modifier = Modifier.alignByBaseline(),
+                    )
+                    option.count?.let {
+                        Text(
+                            it.toString(),
+                            style = MaterialTheme.typography.titleSmall.copy(fontFeatureSettings = "tnum"),
+                            fontWeight = FontWeight.SemiBold,
+                            color = color.copy(alpha = color.alpha * COUNT_ALPHA),
+                            maxLines = 1,
+                            modifier = Modifier.alignByBaseline(),
+                        )
+                    }
+                }
+            }
         }
     }
 }
 
+private const val COUNT_ALPHA = 0.6f
 private const val MUTED_VIEW_ALPHA = 0.42f
 
 /**

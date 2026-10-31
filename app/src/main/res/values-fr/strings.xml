@@ -477,8 +477,6 @@
     <string name="lbl_disabled" translatable="true">Désactivés</string>
     <string name="lbl_domain" translatable="true">Domaine</string>
     <string name="lbl_action_required" translatable="true">Action requise</string>
-    <string name="lbl_ip_rules" translatable="true">Règles IP</string>
-    <string name="lbl_domain_rules" translatable="true">Règles de domaines</string>
     <string name="firewall_rule_trusted_domain" translatable="true">Domaine de confiance (Appli)</string>
     <string name="cd_no_rules_text" translatable="true">Aucune règles de domaine.</string>
     <string name="firewall_rule_trusted_domain_desc" translatable="true"><![CDATA[Cette connexion a été autorisée car le domaine est autorisé.]]></string>

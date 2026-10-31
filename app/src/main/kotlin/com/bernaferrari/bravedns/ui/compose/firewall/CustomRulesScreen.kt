@@ -124,9 +124,7 @@ fun CustomRulesScreen(
         }
     }
 
-    val rulesTitle = stringResource(R.string.lbl_rules)
     RethinkCustomRulesScreen(
-        title = if (lockedToApp && lockedAppName.isNotBlank()) stringResource(R.string.rules_title_app, lockedAppName) else rulesTitle,
         selectedTab = selectedTab,
         scope = rulesScope,
         query = query,

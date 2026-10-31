@@ -477,8 +477,6 @@
     <string name="lbl_disabled" translatable="true">Отключено</string>
     <string name="lbl_domain" translatable="true">Домен</string>
     <string name="lbl_action_required" translatable="true">Требуется действие</string>
-    <string name="lbl_ip_rules" translatable="true">IP-правила</string>
-    <string name="lbl_domain_rules" translatable="true">Правила домена</string>
     <string name="cd_no_rules_text" translatable="true">Нет правил домена.</string>
     <string name="lbl_rules" translatable="true">Правила</string>
     <string name="lbl_configure" translatable="true">Настроить</string>

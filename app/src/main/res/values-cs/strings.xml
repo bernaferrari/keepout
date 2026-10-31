@@ -11,7 +11,6 @@
     <string name="lbl_qr_code" translatable="true">QR kód</string>
     <string name="lbl_public_key" translatable="true">Veřejný klíč</string>
     <string name="lbl_addresses" translatable="true">Adresy</string>
-    <string name="lbl_ip_rules" translatable="true">Pravidla IP</string>
     <string name="lbl_delete" translatable="true">Smazat</string>
     <string name="lbl_private_key" translatable="true">Soukromý klíč</string>
     <string name="lbl_select_all" translatable="true">vybrat vše</string>
@@ -36,7 +35,6 @@
     <string name="lbl_action_required" translatable="true">Je vyžadována akce</string>
     <string name="lbl_disabled" translatable="true">Vypnuto</string>
     <string name="lbl_wireguard" translatable="true">WireGuard</string>
-    <string name="lbl_domain_rules" translatable="true">Pravidla domén</string>
     <string name="lbl_proceed" translatable="true">Pokračovat</string>
     <string name="lbl_listen_port" translatable="true">Port pro naslouchání</string>
     <string name="lbl_auto" translatable="true">(auto)</string>

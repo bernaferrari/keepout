@@ -57,8 +57,6 @@
     <string name="lbl_disabled" translatable="true">बंद</string>
     <string name="lbl_domain" translatable="true">डोमेन</string>
     <string name="lbl_action_required" translatable="true">कार्रवाई आवश्यक है</string>
-    <string name="lbl_ip_rules" translatable="true">आईपी नियम</string>
-    <string name="lbl_domain_rules" translatable="true">डोमेन नियम</string>
     <string name="exclude" translatable="true">निकाले</string>
     <string name="lbl_blocked" translatable="true">अवरोधित</string>
     <string name="universal_firewall_explanation" translatable="true">डिवाइस घटनाओं के आधार पर फायरवॉल नियम लागू करे जैसे जब, उदाहरण के लिए, डिवाइस लॉक हो या कोई विशेष ऐप उपयोग में न हो।</string>

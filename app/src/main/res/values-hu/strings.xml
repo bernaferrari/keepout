@@ -13,7 +13,6 @@
     <string name="lbl_public_key" translatable="true">Nyilvános kulcs</string>
     <string name="lbl_addresses" translatable="true">Címek</string>
     <string name="lbl_dns_servers" translatable="true">DNS Szerverek</string>
-    <string name="lbl_ip_rules" translatable="true">IP szabályok</string>
     <string name="accessibility_service_description" translatable="true">A RethinkDNS a Kisegítő lehetőségeket használja a háttérben futó alkalmazások észlelésére és tűzfalazására. A RethinkDNS nem gyűjt vagy ad el semmilyen információt.</string>
     <string name="lbl_cancel" translatable="true">Mégse</string>
     <string name="lbl_apply" translatable="true">Alkalmaz</string>
@@ -23,7 +22,6 @@
     <string name="lbl_all" translatable="true">Mind</string>
     <string name="lbl_allowed" translatable="true">Engedélyezett</string>
     <string name="lbl_blocked" translatable="true">Blokkolt</string>
-    <string name="lbl_domain_rules" translatable="true">Domain szabályok</string>
     <string name="lbl_action_required" translatable="true">Beavatkozás szükséges</string>
     <string name="lbl_configure" translatable="true">Beállít</string>
     <string name="lbl_network" translatable="true">Hálózat</string>

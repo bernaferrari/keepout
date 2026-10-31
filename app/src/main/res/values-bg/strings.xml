@@ -111,9 +111,7 @@
     <string name="lbl_create" translatable="true">Създай</string>
     <string name="lbl_addresses" translatable="true">Адреси</string>
     <string name="lbl_qr_code" translatable="true">QR код</string>
-    <string name="lbl_ip_rules" translatable="true">Правила за IP</string>
     <string name="lbl_dns_servers" translatable="true">Сървър на DNS</string>
-    <string name="lbl_domain_rules" translatable="true">Правила на домейна</string>
     <string name="lbl_delete" translatable="true">Изтрий</string>
     <string name="lbl_fast" translatable="true">бързо</string>
     <string name="default_dns_name" translatable="true">RDNS по подразбиране</string>

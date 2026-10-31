@@ -90,7 +90,7 @@ fun PingTestScreen(onBackClick: (() -> Unit)? = null) {
         maxStrength = STRENGTH_MAX,
         vpnActive = VpnController.hasTunnel(),
         strings = RethinkPingTestStrings(
-            title = stringResource(R.string.settings_connectivity_checks), subtitle = stringResource(R.string.settings_connectivity_checks_desc),
+            title = stringResource(R.string.diagnostics_connectivity_check), subtitle = stringResource(R.string.settings_connectivity_checks_desc),
             noVpnTitle = stringResource(R.string.vpn_not_active_dialog_title), noVpnDescription = stringResource(R.string.vpn_not_active_dialog_desc), dismiss = stringResource(R.string.lbl_dismiss),
             ipSection = stringResource(R.string.ping_ip_port_title), hostSection = stringResource(R.string.ping_host_port_title),
             test = stringResource(R.string.lbl_test), strength = stringResource(R.string.ping_strength_title),

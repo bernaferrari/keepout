@@ -477,11 +477,9 @@
     <string name="lbl_dismiss" translatable="true">বাদ দিন</string>
     <string name="lbl_all" translatable="true">সব</string>
     <string name="lbl_allowed" translatable="true">অনুমোদিত</string>
-    <string name="lbl_ip_rules" translatable="true">আইপি নিয়মসমূহ</string>
     <string name="lbl_blocked" translatable="true">অবরুদ্ধ</string>
     <string name="lbl_disabled" translatable="true">অক্ষম</string>
     <string name="lbl_action_required" translatable="true">কাজ করা দরকার</string>
-    <string name="lbl_domain_rules" translatable="true">ডোমেইন এর নিয়মসমূহ</string>
     <string name="lbl_idle" translatable="true">নিষ্ক্রিয়</string>
     <string name="home_last_24_hours">গত ২৪ ঘণ্টা</string>
     <plurals name="home_stopped_at_dns_count">

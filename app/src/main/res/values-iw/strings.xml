@@ -137,10 +137,8 @@
     <string name="ctbs_dialog_negative_btn" translatable="true">חזור</string>
     <string name="cd_dns_proxy_error_text_1" translatable="true">כתובת IP שגויה</string>
     <string name="title_statistics" translatable="true">סטטיסטיקות</string>
-    <string name="lbl_ip_rules" translatable="true">כללי IP</string>
     <string name="lbl_logs" translatable="true">יומנים</string>
     <string name="lbl_network" translatable="true">רשת</string>
-    <string name="lbl_domain_rules" translatable="true">כללי דומיין</string>
     <string name="conn_track_clear_logs_title" translatable="true">למחוק את כל יומני הרשת?</string>
     <string name="lbl_create" translatable="true">יצירה</string>
     <string name="lbl_qr_code" translatable="true">ברקוד</string>

@@ -478,8 +478,6 @@
     <string name="firewall_rule_trusted_domain_desc" translatable="true"><![CDATA[Koneksi ini diizinkan karena domain telah ditetapkan sebagai domain tepercaya.]]></string>
     <string name="cd_no_rules_text" translatable="true">Tidak ada aturan domain.</string>
     <string name="lbl_action_required" translatable="true">Diperlukan Tindakan</string>
-    <string name="lbl_ip_rules" translatable="true">Aturan IP</string>
-    <string name="lbl_domain_rules" translatable="true">Aturan Domain</string>
     <string name="lbl_rules" translatable="true">Aturan</string>
     <string name="lbl_configure" translatable="true">Konfigurasikan</string>
     <string name="lbl_logs" translatable="true">Log</string>

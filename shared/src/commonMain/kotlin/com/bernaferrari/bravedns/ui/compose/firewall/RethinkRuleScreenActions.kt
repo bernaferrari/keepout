@@ -1,5 +1,14 @@
+@file:OptIn(androidx.compose.material3.ExperimentalMaterial3Api::class)
+
 package com.bernaferrari.bravedns.ui.compose.firewall
 
+import com.bernaferrari.bravedns.ui.compose.theme.LocalRethinkBackDescription
+import com.bernaferrari.bravedns.ui.compose.theme.SharedDimensions
+import androidx.compose.ui.Modifier
+import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.Box
+import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -12,16 +21,33 @@ import com.bernaferrari.bravedns.ui.icons.MaterialSymbols
 
 @Composable
 internal fun RethinkRulesTopBar(
-    selectionCount: Int, title: String, strings: RethinkCustomRulesStrings,
+    selectionCount: Int, strings: RethinkCustomRulesStrings,
     onBackClick: (() -> Unit)?, onClearSelection: () -> Unit, onDeleteSelection: () -> Unit,
     importAction: (@Composable () -> Unit)?,
+    title: @Composable () -> Unit,
 ) {
     if (selectionCount > 0) {
         RethinkTopBar(title = strings.selectedCount(selectionCount), onBackClick = onClearSelection,
             backDescription = strings.clearSelection, navigationIcon = MaterialSymbols.Filled.Close,
             containerColor = MaterialTheme.colorScheme.surfaceContainer,
             actions = { IconButton(onClick = onDeleteSelection) { Icon(MaterialSymbols.Filled.DeleteOutline, strings.delete) } })
-    } else RethinkTopBar(title = title, onBackClick = onBackClick, actions = { importAction?.invoke() })
+    } else {
+        TopAppBar(
+            title = { Box(Modifier.offset(x = -SharedDimensions.spacingXs)) { title() } },
+            navigationIcon = {
+                if (onBackClick != null) {
+                    IconButton(onBackClick) { Icon(MaterialSymbols.AutoMirrored.Filled.ArrowBack, LocalRethinkBackDescription.current) }
+                }
+            },
+            actions = { importAction?.invoke() },
+            colors = TopAppBarDefaults.topAppBarColors(
+                containerColor = MaterialTheme.colorScheme.surface,
+                scrolledContainerColor = MaterialTheme.colorScheme.surface,
+                navigationIconContentColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                actionIconContentColor = MaterialTheme.colorScheme.onSurfaceVariant,
+            ),
+        )
+    }
 }
 
 @Composable

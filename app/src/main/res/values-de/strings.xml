@@ -470,8 +470,6 @@
     <string name="lbl_apply" translatable="true">Übernehmen</string>
     <string name="lbl_dismiss" translatable="true">Verwerfen</string>
     <string name="lbl_all" translatable="true">Alle</string>
-    <string name="lbl_ip_rules" translatable="true">IP-Regeln</string>
-    <string name="lbl_domain_rules" translatable="true">Domain-Regeln</string>
     <string name="firewall_rule_trusted_domain" translatable="true">Vertrauenswürdige Domäne (App)</string>
     <string name="cd_no_rules_text" translatable="true">Keine Domain-Regeln.</string>
     <string name="bypass_dns_firewall" translatable="true">DNS &amp; Firewall umgehen</string>

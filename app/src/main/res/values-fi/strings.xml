@@ -31,7 +31,6 @@
     <string name="lbl_active" translatable="true">Aktiivinen</string>
     <string name="lbl_dns_servers" translatable="true">DNS palvelimet</string>
     <string name="lbl_public_key" translatable="true">Julkinen avain</string>
-    <string name="lbl_ip_rules" translatable="true">IP-säännöt</string>
     <string name="lbl_min" translatable="true">min</string>
     <string name="lbl_all" translatable="true">Kaikki</string>
     <string name="lbl_select_all" translatable="true">valitse kaikki</string>
@@ -51,7 +50,6 @@
     <string name="lbl_overall" translatable="true">Kaiken kaikkiaan</string>
     <string name="slide_2_desc" translatable="true">Keepout on helpoin tapa seurata verkkotoimintaa, ohittaa Internet-sensuuri ja asettaa palomuuri Android-laitteesi sovelluksille.</string>
     <string name="lbl_action_required" translatable="true">Vaatii toimenpide</string>
-    <string name="lbl_domain_rules" translatable="true">Toimialueen säännöt</string>
     <string name="lbl_listen_port" translatable="true">Kuunteluportti</string>
     <string name="lbl_mtu" translatable="true">MTU</string>
     <string name="lbl_preshared_key" translatable="true">Esijaettu avain</string>

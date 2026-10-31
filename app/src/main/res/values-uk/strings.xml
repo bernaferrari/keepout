@@ -164,8 +164,6 @@
     <string name="lbl_disabled" translatable="true">Вимкнені</string>
     <string name="lbl_domain" translatable="true">Домен</string>
     <string name="lbl_action_required" translatable="true">Необхідні дії</string>
-    <string name="lbl_ip_rules" translatable="true">Правила IP</string>
-    <string name="lbl_domain_rules" translatable="true">Правила домену</string>
     <string name="lbl_all" translatable="true">Усі</string>
     <string name="dns_crypt_relay_remove_dialog_title" translatable="true">Видалити DNSCrypt Relay\?</string>
     <string name="lbl_dismiss" translatable="true">Відхилити</string>

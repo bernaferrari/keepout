@@ -43,8 +43,6 @@
     <string name="lbl_public_key" translatable="true">Public key</string>
     <string name="lbl_addresses" translatable="true">Addresses</string>
     <string name="lbl_dns_servers" translatable="true">DNS servers</string>
-    <string name="lbl_ip_rules" translatable="true">IP rules</string>
-    <string name="lbl_domain_rules" translatable="true">Domain rules</string>
     <string name="lbl_delete" translatable="true">Delete</string>
     <string name="cd_filter" translatable="true">Filter</string>
     <string name="cd_refresh" translatable="true">Refresh</string>

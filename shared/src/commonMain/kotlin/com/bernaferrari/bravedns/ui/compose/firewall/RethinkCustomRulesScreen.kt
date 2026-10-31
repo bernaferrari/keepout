@@ -3,6 +3,9 @@
 
 package com.bernaferrari.bravedns.ui.compose.firewall
 
+import com.bernaferrari.bravedns.ui.compose.theme.RethinkPillSize
+import com.bernaferrari.bravedns.ui.compose.logs.RethinkTitleSwitchOption
+import com.bernaferrari.bravedns.ui.compose.logs.RethinkTitleSwitch
 import com.bernaferrari.bravedns.ui.compose.theme.rethinkListItemColors
 
 import androidx.compose.runtime.getValue
@@ -196,7 +199,6 @@ data class RethinkCustomRulesStrings(
  */
 @Composable
 fun RethinkCustomRulesScreen(
-    title: String,
     selectedTab: RethinkRulesTab,
     scope: RethinkRulesScope,
     query: String,
@@ -228,17 +230,31 @@ fun RethinkCustomRulesScreen(
         selection = if (rule.id in selection) selection - rule.id else selection + (rule.id to rule)
     }
 
+    // The tab already counts this list: a known 0 with no search is empty now, not "Loading…".
+    val tabCount = if (selectedTab == RethinkRulesTab.DOMAIN) domainCount else ipCount
+    val loading = rules.isLoading && !(tabCount == 0 && query.isBlank())
     Scaffold(
         modifier = modifier,
         containerColor = MaterialTheme.colorScheme.surface,
         topBar = {
-            RethinkRulesTopBar(selection.size, title, strings, onBackClick,
+            // Like Log · Insights: the two lists are the title, each with its count, so the
+            // screen spends no row on a separate title or a tab strip.
+            RethinkRulesTopBar(selection.size, strings, onBackClick,
                 { selection = emptyMap() }, { pendingDelete = selection.values.toList() },
-                importAction)
+                importAction) {
+                RethinkTitleSwitch(
+                    options = listOf(
+                        RethinkTitleSwitchOption(RethinkRulesTab.DOMAIN, strings.domains, domainCount),
+                        RethinkTitleSwitchOption(RethinkRulesTab.IP, strings.ips, ipCount),
+                    ),
+                    selected = selectedTab,
+                    onSelect = onTabChange,
+                )
+            }
         },
         snackbarHost = { snackbarHostState?.let { SnackbarHost(it) } },
         floatingActionButton = {
-            RethinkRulesAddButton(selecting, rules.isLoading, rules.itemCount, strings.add, onAddRule)
+            RethinkRulesAddButton(selecting, loading, rules.itemCount, strings.add, onAddRule)
         },
     ) { padding ->
         Column(Modifier.fillMaxSize().padding(padding)) {
@@ -247,9 +263,6 @@ fun RethinkCustomRulesScreen(
                 scope = scope,
                 query = query,
                 strings = strings,
-                domainCount = domainCount,
-                ipCount = ipCount,
-                onTabChange = onTabChange,
                 onScopeChange = onScopeChange,
                 onChooseApp = onChooseApp,
                 onQueryChange = onQueryChange,
@@ -257,6 +270,7 @@ fun RethinkCustomRulesScreen(
             RethinkRulesContent(
                 modifier = Modifier.weight(1f),
                 rules = rules,
+                loading = loading,
                 selectedTab = selectedTab,
                 grouped = scope == RethinkRulesScope.All,
                 strings = strings,
@@ -301,38 +315,31 @@ private fun RethinkRulesControlDeck(
     scope: RethinkRulesScope,
     query: String,
     strings: RethinkCustomRulesStrings,
-    domainCount: Int?,
-    ipCount: Int?,
-    onTabChange: (RethinkRulesTab) -> Unit,
     onScopeChange: ((RethinkRulesScope) -> Unit)?,
     onChooseApp: (() -> Unit)?,
     onQueryChange: (String) -> Unit,
 ) {
-    Column(
+    // Search and scope share one row: the scope chip says whose rules these are.
+    Row(
         Modifier.fillMaxWidth().padding(
             start = SharedDimensions.screenPaddingHorizontal,
             end = SharedDimensions.screenPaddingHorizontal,
             top = SharedDimensions.spacingXs,
         ),
-        verticalArrangement = Arrangement.spacedBy(SharedDimensions.spacingSm),
+        horizontalArrangement = Arrangement.spacedBy(SharedDimensions.spacingSm),
+        verticalAlignment = Alignment.CenterVertically,
     ) {
-        // Domains lead: they're what people block and trust most.
-        RethinkConnectedChoiceGroup(
-            options = listOf(
-                RethinkChoiceOption(RethinkRulesTab.DOMAIN, domainCount?.let { strings.withCount(strings.domains, it) } ?: strings.domains, MaterialSymbols.Filled.Link),
-                RethinkChoiceOption(RethinkRulesTab.IP, ipCount?.let { strings.withCount(strings.ips, it) } ?: strings.ips, MaterialSymbols.Filled.Pin),
-            ),
-            selected = selectedTab,
-            onSelect = onTabChange,
-            modifier = Modifier.fillMaxWidth(),
-        )
         RethinkSearchField(
             query = query,
             onQueryChange = onQueryChange,
             placeholder = if (selectedTab == RethinkRulesTab.IP) strings.searchIps else strings.searchDomains,
             clearQueryContentDescription = strings.clearSearch,
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.weight(1f),
         )
+        // Opened for one app: the scope can't change, but it still says whose rules these are.
+        if (onScopeChange == null && scope is RethinkRulesScope.App && scope.label.isNotBlank()) {
+            RethinkPill(scope.label, size = RethinkPillSize.Large, leadingIcon = MaterialSymbols.Filled.Android)
+        }
         if (onScopeChange != null) {
             RethinkMenuChip(
                 label = when (scope) {
@@ -367,6 +374,7 @@ private fun RethinkRulesControlDeck(
 @Composable
 private fun RethinkRulesContent(
     rules: RethinkFirewallRulesFeed,
+    loading: Boolean,
     selectedTab: RethinkRulesTab,
     grouped: Boolean,
     strings: RethinkCustomRulesStrings,
@@ -379,8 +387,8 @@ private fun RethinkRulesContent(
     modifier: Modifier = Modifier,
 ) {
     when {
-        rules.isLoading && rules.itemCount == 0 -> RethinkRulesInfo(strings.loading, modifier)
-        !rules.isLoading && rules.itemCount == 0 -> RethinkRulesEmptyState(selectedTab, strings, onAddRule, modifier)
+        loading && rules.itemCount == 0 -> RethinkRulesInfo(strings.loading, modifier)
+        !loading && rules.itemCount == 0 -> RethinkRulesEmptyState(selectedTab, strings, onAddRule, modifier)
         else -> androidx.compose.foundation.lazy.LazyColumn(
             modifier = modifier.fillMaxSize(),
             contentPadding = PaddingValues(

@@ -284,7 +284,6 @@ internal fun DemoCustomRulesScreen(modifier: Modifier, onBack: () -> Unit) {
         rule.tab == tab && inScope(rule) && (query.isBlank() || rule.value.contains(query, ignoreCase = true))
     }.sortedWith(compareBy({ it.uid != -1000 }, { it.uid }))
     RethinkCustomRulesScreen(
-        title = "Rules",
         selectedTab = tab,
         scope = scope,
         query = query,
@@ -481,8 +480,8 @@ internal fun DemoAppInfoScreen(modifier: Modifier, app: RethinkFirewallApp?, onB
             allowed = "Allowed", blocked = "Blocked", meteredFootnote = "Wi‑Fi from a phone hotspot (any metered Wi‑Fi) counts as mobile data.",
             temporaryAllow = "Allow for 15 minutes", stopTemporaryAccess = { "Stop temporary access · $it min left" },
             recentActivity = "Recent activity", seeAllActivity = "See all activity", noRecentActivity = "Nothing in the last 24 hours",
-            rules = "Rules", ipRules = "IP rules", domainRules = "Domain rules",
-            specialHandling = "Special handling", modeTitle = "How Keepout treats this app",
+            rules = "Rules",
+            modeTitle = "How Keepout treats this app",
             normal = "Normal", normalDescription = "Follows your firewall and DNS rules",
             trustedOnly = "Trusted only", trustedOnlyDescription = "Only reaches domains and IPs you trust",
             skipAllFiltering = "Skip all filtering", skipAllFilteringDescription = "No DNS blocking or firewall rules. Still logged.",

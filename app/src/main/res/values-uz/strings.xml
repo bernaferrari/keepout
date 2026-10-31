@@ -14,8 +14,6 @@
     <string name="lbl_qr_code" translatable="true">QR kod</string>
     <string name="lbl_wireguard" translatable="true">WireGuard</string>
     <string name="lbl_dns_servers" translatable="true">DNS Serverlar</string>
-    <string name="lbl_ip_rules" translatable="true">IP qoidalar</string>
-    <string name="lbl_domain_rules" translatable="true">Domen qoidalari</string>
     <string name="lbl_delete" translatable="true">O\'chirish</string>
     <string name="lbl_auto" translatable="true">(avto)</string>
     <string name="lbl_select_all" translatable="true">hammasini belgilash</string>

@@ -22,8 +22,6 @@
     <string name="lbl_public_key" translatable="true">පොදු කේතය</string>
     <string name="lbl_addresses" translatable="true">ලිපිනයන්</string>
     <string name="lbl_dns_servers" translatable="true">DNS Servers</string>
-    <string name="lbl_ip_rules" translatable="true">IR නිතින්</string>
-    <string name="lbl_domain_rules" translatable="true">Domain නීතීන්</string>
     <string name="lbl_delete" translatable="true">මකන්න</string>
     <string name="lbl_proceed" translatable="true">ඉදිරියට යන්න</string>
     <string name="lbl_private_key" translatable="true">පෞද්ගලික කේතය</string>

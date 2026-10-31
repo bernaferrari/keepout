@@ -206,7 +206,8 @@ private fun Event.toSharedRow(severityLabel: String) = RethinkEventRow(
     severity = severity.toShared(),
     sourceLabel = source.displayLabel(),
     eventTypeLabel = eventType.name.displayLabel(),
-    message = message,
+    // Messages are logged lowercase ("app refresh"); show them as sentences.
+    message = message.replaceFirstChar { it.titlecase() },
     details = details,
     userAction = userAction,
     severityLabel = severityLabel,

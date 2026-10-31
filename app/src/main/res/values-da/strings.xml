@@ -24,8 +24,6 @@
     <string name="lbl_public_key" translatable="true">Offentlig nøgle</string>
     <string name="lbl_addresses" translatable="true">Adresser</string>
     <string name="lbl_dns_servers" translatable="true">DNS-servere</string>
-    <string name="lbl_ip_rules" translatable="true">IP-regler</string>
-    <string name="lbl_domain_rules" translatable="true">Domæneregler</string>
     <string name="lbl_delete" translatable="true">Slet</string>
     <string name="lbl_proceed" translatable="true">Fortsæt</string>
     <string name="lbl_private_key" translatable="true">Privat nøgle</string>

@@ -51,7 +51,6 @@
     <string name="notification_action_stop_vpn" translatable="true">중지</string>
     <string name="lbl_fast" translatable="true">빠름</string>
     <string name="lbl_inactive" translatable="true">비활성</string>
-    <string name="lbl_domain_rules" translatable="true">도메인 규칙</string>
     <string name="status_failing" description="This text appears if the connection is currently not working correctly. [CHAR_LIMIT=NONE]" translatable="true">실패</string>
     <string name="lbl_addresses" translatable="true">주소</string>
     <string name="lbl_active" translatable="true">활성</string>
@@ -63,7 +62,6 @@
     <string name="alert_permission_accessibility" translatable="true">권한 - 접근성</string>
     <string name="untracked" translatable="true">추적되지 않음</string>
     <string name="lbl_public_key" translatable="true">공유 키</string>
-    <string name="lbl_ip_rules" translatable="true">IP 규칙</string>
     <string name="notification_action_pause_vpn" translatable="true">일시중지</string>
     <string name="custom_url_error_invalid_url" translatable="true">잘못된 URL</string>
     <string name="lbl_insecure" translatable="true">(안전하지 않음)</string>

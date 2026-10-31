@@ -454,7 +454,6 @@
     <string name="title_statistics">الإحصائيات</string>
     <string name="lbl_rules" translatable="true">قواعد</string>
     <string name="lbl_configure" translatable="true">تكوين</string>
-    <string name="lbl_domain_rules" translatable="true">قواعد النطاق</string>
     <string name="bypass_dns_firewall" translatable="true">تجاوزDNS وجدار الحماية</string>
     <string name="bsct_block_domain" translatable="true">حظر ، تجاوز  النطاقات  من أجل  هذا التطبيق </string>
     <string name="settings_lock_down_proxy_desc" translatable="true">لا يمكن إعداد الوكلاء عند تشغيل VPN في وضع DNS فقط.</string>
@@ -469,7 +468,6 @@
     <string name="lbl_disabled" translatable="true">معطل</string>
     <string name="lbl_domain" translatable="true">النطاق</string>
     <string name="lbl_action_required" translatable="true">الإجراء مطلوب</string>
-    <string name="lbl_ip_rules" translatable="true">قواعد IP</string>
     <string name="lbl_create" translatable="true">إنشاء</string>
     <string name="lbl_qr_code" translatable="true">رمز QR</string>
     <string name="lbl_network" translatable="true">الشبكة</string>
