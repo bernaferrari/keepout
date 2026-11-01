@@ -7,7 +7,6 @@ import android.widget.Toast
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.material3.SnackbarHostState
-import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -35,23 +34,24 @@ import com.bernaferrari.bravedns.database.Severity
 import com.bernaferrari.bravedns.database.hasInternetPermission
 import com.bernaferrari.bravedns.service.EventLogger
 import com.bernaferrari.bravedns.service.FirewallManager
+import com.bernaferrari.bravedns.service.FirewallManager.ConnectionStatus
+import com.bernaferrari.bravedns.service.FirewallManager.FirewallStatus
 import com.bernaferrari.bravedns.service.ProxyManager
+import com.bernaferrari.bravedns.ui.compose.app.mobileBlocked
+import com.bernaferrari.bravedns.ui.compose.app.wifiBlocked
 import com.bernaferrari.bravedns.ui.compose.common.AppIcon
 import com.bernaferrari.bravedns.ui.compose.firewall.RethinkFirewallApp
 import com.bernaferrari.bravedns.ui.compose.firewall.RethinkFirewallAppListActions
 import com.bernaferrari.bravedns.ui.compose.firewall.RethinkFirewallAppListScreen
-import com.bernaferrari.bravedns.ui.compose.firewall.RethinkFirewallAppListStrings
 import com.bernaferrari.bravedns.ui.compose.firewall.RethinkFirewallAppStatus
 import com.bernaferrari.bravedns.ui.compose.firewall.RethinkAppSelectionAction
 import com.bernaferrari.bravedns.ui.compose.firewall.showRuleUndoSnackbar
-import com.bernaferrari.bravedns.ui.compose.firewall.RethinkFirewallFilter
 import com.bernaferrari.bravedns.ui.compose.firewall.RethinkFirewallFilters
 import com.bernaferrari.bravedns.ui.compose.firewall.RethinkFirewallTopLevelFilter
 import com.bernaferrari.bravedns.ui.compose.firewall.rethinkUsageText
 import com.bernaferrari.bravedns.ui.compose.theme.RethinkConfirmDialog
 import com.bernaferrari.bravedns.util.Utilities
 import com.bernaferrari.bravedns.util.formatByteCount
-import com.bernaferrari.bravedns.viewmodel.AppConnectionStatus
 import com.bernaferrari.bravedns.viewmodel.AppInfoViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.NonCancellable
@@ -235,133 +235,39 @@ private data class AndroidFirewallToggleRequest(
     val packages: List<String>,
 )
 
-@Composable
-private fun androidFirewallAppListStrings(): RethinkFirewallAppListStrings {
-    val blocked = stringResource(R.string.lbl_blocked)
-    val bypass = stringResource(R.string.fapps_firewall_filter_bypass_universal)
-    val skipAll = stringResource(R.string.ada_app_status_bypass_dns_firewall)
-    val excluded = stringResource(R.string.fapps_firewall_filter_excluded)
-    val lockdown = stringResource(R.string.fapps_firewall_filter_isolate)
-    val resources = LocalResources.current
-    return RethinkFirewallAppListStrings(
-        sortTitle = stringResource(R.string.port_sort_title),
-        uidLabel = { stringResource(R.string.port_uid_number, it) },
-        sortLabels = listOf(stringResource(R.string.port_sort_name), stringResource(R.string.port_sort_package), stringResource(R.string.port_sort_uid)),
-        title = stringResource(R.string.apps_info_title),
-        searchHint = { count -> stringResource(R.string.search_apps_count_placeholder, count) },
-        searchHintLoading = stringResource(R.string.apps_search_hint),
-        loading = stringResource(R.string.lbl_loading),
-        refresh = stringResource(R.string.cd_refresh),
-        filter = stringResource(R.string.cd_filter),
-        moreOptions = stringResource(R.string.cd_more),
-        more = stringResource(R.string.app_more),
-        clearSearch = stringResource(R.string.cd_clear_search),
-        emptyTitle = stringResource(R.string.fapps_empty_title),
-        emptyDescription = stringResource(R.string.fapps_empty_subtitle),
-        view = stringResource(R.string.lbl_view),
-        installed = stringResource(R.string.fapps_filter_parent_installed),
-        system = stringResource(R.string.fapps_filter_parent_system),
-        all = stringResource(R.string.lbl_all),
-        status = stringResource(R.string.lbl_status),
-        categories = stringResource(R.string.fapps_filter_categories_heading),
-        clear = stringResource(R.string.fapps_filter_clear_btn),
-        cancel = stringResource(R.string.lbl_cancel),
-        close = stringResource(R.string.lbl_done),
-        proxy = stringResource(R.string.lbl_proxy),
-        // State first ("Wi‑Fi: blocked"), the double-tap action separately ("Allow on Wi‑Fi").
-        wifiStateLabel = { isBlocked -> stringResource(if (isBlocked) R.string.app_state_wifi_blocked else R.string.app_state_wifi_allowed) },
-        mobileStateLabel = { isBlocked -> stringResource(if (isBlocked) R.string.app_state_mobile_blocked else R.string.app_state_mobile_allowed) },
-        wifiActionLabel = { isBlocked -> stringResource(if (isBlocked) R.string.apps_action_allow_on_wifi else R.string.apps_action_block_on_wifi) },
-        mobileActionLabel = { isBlocked -> stringResource(if (isBlocked) R.string.apps_action_allow_on_mobile else R.string.apps_action_block_on_mobile) },
-        select = stringResource(R.string.apps_select),
-        exitSelect = stringResource(R.string.apps_exit_select),
-        selectAll = stringResource(R.string.lbl_select_all),
-        selectedCount = { count -> pluralStringResource(R.plurals.apps_selected_count, count, count) },
-        selectionActionLabel = { action ->
-            when (action) {
-                RethinkAppSelectionAction.BlockWifi -> stringResource(R.string.apps_action_block_wifi)
-                RethinkAppSelectionAction.BlockMobile -> stringResource(R.string.apps_action_block_mobile)
-                RethinkAppSelectionAction.AllowAll -> stringResource(R.string.apps_action_allow_all)
-                RethinkAppSelectionAction.AllowWifi -> stringResource(R.string.apps_action_allow_wifi)
-                RethinkAppSelectionAction.AllowMobile -> stringResource(R.string.apps_action_allow_mobile)
-                RethinkAppSelectionAction.TrustedOnly -> stringResource(R.string.ada_app_isolate)
-                RethinkAppSelectionAction.SkipUniversalRules -> stringResource(R.string.ada_app_bypass_univ)
-                RethinkAppSelectionAction.SkipAllFiltering -> stringResource(R.string.ada_app_bypass_dns_firewall)
-                RethinkAppSelectionAction.Exclude -> stringResource(R.string.ada_app_exclude)
-            }
-        },
-        selectionConfirmTitle = { action, count ->
-            when (action) {
-                RethinkAppSelectionAction.BlockWifi -> pluralStringResource(R.plurals.apps_confirm_block_wifi, count, count)
-                RethinkAppSelectionAction.BlockMobile -> pluralStringResource(R.plurals.apps_confirm_block_mobile, count, count)
-                RethinkAppSelectionAction.AllowAll -> pluralStringResource(R.plurals.apps_confirm_allow_all, count, count)
-                RethinkAppSelectionAction.AllowWifi -> pluralStringResource(R.plurals.apps_confirm_allow_wifi, count, count)
-                RethinkAppSelectionAction.AllowMobile -> pluralStringResource(R.plurals.apps_confirm_allow_mobile, count, count)
-                RethinkAppSelectionAction.TrustedOnly -> resources.getQuantityString(R.plurals.apps_confirm_mode, count, count, stringResource(R.string.ada_app_isolate))
-                RethinkAppSelectionAction.SkipUniversalRules -> resources.getQuantityString(R.plurals.apps_confirm_mode, count, count, stringResource(R.string.ada_app_bypass_univ))
-                RethinkAppSelectionAction.SkipAllFiltering -> resources.getQuantityString(R.plurals.apps_confirm_mode, count, count, stringResource(R.string.ada_app_bypass_dns_firewall))
-                RethinkAppSelectionAction.Exclude -> resources.getQuantityString(R.plurals.apps_confirm_mode, count, count, stringResource(R.string.ada_app_exclude))
-            }
-        },
-        selectionNetworkMessage = stringResource(R.string.apps_confirm_network_message),
-        selectionModeMessage = stringResource(R.string.apps_confirm_mode_message),
-        alsoAffects = { names -> stringResource(R.string.apps_also_affects, names) },
-        filterLabel = { filter ->
-            when (filter) {
-                RethinkFirewallFilter.All -> stringResource(R.string.lbl_all)
-                RethinkFirewallFilter.Allowed -> stringResource(R.string.lbl_allowed)
-                RethinkFirewallFilter.Blocked -> blocked
-                RethinkFirewallFilter.Bypass -> bypass
-                RethinkFirewallFilter.SkipAllFiltering -> skipAll
-                RethinkFirewallFilter.Excluded -> excluded
-                RethinkFirewallFilter.Lockdown -> lockdown
-                RethinkFirewallFilter.BlockedWifi -> stringResource(R.string.ada_app_status_block_wifi)
-                RethinkFirewallFilter.BlockedMobile -> stringResource(R.string.ada_app_status_block_md)
-            }
-        },
-        statusLabel = { status ->
-            when (status) {
-                // The row's own red switches already say blocked; badges only name what they can't show.
-                RethinkFirewallAppStatus.Allowed, RethinkFirewallAppStatus.Blocked -> ""
-                RethinkFirewallAppStatus.Bypass -> bypass
-                RethinkFirewallAppStatus.SkipAllFiltering -> skipAll
-                RethinkFirewallAppStatus.Excluded -> excluded
-                RethinkFirewallAppStatus.Lockdown -> lockdown
-                RethinkFirewallAppStatus.Unknown -> stringResource(R.string.network_log_app_name_unknown)
-            }
-        },
-    )
-}
-
-private fun AppInfo.toRethinkFirewallApp(
-    context: Context,
-): RethinkFirewallApp {
-    val appStatus = FirewallManager.FirewallStatus.getStatus(firewallStatus)
-    val connection = FirewallManager.ConnectionStatus.getStatus(connectionStatus)
-    val status = when (appStatus) {
-        FirewallManager.FirewallStatus.NONE -> if (connection == FirewallManager.ConnectionStatus.ALLOW) RethinkFirewallAppStatus.Allowed else RethinkFirewallAppStatus.Blocked
-        FirewallManager.FirewallStatus.BYPASS_UNIVERSAL -> RethinkFirewallAppStatus.Bypass
-        FirewallManager.FirewallStatus.BYPASS_DNS_FIREWALL -> RethinkFirewallAppStatus.SkipAllFiltering
-        FirewallManager.FirewallStatus.EXCLUDE -> RethinkFirewallAppStatus.Excluded
-        FirewallManager.FirewallStatus.ISOLATE -> RethinkFirewallAppStatus.Lockdown
-        FirewallManager.FirewallStatus.UNTRACKED -> RethinkFirewallAppStatus.Unknown
-    }
+private fun AppInfo.toRethinkFirewallApp(context: Context): RethinkFirewallApp {
+    val appStatus = FirewallStatus.getStatus(firewallStatus)
+    val connection = ConnectionStatus.getStatus(connectionStatus)
+    // The network flags only apply in Normal mode; any other mode decides on its own.
+    val normalMode = appStatus == FirewallStatus.NONE
     return RethinkFirewallApp(
         id = "$uid:$packageName",
         uid = uid,
         appName = appName,
         packageName = packageName,
-        status = status,
-        wifiBlocked = appStatus == FirewallManager.FirewallStatus.NONE && (connection == FirewallManager.ConnectionStatus.UNMETERED || connection == FirewallManager.ConnectionStatus.BOTH),
-        mobileBlocked = appStatus == FirewallManager.FirewallStatus.NONE && (connection == FirewallManager.ConnectionStatus.METERED || connection == FirewallManager.ConnectionStatus.BOTH),
+        status = firewallAppStatus(appStatus, connection),
+        wifiBlocked = normalMode && connection.wifiBlocked,
+        mobileBlocked = normalMode && connection.mobileBlocked,
         dataUsage = dataUsageText(this),
-        proxyEnabled = !isProxyExcluded &&
-            ProxyManager.getProxyIdForApp(uid).let { it.isNotEmpty() && it != ProxyManager.ID_NONE },
+        proxyEnabled = !isProxyExcluded && hasProxy(uid),
         hasInternetPermission = hasInternetPermission(context.packageManager),
         tombstoned = tombstoneTs > 0,
         canToggleConnections = packageName != context.packageName,
     )
 }
+
+private fun firewallAppStatus(status: FirewallStatus, connection: ConnectionStatus): RethinkFirewallAppStatus = when (status) {
+    FirewallStatus.NONE -> if (connection == ConnectionStatus.ALLOW) RethinkFirewallAppStatus.Allowed else RethinkFirewallAppStatus.Blocked
+    FirewallStatus.BYPASS_UNIVERSAL -> RethinkFirewallAppStatus.Bypass
+    FirewallStatus.BYPASS_DNS_FIREWALL -> RethinkFirewallAppStatus.SkipAllFiltering
+    FirewallStatus.EXCLUDE -> RethinkFirewallAppStatus.Excluded
+    FirewallStatus.ISOLATE -> RethinkFirewallAppStatus.Lockdown
+    FirewallStatus.UNTRACKED -> RethinkFirewallAppStatus.Unknown
+}
+
+/** Whether [uid] is routed through a proxy (WireGuard or another) rather than none. */
+private fun hasProxy(uid: Int): Boolean =
+    ProxyManager.getProxyIdForApp(uid).let { it.isNotEmpty() && it != ProxyManager.ID_NONE }
 
 private fun dataUsageText(app: AppInfo): String? {
     if (app.uploadBytes <= 0L && app.downloadBytes <= 0L) return null

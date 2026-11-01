@@ -127,19 +127,28 @@ fun ConfigureScreen(
     if (showBackupSheet) BackupRestoreSheet(onDismiss = { showBackupSheet = false })
 }
 
+/**
+ * The tile hue a search result wears. A screen keeps its hue whatever section the focus key
+ * points at; a place handled in place (or a section folded into a screen) has its own.
+ */
 private fun SettingsSearchDestination.configureAccent(): Color = when (this) {
     is SettingsSearchDestination.Dns -> ConfigureAccents.dns
     is SettingsSearchDestination.Firewall -> ConfigureAccents.firewall
     is SettingsSearchDestination.Proxy -> ConfigureAccents.proxy
-    SettingsSearchDestination.Appearance -> ConfigureAccents.appearance
-    SettingsSearchDestination.AppLock -> ConfigureAccents.appLock
-    SettingsSearchDestination.Notifications -> ConfigureAccents.notifications
-    SettingsSearchDestination.Backup -> ConfigureAccents.backup
     is SettingsSearchDestination.General -> ConfigureAccents.settings
     is SettingsSearchDestination.Network -> ConfigureAccents.network
-    SettingsSearchDestination.AntiCensorship -> ConfigureAccents.antiCensorship
     is SettingsSearchDestination.Logging -> ConfigureAccents.logs
-    SettingsSearchDestination.Diagnostics -> ConfigureAccents.diagnostics
-    SettingsSearchDestination.Developer -> ConfigureAccents.advanced
-    SettingsSearchDestination.About -> ConfigureAccents.about
+    else -> placeAccents[this] ?: ConfigureAccents.settings
 }
+
+/** The destinations without a focus key: one value each, so they key a plain lookup. */
+private val placeAccents: Map<SettingsSearchDestination, Color> = mapOf(
+    SettingsSearchDestination.Appearance to ConfigureAccents.appearance,
+    SettingsSearchDestination.AppLock to ConfigureAccents.appLock,
+    SettingsSearchDestination.Notifications to ConfigureAccents.notifications,
+    SettingsSearchDestination.Backup to ConfigureAccents.backup,
+    SettingsSearchDestination.AntiCensorship to ConfigureAccents.antiCensorship,
+    SettingsSearchDestination.Diagnostics to ConfigureAccents.diagnostics,
+    SettingsSearchDestination.Developer to ConfigureAccents.advanced,
+    SettingsSearchDestination.About to ConfigureAccents.about,
+)

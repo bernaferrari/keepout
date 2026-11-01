@@ -52,7 +52,6 @@ internal suspend fun buildProxyScreenState(
     orbotStatus3Template: String,
     orbotStatusArgDns: String,
     orbotStatusArgProxy: String,
-    defaultWireguardDescription: String,
     statusTextById: Map<Int, String>,
     statusFailingText: String,
     statusWaitingText: String,
@@ -108,7 +107,6 @@ internal suspend fun buildProxyScreenState(
     val wireguardDescription =
         formatWireguardDescription(
             offCopy,
-            defaultWireguardDescription,
             statusTextById,
             statusWaitingText,
             statusFailingText,
@@ -146,7 +144,6 @@ internal data class ProxyOffCopy(
 
 internal suspend fun formatWireguardDescription(
     offCopy: ProxyOffCopy,
-    defaultDescription: String,
     statusTextById: Map<Int, String>,
     statusWaitingText: String,
     statusFailingText: String,

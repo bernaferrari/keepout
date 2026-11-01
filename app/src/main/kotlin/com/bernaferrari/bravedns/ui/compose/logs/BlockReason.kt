@@ -65,40 +65,50 @@ sealed interface QuickFix {
  */
 fun blockReasonFor(rule: FirewallRuleset?, hasDomain: Boolean, blocklists: List<String> = emptyList()): BlockReason {
     if (rule == null) return BlockReason(R.string.firewall_rule_no_rule_desc)
-    val fixes: Pair<QuickFix?, QuickFix?> = when (rule) {
-        // The app's own Wi‑Fi / mobile data flags. RULE1 is the "both" flag, and new apps are
-        // stored with it when "Block new apps" is on, so allowing the app is the rule's own undo.
-        FirewallRuleset.RULE1 -> QuickFix.AllowApp(BlockedNetwork.Everywhere) to QuickFix.AllowTemporarily
-        FirewallRuleset.RULE1D -> QuickFix.AllowApp(BlockedNetwork.Wifi) to QuickFix.AllowTemporarily
-        FirewallRuleset.RULE1E -> QuickFix.AllowApp(BlockedNetwork.MobileData) to QuickFix.AllowTemporarily
-        // Temporary allow is checked after the new-app gate, so it can't help here.
-        FirewallRuleset.RULE1B -> QuickFix.AllowApp(BlockedNetwork.Everywhere) to null
-        FirewallRuleset.RULE1G -> (if (hasDomain) QuickFix.TrustDomain else QuickFix.TrustIp) to null
-        FirewallRuleset.RULE2 -> QuickFix.RemoveIpRule(universal = false) to null
-        FirewallRuleset.RULE2D -> QuickFix.RemoveIpRule(universal = true) to null
-        FirewallRuleset.RULE2E -> QuickFix.RemoveDomainRule(universal = false) to null
-        FirewallRuleset.RULE2H -> QuickFix.RemoveDomainRule(universal = true) to null
-        FirewallRuleset.RULE2G -> (if (hasDomain) QuickFix.TrustDomain else null) to null
-        // Universal settings: route to the row, never write a rule.
-        FirewallRuleset.RULE1F, FirewallRuleset.RULE3, FirewallRuleset.RULE4, FirewallRuleset.RULE5,
-        FirewallRuleset.RULE6, FirewallRuleset.RULE7, FirewallRuleset.RULE10, FirewallRuleset.RULE11,
-        -> QuickFix.OpenUniversalRules(rule.id) to null
-        FirewallRuleset.RULE17, FirewallRuleset.RULE18 -> QuickFix.OpenProxySettings to null
-        // Allowed verdicts, and blocks Keepout can't undo from here: an internal error (1C), no
-        // network route (13), a lookup for a Private DNS server that doesn't exist (14), and a
-        // paused app under lockdown (16, ends with the pause).
-        FirewallRuleset.RULE0, FirewallRuleset.RULE1C, FirewallRuleset.RULE1H, FirewallRuleset.RULE2B,
-        FirewallRuleset.RULE2C, FirewallRuleset.RULE2F, FirewallRuleset.RULE2I, FirewallRuleset.RULE8,
-        FirewallRuleset.RULE9, FirewallRuleset.RULE9B, FirewallRuleset.RULE12, FirewallRuleset.RULE13,
-        FirewallRuleset.RULE14, FirewallRuleset.RULE15, FirewallRuleset.RULE16, FirewallRuleset.RULE19,
-        -> null to null
-    }
+    val fixes = rule.fixes(hasDomain)
     return BlockReason(
         sentence = rule.desc,
-        primaryFix = fixes.first,
-        secondaryFix = fixes.second,
+        primaryFix = fixes.primary,
+        secondaryFix = fixes.secondary,
         blocklists = if (rule == FirewallRuleset.RULE2G) blocklists else emptyList(),
     )
+}
+
+/** A rule's fixes: the filled one, and the tonal one under it. */
+private data class Fixes(val primary: QuickFix? = null, val secondary: QuickFix? = null)
+
+/**
+ * The fixes for every rule, grouped by what undoes it. Exhaustive on purpose: a new rule must be
+ * placed in a group before it compiles.
+ */
+private fun FirewallRuleset.fixes(hasDomain: Boolean): Fixes = when (this) {
+    // The app's own Wi‑Fi / mobile data flags. RULE1 is the "both" flag, and new apps are stored
+    // with it when "Block new apps" is on, so allowing the app is the rule's own undo.
+    FirewallRuleset.RULE1 -> Fixes(QuickFix.AllowApp(BlockedNetwork.Everywhere), QuickFix.AllowTemporarily)
+    FirewallRuleset.RULE1D -> Fixes(QuickFix.AllowApp(BlockedNetwork.Wifi), QuickFix.AllowTemporarily)
+    FirewallRuleset.RULE1E -> Fixes(QuickFix.AllowApp(BlockedNetwork.MobileData), QuickFix.AllowTemporarily)
+    // Temporary allow is checked after the new-app gate, so it can't help here.
+    FirewallRuleset.RULE1B -> Fixes(QuickFix.AllowApp(BlockedNetwork.Everywhere))
+    // Trusted only: trust the domain, else (connections only) the IP.
+    FirewallRuleset.RULE1G -> Fixes(if (hasDomain) QuickFix.TrustDomain else QuickFix.TrustIp)
+    FirewallRuleset.RULE2G -> Fixes(QuickFix.TrustDomain.takeIf { hasDomain })
+    FirewallRuleset.RULE2, FirewallRuleset.RULE2D ->
+        Fixes(QuickFix.RemoveIpRule(universal = this == FirewallRuleset.RULE2D))
+    FirewallRuleset.RULE2E, FirewallRuleset.RULE2H ->
+        Fixes(QuickFix.RemoveDomainRule(universal = this == FirewallRuleset.RULE2H))
+    // Universal settings: route to the row, never write a rule.
+    FirewallRuleset.RULE1F, FirewallRuleset.RULE3, FirewallRuleset.RULE4, FirewallRuleset.RULE5,
+    FirewallRuleset.RULE6, FirewallRuleset.RULE7, FirewallRuleset.RULE10, FirewallRuleset.RULE11,
+    -> Fixes(QuickFix.OpenUniversalRules(id))
+    FirewallRuleset.RULE17, FirewallRuleset.RULE18 -> Fixes(QuickFix.OpenProxySettings)
+    // Allowed verdicts, and blocks Keepout can't undo from here: an internal error (1C), no
+    // network route (13), a lookup for a Private DNS server that doesn't exist (14), and a
+    // paused app under lockdown (16, ends with the pause).
+    FirewallRuleset.RULE0, FirewallRuleset.RULE1C, FirewallRuleset.RULE1H, FirewallRuleset.RULE2B,
+    FirewallRuleset.RULE2C, FirewallRuleset.RULE2F, FirewallRuleset.RULE2I, FirewallRuleset.RULE8,
+    FirewallRuleset.RULE9, FirewallRuleset.RULE9B, FirewallRuleset.RULE12, FirewallRuleset.RULE13,
+    FirewallRuleset.RULE14, FirewallRuleset.RULE15, FirewallRuleset.RULE16, FirewallRuleset.RULE19,
+    -> Fixes()
 }
 
 /**

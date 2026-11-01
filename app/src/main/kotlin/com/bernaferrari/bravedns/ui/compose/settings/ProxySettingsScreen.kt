@@ -369,7 +369,6 @@ fun ProxySettingsScreen(
                     orbotStatus3Template = orbotStatus3Template,
                     orbotStatusArgDns = orbotStatusArgDns,
                     orbotStatusArgProxy = orbotStatusArgProxy,
-                    defaultWireguardDescription = defaultWireguardDescription,
                     statusTextById = proxyStatusLabelById,
                     statusFailingText = wireguardStatusFailingText,
                     statusWaitingText = wireguardStatusWaitingText,

@@ -66,7 +66,6 @@ internal fun RethinkListContent(
     rethinkEndpointViewModel: RethinkEndpointViewModel,
     uid: Int,
     updateUi: RethinkListUpdateUi,
-    onMaxChanged: (Boolean) -> Unit,
     onUpdateMaxSwitchUi: () -> Unit,
     onRefreshUpdateUi: () -> Unit,
     onCheckUpdateInProgressChanged: (Boolean) -> Unit,
@@ -115,9 +114,7 @@ internal fun RethinkListContent(
         item(key = "update") {
             RethinkListUpdateCard(
                 persistentState = persistentState,
-                appConfig = appConfig,
                 updateUi = updateUi,
-                onMaxChanged = onMaxChanged,
                 onCheckUpdateInProgressChanged = onCheckUpdateInProgressChanged,
                 onUpdateInProgressChanged = onUpdateInProgressChanged,
                 onCheckBlocklistUpdate = onCheckBlocklistUpdate,
@@ -180,9 +177,7 @@ private fun RethinkListWorkEffects(
 @Composable
 private fun RethinkListUpdateCard(
     persistentState: PersistentState,
-    appConfig: AppConfig,
     updateUi: RethinkListUpdateUi,
-    onMaxChanged: (Boolean) -> Unit,
     onCheckUpdateInProgressChanged: (Boolean) -> Unit,
     onUpdateInProgressChanged: (Boolean) -> Unit,
     onCheckBlocklistUpdate: () -> Unit,

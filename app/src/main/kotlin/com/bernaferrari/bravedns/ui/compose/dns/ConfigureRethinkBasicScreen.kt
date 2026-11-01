@@ -526,7 +526,6 @@ fun ConfigureRethinkBasicScreen(
                             checkUpdateInProgress = checkUpdateInProgress,
                             updateInProgress = updateInProgress,
                         ),
-                        onMaxChanged = { isMax = it },
                         onUpdateMaxSwitchUi = { updateMaxSwitchUi() },
                         onRefreshUpdateUi = { refreshUpdateUi() },
                         onCheckUpdateInProgressChanged = { checkUpdateInProgress = it },

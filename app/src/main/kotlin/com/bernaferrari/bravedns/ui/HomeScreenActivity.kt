@@ -19,7 +19,6 @@ package com.bernaferrari.bravedns.ui
 
 
 import android.os.Build
-import com.bernaferrari.bravedns.ui.compose.configure.LOGGING_DEVELOPER
 import androidx.compose.material3.LoadingIndicator
 import Logger
 import Logger.LOG_TAG_APP_UPDATE
@@ -115,14 +114,22 @@ import com.bernaferrari.bravedns.service.WireguardManager
 
 import com.bernaferrari.bravedns.ui.compose.dns.ConfigureRethinkScreenType
 import com.bernaferrari.bravedns.ui.compose.navigation.HomeAboutActions
+import com.bernaferrari.bravedns.ui.compose.navigation.HomeScreenDependencies
+import com.bernaferrari.bravedns.ui.compose.navigation.HomeCoreDependencies
+import com.bernaferrari.bravedns.ui.compose.navigation.HomeActivityDependencies
+import com.bernaferrari.bravedns.ui.compose.navigation.HomeDiagnosticsDependencies
+import com.bernaferrari.bravedns.ui.compose.navigation.HomeAppsDependencies
+import com.bernaferrari.bravedns.ui.compose.navigation.HomeDnsDependencies
+import com.bernaferrari.bravedns.ui.compose.navigation.HomeBlocklistViewModels
+import com.bernaferrari.bravedns.ui.compose.navigation.HomeDnsEndpointViewModels
+import com.bernaferrari.bravedns.ui.compose.navigation.HomeProxyDependencies
+import com.bernaferrari.bravedns.ui.compose.navigation.HomeRpnDependencies
+import com.bernaferrari.bravedns.ui.compose.navigation.HomeSettingsDependencies
 import com.bernaferrari.bravedns.ui.compose.navigation.HomeConfigureActions
 import com.bernaferrari.bravedns.ui.compose.navigation.HomeDnsActions
-import com.bernaferrari.bravedns.ui.compose.navigation.CustomRulesMode
-import com.bernaferrari.bravedns.ui.compose.navigation.CustomRulesTab
 import com.bernaferrari.bravedns.ui.compose.navigation.HomeWgActions
 import com.bernaferrari.bravedns.ui.compose.navigation.RethinkRoute
 import com.bernaferrari.bravedns.ui.compose.navigation.configureRethinkBasicRoute
-import com.bernaferrari.bravedns.ui.compose.navigation.customRulesRoute
 import com.bernaferrari.bravedns.ui.compose.navigation.detailedStatsRoute
 import com.bernaferrari.bravedns.ui.compose.navigation.domainConnectionsRoute
 import com.bernaferrari.bravedns.ui.compose.navigation.wireGuardDetailRoute
@@ -154,7 +161,6 @@ import com.bernaferrari.bravedns.util.BioMetricType
 import com.bernaferrari.bravedns.util.Constants
 import com.bernaferrari.bravedns.util.Constants.Companion.MAX_ENDPOINT
 import com.bernaferrari.bravedns.util.Constants.Companion.PKG_NAME_PLAY_STORE
-import com.bernaferrari.bravedns.util.Constants.Companion.UID_EVERYBODY
 import com.bernaferrari.bravedns.viewmodel.SummaryStatisticsViewModel
 import com.bernaferrari.bravedns.util.FirebaseErrorReporting
 import com.bernaferrari.bravedns.util.FirebaseErrorReporting.TOKEN_LENGTH
@@ -363,6 +369,13 @@ class HomeScreenActivity : FragmentActivity() {
                 }
                 val homeState by homeViewModel.uiState.collectAsStateWithLifecycle()
                 val aboutState by aboutViewModel.uiState.collectAsStateWithLifecycle()
+                // Built once: everything in it lives as long as the Activity.
+                val homeDependencies = remember {
+                    homeScreenDependencies(
+                        onThemeModeChanged = { composeThemePreference = it },
+                        onThemeColorChanged = { composeThemeColorPreset = it },
+                    )
+                }
 
                 var isUnlocked by rememberAppUnlockState {
                     checkBiometricRequired(this@HomeScreenActivity, persistentState)
@@ -409,188 +422,13 @@ class HomeScreenActivity : FragmentActivity() {
                     // Keep HomeScreenRoot composed while paused so rememberNavBackStack survives.
                     PauseOverlayHost {
                         HomeScreenRoot(
-                        homeUiState = homeState,
-                        homeActions = homeProtectionActions,
-                        summaryViewModel = summaryViewModel,
-                        onOpenDetailedStats = { type -> openDetailedStatsUi(type) },
-                        startDestination = homeStartDestination,
-                        isDebug = DEBUG,
-                        configureActions = HomeConfigureActions(
-                            onConfigureAppsClick = { homeNavRequest = RethinkRoute.AppList },
-                            onConfigureDnsClick = { navigateToDnsDetailIfAllowed() },
-                            onConfigureFirewallClick = {
-                                homeNavRequest = RethinkRoute.FirewallSettings()
-                            },
-                            onFirewallUniversalClick = {
-                                homeNavRequest = RethinkRoute.UniversalFirewall
-                            },
-                            onFirewallCustomIpClick = {
-                                homeNavRequest =
-                                    customRulesRoute(
-                                        uid = UID_EVERYBODY,
-                                        tab = CustomRulesTab.IP,
-                                        mode = CustomRulesMode.APP_SPECIFIC
-                                    )
-                            },
-                            onFirewallAppWiseIpClick = { openAppWiseIpScreen() },
-                            onConfigureProxyClick = {
-                                homeNavRequest = RethinkRoute.ProxySettings()
-                            },
-                            onConfigureNetworkClick = {
-                                homeNavRequest = RethinkRoute.TunnelSettings()
-                            },
-                            onConfigureOthersClick = {
-                                homeNavRequest = RethinkRoute.MiscSettings()
-                            },
-                            onConfigureLogsClick = {
-                                homeNavRequest = RethinkRoute.NetworkLogs()
-                            },
-                            onConfigureAntiCensorshipClick = {
-                                homeNavRequest = RethinkRoute.AntiCensorship
-                            },
-                            onConfigureAdvancedClick = {
-                                homeNavRequest = RethinkRoute.LoggingSettings(LOGGING_DEVELOPER)
-                            },
-                            onNavigateToLogs = { searchQuery ->
-                                homeNavRequest = RethinkRoute.NetworkLogs(searchQuery)
-                            },
-                            onOpenAccessibilitySettings = {
-                                startActivity(Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS))
-                            },
-                            onNavigateToProxy = {
-                                homeNavRequest = RethinkRoute.ProxySettings()
-                            },
-                        ),
-                        aboutUiState = aboutState,
-                        aboutActions = HomeAboutActions(
-                            onTelegramClick = {
-                                openUrl(this, getString(R.string.about_telegram_link))
-                            },
-                            onBugReportClick = { aboutViewModel.triggerBugReport() },
-                            onWhatsNewClick = { showNewFeaturesDialog() },
-                            onAppUpdateClick = {
-                                checkForUpdate(AppUpdater.UserPresent.INTERACTIVE)
-                            },
-                            onWebsiteClick = {
-                                openUrl(this, getString(R.string.about_website_link))
-                            },
-                            onGithubClick = {
-                                openUrl(this, getString(R.string.about_github_link))
-                            },
-                            onFaqClick = { openUrl(this, getString(R.string.about_faq_link)) },
-                            onDocsClick = { openUrl(this, getString(R.string.about_docs_link)) },
-                            onPrivacyPolicyClick = {
-                                openUrl(this, getString(R.string.about_privacy_policy_link))
-                            },
-                            onTermsOfServiceClick = {
-                                openUrl(this, getString(R.string.about_terms_link))
-                            },
-                            onLicenseClick = {
-                                openUrl(this, getString(R.string.about_license_link))
-                            },
-                            onTwitterClick = {
-                                openUrl(this, getString(R.string.about_twitter_handle))
-                            },
-                            onEmailClick = { disableFrostTemporarily(); sendEmailIntent(this) },
-                            onRedditClick = {
-                                openUrl(this, getString(R.string.about_reddit_handle))
-                            },
-                            onElementClick = {
-                                openUrl(this, getString(R.string.about_matrix_handle))
-                            },
-                            onMastodonClick = {
-                                openUrl(this, getString(R.string.about_mastodom_handle))
-                            },
-                            onGeneralSettingsClick = {
-                                homeNavRequest = RethinkRoute.MiscSettings()
-                            },
-                            onAppInfoClick = { UIUtils.openAndroidAppInfo(this, packageName) },
-                            onVpnProfileClick = { openVpnProfile(this) },
-                            onNotificationClick = { openNotificationSettings() },
-                            onStatsClick = { openStatsDialog() },
-                            onDbStatsClick = { openDatabaseDumpDialog() },
-                            onFlightRecordClick = { initiateFlightRecord() },
-                            onEventLogsClick = { openEventLogs() },
-                            onTokenClick = { copyTokenToClipboard() },
-                            onFossClick = {
-                                openUrl(this, getString(R.string.about_foss_link))
-                            },
-                            onFlossFundsClick = {
-                                openUrl(this, getString(R.string.about_floss_fund_link))
-                            },
-                        ),
-                        snackbarHostState = hostState,
-                        detailedStatsViewModel = detailedStatsViewModel,
-                        domainConnectionsViewModel = domainConnectionsViewModel,
-                        eventsViewModel = eventsViewModel,
-                        eventDao = eventDao,
-                        appInfoEventLogger = eventLogger,
-                        appInfoIpRulesViewModel = appInfoIpRulesViewModel,
-                        appInfoDomainRulesViewModel = appInfoDomainRulesViewModel,
-                        appInfoNetworkLogsViewModel = appInfoNetworkLogsViewModel,
-                        persistentState = persistentState,
-                        appConfig = appConfig,
-                        onOpenVpnProfile = { UIUtils.openVpnProfile(this@HomeScreenActivity) },
-                        onRefreshDatabase = { lifecycleScope.launch { rdb.refresh(RefreshDatabase.ACTION_REFRESH_INTERACTIVE) } },
-                        onThemeModeChanged = { composeThemePreference = it },
-                        onThemeColorChanged = { composeThemeColorPreset = it },
-                        consoleLogViewModel = consoleLogViewModel,
-                        consoleLogRepository = consoleLogRepository,
-                        onShareConsoleLogs = { shareConsoleLogs() },
-                        onConsoleLogsDeleteComplete = {
-                            showToastUiCentered(
-                                this@HomeScreenActivity,
-                                getString(R.string.config_add_success_toast),
-                                Toast.LENGTH_SHORT
-                            )
-                        },
-                        proxyAppsMappingViewModel = proxyAppsMappingViewModel,
-                        dnsSettingsViewModel = dnsSettingsViewModel,
-                        appDownloadManager = appDownloadManager,
-                        dnsActions = HomeDnsActions(
-                            onDnsCustomDnsClick = { startCustomDnsActivity() },
-                            onDnsRethinkPlusDnsClick = { startRethinkPlusDnsActivity() },
-                            onDnsLocalBlocklistConfigureClick = {
-                                startLocalBlocklistConfigureActivity()
-                            },
-                            onConfigureOtherDns = { index ->
-                                homeNavRequest = RethinkRoute.ConfigureOtherDns(index)
-                            },
-                        ),
-                        homeNavRequest = homeNavRequest,
-                        onHomeNavConsumed = { homeNavRequest = null },
-                        rethinkEndpointViewModel = rethinkEndpointViewModel,
-                        remoteFileTagViewModel = remoteFileTagViewModel,
-                        localFileTagViewModel = localFileTagViewModel,
-                        remoteBlocklistPacksMapViewModel = remoteBlocklistPacksMapViewModel,
-                        localBlocklistPacksMapViewModel = localBlocklistPacksMapViewModel,
-                        appInfoViewModel = appInfoViewModel,
-                        refreshDatabase = rdb,
-                        connectionTrackerRepository = connectionTrackerRepository,
-                        dnsLogRepository = dnsLogRepository,
-                        dohViewModel = dohViewModel,
-                        dotViewModel = dotViewModel,
-                        dnsProxyViewModel = dnsProxyViewModel,
-                        dnsCryptViewModel = dnsCryptViewModel,
-                        dnsCryptRelayViewModel = dnsCryptRelayViewModel,
-                        oDohViewModel = oDohViewModel,
-                        wgConfigViewModel = wgConfigViewModel,
-                        checkoutViewModel = checkoutViewModel,
-                        managePurchaseViewModel = managePurchaseViewModel,
-                        purchaseHistoryViewModel = purchaseHistoryViewModel,
-                        serverOrderHistoryViewModel = serverOrderHistoryViewModel,
-                        blockFreeDnsViewModel = blockFreeDnsViewModel,
-                        wgActions = HomeWgActions(
-                            onWgCreateClick = {
-                                homeNavRequest = wireGuardEditorRoute(
-                                    WireguardManager.INVALID_CONF_ID,
-                                    WgType.DEFAULT
-                                )
-                            },
-                            onWgImportClick = { backupController.launchFileImport() },
-                            onWgQrScanClick = { backupController.launchQrScanner() },
-                        ),
-                        appDatabase = appDatabase
+                            homeUiState = homeState,
+                            aboutUiState = aboutState,
+                            dependencies = homeDependencies,
+                            startDestination = homeStartDestination,
+                            homeNavRequest = homeNavRequest,
+                            onHomeNavConsumed = { homeNavRequest = null },
+                            snackbarHostState = hostState,
                         )
                     }
                     }
@@ -924,6 +762,134 @@ class HomeScreenActivity : FragmentActivity() {
     }
 
 
+    /** What the nav host needs from this Activity, grouped the way its routes use it. */
+    private fun homeScreenDependencies(
+        onThemeModeChanged: (Int) -> Unit,
+        onThemeColorChanged: (Int) -> Unit,
+    ) = HomeScreenDependencies(
+        core = HomeCoreDependencies(
+            persistentState = persistentState,
+            appConfig = appConfig,
+            eventLogger = eventLogger,
+            connectionTrackerRepository = connectionTrackerRepository,
+            dnsLogRepository = dnsLogRepository,
+        ),
+        protection = homeProtectionActions,
+        activity = HomeActivityDependencies(
+            summaryViewModel = summaryViewModel,
+            detailedStatsViewModel = detailedStatsViewModel,
+            domainConnectionsViewModel = domainConnectionsViewModel,
+            onOpenDetailedStats = { type -> openDetailedStatsUi(type) },
+        ),
+        diagnostics = HomeDiagnosticsDependencies(
+            eventsViewModel = eventsViewModel,
+            eventDao = eventDao,
+            consoleLogViewModel = consoleLogViewModel,
+            consoleLogRepository = consoleLogRepository,
+            appDatabase = appDatabase,
+            onShareConsoleLogs = { shareConsoleLogs() },
+            onConsoleLogsDeleteComplete = {
+                showToastUiCentered(this, getString(R.string.config_add_success_toast), Toast.LENGTH_SHORT)
+            },
+        ),
+        apps = HomeAppsDependencies(
+            appInfoViewModel = appInfoViewModel,
+            refreshDatabase = rdb,
+            ipRulesViewModel = appInfoIpRulesViewModel,
+            domainRulesViewModel = appInfoDomainRulesViewModel,
+            connectionsViewModel = appInfoNetworkLogsViewModel,
+        ),
+        dns = homeDnsDependencies(),
+        proxy = HomeProxyDependencies(
+            mappingViewModel = proxyAppsMappingViewModel,
+            wgConfigViewModel = wgConfigViewModel,
+            wgActions = HomeWgActions(
+                onWgCreateClick = {
+                    homeNavRequest = wireGuardEditorRoute(WireguardManager.INVALID_CONF_ID, WgType.DEFAULT)
+                },
+                onWgImportClick = { backupController.launchFileImport() },
+                onWgQrScanClick = { backupController.launchQrScanner() },
+            ),
+        ),
+        rpn = HomeRpnDependencies(
+            checkoutViewModel = checkoutViewModel,
+            managePurchaseViewModel = managePurchaseViewModel,
+            purchaseHistoryViewModel = purchaseHistoryViewModel,
+            serverOrderHistoryViewModel = serverOrderHistoryViewModel,
+        ),
+        settings = HomeSettingsDependencies(
+            isDebug = DEBUG,
+            configureActions = HomeConfigureActions(
+                onConfigureDnsClick = { navigateToDnsDetailIfAllowed() },
+                onOpenAccessibilitySettings = {
+                    startActivity(Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS))
+                },
+                onNavigateToProxy = { homeNavRequest = RethinkRoute.ProxySettings() },
+            ),
+            aboutActions = homeAboutActions(),
+            onOpenVpnProfile = { UIUtils.openVpnProfile(this) },
+            onThemeModeChanged = onThemeModeChanged,
+            onThemeColorChanged = onThemeColorChanged,
+        ),
+    )
+
+    private fun homeDnsDependencies() = HomeDnsDependencies(
+        settingsViewModel = dnsSettingsViewModel,
+        appDownloadManager = appDownloadManager,
+        blockFreeDnsViewModel = blockFreeDnsViewModel,
+        blocklists = HomeBlocklistViewModels(
+            rethinkEndpoint = rethinkEndpointViewModel,
+            remoteFileTag = remoteFileTagViewModel,
+            localFileTag = localFileTagViewModel,
+            remotePacksMap = remoteBlocklistPacksMapViewModel,
+            localPacksMap = localBlocklistPacksMapViewModel,
+        ),
+        endpoints = HomeDnsEndpointViewModels(
+            doh = dohViewModel,
+            dot = dotViewModel,
+            dnsProxy = dnsProxyViewModel,
+            dnsCrypt = dnsCryptViewModel,
+            dnsCryptRelay = dnsCryptRelayViewModel,
+            oDoh = oDohViewModel,
+        ),
+        actions = HomeDnsActions(
+            onDnsCustomDnsClick = { startCustomDnsActivity() },
+            onDnsRethinkPlusDnsClick = { startRethinkPlusDnsActivity() },
+            onDnsLocalBlocklistConfigureClick = { startLocalBlocklistConfigureActivity() },
+            onConfigureOtherDns = { index -> homeNavRequest = RethinkRoute.ConfigureOtherDns(index) },
+        ),
+    )
+
+    private fun homeAboutActions() = HomeAboutActions(
+        onTelegramClick = { openUrl(this, getString(R.string.about_telegram_link)) },
+        onBugReportClick = { aboutViewModel.triggerBugReport() },
+        onWhatsNewClick = { showNewFeaturesDialog() },
+        onAppUpdateClick = { checkForUpdate(AppUpdater.UserPresent.INTERACTIVE) },
+        onWebsiteClick = { openUrl(this, getString(R.string.about_website_link)) },
+        onGithubClick = { openUrl(this, getString(R.string.about_github_link)) },
+        onFaqClick = { openUrl(this, getString(R.string.about_faq_link)) },
+        onDocsClick = { openUrl(this, getString(R.string.about_docs_link)) },
+        onPrivacyPolicyClick = { openUrl(this, getString(R.string.about_privacy_policy_link)) },
+        onTermsOfServiceClick = { openUrl(this, getString(R.string.about_terms_link)) },
+        onLicenseClick = { openUrl(this, getString(R.string.about_license_link)) },
+        onTwitterClick = { openUrl(this, getString(R.string.about_twitter_handle)) },
+        onEmailClick = { disableFrostTemporarily(); sendEmailIntent(this) },
+        onRedditClick = { openUrl(this, getString(R.string.about_reddit_handle)) },
+        onElementClick = { openUrl(this, getString(R.string.about_matrix_handle)) },
+        onMastodonClick = { openUrl(this, getString(R.string.about_mastodom_handle)) },
+        onGeneralSettingsClick = { homeNavRequest = RethinkRoute.MiscSettings() },
+        onAppInfoClick = { UIUtils.openAndroidAppInfo(this, packageName) },
+        onVpnProfileClick = { openVpnProfile(this) },
+        onNotificationClick = { openNotificationSettings() },
+        onStatsClick = { openStatsDialog() },
+        onDbStatsClick = { openDatabaseDumpDialog() },
+        onFlightRecordClick = { initiateFlightRecord() },
+        onEventLogsClick = { openEventLogs() },
+        onTokenClick = { copyTokenToClipboard() },
+        onFossClick = { openUrl(this, getString(R.string.about_foss_link)) },
+        onFlossFundsClick = { openUrl(this, getString(R.string.about_floss_fund_link)) },
+    )
+
     private fun openDetailedStatsUi(type: SummaryStatisticsType) {
         val timeCategory = summaryViewModel.uiState.value.timeCategory.value
         val category =
@@ -1105,15 +1071,6 @@ class HomeScreenActivity : FragmentActivity() {
                 Intent.createChooser(intent, getString(R.string.about_bug_report_desc)),
             )
         }
-    }
-
-    private fun openAppWiseIpScreen() {
-        homeNavRequest =
-            customRulesRoute(
-                uid = UID_EVERYBODY,
-                tab = CustomRulesTab.IP,
-                mode = CustomRulesMode.ALL_RULES
-            )
     }
 
     private fun prepareAndStartVpn() {
@@ -1337,8 +1294,7 @@ class HomeScreenActivity : FragmentActivity() {
         RethinkModalBottomSheet(
             onDismissRequest = onDismiss,
             contentPadding = PaddingValues(SharedDimensions.spacingNone),
-            verticalSpacing = SharedDimensions.spacingNone,
-            includeBottomSpacer = false
+            verticalSpacing = SharedDimensions.spacingNone
         ) {
             Column(modifier = Modifier.padding(SharedDimensions.spacingLg)) {
                 Row(
