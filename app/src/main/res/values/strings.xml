@@ -315,8 +315,8 @@
 
 
 
-    <string name="http_proxy_dialog_heading" translatable="true">Set HTTP(S) CONNECT proxy</string>
-    <string name="http_proxy_dialog_desc" translatable="true">Format: protocol://username:password@host:port/path. For example, http://proxy.example.com:8080/</string>
+    <string name="http_proxy_dialog_heading" translatable="true">HTTP proxy</string>
+    <string name="http_proxy_dialog_desc" translatable="true">For example, http://proxy.example.com:8080. Add user:password@ before the host if it needs a login.</string>
 
     <string name="download_update_dialog_title" translatable="true">New update</string>
     <string name="download_update_dialog_message" translatable="true">A new version of the app is available for download from the website. Do you want to proceed?</string>
@@ -352,15 +352,15 @@
     <string name="settings_protocol_translation_desc" translatable="true">Translate UDP traffic to TCP when needed.</string>
     <string name="settings_ping_ips" translatable="true">Ping IPs</string>
     <string name="settings_treat_mobile_metered" translatable="true">Treat mobile data as metered</string>
-    <string name="settings_treat_mobile_metered_desc" translatable="true">Apply metered network behavior to mobile data.</string>
+    <string name="settings_treat_mobile_metered_desc" translatable="true">Mobile data counts as metered even if Android says it isn\'t.</string>
     <string name="settings_wg_listen_port" translatable="true">Fixed WireGuard port</string>
     <string name="settings_wg_listen_port_desc" translatable="true">Lets you choose the port WireGuard listens on.</string>
     <string name="settings_wg_lockdown" translatable="true">WireGuard lockdown</string>
-    <string name="settings_wg_lockdown_desc" translatable="true">Restrict traffic to the WireGuard interface only.</string>
-    <string name="settings_endpoint_independence" translatable="true">Endpoint-independent mapping</string>
+    <string name="settings_wg_lockdown_desc" translatable="true">Apps routed through WireGuard can\'t connect while it\'s down.</string>
+    <string name="settings_endpoint_independence" translatable="true">Stable outside ports</string>
     <string name="settings_endpoint_independence_desc" translatable="true">Keeps the same outside port per app, which helps calls and games connect.</string>
     <string name="settings_tcp_keep_alive" translatable="true">TCP keep-alive</string>
-    <string name="settings_tcp_keep_alive_desc" translatable="true">Keep idle TCP connections alive.</string>
+    <string name="settings_tcp_keep_alive_desc" translatable="true">Sends small pings so idle connections aren\'t dropped.</string>
     <string name="settings_vpn_builder_metered" translatable="true">Metered VPN</string>
     <string name="settings_vpn_builder_metered_desc" translatable="true">Android treats Keepout\'s VPN as a metered connection.</string>
     <string name="settings_dial_timeout" translatable="true">Dial timeout</string>
@@ -391,7 +391,7 @@
 
 
 
-    <string name="settings_exclude_proxy_apps_heading" translatable="true">Loopback proxy forwarder apps</string>
+    <string name="settings_exclude_proxy_apps_heading" translatable="true">Proxy apps skip Keepout</string>
 
     <string name="settings_allow_bypass_heading" translatable="true">Let apps see all networks</string>
     <string name="settings_allow_bypass_desc" translatable="true">Some video-call apps (Zoom, Meet) need it. Apps that use it can go around Keepout.</string>
@@ -502,7 +502,7 @@
 
     <string name="settings_dns_proxy_dialog_header" translatable="true">Set SOCKS5 proxy</string>
     <string name="settings_dns_proxy_dialog_app" translatable="true">App</string>
-    <string name="settings_dns_proxy_dialog_app_desc" translatable="false">The selected app will be excluded from the VPN to let it proxy connections on your behalf.</string>
+    <string name="settings_dns_proxy_dialog_app_desc" translatable="false">The app that runs the proxy, if any. It skips Keepout so it can carry other apps\' traffic.</string>
 
     <string name="settings_app_list_default_app" translatable="true">None</string>
 
@@ -1360,13 +1360,13 @@
 
 
 
-    <string name="vpn_policy_auto_desc" translatable="true">Reacts to important network and connectivity changes.</string>
+    <string name="vpn_policy_auto_desc" translatable="true">Reconnects when the network changes in a way that matters.</string>
     <string name="vpn_policy_sensitive" translatable="true">Sensitive</string>
-    <string name="vpn_policy_sensitive_desc" translatable="true">Reacts to all network and connectivity changes.</string>
+    <string name="vpn_policy_sensitive_desc" translatable="true">Reconnects on every network change. Most reliable, uses more battery.</string>
     <string name="vpn_policy_relaxed" translatable="true">Relaxed</string>
-    <string name="vpn_policy_relaxed_desc" translatable="true">Reacts to interesting connectivity changes.</string>
+    <string name="vpn_policy_relaxed_desc" translatable="true">Reconnects only on big changes, like Wi‑Fi to mobile data.</string>
     <string name="vpn_policy_fixed" translatable="true">Conservative</string>
-    <string name="vpn_policy_fixed_desc" translatable="true">Reacts minimally to network changes.</string>
+    <string name="vpn_policy_fixed_desc" translatable="true">Almost never reconnects. Experimental.</string>
 
     <string name="vpn_policy_title" translatable="true">Connection change policy</string>
 
@@ -1457,7 +1457,7 @@
     <string name="lockdown_download_enable_inapp" translatable="true">Enable downloader</string>
 
     <string name="settings_jumbo_packets" translatable="true">Bandwidth booster</string>
-    <string name="settings_jumbo_packets_desc" translatable="true">Uses jumbo packets inside Keepout\'s VPN tunnel.</string>
+    <string name="settings_jumbo_packets_desc" translatable="true">Larger packets inside Keepout\'s VPN; can speed up big downloads.</string>
 
 
     <string name="stability_program_toast" translatable="true">Joined the stability program for experimental features.</string>

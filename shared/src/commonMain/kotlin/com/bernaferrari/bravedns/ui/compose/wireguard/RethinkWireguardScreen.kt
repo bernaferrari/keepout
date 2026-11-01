@@ -3,6 +3,9 @@
 
 package com.bernaferrari.bravedns.ui.compose.wireguard
 
+import androidx.compose.ui.unit.dp
+import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -127,19 +130,21 @@ fun <T> RethinkWireguardScreen(
                         message = strings.noConfigurationsMessage,
                         icon = MaterialSymbols.Filled.VpnKey,
                     )
-                    Button(onClick = onImport) {
+                    // One width for the three ways in, so they read as a set, not a ragged stack.
+                    val actionWidth = Modifier.widthIn(min = EmptyActionWidth).heightIn(min = SharedDimensions.touchTargetMin)
+                    Button(onClick = onImport, modifier = actionWidth) {
                         Icon(MaterialSymbols.Filled.Download, null, Modifier.size(ButtonDefaults.IconSize))
                         Spacer(Modifier.width(ButtonDefaults.IconSpacing))
                         Text(strings.import)
                     }
                     if (onQrCode != null) {
-                        FilledTonalButton(onClick = onQrCode) {
+                        FilledTonalButton(onClick = onQrCode, modifier = actionWidth) {
                             Icon(MaterialSymbols.Filled.CameraAlt, null, Modifier.size(ButtonDefaults.IconSize))
                             Spacer(Modifier.width(ButtonDefaults.IconSpacing))
                             Text(strings.qrCode)
                         }
                     }
-                    TextButton(onClick = onCreate) {
+                    TextButton(onClick = onCreate, modifier = actionWidth) {
                         Icon(MaterialSymbols.Filled.Edit, null, Modifier.size(ButtonDefaults.IconSize))
                         Spacer(Modifier.width(ButtonDefaults.IconSpacing))
                         Text(strings.create)
@@ -266,3 +271,5 @@ private fun RethinkWgFabMenu(
         }
     }
 }
+
+private val EmptyActionWidth = 240.dp

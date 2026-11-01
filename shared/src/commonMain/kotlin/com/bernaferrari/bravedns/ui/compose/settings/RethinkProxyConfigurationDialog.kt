@@ -65,6 +65,8 @@ data class RethinkProxyConfigurationStrings(
     val username: String,
     val password: String,
     val appDescription: String,
+    /** The picker's label: "Proxy app". */
+    val appLabel: String = "Proxy app",
     val udpBlocked: String,
     val includeProxyApps: String,
     val lockdownDescription: String,
@@ -107,6 +109,7 @@ fun RethinkProxyConfigurationDialog(
                 selectedId = state.selectedAppId,
                 apps = state.apps,
                 // The explanation belongs to the picker: under it as supporting text, like any field.
+                label = strings.appLabel,
                 supportingText = strings.appDescription,
                 onSelected = { onStateChange(state.copy(selectedAppId = it, error = null)) },
                 appIcon = appIcon,
@@ -209,6 +212,7 @@ private fun RethinkProxyAppSelector(
     apps: List<RethinkProxyAppOption>,
     onSelected: (String) -> Unit,
     appIcon: @Composable ((RethinkProxyAppOption, Dp) -> Unit)?,
+    label: String,
     supportingText: String,
 ) {
     var expanded by remember { mutableStateOf(false) }
@@ -232,6 +236,7 @@ private fun RethinkProxyAppSelector(
             } else {
                 null
             },
+            label = { Text(label) },
             supportingText = { Text(supportingText) },
             shape = RoundedCornerShape(SharedDimensions.cornerRadiusLg),
         )

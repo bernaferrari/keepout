@@ -67,6 +67,7 @@ internal fun proxyConfigurationStrings(
         username = stringResource(R.string.proxy_username_optional_label),
         password = stringResource(R.string.proxy_password_optional_label),
         appDescription = stringResource(R.string.settings_dns_proxy_dialog_app_desc),
+        appLabel = stringResource(R.string.proxy_app_label),
         udpBlocked = stringResource(R.string.settings_udp_block),
         includeProxyApps = stringResource(R.string.settings_exclude_proxy_apps_heading),
         lockdownDescription = stringResource(R.string.settings_lock_down_mode_desc),

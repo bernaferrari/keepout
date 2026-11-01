@@ -88,4 +88,6 @@
     <string name="settings_tile_censorship">Censorship</string>
     <!-- Logs & diagnostics: the reachability test tool (its screen title too). -->
     <string name="diagnostics_connectivity_check">Connectivity check</string>
+    <!-- Proxy setup: the picker for the app that runs the proxy. -->
+    <string name="proxy_app_label">Proxy app</string>
 </resources>

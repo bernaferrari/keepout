@@ -240,7 +240,8 @@ private fun RethinkOrbotPanel(
         RethinkListItem(
             headline = strings.orbot,
             supporting = "${status.first} · ${state.orbotDescription}",
-            leadingIcon = MaterialSymbols.Filled.ConversionPath,
+            // Tor's own mark (hidden), not the proxy route icon SOCKS5 already uses.
+            leadingIcon = MaterialSymbols.Filled.VisibilityOff,
             // Inactive Orbot keeps the shared well like every other row; only a live state tints it.
             colors = rethinkListItemColors(
                 leadingIconTint = if (state.orbotEnabled || state.orbotConnecting) status.second else MaterialTheme.colorScheme.primary,
