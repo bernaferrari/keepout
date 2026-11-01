@@ -3,6 +3,8 @@
 
 package com.bernaferrari.bravedns.ui.compose.logs
 
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.ui.semantics.Role
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.ui.draw.clip
@@ -149,7 +151,13 @@ fun RethinkConnectionSheet(
     onOpenApp: (() -> Unit)? = null,
     snackbarHostState: SnackbarHostState? = null,
 ) {
-    RethinkModalBottomSheet(onDismissRequest = onDismiss, modifier = modifier, includeBottomSpacer = false) { _ ->
+    // Opens straight to its full height (no half stop to jump through) and scrolls when
+    // Details makes it taller than the screen.
+    RethinkModalBottomSheet(
+        onDismissRequest = onDismiss,
+        modifier = modifier.verticalScroll(rememberScrollState()),
+        expandOnShow = true,
+    ) { _ ->
         RethinkConnectionSheetContent(
             model = model,
             strings = strings,
@@ -160,8 +168,6 @@ fun RethinkConnectionSheet(
             onOpenApp = onOpenApp,
         )
         snackbarHostState?.let { SnackbarHost(it, Modifier.fillMaxWidth()) }
-        // Room above the navigation bar, so the last control never sits under it.
-        Spacer(Modifier.size(SharedDimensions.spacing2xl))
     }
 }
 
@@ -271,9 +277,9 @@ private fun RuleGroup(
             // "No rule" is an explicit option rather than deselecting, so the state always reads.
             RethinkConnectedChoiceGroup(
                 options = listOf(
-                    RethinkChoiceOption(RethinkRuleAction.Block, strings.block, MaterialSymbols.Filled.Block),
+                    RethinkChoiceOption(RethinkRuleAction.Block, strings.block, MaterialSymbols.Filled.DoNotDisturbOn),
                     RethinkChoiceOption(RethinkRuleAction.Trust, strings.trust, MaterialSymbols.Filled.Verified),
-                    RethinkChoiceOption(RethinkRuleAction.None, strings.noRule, MaterialSymbols.Filled.Remove),
+                    RethinkChoiceOption(RethinkRuleAction.None, strings.noRule, MaterialSymbols.Filled.RadioButtonUnchecked),
                 ),
                 selected = rule.action.takeUnless { it == RethinkRuleAction.Bypass } ?: RethinkRuleAction.Trust,
                 onSelect = { if (rule.enabled && it != rule.action) onActionChange(it) },

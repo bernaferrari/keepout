@@ -590,7 +590,6 @@ private fun RethinkAppSelectionConfirmSheet(
         onDismissRequest = onDismiss,
         contentPadding = PaddingValues(SharedDimensions.spacingLg),
         verticalSpacing = SharedDimensions.spacingMd,
-        includeBottomSpacer = false,
         expandOnShow = true,
     ) { dismiss ->
         Column(
@@ -1206,7 +1205,6 @@ private fun RethinkFirewallFilterDialog(
         onDismissRequest = onDismiss,
         contentPadding = PaddingValues(SharedDimensions.spacingLg),
         verticalSpacing = SharedDimensions.spacingLg,
-        includeBottomSpacer = false,
         expandOnShow = true,
     ) { dismissSheet ->
         Column(

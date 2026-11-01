@@ -736,7 +736,6 @@ private fun RethinkAppModeSheet(
         onDismissRequest = onDismiss,
         contentPadding = PaddingValues(SharedDimensions.spacingLg),
         verticalSpacing = SharedDimensions.spacingMd,
-        includeBottomSpacer = false,
         expandOnShow = true,
     ) { dismiss ->
         Column(

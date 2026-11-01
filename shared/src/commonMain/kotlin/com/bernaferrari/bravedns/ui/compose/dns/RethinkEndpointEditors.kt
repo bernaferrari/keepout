@@ -76,7 +76,6 @@ fun RethinkEndpointEditorDialog(onDismiss: () -> Unit, content: @Composable () -
         onDismissRequest = onDismiss,
         contentPadding = PaddingValues(SharedDimensions.spacingNone),
         verticalSpacing = SharedDimensions.spacingNone,
-        includeBottomSpacer = false,
         expandOnShow = true,
     ) {
         content()

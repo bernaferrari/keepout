@@ -73,7 +73,6 @@ fun RethinkRpnSupportSheet(
             vertical = SharedDimensions.spacingSm,
         ),
         verticalSpacing = SharedDimensions.spacingLg,
-        includeBottomSpacer = false,
         expandOnShow = true,
     ) { dismissSheet ->
         RethinkSheetHeader(

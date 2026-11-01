@@ -73,7 +73,6 @@ fun RethinkAppPickerSheet(
         expandOnShow = true,
         contentPadding = PaddingValues(horizontal = SharedDimensions.spacingMd, vertical = SharedDimensions.spacingSm),
         verticalSpacing = SharedDimensions.spacingGridTile,
-        includeBottomSpacer = false,
     ) { dismiss ->
         Column(
             modifier = Modifier.fillMaxWidth().heightIn(max = SharedDimensions.sheetContentMaxHeight),

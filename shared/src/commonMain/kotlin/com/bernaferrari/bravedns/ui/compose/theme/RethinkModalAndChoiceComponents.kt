@@ -130,7 +130,6 @@ fun RethinkModalBottomSheet(
     containerColor: Color = Color.Unspecified,
     contentPadding: PaddingValues = PaddingValues(horizontal = SharedDimensions.spacingXl, vertical = SharedDimensions.spacingLg),
     verticalSpacing: Dp = SharedDimensions.spacingLg,
-    includeBottomSpacer: Boolean = true,
     expandOnShow: Boolean = false,
     content: @Composable ColumnScope.(dismiss: () -> Unit) -> Unit,
 ) {
@@ -184,7 +183,6 @@ fun RethinkModalBottomSheet(
             ) {
                 content(dismiss)
             }
-            if (includeBottomSpacer) Spacer(Modifier.height(SharedDimensions.spacing2xl))
         }
     }
 }

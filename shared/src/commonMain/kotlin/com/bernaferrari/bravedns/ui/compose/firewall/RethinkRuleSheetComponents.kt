@@ -45,7 +45,6 @@ fun RethinkRuleSheetModal(
         onDismissRequest = onDismissRequest,
         contentPadding = PaddingValues(SharedDimensions.spacingNone),
         verticalSpacing = SharedDimensions.spacingNone,
-        includeBottomSpacer = false,
         // Rule editors and the Android LAN/reachability wrappers contain save actions. Opening
         // them fully avoids a partially-expanded sheet hiding those actions on short viewports.
         expandOnShow = true,
@@ -177,7 +176,7 @@ fun ColumnScope.RethinkAddRuleSheetContent(
     RethinkFormSection(title = strings.action) {
         RethinkConnectedChoiceGroup(
             options = listOf(
-                RethinkChoiceOption(RethinkRuleAction.Block, strings.block, MaterialSymbols.Filled.Block),
+                RethinkChoiceOption(RethinkRuleAction.Block, strings.block, MaterialSymbols.Filled.DoNotDisturbOn),
                 RethinkChoiceOption(RethinkRuleAction.Trust, strings.trust, MaterialSymbols.Filled.Verified),
             ),
             selected = action,

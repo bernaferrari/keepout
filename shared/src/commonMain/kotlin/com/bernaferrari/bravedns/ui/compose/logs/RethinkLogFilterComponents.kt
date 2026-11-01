@@ -118,7 +118,6 @@ fun RethinkLogAppFilterDialog(
         onDismissRequest = onDismiss,
         contentPadding = PaddingValues(horizontal = SharedDimensions.spacingMd, vertical = SharedDimensions.spacingSm),
         verticalSpacing = SharedDimensions.spacingGridTile,
-        includeBottomSpacer = false,
         // Fully open at one fixed height: loading -> list never resizes the sheet, and it never
         // settles half-open once the list arrives.
         expandOnShow = true,
@@ -231,7 +230,6 @@ fun RethinkLogRulesDialog(
         onDismissRequest = onDismiss,
         contentPadding = PaddingValues(SharedDimensions.spacingNone),
         verticalSpacing = SharedDimensions.spacingNone,
-        includeBottomSpacer = false,
     ) { dismissSheet ->
         Column(Modifier.fillMaxWidth().heightIn(max = SharedDimensions.sheetContentMaxHeight)) {
                 RethinkSheetHeader(

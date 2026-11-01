@@ -465,7 +465,6 @@ internal fun DemoTunnelSettingsScreen(modifier: Modifier, onBack: () -> Unit) {
         RethinkModalBottomSheet(
             onDismissRequest = { showCustomLanEditor = false },
             modifier = Modifier.verticalScroll(rememberScrollState()),
-            includeBottomSpacer = false,
             expandOnShow = true,
         ) {
             RethinkCustomLanIpEditor(
@@ -494,7 +493,6 @@ internal fun DemoTunnelSettingsScreen(modifier: Modifier, onBack: () -> Unit) {
         RethinkModalBottomSheet(
             onDismissRequest = { showReachabilityEditor = false },
             modifier = Modifier.verticalScroll(rememberScrollState()),
-            includeBottomSpacer = false,
             expandOnShow = true,
         ) {
             RethinkNetworkReachabilityEditor(

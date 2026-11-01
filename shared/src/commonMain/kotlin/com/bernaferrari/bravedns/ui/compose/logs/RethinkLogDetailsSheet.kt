@@ -41,7 +41,7 @@ fun RethinkLogDetailsSheet(
     appIcon: (@Composable () -> Unit)? = null,
     actions: (@Composable () -> Unit)? = null,
 ) {
-    RethinkModalBottomSheet(onDismissRequest = onDismiss, includeBottomSpacer = true) { dismissSheet ->
+    RethinkModalBottomSheet(onDismissRequest = onDismiss) { dismissSheet ->
         Column(
             modifier = modifier.fillMaxWidth().verticalScroll(rememberScrollState()),
             verticalArrangement = Arrangement.spacedBy(SharedDimensions.spacingMd),

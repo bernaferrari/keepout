@@ -193,7 +193,6 @@ private fun RethinkCountryExclusionDialog(
     RethinkModalBottomSheet(
         onDismissRequest = onDismiss,
         verticalSpacing = SharedDimensions.spacingMd,
-        includeBottomSpacer = false,
         expandOnShow = true,
     ) { dismissSheet ->
         RethinkSheetHeader(strings.excludeLocationsTitle)

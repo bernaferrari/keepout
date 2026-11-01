@@ -79,7 +79,7 @@ fun RethinkRuleEditSheet(
             RethinkFormSection(title = strings.action) {
                 RethinkConnectedChoiceGroup(
                     options = listOf(
-                        RethinkChoiceOption(RethinkRuleAction.Block, strings.block, MaterialSymbols.Filled.Block),
+                        RethinkChoiceOption(RethinkRuleAction.Block, strings.block, MaterialSymbols.Filled.DoNotDisturbOn),
                         RethinkChoiceOption(RethinkRuleAction.Trust, strings.trust, MaterialSymbols.Filled.Verified),
                     ),
                     selected = chosen,

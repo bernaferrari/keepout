@@ -266,7 +266,6 @@ internal fun DemoWireguardScreen(modifier: Modifier, onBack: () -> Unit) {
         if (showPeerEditor) {
             RethinkModalBottomSheet(
                 onDismissRequest = { showPeerEditor = false },
-                includeBottomSpacer = false,
                 expandOnShow = true,
             ) {
                 RethinkWireguardPeerEditor(
@@ -289,7 +288,6 @@ internal fun DemoWireguardScreen(modifier: Modifier, onBack: () -> Unit) {
         if (showSsidEditor) {
             RethinkModalBottomSheet(
                 onDismissRequest = { showSsidEditor = false },
-                includeBottomSpacer = false,
                 expandOnShow = true,
             ) {
                 RethinkWireguardSsidEditor(
