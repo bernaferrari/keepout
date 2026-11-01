@@ -1745,7 +1745,7 @@
         <item quantity="other">%d lookups stopped at the DNS</item>
     </plurals>
     <string name="home_stopped_most">Stopped most</string>
-    <string name="home_nothing_stopped">Nothing has been blocked in the last 24 hours.</string>
+    <string name="home_nothing_stopped">Nothing blocked today</string>
     <string name="home_see_statistics">Statistics</string>
     <plurals name="home_blocked_count">
         <item quantity="one">%d blocked</item>

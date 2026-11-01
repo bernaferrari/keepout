@@ -16,6 +16,7 @@
  */
 package com.bernaferrari.bravedns.ui.compose.home
 
+import androidx.compose.ui.graphics.CompositingStrategy
 import com.bernaferrari.bravedns.ui.compose.theme.SectionHeader
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.EnterTransition
@@ -838,13 +839,19 @@ private fun ProtectionMark(state: ProtectionVisualState, colors: HeroColors, siz
                 .graphicsLayer {
                     alpha = morphProgress
                     rotationZ = HALO_REST_ANGLE - phase.value * 180f
+                    // Rasterize the burst once into a texture; the turn then only rotates that
+                    // texture instead of re-filling a many-lobed path every frame.
+                    compositingStrategy = CompositingStrategy.Offscreen
                 }
                 .background(colors.halo, haloShape),
         )
         Box(
             Modifier
                 .size(size * 0.78f)
-                .graphicsLayer { rotationZ = phase.value * 360f }
+                .graphicsLayer {
+                    rotationZ = phase.value * 360f
+                    compositingStrategy = CompositingStrategy.Offscreen
+                }
                 .background(colors.mark, MorphShape(morph, morphProgress)),
         )
         Icon(

@@ -3,6 +3,7 @@
 
 package com.bernaferrari.bravedns.ui.compose.firewall
 
+import androidx.compose.ui.text.font.FontWeight
 import com.bernaferrari.bravedns.ui.compose.theme.RethinkPillSize
 import com.bernaferrari.bravedns.ui.compose.logs.RethinkTitleSwitchOption
 import com.bernaferrari.bravedns.ui.compose.logs.RethinkTitleSwitch
@@ -532,15 +533,21 @@ private fun RethinkFirewallRuleRow(
             headline = rule.value,
             supporting = rule.port?.let(strings.port),
             singleLineHeadline = true,
+            // The verdict leads, like the log rows: what the rule does matters more than its kind,
+            // which the Domains · IPs title already says.
             leadingIcon = when {
                 selected -> MaterialSymbols.Filled.CheckCircle
-                rule.tab == RethinkRulesTab.IP -> MaterialSymbols.Filled.Pin
-                else -> MaterialSymbols.Filled.Link
+                rule.status == RethinkFirewallRuleStatus.Block -> MaterialSymbols.Filled.DoNotDisturbOn
+                rule.status == RethinkFirewallRuleStatus.Trust -> MaterialSymbols.Filled.Verified
+                rule.status == RethinkFirewallRuleStatus.Bypass -> MaterialSymbols.Filled.PublicOff
+                else -> MaterialSymbols.Filled.Remove
             },
             colors = rethinkListItemColors(leadingIconTint = if (selected) MaterialTheme.colorScheme.onPrimary else accent, leadingIconContainerColor = if (selected) MaterialTheme.colorScheme.primary else RethinkIconWellDefaults.tinted(accent)),
             highlighted = selected,
             position = position,
-            trailing = { RethinkPill(rule.status.label(strings), colors = RethinkPillDefaults.status(accent)) },
+            trailing = {
+                Text(rule.status.label(strings), style = MaterialTheme.typography.labelLarge, fontWeight = FontWeight.SemiBold, color = accent, maxLines = 1)
+            },
             onClick = onClick,
             onLongClick = onLongClick,
         )

@@ -34,6 +34,9 @@ private val RethinkDefaultSeed = RethinkBrandSeed
 
 /** Seed of the semantic "allowed" role: a clear green that never reads as the coral brand or as error red. */
 private val RethinkAllowedSeed = Color(0xFF1E9E5A)
+/** True signal reds, so blocked stays red against any accent, coral and rose included. */
+private val BlockedOnDark = Color(0xFFFF6A63)
+private val BlockedOnLight = Color(0xFFC81E1E)
 
 /**
  * The app's color scheme for a seed. Brand presets use the Fidelity style, which keeps the seed
@@ -75,6 +78,11 @@ data class RethinkSemanticColors(
     val allowed: Color,
     val allowedContainer: Color,
     val onAllowedContainer: Color,
+    /**
+     * A vivid red from its own seed, like [allowed]: the theme's error tone sits right beside a
+     * red or coral accent, so "blocked" read as just more accent.
+     */
+    val blocked: Color,
 )
 
 fun rethinkSemanticColors(isDark: Boolean): RethinkSemanticColors {
@@ -94,6 +102,9 @@ fun rethinkSemanticColors(isDark: Boolean): RethinkSemanticColors {
         allowed = vivid.primary,
         allowedContainer = green.primaryContainer,
         onAllowedContainer = green.onPrimaryContainer,
+        // Generated palettes put red at tone 80 in dark, the same pastel as a coral accent; a
+        // saturated mid tone stays unmistakably red (≥4.5:1 on the dark surfaces, and on light).
+        blocked = if (isDark) BlockedOnDark else BlockedOnLight,
     )
 }
 
