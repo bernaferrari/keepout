@@ -409,16 +409,7 @@ private fun RethinkRulesContent(
                     RethinkRuleOwnerHeader(rule, strings, onRuleOwnerVisible)
                     Spacer(Modifier.height(SharedDimensions.spacingXs))
                 }
-                val position = if (!isGrouped) {
-                    cardPositionFor(index, rules.itemCount - 1)
-                } else {
-                    when {
-                        previous?.uid != rule.uid && next?.uid != rule.uid -> CardPosition.Single
-                        previous?.uid != rule.uid -> CardPosition.First
-                        next?.uid != rule.uid -> CardPosition.Last
-                        else -> CardPosition.Middle
-                    }
-                }
+                val position = if (!isGrouped) cardPositionFor(index, rules.itemCount - 1) else ownerGroupPosition(rule, previous, next)
                 RethinkFirewallRuleRow(
                     rule = rule,
                     position = position,
@@ -431,6 +422,18 @@ private fun RethinkRulesContent(
                 )
             }
         }
+    }
+}
+
+/** A rule's place inside its app's group: rules of one app form one grouped list. */
+private fun ownerGroupPosition(rule: RethinkFirewallRule, previous: RethinkFirewallRule?, next: RethinkFirewallRule?): CardPosition {
+    val startsGroup = previous?.uid != rule.uid
+    val endsGroup = next?.uid != rule.uid
+    return when {
+        startsGroup && endsGroup -> CardPosition.Single
+        startsGroup -> CardPosition.First
+        endsGroup -> CardPosition.Last
+        else -> CardPosition.Middle
     }
 }
 

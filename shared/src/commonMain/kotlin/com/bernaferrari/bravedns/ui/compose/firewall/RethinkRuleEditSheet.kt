@@ -2,7 +2,6 @@
 package com.bernaferrari.bravedns.ui.compose.firewall
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -22,15 +21,6 @@ import com.bernaferrari.bravedns.ui.compose.theme.RethinkPillDefaults
 import com.bernaferrari.bravedns.ui.compose.theme.RethinkSheetHeader
 import com.bernaferrari.bravedns.ui.compose.theme.accent
 import com.bernaferrari.bravedns.ui.icons.MaterialSymbols
-
-/** What tapping a rule can do to it: switch it between Block and Trust, or delete it. */
-@Immutable
-sealed interface RethinkRuleEdit {
-    /** [action] is [RethinkRuleAction.Block] or [RethinkRuleAction.Trust]. */
-    data class SetAction(val action: RethinkRuleAction) : RethinkRuleEdit
-
-    data object Delete : RethinkRuleEdit
-}
 
 /**
  * The Block · Trust option a stored rule reads as, or null when it is neither. For IPs the firewall

@@ -56,6 +56,19 @@ data class RethinkFirewallSettingsStrings(
     val accessibilityDismiss: String,
 )
 
+/** Where [focus] lives: (list item, row inside it). Item order: rules, everyday, strict, lockdown. */
+private fun firewallFocusTarget(
+    focus: String,
+    everyday: List<RethinkUniversalFirewallSetting>,
+    strict: List<RethinkUniversalFirewallSetting>,
+    lockdown: RethinkUniversalFirewallSetting?,
+): Pair<Int, Int>? = when (focus) {
+    FIREWALL_FOCUS_RULES -> 0 to 0
+    else -> listOf(everyday, strict, listOfNotNull(lockdown)).withIndex().firstNotNullOfOrNull { (section, rows) ->
+        rows.indexOfFirst { it.id == focus }.takeIf { it >= 0 }?.let { row -> section + 1 to row }
+    }
+}
+
 /**
  * The Firewall screen: one entry into Rules, then the universal toggles in three tiers. Everyday
  * rules most people want; Strict ones that can break apps; Lockdown, which cuts off everything not
@@ -92,12 +105,7 @@ fun RethinkFirewallSettingsScreen(
     // Item order below: rules (0), everyday (1), strict (2), lockdown (3).
     LaunchedEffect(initialFocus) {
         if (initialFocus.isBlank()) return@LaunchedEffect
-        val target = when (initialFocus) {
-            FIREWALL_FOCUS_RULES -> 0 to 0
-            else -> listOf(everyday, strict, listOfNotNull(lockdown)).withIndex().firstNotNullOfOrNull { (section, rows) ->
-                rows.indexOfFirst { it.id == initialFocus }.takeIf { it >= 0 }?.let { row -> section + 1 to row }
-            }
-        }
+        val target = firewallFocusTarget(initialFocus, everyday, strict, lockdown)
         target?.let { (index, row) ->
             // Rows are about 72dp; land the target row near the top, not the section header.
             val offset = with(density) { (row * 72).dp.toPx().roundToInt() }
@@ -146,26 +154,48 @@ fun RethinkFirewallSettingsScreen(
         }
     }
 
-    if (confirmLockdown && lockdown != null) {
+    FirewallDialogs(
+        strings = strings,
+        confirmLockdown = confirmLockdown && lockdown != null,
+        showAccessibility = showAccessibilityDialog,
+        onLockdownDismiss = { confirmLockdown = false },
+        onLockdownConfirm = { confirmLockdown = false; lockdown?.let { change(it.id, true) } },
+        onAccessibilityDismiss = { showAccessibilityDialog = false },
+        onAccessibilityConfirm = { showAccessibilityDialog = false; onOpenAccessibilitySettings() },
+    )
+}
+
+/** Lockdown's are-you-sure, and the accessibility hand-off Block background apps needs. */
+@Composable
+private fun FirewallDialogs(
+    strings: RethinkFirewallSettingsStrings,
+    confirmLockdown: Boolean,
+    showAccessibility: Boolean,
+    onLockdownDismiss: () -> Unit,
+    onLockdownConfirm: () -> Unit,
+    onAccessibilityDismiss: () -> Unit,
+    onAccessibilityConfirm: () -> Unit,
+) {
+    if (confirmLockdown) {
         RethinkConfirmDialog(
-            onDismissRequest = { confirmLockdown = false },
+            onDismissRequest = onLockdownDismiss,
             title = strings.lockdownConfirmTitle,
             message = strings.lockdownConfirmMessage,
             confirmText = strings.lockdownConfirm,
             dismissText = strings.cancel,
             isConfirmDestructive = true,
-            onConfirm = { confirmLockdown = false; change(lockdown.id, true) },
+            onConfirm = onLockdownConfirm,
         )
     }
-    if (showAccessibilityDialog) {
+    if (showAccessibility) {
         RethinkConfirmDialog(
-            onDismissRequest = { showAccessibilityDialog = false },
+            onDismissRequest = onAccessibilityDismiss,
             title = strings.accessibilityTitle,
             message = strings.accessibilityDescription,
             confirmText = strings.accessibilityConfirm,
             dismissText = strings.accessibilityDismiss,
-            onConfirm = { showAccessibilityDialog = false; onOpenAccessibilitySettings() },
-            onDismiss = { showAccessibilityDialog = false },
+            onConfirm = onAccessibilityConfirm,
+            onDismiss = onAccessibilityDismiss,
         )
     }
 }
