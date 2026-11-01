@@ -1,23 +1,23 @@
 """Capture Keepout's store screens on the capture emulator (needs adb and Pillow).
 
-`node store-listing/studio/recapture.cjs` builds and installs the capture build, runs this tour for every
+`npx screenshot-studio recapture` builds and installs the capture build, runs this tour for every
 device size and exports. The capture build shows the real UI over the Google apps that ship on the
 emulator's Play image, with a seeded week of traffic; it has no VPN service and no INTERNET permission,
-and never touches real data. Run alone: python3 store-listing/capture-emulator.py [--profile phone] [--locale de-DE].
+and never touches real data.
+Run alone: npx screenshot-studio recapture --no-build --no-export [--profile phone] [de-DE].
 
 The tour removes any leftover stub apps (fixture-apps.json), sets the clock to 9:41 so the seeded week of
 traffic ends "now", and drives the app by its English labels. Taps are recorded in en-US/raw/tap-map.json
 so other locales replay them. Writes <locale>/raw/<profile>/<scene>.png plus a .nodes.json sidecar.
-The emulator plumbing is the studio's capture.py.
+The emulator plumbing is the studio's capture.py (on PYTHONPATH while recapture runs the tour).
 """
 import json
-import sys
 import time
 from pathlib import Path
 
+from capture import Device, parser
+
 listing = Path(__file__).resolve().parent
-sys.path.insert(0, str(listing / 'studio'))
-from capture import Device, parser  # noqa: E402
 
 args = parser(__doc__).parse_args()
 # The Home beacon animates forever; with animations off uiautomator can read the screen.
