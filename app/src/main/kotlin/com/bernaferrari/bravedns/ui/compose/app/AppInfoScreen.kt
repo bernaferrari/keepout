@@ -245,7 +245,8 @@ fun AppInfoScreen(
             title = row.destination,
             subtitle = listOf(
                 if (row.blocked) blockedLabel else allowedLabel,
-                Utilities.convertLongToTime(row.latest.timeStamp, TIME_FORMAT_1),
+                // Minutes are enough for "when"; seconds made the line wrap at larger font sizes.
+                Utilities.convertLongToTime(row.latest.timeStamp, TIME_FORMAT_1).substringBeforeLast(':'),
                 pluralStringResource(R.plurals.app_activity_count, row.count, row.count),
             ).joinToString(" · "),
             blocked = row.blocked,

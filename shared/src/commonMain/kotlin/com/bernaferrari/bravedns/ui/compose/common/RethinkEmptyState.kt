@@ -61,7 +61,8 @@ private val EmptyStateIconWell = 72.dp
 @Composable
 private fun StateContainer(contained: Boolean, modifier: Modifier, content: @Composable () -> Unit) {
     if (!contained) {
-        Box(modifier) { content() }
+        // Centered in whatever space the caller gives it (a full screen, a pane), never stuck at the top.
+        Box(modifier, contentAlignment = Alignment.Center) { content() }
         return
     }
     Surface(

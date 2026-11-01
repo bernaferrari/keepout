@@ -238,8 +238,10 @@ private fun LogHeader(model: RethinkLogRowModel, cardColor: Color, chevron: Floa
         val appIcon = model.appIcon
         when {
             model.kind == RethinkLogKind.Network -> AppVerdictMark(model.isBlocked, cardColor) {
-                val container = if (model.isBlocked) RethinkStatusColors.blockedContainer else RethinkStatusColors.allowedContainer
-                model.icon?.invoke(container) ?: Box(Modifier.size(AppIconSize).background(container, CircleShape))
+                // A neutral disc while the icon resolves (or for no app): the badge carries the verdict,
+                // and a solid red or green disc read as a broken icon.
+                val placeholder = MaterialTheme.colorScheme.surfaceContainerHighest
+                Box(Modifier.size(AppIconSize).background(placeholder, CircleShape)) { model.icon?.invoke(placeholder) }
             }
             appIcon != null -> AppVerdictMark(model.isBlocked, cardColor) { Box(Modifier.size(AppIconSize)) { appIcon() } }
             else -> DnsQueryMark(model.isBlocked, model.icon, LeadingSize)
