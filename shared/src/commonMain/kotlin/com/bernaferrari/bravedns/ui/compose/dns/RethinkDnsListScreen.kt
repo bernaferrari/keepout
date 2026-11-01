@@ -106,7 +106,7 @@ fun <K : Any> RethinkDnsListScreen(
         },
     ) {
         if (loading) {
-            item(key = "loading") { RethinkLoadingState(strings.loading) }
+            item(key = "loading") { RethinkLoadingState(strings.loading, Modifier.fillParentMaxHeight(CENTERED_STATE_HEIGHT)) }
         } else {
             groups.forEach { group ->
                 rethinkSection(group.title, key = "group:${group.title}") {
@@ -157,3 +157,6 @@ fun <K : Any> RethinkDnsListScreen(
         }
     }
 }
+
+/** The share of the list a lone state centers in, leaving the sections below it in view. */
+private const val CENTERED_STATE_HEIGHT = 0.7f

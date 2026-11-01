@@ -93,7 +93,7 @@ fun RethinkBubbleScreen(
             !vpnOn -> item {
                 RethinkEmptyState(icon = MaterialSymbols.Filled.RemoveModerator, title = strings.vpnOffTitle, message = strings.vpnOffDescription)
             }
-            blockedLoading -> item { RethinkLoadingState(label = strings.loading) }
+            blockedLoading -> item { RethinkLoadingState(label = strings.loading, modifier = Modifier.fillParentMaxSize()) }
             blockedError -> item {
                 RethinkErrorState(title = strings.errorTitle, message = strings.errorDescription, retryLabel = strings.retry, onRetry = onRetry)
             }

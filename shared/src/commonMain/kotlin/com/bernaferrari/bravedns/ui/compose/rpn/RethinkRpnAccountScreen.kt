@@ -170,7 +170,7 @@ private fun RethinkRpnManageTab(
     ) {
         item { SectionHeaderWithSubtitle(title = strings.manageHeading, subtitle = strings.manageDescription) }
         when {
-            account.entitlementLoading -> item { RethinkLoadingState(strings.loading) }
+            account.entitlementLoading -> item { RethinkLoadingState(strings.loading, Modifier.fillParentMaxSize()) }
             noSubscription -> item {
                 RethinkEmptyState(
                     title = strings.noSubscriptionTitle,

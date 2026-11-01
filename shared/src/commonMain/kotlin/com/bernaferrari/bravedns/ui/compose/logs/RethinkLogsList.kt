@@ -96,8 +96,8 @@ fun RethinkLogList(
         when (state) {
             // Loading has nothing to frame: the indicator sits centered in the list's free space.
             RethinkLogListState.Loading -> item { RethinkLoadingState(strings.loading, Modifier.fillParentMaxSize().wrapContentHeight()) }
-            RethinkLogListState.Empty -> item { RethinkLogEmpty(strings.empty) }
-            is RethinkLogListState.Error -> item { RethinkErrorState(strings.error, LogStateModifier, retryLabel = strings.retry, onRetry = state.onRetry, contained = true) }
+            RethinkLogListState.Empty -> item { RethinkLogEmpty(strings.empty, Modifier.fillParentMaxSize()) }
+            is RethinkLogListState.Error -> item { RethinkErrorState(strings.error, Modifier.fillParentMaxSize(), retryLabel = strings.retry, onRetry = state.onRetry) }
             is RethinkLogListState.Content -> itemsIndexed(state.rows, key = { _, row -> row.id }) { index, row ->
                 RethinkLogRow(row, index, state.rows.size)
             }
@@ -131,18 +131,16 @@ fun RethinkPagedLogList(
             RethinkPagedLogListState.Loading -> item("logs_loading") {
                 RethinkLoadingState(strings.loading, Modifier.fillParentMaxSize().wrapContentHeight())
             }
-            RethinkPagedLogListState.Empty -> item("logs_empty") { RethinkLogEmpty(strings.empty) }
+            RethinkPagedLogListState.Empty -> item("logs_empty") { RethinkLogEmpty(strings.empty, Modifier.fillParentMaxSize()) }
             is RethinkPagedLogListState.Error -> item("logs_load_error") {
-                RethinkErrorState(strings.error, LogStateModifier, retryLabel = strings.retry, onRetry = state.onRetry, contained = true)
+                RethinkErrorState(strings.error, Modifier.fillParentMaxSize(), retryLabel = strings.retry, onRetry = state.onRetry)
             }
             RethinkPagedLogListState.Content -> items(itemCount) { index -> itemContent(index, itemCount) }
         }
     }
 }
 
-/** In-list states sit one small gap below the filter row, in the grouped-list container. */
-private val LogStateModifier = Modifier.padding(top = SharedDimensions.spacingSm)
-
+/** Nothing to list: centered in the list's space, no card (the screen's states all read this way). */
 @Composable
-private fun RethinkLogEmpty(label: String) =
-    RethinkEmptyState(title = label, modifier = LogStateModifier, icon = MaterialSymbols.Filled.Info, contained = true)
+private fun RethinkLogEmpty(label: String, modifier: Modifier) =
+    RethinkEmptyState(title = label, modifier = modifier, icon = MaterialSymbols.Filled.FormatListBulleted)

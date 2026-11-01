@@ -63,21 +63,21 @@ fun KeepoutConnectionsScreen(
         }
         when {
             count == 0 && refresh is LoadState.Loading -> item(key = "loading") {
-                RethinkLoadingState(stringResource(R.string.lbl_loading), contained = true)
+                RethinkLoadingState(stringResource(R.string.lbl_loading), Modifier.fillParentMaxHeight(CENTERED_STATE_HEIGHT))
             }
             count == 0 && refresh is LoadState.Error -> item(key = "error") {
                 RethinkErrorState(
                     stringResource(R.string.error_loading_log_file),
                     retryLabel = stringResource(R.string.cd_refresh),
                     onRetry = { items.retry() },
-                    contained = true,
+                    modifier = Modifier.fillParentMaxHeight(CENTERED_STATE_HEIGHT),
                 )
             }
             count == 0 -> item(key = "empty") {
                 RethinkEmptyState(
                     title = stringResource(R.string.keepout_connections_empty),
                     icon = MaterialSymbols.Filled.Info,
-                    contained = true,
+                    modifier = Modifier.fillParentMaxHeight(CENTERED_STATE_HEIGHT),
                 )
             }
             else -> items(count, key = items.itemKey { it.id }) { index ->
@@ -87,3 +87,6 @@ fun KeepoutConnectionsScreen(
         }
     }
 }
+
+/** A lone state centers in most of the list, below the explanation above it. */
+private const val CENTERED_STATE_HEIGHT = 0.7f

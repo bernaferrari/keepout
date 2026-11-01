@@ -140,7 +140,7 @@ fun <T> RethinkEndpointPicker(
         verticalArrangement = Arrangement.spacedBy(SharedDimensions.spacingXs),
     ) {
         if (feed.itemCount == 0) {
-            item { RethinkEmptyState(title = title, icon = MaterialSymbols.Filled.Dns) }
+            item { RethinkEmptyState(title = title, icon = MaterialSymbols.Filled.Dns, modifier = Modifier.fillParentMaxSize()) }
         }
         items(feed.itemCount) { index ->
             val item = feed[index] ?: return@items

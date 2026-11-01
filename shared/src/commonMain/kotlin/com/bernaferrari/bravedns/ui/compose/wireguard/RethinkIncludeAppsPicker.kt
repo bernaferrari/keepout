@@ -130,7 +130,7 @@ fun RethinkIncludeAppsPicker(
                     )
                 }
                 if (items.isEmpty()) {
-                    item { RethinkEmptyState(title = strings.empty, icon = MaterialSymbols.Filled.Apps) }
+                    item { RethinkEmptyState(title = strings.empty, icon = MaterialSymbols.Filled.Apps, modifier = Modifier.fillParentMaxSize()) }
                 }
                 items.forEachIndexed { index, item ->
                     val previous = items.getOrNull(index - 1)

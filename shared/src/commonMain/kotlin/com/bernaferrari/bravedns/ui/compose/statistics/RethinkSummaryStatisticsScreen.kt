@@ -201,7 +201,7 @@ fun RethinkSummaryStatisticsScreen(
                         // No card around a loader: it sits centered in the space under the totals.
                         RethinkLoadingState(label = "", modifier = Modifier.fillParentMaxHeight(INSIGHTS_LOADING_HEIGHT).wrapContentHeight())
                     } else {
-                        RethinkEmptyState(icon = MaterialSymbols.Filled.Monitoring, title = strings.noLogs, contained = true)
+                        RethinkEmptyState(icon = MaterialSymbols.Filled.Monitoring, title = strings.noLogs, modifier = Modifier.fillParentMaxHeight(INSIGHTS_LOADING_HEIGHT))
                     }
                 }
             } else if (widthClass.isExpanded) {
