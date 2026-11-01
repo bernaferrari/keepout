@@ -89,6 +89,7 @@ fun DnsListScreen(
             byProtocol = stringResource(R.string.dns_providers_by_protocol),
             byProtocolDescription = stringResource(R.string.dns_providers_by_protocol_desc),
             loading = stringResource(R.string.dns_providers_loading),
+            standard = stringResource(R.string.dns_providers_standard),
         ),
         loading = !loaded,
         onProtocolClick = { onConfigureOtherDns(it.id) },

@@ -2,6 +2,9 @@
 
 package com.bernaferrari.bravedns.ui.compose.dns
 
+import com.bernaferrari.bravedns.ui.components.LocalDnsRowContext
+import com.bernaferrari.bravedns.ui.components.DnsRowContext
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -62,6 +65,8 @@ data class RethinkDnsListStrings(
     val byProtocol: String = "Servers by protocol",
     val byProtocolDescription: String = "Every server of one kind, and DNSCrypt relays.",
     val loading: String = "Loading servers…",
+    /** A provider's plain server, when its name is only the provider ("Cloudflare" → "Standard"). */
+    val standard: String = "Standard",
 )
 
 /**
@@ -105,9 +110,12 @@ fun <K : Any> RethinkDnsListScreen(
         } else {
             groups.forEach { group ->
                 rethinkSection(group.title, key = "group:${group.title}") {
-                    // Endpoint rows are standalone cards that carry their own 4dp inset.
-                    Column(verticalArrangement = Arrangement.spacedBy(SharedDimensions.spacingNone)) {
-                        group.keys.forEach { key -> itemContent(key) }
+                    // One grouped list per provider; each row names only its variant.
+                    Column {
+                        group.keys.forEachIndexed { index, key ->
+                            val context = DnsRowContext(cardPositionFor(index, group.keys.lastIndex), group.title, strings.standard)
+                            CompositionLocalProvider(LocalDnsRowContext provides context) { itemContent(key) }
+                        }
                     }
                 }
             }
@@ -126,8 +134,8 @@ fun <K : Any> RethinkDnsListScreen(
                 }
             }
         }
-        // Clear the extended FAB so the last protocol row is never hidden under it.
-        item(key = "fab-clearance") { Spacer(Modifier.height(SharedDimensions.fabClearance - SharedDimensions.spacingXl)) }
+        // Clear the extended FAB so no row is ever hidden under it.
+        item(key = "fab-clearance") { Spacer(Modifier.height(SharedDimensions.fabClearance)) }
     }
     if (showAddSheet) {
         RethinkModalBottomSheet(onDismissRequest = { showAddSheet = false }) { _ ->

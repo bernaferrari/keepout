@@ -907,7 +907,7 @@
     <string name="firewall_rule_global_lockdown_desc" translatable="true">Blocked by lockdown: only apps and IPs you\'ve allowed may connect.</string>
     <string name="firewall_rule_block_domain_desc" translatable="true">Blocked by a domain rule for this app.</string>
     <string name="firewall_rule_trusted_domain_desc" translatable="true">Allowed because this domain is trusted for this app.</string>
-    <string name="firewall_rule_dns_blocked_desc" translatable="true">Blocked because your DNS blocked this domain.</string>
+    <string name="firewall_rule_dns_blocked_desc" translatable="true">Blocked by a blocklist on your DNS.</string>
     <string name="firewall_rule_domain_blocked_univ_desc" translatable="true">Blocked by a universal domain rule.</string>
     <string name="firewall_rule_domain_trusted_univ_desc" translatable="true">Allowed because this domain is trusted for all apps.</string>
     <string name="firewall_rule_proxied_desc" translatable="true">Sent through your proxy.</string>

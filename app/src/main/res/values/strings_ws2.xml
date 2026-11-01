@@ -49,7 +49,7 @@
         <item quantity="other">%d selected</item>
     </plurals>
     <string name="apps_action_block_wifi">Block Wi‑Fi</string>
-    <string name="apps_action_block_mobile">Block mobile data</string>
+    <string name="apps_action_block_mobile">Block mobile</string>
     <string name="apps_action_allow_all">Allow all</string>
     <string name="apps_action_allow_wifi">Allow Wi‑Fi</string>
     <string name="apps_action_allow_mobile">Allow mobile data</string>

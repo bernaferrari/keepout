@@ -89,4 +89,6 @@
     <!-- Advanced DNS: which resolver trusted domains use. -->
     <string name="dns_trusted_endpoint">Trusted domains\' DNS</string>
     <string name="dns_trusted_endpoint_desc">The resolver trusted domains go through</string>
+    <!-- Another provider: a server named only after its provider ("Cloudflare"). -->
+    <string name="dns_providers_standard">Standard</string>
 </resources>

@@ -214,7 +214,7 @@ fun ColumnScope.RethinkConnectionSheetContent(
             }
         }
     }
-    model.rule?.let { rule -> RuleGroup(rule, strings, onRuleActionChange, onRuleScopeChange) }
+    model.rule?.let { rule -> RuleGroup(rule, strings, onRuleActionChange, onRuleScopeChange, showValue = !rule.value.equals(model.title, ignoreCase = true)) }
     FooterLinks(model, strings, onCopyAddress)
 }
 
@@ -257,12 +257,16 @@ private fun RuleGroup(
     strings: RethinkConnectionSheetStrings,
     onActionChange: (RethinkRuleAction) -> Unit,
     onScopeChange: (RethinkConnectionRuleScope) -> Unit,
+    /** False when the sheet's header already names this domain or IP. */
+    showValue: Boolean = true,
 ) {
     Column {
         SectionHeader(if (rule.kind == RethinkConnectionTargetKind.Domain) strings.thisDomain else strings.thisIp)
         RethinkContainedCard(verticalArrangement = Arrangement.spacedBy(SharedDimensions.spacingMd)) {
-            SelectionContainer {
-                Text(rule.value, style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.onSurface)
+            if (showValue) {
+                SelectionContainer {
+                    Text(rule.value, style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.onSurface)
+                }
             }
             // "No rule" is an explicit option rather than deselecting, so the state always reads.
             RethinkConnectedChoiceGroup(

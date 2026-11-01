@@ -1,6 +1,10 @@
 /* Copyright 2026 RethinkDNS and its authors */
 package com.bernaferrari.bravedns.ui.components
 
+import com.bernaferrari.bravedns.ui.compose.theme.rethinkGroupedRowTopGap
+import com.bernaferrari.bravedns.ui.compose.theme.rethinkGroupedListShape
+import com.bernaferrari.bravedns.ui.compose.theme.CardPosition
+import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.text.font.FontWeight
 import com.bernaferrari.bravedns.ui.icons.MaterialSymbols
 
@@ -33,6 +37,22 @@ enum class DnsRowAction { Info, Edit, Delete }
 
 enum class DnsRowSelection { Radio, Checkbox }
 
+/**
+ * Set by a list that groups rows under a provider header: [position] joins the rows into one
+ * grouped list, and a title starting with [provider] ("Adguard Family" under "AdGuard") shows only
+ * its variant ("Family"), or [standard] when nothing is left.
+ */
+data class DnsRowContext(val position: CardPosition, val provider: String, val standard: String)
+
+val LocalDnsRowContext = staticCompositionLocalOf<DnsRowContext?> { null }
+
+/** [title] without the provider its group header already names. */
+fun dnsRowTitle(title: String, context: DnsRowContext?): String {
+    if (context == null || !title.startsWith(context.provider, ignoreCase = true)) return title
+    val rest = title.substring(context.provider.length).trim(' ', '-', '·', '_')
+    return rest.ifBlank { context.standard }.replaceFirstChar { it.uppercaseChar() }
+}
+
 @Composable
 fun DnsEndpointRow(
     title: String,
@@ -51,10 +71,13 @@ fun DnsEndpointRow(
     /** Accessibility label for the trailing action (info, edit or delete). */
     actionLabel: String? = null,
 ) {
-    val shape = RoundedCornerShape(SharedDimensions.groupCornerRadius)
+    val context = LocalDnsRowContext.current
+    val shape = context?.let { rethinkGroupedListShape(it.position) } ?: RoundedCornerShape(SharedDimensions.groupCornerRadius)
+    val outer = if (context != null) Modifier.padding(top = rethinkGroupedRowTopGap(context.position)) else Modifier.padding(vertical = 4.dp)
+    val shownTitle = dnsRowTitle(title, context)
     Surface(
         onClick = { onSelectionChange(if (selection == DnsRowSelection.Radio) true else !selected) },
-        modifier = modifier.fillMaxWidth().padding(vertical = 4.dp).clip(shape),
+        modifier = modifier.fillMaxWidth().then(outer).clip(shape),
         shape = shape,
         color = if (selected) MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.32f) else MaterialTheme.colorScheme.surfaceContainerLow,
     ) {
@@ -69,7 +92,7 @@ fun DnsEndpointRow(
                     horizontalArrangement = Arrangement.spacedBy(SharedDimensions.spacingSm),
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
-                    Text(title, style = MaterialTheme.typography.bodyLarge, fontWeight = FontWeight.Medium, modifier = Modifier.weight(1f, fill = false))
+                    Text(shownTitle, style = MaterialTheme.typography.bodyLarge, fontWeight = FontWeight.Medium, modifier = Modifier.weight(1f, fill = false))
                     if (!badge.isNullOrEmpty()) RethinkPill(badge, size = RethinkPillSize.Small)
                 }
                 if (!description.isNullOrEmpty()) Text(description, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
