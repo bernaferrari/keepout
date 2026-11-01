@@ -25,13 +25,13 @@ fun RethinkDohEndpointEditor(
     defaultName: String,
     initialEndpoint: String,
     insecureLabel: String,
-    /** What skipping the checks risks, under the checkbox. */
-    insecureDescription: String? = null,
     strings: RethinkEndpointEditorStrings,
     bootstrapLabel: String,
     bootstrapDescription: String,
     onSubmit: (name: String, endpoint: String, isSecure: Boolean, bootstrap: String) -> String?,
     onDismiss: () -> Unit,
+    /** What skipping the checks risks, under the checkbox. */
+    insecureDescription: String? = null,
 ) {
     var name by rememberSaveable(defaultName) { mutableStateOf(defaultName) }
     var endpoint by rememberSaveable(initialEndpoint) { mutableStateOf(initialEndpoint) }

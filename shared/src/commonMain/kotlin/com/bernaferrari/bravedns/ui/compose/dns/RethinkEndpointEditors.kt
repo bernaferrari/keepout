@@ -124,11 +124,11 @@ fun RethinkUrlEndpointEditor(
     defaultName: String,
     initialEndpoint: String,
     insecureLabel: String,
-    /** What skipping the checks risks, under the checkbox. */
-    insecureDescription: String? = null,
     strings: RethinkEndpointEditorStrings,
     onSubmit: (name: String, endpoint: String, isSecure: Boolean) -> String?,
     onDismiss: () -> Unit,
+    /** What skipping the checks risks, under the checkbox. */
+    insecureDescription: String? = null,
 ) {
     var name by remember(defaultName) { mutableStateOf(defaultName) }
     var endpoint by remember(initialEndpoint) { mutableStateOf(initialEndpoint) }
