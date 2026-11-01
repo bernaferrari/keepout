@@ -83,7 +83,7 @@ internal fun selectedProxyAppLabel(selectedPackageName: String, options: List<Pr
 
 /**
  * The picked proxy app's launcher icon (the shared [AppIcon], default app icon as its fallback).
- * "None" has no app, so it shows a quiet block glyph instead of an empty tile.
+ * "None" has no app, so it shows the app's standard "none" glyph, an empty dashed slot.
  */
 @Composable
 internal fun ProxyDialogAppIcon(
@@ -91,7 +91,7 @@ internal fun ProxyDialogAppIcon(
     size: androidx.compose.ui.unit.Dp
 ) {
     if (option == null || option.packageName.isBlank()) {
-        Icon(MaterialSymbols.Filled.Block, null, Modifier.size(size), tint = MaterialTheme.colorScheme.onSurfaceVariant)
+        Icon(MaterialSymbols.Filled.DashedCircle, null, Modifier.size(size), tint = MaterialTheme.colorScheme.onSurfaceVariant)
     } else {
         AppIcon(option.packageName, appName = option.iconLookupName, size = size)
     }

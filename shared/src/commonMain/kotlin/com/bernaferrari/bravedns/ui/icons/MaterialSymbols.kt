@@ -43,6 +43,7 @@ object MaterialSymbols {
         val Database: ImageVector get() = filledDatabase
         val DeleteOutline: ImageVector get() = filledDeleteOutline
         val Dns: ImageVector get() = filledDns
+        val DashedCircle: ImageVector get() = filledDashedCircle
         val DoNotDisturbOn: ImageVector get() = filledDoNotDisturbOn
         val DominoMask: ImageVector get() = filledDominoMask
         val Download: ImageVector get() = filledDownload
@@ -91,7 +92,6 @@ object MaterialSymbols {
         val Public: ImageVector get() = filledPublic
         val PublicOff: ImageVector get() = filledPublicOff
         val Refresh: ImageVector get() = filledRefresh
-        val RadioButtonUnchecked: ImageVector get() = filledRadioButtonUnchecked
         val Remove: ImageVector get() = filledRemove
         val RemoveModerator: ImageVector get() = filledRemoveModerator
         val Report: ImageVector get() = filledReport

@@ -279,7 +279,7 @@ private fun RuleGroup(
                 options = listOf(
                     RethinkChoiceOption(RethinkRuleAction.Block, strings.block, MaterialSymbols.Filled.DoNotDisturbOn),
                     RethinkChoiceOption(RethinkRuleAction.Trust, strings.trust, MaterialSymbols.Filled.Verified),
-                    RethinkChoiceOption(RethinkRuleAction.None, strings.noRule, MaterialSymbols.Filled.RadioButtonUnchecked),
+                    RethinkChoiceOption(RethinkRuleAction.None, strings.noRule, MaterialSymbols.Filled.DashedCircle),
                 ),
                 selected = rule.action.takeUnless { it == RethinkRuleAction.Bypass } ?: RethinkRuleAction.Trust,
                 onSelect = { if (rule.enabled && it != rule.action) onActionChange(it) },
