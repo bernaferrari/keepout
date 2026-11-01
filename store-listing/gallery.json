@@ -199,10 +199,6 @@
           "raw": "slate7/02-logs.png",
           "role": "slate",
           "frame": "tablet"
-        },
-        {
-          "raw": "phone/11-home-dark.png",
-          "role": "front"
         }
       ]
     },

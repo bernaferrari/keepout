@@ -34,7 +34,7 @@ Keepout is a fork of [Rethink DNS + Firewall + VPN](https://github.com/celzero/r
 ## On a bigger screen
 
 <p align="center">
-  <img src="store-listing/en-US/readme/big-screen.jpg" width="100%" alt="The network log on a landscape tablet beside the details of the selected connection, and Home in dark mode on a phone in front">
+  <img src="store-listing/en-US/readme/big-screen.jpg" width="100%" alt="The network log on a landscape tablet beside the details of the selected connection">
 </p>
 
 ## Private by design

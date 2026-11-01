@@ -64,12 +64,12 @@ header p{margin:26px 0 0;font-size:40px;line-height:1.28;font-weight:420;color:v
 .readme .trio .three{left:1670px}
 .readme .trio .device-label{transform:translateY(calc(-100% - 24px));font-weight:560;letter-spacing:-.01em;color:var(--ink)}
 .readme .trio .device-label em{font-style:normal;color:var(--coral)}
-/* Spread: the headline on the left, a landscape tablet, and a phone in dark mode in front of it. */
-.readme .spread header{left:110px;top:200px;bottom:auto;width:640px;display:block}
+/* Spread: the headline on the left, centred against one large landscape tablet. A phone in front had to
+   shrink well under the other strips' phones to keep the tablet readable, and read as a thin toy, so it's gone. */
+.readme .spread header{left:110px;top:0;bottom:0;width:580px;display:flex;flex-direction:column;justify-content:center}
 .readme .spread h1{font-size:104px}
 .readme .spread header p{font-size:38px}
-.readme .spread .slate{left:960px;top:150px;width:1380px}
-.readme .spread .front{left:636px;top:450px;width:400px}
+.readme .spread .slate{left:760px;top:135px;width:1540px}
 /* Before and after, like the other apps: a headline, then four equal phones in two pairs, each named
    above. No panels. The original keeps a quiet frame; Keepout steps forward in coral with a warm glow. */
 .readme .compare header{left:0;right:0;top:80px;text-align:center}
