@@ -114,6 +114,16 @@ fun EntryProviderScope<NavKey>.rethinkPreviewEntries(
             )
         }
     }
+    rethinkPreviewToolEntries(nav, demoDependencies)
+    rethinkPreviewFirewallEntries(nav)
+    rethinkPreviewDnsEntries(nav)
+}
+
+/** Logs, database, misc settings, About and the RPN screens. */
+private fun EntryProviderScope<NavKey>.rethinkPreviewToolEntries(
+    nav: RethinkNavOps,
+    demoDependencies: RethinkWebDemoDependencies,
+) {
     entry<RethinkRoute.NetworkLogs> {
         run { DemoLogsScreen(Modifier.fillMaxSize(), nav::popBackStack) }
     }
@@ -167,6 +177,10 @@ fun EntryProviderScope<NavKey>.rethinkPreviewEntries(
     entry<RethinkRoute.RpnSettings> {
         run { DemoRpnSettingsScreen(Modifier.fillMaxSize(), nav::popBackStack) }
     }
+}
+
+/** Apps, firewall, blocklists and the tunnel/proxy settings. */
+private fun EntryProviderScope<NavKey>.rethinkPreviewFirewallEntries(nav: RethinkNavOps) {
     entry<RethinkRoute.AppList> {
         run {
             DemoFirewallAppListScreen(
@@ -213,6 +227,10 @@ fun EntryProviderScope<NavKey>.rethinkPreviewEntries(
             )
         }
     }
+}
+
+/** DNS screens, ping test, anti-censorship and events. */
+private fun EntryProviderScope<NavKey>.rethinkPreviewDnsEntries(nav: RethinkNavOps) {
     entry<RethinkRoute.DnsList> {
         run { DemoDnsListScreen(Modifier.fillMaxSize(), nav::popBackStack) }
     }
@@ -238,7 +256,6 @@ fun EntryProviderScope<NavKey>.rethinkPreviewEntries(
         run { DemoBlockFreeDnsScreen(Modifier.fillMaxSize(), nav::popBackStack) }
     }
 }
-
 
 /** The Activity tab's Insights view (former Stats) with fixture rows. */
 @Composable

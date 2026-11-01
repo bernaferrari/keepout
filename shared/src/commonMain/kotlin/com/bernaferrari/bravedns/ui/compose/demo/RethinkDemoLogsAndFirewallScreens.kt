@@ -62,79 +62,40 @@ internal fun DemoLogsScreen(
         modifier = modifier,
         viewSwitch = viewSwitch,
         networkContent = { onToolbarActionsChange ->
-            LaunchedEffect(networkLogs) {
-                onToolbarActionsChange(
-                    RethinkLogToolbarActions(
-                        onRefresh = { networkLogs = demoNetworkLogs },
-                        onClear = networkLogs.takeIf { it.isNotEmpty() }?.let { { confirmClearNetworkLogs = true } },
-                    ),
-                )
-            }
-            Column(Modifier.fillMaxSize()) {
-                RethinkLogsControlsDeck {
-                    RethinkToolbarRow {
-                        RethinkLogFilterRow(
-                            selected = networkFilter,
-                            strings = demoLogListStrings,
-                            onSelected = { networkFilter = it },
-                            modifier = Modifier.weight(1f),
-                        )
-                        RethinkToolbarIconToggle(
-                            icon = MaterialSymbols.Filled.FilterList,
-                            // Same 40dp as the compact verdict group beside it.
-                            size = SharedDimensions.buttonHeightSm,
-                            contentDescription = "Reason",
-                            selected = selectedRules.isNotEmpty(),
-                            count = selectedRules.size,
-                            onClick = { showRulesPicker = true },
-                        )
-                        RethinkToolbarIconToggle(
-                            icon = MaterialSymbols.Filled.Apps,
-                            contentDescription = "Filter apps",
-                            selected = selectedNetworkApp != null,
-                            onClick = { showNetworkAppPicker = true },
-                        )
-                    }
-                }
-                RethinkLogList(
-                    state = visibleNetworkLogs.toDemoLogListState(),
-                    strings = demoLogListStrings,
-                    modifier = Modifier.weight(1f),
+            DemoLogsTab(
+                logs = networkLogs,
+                visibleLogs = visibleNetworkLogs,
+                filter = networkFilter,
+                onFilterChange = { networkFilter = it },
+                appSelected = selectedNetworkApp != null,
+                onPickApp = { showNetworkAppPicker = true },
+                onRefresh = { networkLogs = demoNetworkLogs },
+                onRequestClear = { confirmClearNetworkLogs = true },
+                onToolbarActionsChange = onToolbarActionsChange,
+            ) {
+                RethinkToolbarIconToggle(
+                    icon = MaterialSymbols.Filled.FilterList,
+                    // Same 40dp as the compact verdict group beside it.
+                    size = SharedDimensions.buttonHeightSm,
+                    contentDescription = "Reason",
+                    selected = selectedRules.isNotEmpty(),
+                    count = selectedRules.size,
+                    onClick = { showRulesPicker = true },
                 )
             }
         },
         dnsContent = { onToolbarActionsChange ->
-            LaunchedEffect(dnsLogs) {
-                onToolbarActionsChange(
-                    RethinkLogToolbarActions(
-                        onRefresh = { dnsLogs = demoDnsLogs },
-                        onClear = dnsLogs.takeIf { it.isNotEmpty() }?.let { { confirmClearDnsLogs = true } },
-                    ),
-                )
-            }
-            Column(Modifier.fillMaxSize()) {
-                RethinkLogsControlsDeck {
-                    RethinkToolbarRow {
-                        RethinkLogFilterRow(
-                            selected = dnsFilter,
-                            strings = demoLogListStrings,
-                            onSelected = { dnsFilter = it },
-                            modifier = Modifier.weight(1f),
-                        )
-                        RethinkToolbarIconToggle(
-                            icon = MaterialSymbols.Filled.Apps,
-                            contentDescription = "Filter apps",
-                            selected = selectedDnsApp != null,
-                            onClick = { showDnsAppPicker = true },
-                        )
-                    }
-                }
-                RethinkLogList(
-                    state = visibleDnsLogs.toDemoLogListState(),
-                    strings = demoLogListStrings,
-                    modifier = Modifier.weight(1f),
-                )
-            }
+            DemoLogsTab(
+                logs = dnsLogs,
+                visibleLogs = visibleDnsLogs,
+                filter = dnsFilter,
+                onFilterChange = { dnsFilter = it },
+                appSelected = selectedDnsApp != null,
+                onPickApp = { showDnsAppPicker = true },
+                onRefresh = { dnsLogs = demoDnsLogs },
+                onRequestClear = { confirmClearDnsLogs = true },
+                onToolbarActionsChange = onToolbarActionsChange,
+            )
         },
     )
 
@@ -193,6 +154,54 @@ internal fun DemoLogsScreen(
         )
     }
 }
+/** One log tab: verdict filter, extra toggles, the app filter, and the list. */
+@Composable
+private fun DemoLogsTab(
+    logs: List<RethinkLogRowModel>,
+    visibleLogs: List<RethinkLogRowModel>,
+    filter: RethinkLogFilter,
+    onFilterChange: (RethinkLogFilter) -> Unit,
+    appSelected: Boolean,
+    onPickApp: () -> Unit,
+    onRefresh: () -> Unit,
+    onRequestClear: () -> Unit,
+    onToolbarActionsChange: (RethinkLogToolbarActions) -> Unit,
+    extraToggles: @Composable RowScope.() -> Unit = {},
+) {
+    LaunchedEffect(logs) {
+        onToolbarActionsChange(
+            RethinkLogToolbarActions(
+                onRefresh = onRefresh,
+                onClear = logs.takeIf { it.isNotEmpty() }?.let { onRequestClear },
+            ),
+        )
+    }
+    Column(Modifier.fillMaxSize()) {
+        RethinkLogsControlsDeck {
+            RethinkToolbarRow {
+                RethinkLogFilterRow(
+                    selected = filter,
+                    strings = demoLogListStrings,
+                    onSelected = onFilterChange,
+                    modifier = Modifier.weight(1f),
+                )
+                extraToggles()
+                RethinkToolbarIconToggle(
+                    icon = MaterialSymbols.Filled.Apps,
+                    contentDescription = "Filter apps",
+                    selected = appSelected,
+                    onClick = onPickApp,
+                )
+            }
+        }
+        RethinkLogList(
+            state = visibleLogs.toDemoLogListState(),
+            strings = demoLogListStrings,
+            modifier = Modifier.weight(1f),
+        )
+    }
+}
+
 private fun List<RethinkLogRowModel>.filterFor(filter: RethinkLogFilter, appId: String?) = filter { row ->
     (filter == RethinkLogFilter.All || (filter == RethinkLogFilter.Blocked) == row.isBlocked) &&
         (appId == null || row.appLabel == appId)
@@ -300,30 +309,46 @@ internal fun DemoCustomRulesScreen(modifier: Modifier, onBack: () -> Unit) {
         modifier = modifier,
     )
     if (adding) {
-        var ruleScope by remember { mutableStateOf<RethinkAddRuleScope>(RethinkAddRuleScope.AllApps) }
-        RethinkAddRuleSheet(
-            target = tab,
-            scope = ruleScope,
-            strings = demoAddRuleStrings,
-            onScopeChange = { ruleScope = it },
+        DemoAddRuleSheet(
+            tab = tab,
             onDismiss = { adding = false },
-            onAdd = { value, action, added ->
-                val isIp = tab == RethinkRulesTab.IP
-                if (isIp && value.none { it.isDigit() }) {
-                    RethinkRulesAddResult(false, "Enter a valid IP address.")
-                } else {
-                    rules = rules + RethinkFirewallRule(
-                        id = "demo-rule-${rules.size}",
+            onAddRule = { rule -> rules = rules + rule.copy(id = "demo-rule-${rules.size}") },
+        )
+    }
+}
+
+/** Add-rule sheet for the demo; rejects an IP with no digits. The host assigns the rule id. */
+@Composable
+private fun DemoAddRuleSheet(
+    tab: RethinkRulesTab,
+    onDismiss: () -> Unit,
+    onAddRule: (RethinkFirewallRule) -> Unit,
+) {
+    var ruleScope by remember { mutableStateOf<RethinkAddRuleScope>(RethinkAddRuleScope.AllApps) }
+    RethinkAddRuleSheet(
+        target = tab,
+        scope = ruleScope,
+        strings = demoAddRuleStrings,
+        onScopeChange = { ruleScope = it },
+        onDismiss = onDismiss,
+        onAdd = { value, action, added ->
+            val isIp = tab == RethinkRulesTab.IP
+            if (isIp && value.none { it.isDigit() }) {
+                RethinkRulesAddResult(false, "Enter a valid IP address.")
+            } else {
+                onAddRule(
+                    RethinkFirewallRule(
+                        id = "",
                         uid = (added as? RethinkAddRuleScope.App)?.uid ?: -1000,
                         value = value,
                         tab = tab,
                         status = if (action == RethinkRuleAction.Trust) RethinkFirewallRuleStatus.Trust else RethinkFirewallRuleStatus.Block,
-                    )
-                    RethinkRulesAddResult.Success
-                }
-            },
-        )
-    }
+                    ),
+                )
+                RethinkRulesAddResult.Success
+            }
+        },
+    )
 }
 
 @Composable
@@ -370,52 +395,54 @@ internal fun DemoFirewallAppListScreen(
         apps = visibleApps,
         strings = demoFirewallAppListStrings,
         isRefreshing = isRefreshing,
-        onQueryChange = { query = it; filters = filters.copy(query = it) },
-        onRefresh = {
-            if (!isRefreshing) {
-                refreshScope.launch {
-                    isRefreshing = true
-                    kotlinx.coroutines.delay(450)
-                    apps = demoFirewallApps
-                    isRefreshing = false
-                }
-            }
-        },
-        onFiltersChange = { filters = it; query = it.query },
-        onQuickFilterChange = { filters = filters.copy(status = it) },
-        onSelectionAction = { action, selected ->
-            val ids = selected.map { it.id }.toSet()
-            apps = apps.map { app ->
-                if (app.id !in ids) return@map app
-                when (action) {
-                    RethinkAppSelectionAction.BlockWifi -> app.copy(wifiBlocked = true, status = RethinkFirewallAppStatus.Blocked)
-                    RethinkAppSelectionAction.BlockMobile -> app.copy(mobileBlocked = true, status = RethinkFirewallAppStatus.Blocked)
-                    RethinkAppSelectionAction.AllowAll -> app.copy(wifiBlocked = false, mobileBlocked = false, status = RethinkFirewallAppStatus.Allowed)
-                    RethinkAppSelectionAction.AllowWifi -> app.copy(wifiBlocked = false, status = if (app.mobileBlocked) RethinkFirewallAppStatus.Blocked else RethinkFirewallAppStatus.Allowed)
-                    RethinkAppSelectionAction.AllowMobile -> app.copy(mobileBlocked = false, status = if (app.wifiBlocked) RethinkFirewallAppStatus.Blocked else RethinkFirewallAppStatus.Allowed)
-                    RethinkAppSelectionAction.TrustedOnly -> app.copy(wifiBlocked = false, mobileBlocked = false, status = RethinkFirewallAppStatus.Lockdown)
-                    RethinkAppSelectionAction.SkipUniversalRules -> app.copy(wifiBlocked = false, mobileBlocked = false, status = RethinkFirewallAppStatus.Bypass)
-                    RethinkAppSelectionAction.SkipAllFiltering -> app.copy(wifiBlocked = false, mobileBlocked = false, status = RethinkFirewallAppStatus.SkipAllFiltering)
-                    RethinkAppSelectionAction.Exclude -> app.copy(wifiBlocked = false, mobileBlocked = false, status = RethinkFirewallAppStatus.Excluded)
-                }
-            }
-        },
-        loadCategories = { topLevel ->
-            RethinkWebDemoAppCatalog.entries
-                .filter { entry ->
-                    when (topLevel) {
-                        RethinkFirewallTopLevelFilter.Installed -> !entry.isSystemApp
-                        RethinkFirewallTopLevelFilter.System -> entry.isSystemApp
-                        RethinkFirewallTopLevelFilter.All -> true
+        actions = RethinkFirewallAppListActions(
+            onQueryChange = { query = it; filters = filters.copy(query = it) },
+            onRefresh = {
+                if (!isRefreshing) {
+                    refreshScope.launch {
+                        isRefreshing = true
+                        kotlinx.coroutines.delay(450)
+                        apps = demoFirewallApps
+                        isRefreshing = false
                     }
                 }
-                .map { it.category }
-                .filter(String::isNotBlank)
-                .distinct()
-        },
-        onAppClick = onAppInfo,
-        onWifiToggle = { app -> updateApp(app.copy(wifiBlocked = !app.wifiBlocked, status = if (!app.wifiBlocked || app.mobileBlocked) RethinkFirewallAppStatus.Blocked else RethinkFirewallAppStatus.Allowed)) },
-        onMobileToggle = { app -> updateApp(app.copy(mobileBlocked = !app.mobileBlocked, status = if (!app.mobileBlocked || app.wifiBlocked) RethinkFirewallAppStatus.Blocked else RethinkFirewallAppStatus.Allowed)) },
+            },
+            onFiltersChange = { filters = it; query = it.query },
+            onQuickFilterChange = { filters = filters.copy(status = it) },
+            onSelectionAction = { action, selected ->
+                val ids = selected.map { it.id }.toSet()
+                apps = apps.map { app ->
+                    if (app.id !in ids) return@map app
+                    when (action) {
+                        RethinkAppSelectionAction.BlockWifi -> app.copy(wifiBlocked = true, status = RethinkFirewallAppStatus.Blocked)
+                        RethinkAppSelectionAction.BlockMobile -> app.copy(mobileBlocked = true, status = RethinkFirewallAppStatus.Blocked)
+                        RethinkAppSelectionAction.AllowAll -> app.copy(wifiBlocked = false, mobileBlocked = false, status = RethinkFirewallAppStatus.Allowed)
+                        RethinkAppSelectionAction.AllowWifi -> app.copy(wifiBlocked = false, status = if (app.mobileBlocked) RethinkFirewallAppStatus.Blocked else RethinkFirewallAppStatus.Allowed)
+                        RethinkAppSelectionAction.AllowMobile -> app.copy(mobileBlocked = false, status = if (app.wifiBlocked) RethinkFirewallAppStatus.Blocked else RethinkFirewallAppStatus.Allowed)
+                        RethinkAppSelectionAction.TrustedOnly -> app.copy(wifiBlocked = false, mobileBlocked = false, status = RethinkFirewallAppStatus.Lockdown)
+                        RethinkAppSelectionAction.SkipUniversalRules -> app.copy(wifiBlocked = false, mobileBlocked = false, status = RethinkFirewallAppStatus.Bypass)
+                        RethinkAppSelectionAction.SkipAllFiltering -> app.copy(wifiBlocked = false, mobileBlocked = false, status = RethinkFirewallAppStatus.SkipAllFiltering)
+                        RethinkAppSelectionAction.Exclude -> app.copy(wifiBlocked = false, mobileBlocked = false, status = RethinkFirewallAppStatus.Excluded)
+                    }
+                }
+            },
+            loadCategories = { topLevel ->
+                RethinkWebDemoAppCatalog.entries
+                    .filter { entry ->
+                        when (topLevel) {
+                            RethinkFirewallTopLevelFilter.Installed -> !entry.isSystemApp
+                            RethinkFirewallTopLevelFilter.System -> entry.isSystemApp
+                            RethinkFirewallTopLevelFilter.All -> true
+                        }
+                    }
+                    .map { it.category }
+                    .filter(String::isNotBlank)
+                    .distinct()
+            },
+            onAppClick = onAppInfo,
+            onWifiToggle = { app -> updateApp(app.copy(wifiBlocked = !app.wifiBlocked, status = if (!app.wifiBlocked || app.mobileBlocked) RethinkFirewallAppStatus.Blocked else RethinkFirewallAppStatus.Allowed)) },
+            onMobileToggle = { app -> updateApp(app.copy(mobileBlocked = !app.mobileBlocked, status = if (!app.mobileBlocked || app.wifiBlocked) RethinkFirewallAppStatus.Blocked else RethinkFirewallAppStatus.Allowed)) },
+        ),
         appIcon = { app -> RethinkWebDemoAppIcon(app.packageName, app.appName) },
         onBackClick = onBack,
         modifier = modifier,

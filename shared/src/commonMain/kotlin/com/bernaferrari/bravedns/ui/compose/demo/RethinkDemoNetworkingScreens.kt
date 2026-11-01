@@ -528,11 +528,14 @@ internal fun DemoBlocklistEditorScreen(modifier: Modifier, onBack: () -> Unit) {
             query = query, selectionFilter = filter, selectedSubgroups = groups, availableSubgroups = (packs.map { it.group.id } + tags.map { it.group.id }).distinct(),
             showDownload = false, showEditor = true, isDownloading = false,
             strings = RethinkBlocklistEditorStrings("Download a fresh blocklist before choosing filters.", "Download", "Cancel", "Packs", "Advanced", "Search blocklists", "Clear search", "All", "Selected", "Filter groups", "Filter the visible blocklists", "Apply", "Discard", { "$it blocklists" }, { "$it entries" }, openSource = "Source"),
-            onViewChange = { view = it }, onQueryChange = { query = it }, onSelectionFilterChange = { filter = it }, onSubgroupsChange = { groups = it },
-            onDownload = {}, onCancelDownload = onBack,
-            onPackToggle = { pack, selected -> packs = packs.map { if (it.id == pack.id) it.copy(selected = selected) else it } },
-            onFileTagToggle = { tag, selected -> tags = tags.map { if (it.id == tag.id) it.copy(selected = selected) else it } },
-            onOpenUrl = {}, onApply = onBack, onDiscard = onBack, modifier = Modifier.padding(padding),
+            actions = RethinkBlocklistEditorActions(
+                onViewChange = { view = it }, onQueryChange = { query = it }, onSelectionFilterChange = { filter = it }, onSubgroupsChange = { groups = it },
+                onDownload = {}, onCancelDownload = onBack,
+                onPackToggle = { pack, selected -> packs = packs.map { if (it.id == pack.id) it.copy(selected = selected) else it } },
+                onFileTagToggle = { tag, selected -> tags = tags.map { if (it.id == tag.id) it.copy(selected = selected) else it } },
+                onOpenUrl = {}, onApply = onBack, onDiscard = onBack,
+            ),
+            modifier = Modifier.padding(padding),
         )
     }
 }

@@ -79,6 +79,21 @@ data class RethinkBlocklistEditorStrings(
     val retry: String = download,
 )
 
+/** Every user action the blocklist editor raises; the host owns the state behind them. */
+data class RethinkBlocklistEditorActions(
+    val onViewChange: (RethinkBlocklistEditorView) -> Unit,
+    val onQueryChange: (String) -> Unit,
+    val onSelectionFilterChange: (RethinkBlocklistSelectionFilter) -> Unit,
+    val onSubgroupsChange: (Set<String>) -> Unit,
+    val onDownload: () -> Unit,
+    val onCancelDownload: () -> Unit,
+    val onPackToggle: (RethinkBlocklistPack, Boolean) -> Unit,
+    val onFileTagToggle: (RethinkBlocklistFileTag, Boolean) -> Unit,
+    val onOpenUrl: (String) -> Unit,
+    val onApply: () -> Unit,
+    val onDiscard: () -> Unit,
+)
+
 /** Complete target-neutral packs/advanced blocklist editor body. */
 @Composable
 fun RethinkBlocklistEditor(
@@ -93,84 +108,27 @@ fun RethinkBlocklistEditor(
     showEditor: Boolean,
     isDownloading: Boolean,
     strings: RethinkBlocklistEditorStrings,
-    onViewChange: (RethinkBlocklistEditorView) -> Unit,
-    onQueryChange: (String) -> Unit,
-    onSelectionFilterChange: (RethinkBlocklistSelectionFilter) -> Unit,
-    onSubgroupsChange: (Set<String>) -> Unit,
-    onDownload: () -> Unit,
-    onCancelDownload: () -> Unit,
-    onPackToggle: (RethinkBlocklistPack, Boolean) -> Unit,
-    onFileTagToggle: (RethinkBlocklistFileTag, Boolean) -> Unit,
-    onOpenUrl: (String) -> Unit,
-    onApply: () -> Unit,
-    onDiscard: () -> Unit,
+    actions: RethinkBlocklistEditorActions,
     modifier: Modifier = Modifier,
     /** The last download failed: say so and offer Retry instead of a bare Download. */
     downloadFailed: Boolean = false,
 ) {
     Column(modifier.fillMaxSize()) {
         if (showDownload) {
-            Surface(
-                modifier = Modifier.fillMaxWidth().padding(horizontal = SharedDimensions.screenPaddingHorizontal),
-                shape = RoundedCornerShape(SharedDimensions.groupCornerRadius),
-                color = MaterialTheme.colorScheme.surfaceContainerLow,
-            ) {
-                Column(
-                    modifier = Modifier.fillMaxWidth().padding(SharedDimensions.cardPadding),
-                    verticalArrangement = Arrangement.spacedBy(SharedDimensions.spacingSm),
-                ) {
-                    val description = when {
-                        isDownloading -> strings.downloadingDescription
-                        downloadFailed -> strings.downloadFailedDescription
-                        else -> strings.downloadDescription
-                    }
-                    Text(
-                        description,
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = if (downloadFailed && !isDownloading) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.onSurface,
-                        modifier = Modifier.semantics { liveRegion = LiveRegionMode.Polite },
-                    )
-                    if (isDownloading) {
-                        // Downloading is one clear state: a full-width progress line and the way
-                        // out, not a stray spinner beside a greyed-out Download button.
-                        LinearWavyProgressIndicator(Modifier.fillMaxWidth().padding(vertical = SharedDimensions.spacingSm))
-                        Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
-                            TextButton(onClick = onCancelDownload) { Text(strings.cancel) }
-                        }
-                    } else {
-                        RethinkFormActionRow(
-                            confirmLabel = if (downloadFailed) strings.retry else strings.download,
-                            onConfirm = onDownload,
-                            dismissLabel = strings.cancel,
-                            onDismiss = onCancelDownload,
-                        )
-                    }
-                }
-            }
+            RethinkBlocklistDownloadCard(isDownloading, downloadFailed, strings, actions)
         } else if (showEditor) {
             Column(
                 modifier = Modifier.weight(1f).padding(horizontal = SharedDimensions.screenPaddingHorizontal),
                 verticalArrangement = Arrangement.spacedBy(SharedDimensions.spacingSm),
             ) {
-                RethinkBlocklistEditorTabs(activeView, strings, onViewChange)
+                RethinkBlocklistEditorTabs(activeView, strings, actions.onViewChange)
                 if (activeView == RethinkBlocklistEditorView.Advanced) {
-                    RethinkSearchField(query, onQueryChange, placeholder = strings.search, clearQueryContentDescription = strings.clearSearch, modifier = Modifier.fillMaxWidth())
-                    Row(
-                        Modifier.fillMaxWidth(),
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(SharedDimensions.spacingSm),
-                    ) {
-                        RethinkFilterChip(strings.all, selectionFilter == RethinkBlocklistSelectionFilter.All, onClick = { onSelectionFilterChange(RethinkBlocklistSelectionFilter.All) })
-                        RethinkFilterChip(strings.selected, selectionFilter == RethinkBlocklistSelectionFilter.Selected, onClick = { onSelectionFilterChange(RethinkBlocklistSelectionFilter.Selected) })
-                        Spacer(Modifier.weight(1f))
-                        RethinkBlocklistSubgroupMenu(selectedSubgroups, availableSubgroups, strings.filter, onSubgroupsChange)
-                    }
-                    Text(strings.filterHint, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                    RethinkBlocklistAdvancedFilters(query, selectionFilter, selectedSubgroups, availableSubgroups, strings, actions)
                 }
                 if (activeView == RethinkBlocklistEditorView.Packs) {
-                    RethinkBlocklistPackList(packs, strings, onPackToggle, Modifier.weight(1f))
+                    RethinkBlocklistPackList(packs, strings, actions.onPackToggle, Modifier.weight(1f))
                 } else {
-                    RethinkBlocklistFileTagList(fileTags, strings, onFileTagToggle, onOpenUrl, Modifier.weight(1f))
+                    RethinkBlocklistFileTagList(fileTags, strings, actions.onFileTagToggle, actions.onOpenUrl, Modifier.weight(1f))
                 }
             }
             // A docked tonal action bar: it sits below the list (never over the last rows) and
@@ -181,9 +139,9 @@ fun RethinkBlocklistEditor(
             ) {
                 RethinkFormActionRow(
                     confirmLabel = strings.apply,
-                    onConfirm = onApply,
+                    onConfirm = actions.onApply,
                     dismissLabel = strings.discard,
-                    onDismiss = onDiscard,
+                    onDismiss = actions.onDiscard,
                     modifier = Modifier.padding(
                         horizontal = SharedDimensions.screenPaddingHorizontal,
                         vertical = SharedDimensions.spacingMd,
@@ -192,6 +150,75 @@ fun RethinkBlocklistEditor(
             }
         }
     }
+}
+
+@Composable
+private fun RethinkBlocklistDownloadCard(
+    isDownloading: Boolean,
+    downloadFailed: Boolean,
+    strings: RethinkBlocklistEditorStrings,
+    actions: RethinkBlocklistEditorActions,
+) {
+    Surface(
+        modifier = Modifier.fillMaxWidth().padding(horizontal = SharedDimensions.screenPaddingHorizontal),
+        shape = RoundedCornerShape(SharedDimensions.groupCornerRadius),
+        color = MaterialTheme.colorScheme.surfaceContainerLow,
+    ) {
+        Column(
+            modifier = Modifier.fillMaxWidth().padding(SharedDimensions.cardPadding),
+            verticalArrangement = Arrangement.spacedBy(SharedDimensions.spacingSm),
+        ) {
+            val description = when {
+                isDownloading -> strings.downloadingDescription
+                downloadFailed -> strings.downloadFailedDescription
+                else -> strings.downloadDescription
+            }
+            Text(
+                description,
+                style = MaterialTheme.typography.bodyMedium,
+                color = if (downloadFailed && !isDownloading) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.onSurface,
+                modifier = Modifier.semantics { liveRegion = LiveRegionMode.Polite },
+            )
+            if (isDownloading) {
+                // Downloading is one clear state: a full-width progress line and the way
+                // out, not a stray spinner beside a greyed-out Download button.
+                LinearWavyProgressIndicator(Modifier.fillMaxWidth().padding(vertical = SharedDimensions.spacingSm))
+                Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
+                    TextButton(onClick = actions.onCancelDownload) { Text(strings.cancel) }
+                }
+            } else {
+                RethinkFormActionRow(
+                    confirmLabel = if (downloadFailed) strings.retry else strings.download,
+                    onConfirm = actions.onDownload,
+                    dismissLabel = strings.cancel,
+                    onDismiss = actions.onCancelDownload,
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun RethinkBlocklistAdvancedFilters(
+    query: String,
+    selectionFilter: RethinkBlocklistSelectionFilter,
+    selectedSubgroups: Set<String>,
+    availableSubgroups: List<String>,
+    strings: RethinkBlocklistEditorStrings,
+    actions: RethinkBlocklistEditorActions,
+) {
+    RethinkSearchField(query, actions.onQueryChange, placeholder = strings.search, clearQueryContentDescription = strings.clearSearch, modifier = Modifier.fillMaxWidth())
+    Row(
+        Modifier.fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(SharedDimensions.spacingSm),
+    ) {
+        RethinkFilterChip(strings.all, selectionFilter == RethinkBlocklistSelectionFilter.All, onClick = { actions.onSelectionFilterChange(RethinkBlocklistSelectionFilter.All) })
+        RethinkFilterChip(strings.selected, selectionFilter == RethinkBlocklistSelectionFilter.Selected, onClick = { actions.onSelectionFilterChange(RethinkBlocklistSelectionFilter.Selected) })
+        Spacer(Modifier.weight(1f))
+        RethinkBlocklistSubgroupMenu(selectedSubgroups, availableSubgroups, strings.filter, actions.onSubgroupsChange)
+    }
+    Text(strings.filterHint, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
 }
 
 @Composable

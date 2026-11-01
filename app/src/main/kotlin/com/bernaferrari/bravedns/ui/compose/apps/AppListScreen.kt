@@ -38,6 +38,7 @@ import com.bernaferrari.bravedns.service.FirewallManager
 import com.bernaferrari.bravedns.service.ProxyManager
 import com.bernaferrari.bravedns.ui.compose.common.AppIcon
 import com.bernaferrari.bravedns.ui.compose.firewall.RethinkFirewallApp
+import com.bernaferrari.bravedns.ui.compose.firewall.RethinkFirewallAppListActions
 import com.bernaferrari.bravedns.ui.compose.firewall.RethinkFirewallAppListScreen
 import com.bernaferrari.bravedns.ui.compose.firewall.RethinkFirewallAppListStrings
 import com.bernaferrari.bravedns.ui.compose.firewall.RethinkFirewallAppStatus
@@ -176,32 +177,34 @@ fun AppListScreen(
         apps = portableApps,
         strings = androidFirewallAppListStrings(),
         isRefreshing = isRefreshing,
-        onQueryChange = { query -> applyFilters(currentFilters.copy(query = query)) },
-        onRefresh = { refreshAppList() },
-        onFiltersChange = ::applyFilters,
-        onQuickFilterChange = { filter -> applyFilters(currentFilters.copy(status = filter)) },
-        onSelectionAction = ::applySelection,
-        loadCategories = { topLevel ->
-            withContext(Dispatchers.IO) {
-                when (topLevel) {
-                    RethinkFirewallTopLevelFilter.Installed -> FirewallManager.getCategoriesForInstalledApps()
-                    RethinkFirewallTopLevelFilter.System -> FirewallManager.getCategoriesForSystemApps()
-                    RethinkFirewallTopLevelFilter.All -> FirewallManager.getAllCategories()
+        actions = RethinkFirewallAppListActions(
+            onQueryChange = { query -> applyFilters(currentFilters.copy(query = query)) },
+            onRefresh = { refreshAppList() },
+            onFiltersChange = ::applyFilters,
+            onQuickFilterChange = { filter -> applyFilters(currentFilters.copy(status = filter)) },
+            onSelectionAction = ::applySelection,
+            loadCategories = { topLevel ->
+                withContext(Dispatchers.IO) {
+                    when (topLevel) {
+                        RethinkFirewallTopLevelFilter.Installed -> FirewallManager.getCategoriesForInstalledApps()
+                        RethinkFirewallTopLevelFilter.System -> FirewallManager.getCategoriesForSystemApps()
+                        RethinkFirewallTopLevelFilter.All -> FirewallManager.getAllCategories()
+                    }
                 }
-            }
-        },
-        onAppClick = { app -> onAppClick?.invoke(app.uid) },
-        onWifiToggle = { app -> requestConnectionToggle(app, wifi = true) },
-        onMobileToggle = { app -> requestConnectionToggle(app, wifi = false) },
+            },
+            onAppClick = { app -> onAppClick?.invoke(app.uid) },
+            onWifiToggle = { app -> requestConnectionToggle(app, wifi = true) },
+            onMobileToggle = { app -> requestConnectionToggle(app, wifi = false) },
+            loadAlsoAffects = { apps ->
+                // A rule is per UID: name the other packages that share a selected UID.
+                val selectedNames = apps.map { it.appName }.toSet()
+                withContext(Dispatchers.IO) {
+                    apps.map { it.uid }.distinct().flatMap { FirewallManager.getAppNamesByUid(it) }
+                }.filterNot { it in selectedNames }.distinct()
+            },
+        ),
         appIcon = { app -> AppIcon(app.packageName, appName = app.appName) },
         onBackClick = onBackClick,
-        loadAlsoAffects = { apps ->
-            // A rule is per UID: name the other packages that share a selected UID.
-            val selectedNames = apps.map { it.appName }.toSet()
-            withContext(Dispatchers.IO) {
-                apps.map { it.uid }.distinct().flatMap { FirewallManager.getAppNamesByUid(it) }
-            }.filterNot { it in selectedNames }.distinct()
-        },
         snackbarHostState = snackbar,
         selectionBackHandler = { enabled, onBack -> BackHandler(enabled = enabled, onBack = onBack) },
     )

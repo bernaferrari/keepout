@@ -152,28 +152,30 @@ private fun RethinkBlocklistEditorPane(
         isDownloading = flags.isDownloading || flags.showRemoteProgress,
         downloadFailed = flags.downloadFailed,
         strings = rethinkBlocklistEditorStrings(flags.filterLabelText, blocklistType.isLocal()),
-        onViewChange = { actions.onActiveViewChanged(blocklistViewOf(it)) },
-        onQueryChange = { query ->
-            if (!restoreStampIfPresent(query, context, scope, actions.onProcessSelectedFileTags)) {
-                applyFilterChange(filters, filterState) { it.query = formatQuery(query) }
-            }
-        },
-        onSelectionFilterChange = { selection ->
-            applyFilterChange(filters, filterState) { it.filterSelected = blocklistSelectionOf(selection) }
-        },
-        onSubgroupsChange = { groups ->
-            applyFilterChange(filters, filterState) {
-                it.subGroups.clear()
-                it.subGroups.addAll(groups)
-            }
-        },
-        onDownload = actions.onDownloadBlocklist,
-        onCancelDownload = actions.onCancelDownload,
-        onPackToggle = { pack, isSelected -> updateBlocklistSelection(scope, blocklistType, pack.tagIds, isSelected) },
-        onFileTagToggle = { tag, isSelected -> updateBlocklistSelection(scope, blocklistType, tag.tagIds, isSelected) },
-        onOpenUrl = { openUrl(context, it) },
-        onApply = actions.onApplyChanges,
-        onDiscard = actions.onRevertChanges,
+        actions = RethinkBlocklistEditorActions(
+            onViewChange = { actions.onActiveViewChanged(blocklistViewOf(it)) },
+            onQueryChange = { query ->
+                if (!restoreStampIfPresent(query, context, scope, actions.onProcessSelectedFileTags)) {
+                    applyFilterChange(filters, filterState) { it.query = formatQuery(query) }
+                }
+            },
+            onSelectionFilterChange = { selection ->
+                applyFilterChange(filters, filterState) { it.filterSelected = blocklistSelectionOf(selection) }
+            },
+            onSubgroupsChange = { groups ->
+                applyFilterChange(filters, filterState) {
+                    it.subGroups.clear()
+                    it.subGroups.addAll(groups)
+                }
+            },
+            onDownload = actions.onDownloadBlocklist,
+            onCancelDownload = actions.onCancelDownload,
+            onPackToggle = { pack, isSelected -> updateBlocklistSelection(scope, blocklistType, pack.tagIds, isSelected) },
+            onFileTagToggle = { tag, isSelected -> updateBlocklistSelection(scope, blocklistType, tag.tagIds, isSelected) },
+            onOpenUrl = { openUrl(context, it) },
+            onApply = actions.onApplyChanges,
+            onDiscard = actions.onRevertChanges,
+        ),
         modifier = modifier,
     )
 }

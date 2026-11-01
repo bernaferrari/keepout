@@ -26,6 +26,8 @@ import com.bernaferrari.bravedns.ui.compose.theme.RethinkIconWellDefaults
 import com.bernaferrari.bravedns.ui.compose.theme.RethinkTopBarLazyColumnScreen
 import com.bernaferrari.bravedns.ui.compose.theme.CardPosition
 import com.bernaferrari.bravedns.ui.compose.theme.RethinkStatusColors
+import androidx.compose.runtime.ReadOnlyComposable
+import androidx.compose.ui.graphics.Color
 import com.bernaferrari.bravedns.ui.compose.theme.SharedDimensions
 import com.bernaferrari.bravedns.ui.compose.theme.cardPositionFor
 import com.bernaferrari.bravedns.ui.compose.theme.rethinkSection
@@ -230,12 +232,8 @@ private fun RethinkOrbotPanel(
 ) {
     val highlighted = highlightedKey == "proxy_orbot"
     val enabled = state.canEnableProxy && !state.orbotConnecting
-    val status = when {
-        state.orbotConnecting -> strings.waiting to RethinkStatusColors.mixed
-        state.orbotEnabled -> strings.active to RethinkStatusColors.allowed
-        else -> strings.inactive to RethinkStatusColors.idle
-    }
-    val actionCount = if (enabled) 1 + (if (state.orbotAppCount != null && onAppsClick != null) 1 else 0) + 1 + (if (onInfoClick != null) 1 else 0) else 1
+    val status = orbotStatus(state, strings)
+    val actionCount = orbotActionCount(enabled, state.orbotAppCount != null && onAppsClick != null, onInfoClick != null)
     RethinkListGroup {
         RethinkListItem(
             headline = strings.orbot,
@@ -261,38 +259,63 @@ private fun RethinkOrbotPanel(
             onClick = onMainClick,
         )
         if (enabled) {
-            var row = 1
-            state.orbotAppCount?.let { count ->
-                onAppsClick?.let { openApps ->
-                    RethinkListItem(
-                        headline = strings.apps,
-                        supporting = strings.appsCount(count),
-                        leadingIcon = MaterialSymbols.Filled.Apps,
-                        position = cardPositionFor(row++, actionCount - 1),
-                        highlighted = highlightedKey == "proxy_orbot_apps",
-                        showTrailingChevron = true,
-                        onClick = openApps,
-                    )
-                }
-            }
-            RethinkListItem(
-                headline = strings.openApp,
-                leadingIcon = MaterialSymbols.Filled.PhoneAndroid,
-                position = cardPositionFor(row++, actionCount - 1),
-                highlighted = highlightedKey == "proxy_orbot_open_app" || highlightedKey == "proxy_orbot_notification",
-                showTrailingChevron = true,
-                onClick = onOpenAppClick,
-            )
-            onInfoClick?.let { info ->
-                RethinkListItem(
-                    headline = strings.info,
-                    leadingIcon = MaterialSymbols.Filled.Info,
-                    position = cardPositionFor(row, actionCount - 1),
-                    highlighted = highlightedKey == "proxy_orbot_info",
-                    // Opens an explanation dialog in place; chevrons are reserved for navigation.
-                    onClick = info,
-                )
-            }
+            RethinkOrbotActionRows(state, strings, highlightedKey, actionCount, onAppsClick, onOpenAppClick, onInfoClick)
         }
+    }
+}
+
+@Composable
+@ReadOnlyComposable
+private fun orbotStatus(state: RethinkProxySettingsState, strings: RethinkProxySettingsStrings): Pair<String, Color> = when {
+    state.orbotConnecting -> strings.waiting to RethinkStatusColors.mixed
+    state.orbotEnabled -> strings.active to RethinkStatusColors.allowed
+    else -> strings.inactive to RethinkStatusColors.idle
+}
+
+/** Rows in the Orbot group: the main row, plus apps/open/info while it can be used. */
+private fun orbotActionCount(enabled: Boolean, hasApps: Boolean, hasInfo: Boolean): Int =
+    if (enabled) 1 + (if (hasApps) 1 else 0) + 1 + (if (hasInfo) 1 else 0) else 1
+
+@Composable
+private fun RethinkOrbotActionRows(
+    state: RethinkProxySettingsState,
+    strings: RethinkProxySettingsStrings,
+    highlightedKey: String?,
+    actionCount: Int,
+    onAppsClick: (() -> Unit)?,
+    onOpenAppClick: () -> Unit,
+    onInfoClick: (() -> Unit)?,
+) {
+    var row = 1
+    state.orbotAppCount?.let { count ->
+        onAppsClick?.let { openApps ->
+            RethinkListItem(
+                headline = strings.apps,
+                supporting = strings.appsCount(count),
+                leadingIcon = MaterialSymbols.Filled.Apps,
+                position = cardPositionFor(row++, actionCount - 1),
+                highlighted = highlightedKey == "proxy_orbot_apps",
+                showTrailingChevron = true,
+                onClick = openApps,
+            )
+        }
+    }
+    RethinkListItem(
+        headline = strings.openApp,
+        leadingIcon = MaterialSymbols.Filled.PhoneAndroid,
+        position = cardPositionFor(row++, actionCount - 1),
+        highlighted = highlightedKey == "proxy_orbot_open_app" || highlightedKey == "proxy_orbot_notification",
+        showTrailingChevron = true,
+        onClick = onOpenAppClick,
+    )
+    onInfoClick?.let { info ->
+        RethinkListItem(
+            headline = strings.info,
+            leadingIcon = MaterialSymbols.Filled.Info,
+            position = cardPositionFor(row, actionCount - 1),
+            highlighted = highlightedKey == "proxy_orbot_info",
+            // Opens an explanation dialog in place; chevrons are reserved for navigation.
+            onClick = info,
+        )
     }
 }
