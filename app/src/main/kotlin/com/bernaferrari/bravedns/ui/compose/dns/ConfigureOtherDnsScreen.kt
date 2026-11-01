@@ -248,6 +248,7 @@ private fun AddDohDialog(appConfig: AppConfig, scope: CoroutineScope, onDismiss:
             defaultName = name,
             initialEndpoint = "https://",
             insecureLabel = checkboxLabel,
+            insecureDescription = stringResource(R.string.dns_skip_cert_desc),
             strings = endpointEditorStrings(),
             bootstrapLabel = bootstrapLabel,
             bootstrapDescription = bootstrapDescription,
@@ -294,6 +295,7 @@ private fun AddDotDialog(appConfig: AppConfig, scope: CoroutineScope, onDismiss:
             defaultName = name,
             initialEndpoint = "",
             insecureLabel = checkboxLabel,
+            insecureDescription = stringResource(R.string.dns_skip_cert_desc),
             strings = endpointEditorStrings(),
             onSubmit = { name, url, isSecure ->
                 scope.launch(Dispatchers.IO) {

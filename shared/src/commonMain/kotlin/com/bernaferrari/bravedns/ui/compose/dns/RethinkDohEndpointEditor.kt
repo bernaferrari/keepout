@@ -1,5 +1,8 @@
 package com.bernaferrari.bravedns.ui.compose.dns
 
+import com.bernaferrari.bravedns.ui.compose.theme.SharedDimensions
+import androidx.compose.foundation.layout.padding
+import androidx.compose.ui.Modifier
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -22,6 +25,8 @@ fun RethinkDohEndpointEditor(
     defaultName: String,
     initialEndpoint: String,
     insecureLabel: String,
+    /** What skipping the checks risks, under the checkbox. */
+    insecureDescription: String? = null,
     strings: RethinkEndpointEditorStrings,
     bootstrapLabel: String,
     bootstrapDescription: String,
@@ -40,8 +45,14 @@ fun RethinkDohEndpointEditor(
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Uri))
         RethinkFormTextField(bootstrap, onValueChange = { bootstrap = it }, label = bootstrapLabel,
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Ascii))
-        Text(bootstrapDescription, style = MaterialTheme.typography.bodySmall)
-        RethinkCheckboxListItem(headline = insecureLabel, checked = insecure,
+        Text(
+            bootstrapDescription,
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            // In line with the fields' text, like a supporting line.
+            modifier = Modifier.padding(horizontal = SharedDimensions.spacingLg),
+        )
+        RethinkCheckboxListItem(headline = insecureLabel, supporting = insecureDescription, checked = insecure,
             onCheckedChange = { insecure = it }, position = CardPosition.Single)
     }
 }

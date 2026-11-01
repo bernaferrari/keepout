@@ -91,4 +91,6 @@
     <string name="dns_trusted_endpoint_desc">The resolver trusted domains go through</string>
     <!-- Another provider: a server named only after its provider ("Cloudflare"). -->
     <string name="dns_providers_standard">Standard</string>
+    <!-- Add a DoH/DoT server: what skipping certificate checks risks. -->
+    <string name="dns_skip_cert_desc">Only for a server you run. Anyone on the network could read or change your lookups.</string>
 </resources>

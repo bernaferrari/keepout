@@ -124,6 +124,8 @@ fun RethinkUrlEndpointEditor(
     defaultName: String,
     initialEndpoint: String,
     insecureLabel: String,
+    /** What skipping the checks risks, under the checkbox. */
+    insecureDescription: String? = null,
     strings: RethinkEndpointEditorStrings,
     onSubmit: (name: String, endpoint: String, isSecure: Boolean) -> String?,
     onDismiss: () -> Unit,
@@ -142,7 +144,7 @@ fun RethinkUrlEndpointEditor(
         RethinkFormTextField(name, onValueChange = { name = it }, label = nameLabel)
         RethinkFormTextField(endpoint, onValueChange = { endpoint = it }, label = endpointLabel, keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Uri))
         RethinkCheckboxListItem(
-            headline = insecureLabel,
+            headline = insecureLabel, supporting = insecureDescription,
             checked = insecure,
             onCheckedChange = { insecure = it },
             position = CardPosition.Single,

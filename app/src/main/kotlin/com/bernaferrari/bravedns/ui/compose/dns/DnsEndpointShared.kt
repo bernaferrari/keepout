@@ -130,6 +130,8 @@ internal fun DnsEndpointManagedRow(
     description: String? = null,
 ) {
     var infoDialog by remember(key) { mutableStateOf<DnsInfoDialogModel?>(null) }
+    // Provider names as written ("AdGuard", "CleanBrowsing"), whatever the stored name's case.
+    val title = dnsServerDisplayName(title)
     var deleteDialog by remember(key) { mutableStateOf<DnsDeleteDialogModel?>(null) }
 
     DnsEndpointRow(
@@ -168,7 +170,7 @@ internal fun DnsEndpointManagedRow(
 
     infoDialog?.let { model ->
         DnsInfoDialog(
-            model = model,
+            model = model.copy(title = dnsServerDisplayName(model.title)),
             onDismiss = { infoDialog = null },
         )
     }

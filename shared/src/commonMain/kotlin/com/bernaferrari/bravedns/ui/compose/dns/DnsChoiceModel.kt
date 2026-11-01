@@ -72,6 +72,16 @@ fun dnsProviderDisplayName(serverName: String): String {
     return first.replaceFirstChar { it.uppercaseChar() }
 }
 
+/** A server name with its provider written properly ("Adguard Family" → "AdGuard Family"). */
+fun dnsServerDisplayName(serverName: String): String {
+    val trimmed = serverName.trim()
+    val first = trimmed.split(' ').firstOrNull { it.isNotBlank() } ?: return trimmed
+    val proper = KNOWN_PROVIDERS[dnsProviderKey(trimmed)] ?: return trimmed
+    return if (first.equals(proper.replace(" ", ""), ignoreCase = true) || dnsProviderKey(first) == dnsProviderKey(proper)) {
+        proper + trimmed.substring(first.length)
+    } else trimmed
+}
+
 private val KNOWN_PROVIDERS = mapOf(
     "adguard" to "AdGuard",
     "cleanbrowsing" to "CleanBrowsing",
