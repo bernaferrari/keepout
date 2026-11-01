@@ -504,7 +504,7 @@ internal fun DemoAppInfoScreen(modifier: Modifier, app: RethinkFirewallApp?, onB
         strings = RethinkAppInfoStrings(
             unavailable = "This app is no longer installed", loading = "Loading",
             internetAccess = "Internet access", wifi = "Wi‑Fi", mobile = "Mobile data",
-            allowed = "Allowed", blocked = "Blocked", meteredFootnote = "Wi‑Fi from a phone hotspot (any metered Wi‑Fi) counts as mobile data.",
+            allowed = "Allowed", blocked = "Blocked",
             temporaryAllow = "Allow for 15 minutes", stopTemporaryAccess = { "Stop temporary access · $it min left" },
             recentActivity = "Recent activity", seeAllActivity = "See all activity", noRecentActivity = "Nothing in the last 24 hours",
             rules = "Rules",

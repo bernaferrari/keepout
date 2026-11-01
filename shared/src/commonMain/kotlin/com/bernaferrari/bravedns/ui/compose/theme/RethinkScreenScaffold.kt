@@ -35,6 +35,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.runtime.staticCompositionLocalOf
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
@@ -61,6 +62,8 @@ fun RethinkLargeTopBar(
     titleLeading: (@Composable () -> Unit)? = null,
     actions: @Composable RowScope.() -> Unit = {},
     backDescription: String = LocalRethinkBackDescription.current,
+    /** Lines the subtitle up under the title text when [titleLeading] sits before it. */
+    subtitleIndent: Dp = 0.dp,
 ) {
     val hasSubtitle = !subtitle.isNullOrBlank()
     TwoRowsTopAppBar(
@@ -95,7 +98,7 @@ fun RethinkLargeTopBar(
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                         // A small step down from the title, so the two read as a pair, not one block.
-                        modifier = Modifier.padding(top = SharedDimensions.spacingXs, bottom = LargeTitleBottomPadding),
+                        modifier = Modifier.padding(start = subtitleIndent, top = SharedDimensions.spacingXs, bottom = LargeTitleBottomPadding),
                     )
                 }
             }

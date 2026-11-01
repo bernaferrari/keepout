@@ -387,7 +387,6 @@ private fun appInfoStrings(): RethinkAppInfoStrings {
         mobile = stringResource(R.string.lbl_mobile_data),
         allowed = stringResource(R.string.lbl_allowed),
         blocked = stringResource(R.string.lbl_blocked),
-        meteredFootnote = stringResource(R.string.app_metered_footnote),
         temporaryAllow = stringResource(R.string.temp_allow_label),
         stopTemporaryAccess = { minutes -> resources.getQuantityString(R.plurals.app_stop_temp_access, minutes, minutes) },
         recentActivity = stringResource(R.string.app_recent_activity),

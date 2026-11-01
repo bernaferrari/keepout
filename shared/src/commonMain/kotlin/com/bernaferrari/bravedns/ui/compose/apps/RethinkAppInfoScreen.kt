@@ -163,8 +163,6 @@ data class RethinkAppInfoStrings(
     val mobile: String,
     val allowed: String,
     val blocked: String,
-    /** "Wi‑Fi from a phone hotspot … counts as mobile data." The firewall decides by metered, not by radio. */
-    val meteredFootnote: String,
     val temporaryAllow: String,
     /** "Stop temporary access · 12 min left" */
     val stopTemporaryAccess: (minutesLeft: Int) -> String,
@@ -245,6 +243,8 @@ fun RethinkAppInfoScreen(
                 onBackClick = actions.onBackClick,
                 scrollBehavior = scrollBehavior,
                 titleLeading = titleLeading,
+                // The package reads as the name's second line, not a caption under the icon.
+                subtitleIndent = packageIndent(titleLeading != null),
             )
         },
         snackbarHost = { snackbarHostState?.let { SnackbarHost(it) } },
@@ -409,40 +409,47 @@ private fun RethinkAppStatusLine(state: RethinkAppInfoState) {
 /** How strongly the status pill's background tints toward its status colour. */
 private const val STATUS_WASH_ALPHA = 0.14f
 
-/** Wi‑Fi and mobile data, temporary access when something is blocked, and the metered footnote. */
+/**
+ * Wi‑Fi, mobile data and, when something is blocked, temporary access: one compact group 4dp
+ * apart, like a quick-settings panel, so the three read as one control.
+ */
 @Composable
 private fun RethinkAppAccessSection(state: RethinkAppInfoState, strings: RethinkAppInfoStrings, actions: RethinkAppInfoActions) {
     RethinkFormSection(strings.internetAccess) {
-        RethinkAppNetworkPair(state, strings, actions.onWifiClick, actions.onMobileClick)
-        val minutesLeft = state.tempAllowMinutesLeft
-        val somethingBlocked = state.wifiBlocked || state.mobileBlocked || state.mode == RethinkAppMode.TrustedOnly
-        AnimatedVisibility(
-            visible = minutesLeft != null || somethingBlocked,
-            enter = fadeIn() + expandVertically(),
-            exit = fadeOut() + shrinkVertically(),
-        ) {
-            FilledTonalButton(
-                onClick = { actions.onTempAllowChange(minutesLeft == null) },
-                enabled = state.enabled,
-                modifier = Modifier.fillMaxWidth().heightIn(min = SharedDimensions.buttonHeight),
+        Column {
+            RethinkAppNetworkPair(state, strings, actions.onWifiClick, actions.onMobileClick)
+            val minutesLeft = state.tempAllowMinutesLeft
+            val somethingBlocked = state.wifiBlocked || state.mobileBlocked || state.mode == RethinkAppMode.TrustedOnly
+            AnimatedVisibility(
+                visible = minutesLeft != null || somethingBlocked,
+                enter = fadeIn() + expandVertically(),
+                exit = fadeOut() + shrinkVertically(),
             ) {
-                Icon(
-                    if (minutesLeft == null) MaterialSymbols.Filled.Timer else MaterialSymbols.Filled.TimerOff,
-                    null,
-                    Modifier.size(ButtonDefaults.IconSize),
-                )
-                Spacer(Modifier.width(ButtonDefaults.IconSpacing))
-                Text(if (minutesLeft == null) strings.temporaryAllow else strings.stopTemporaryAccess(minutesLeft))
+                FilledTonalButton(
+                    onClick = { actions.onTempAllowChange(minutesLeft == null) },
+                    enabled = state.enabled,
+                    // 4dp under the tiles, inside the animation, so no gap is left once it hides.
+                    modifier = Modifier
+                        .padding(top = SharedDimensions.spacingXs)
+                        .fillMaxWidth()
+                        .heightIn(min = SharedDimensions.buttonHeight),
+                ) {
+                    Icon(
+                        if (minutesLeft == null) MaterialSymbols.Filled.Timer else MaterialSymbols.Filled.TimerOff,
+                        null,
+                        Modifier.size(ButtonDefaults.IconSize),
+                    )
+                    Spacer(Modifier.width(ButtonDefaults.IconSpacing))
+                    Text(if (minutesLeft == null) strings.temporaryAllow else strings.stopTemporaryAccess(minutesLeft))
+                }
             }
         }
-        Text(
-            strings.meteredFootnote,
-            style = MaterialTheme.typography.bodySmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-            modifier = Modifier.padding(horizontal = SharedDimensions.spacingXs),
-        )
     }
 }
+
+/** Starts the package line where the name starts, past the icon and its gap. */
+private fun packageIndent(hasIcon: Boolean): Dp =
+    if (hasIcon) SharedDimensions.iconContainerLg + SharedDimensions.spacingSmMd else 0.dp
 
 @Composable
 private fun RethinkAppNetworkPair(
@@ -451,21 +458,20 @@ private fun RethinkAppNetworkPair(
     onWifiClick: () -> Unit,
     onMobileClick: () -> Unit,
 ) {
-    // Two standalone tiles, 8dp apart — the same gap the section leaves above the temporary-access
-    // button, so the block reads as one even grid. IntrinsicSize.Min keeps both tiles the same
-    // height should a label still need two lines.
+    // Two tiles 4dp apart, the same gap as the temporary-access button below: one tight group.
+    // IntrinsicSize.Min keeps both tiles the same height should a label still need two lines.
     BoxWithConstraints(Modifier.fillMaxWidth()) {
     // One label size for both tiles, the largest that keeps "Mobile data" on one line, so a
     // narrow phone or a large font doesn't stack it into a tall, bulky pill.
     val measurer = rememberTextMeasurer()
     val density = LocalDensity.current
     val base = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.SemiBold)
-    val textRoom = (maxWidth - SharedDimensions.spacingSm) / 2 - NetworkTileChrome
+    val textRoom = (maxWidth - SharedDimensions.spacingXs) / 2 - NetworkTileChrome
     val widest = listOf(strings.wifi, strings.mobile).maxOf { with(density) { measurer.measure(it, base, maxLines = 1).size.width.toDp() } }
     val labelSize = if (widest <= textRoom) base.fontSize else
         (base.fontSize.value * (textRoom / widest)).coerceAtLeast(MaterialTheme.typography.titleSmall.fontSize.value).sp
     Row(
-        horizontalArrangement = Arrangement.spacedBy(SharedDimensions.spacingSm),
+        horizontalArrangement = Arrangement.spacedBy(SharedDimensions.spacingXs),
         modifier = Modifier.fillMaxWidth().height(IntrinsicSize.Min),
     ) {
         RethinkAppNetworkTile(
