@@ -1,0 +1,72 @@
+<!doctype html><html><head><meta charset="utf-8">
+<link rel="stylesheet" href="../_assets/frame.css"><link rel="stylesheet" href="style.css">
+<script src="../_assets/data.js"></script>
+<style>
+.top{height:56px;display:flex;align-items:center;padding:0 8px 0 6px;gap:4px}
+.ib{width:44px;height:44px;display:grid;place-items:center}
+.top h1{flex:1;font:600 22px/1 var(--ui);letter-spacing:-.025em}
+.rate{display:flex;align-items:center;gap:8px;padding-right:4px}
+.rate b{font:500 13px/1 var(--mono)}
+.bar2{display:flex;gap:8px;padding:0 12px}
+.seg{display:flex;border:1px solid var(--line);border-radius:6px;background:var(--panel);padding:3px;gap:3px}
+.seg span{height:32px;padding:0 10px;display:flex;align-items:center;gap:6px;border-radius:4px;font:500 11px/1 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--ink2);white-space:nowrap}
+.seg span b{font-weight:500;color:var(--ink)}
+.seg span.on{background:var(--ink);color:var(--panel)}
+.seg span.on b{color:var(--panel)}
+.sq{width:40px;height:40px;border:1px solid var(--line);border-radius:6px;background:var(--panel);display:grid;place-items:center}
+.strip{margin:10px 12px 0;padding:10px 12px 8px}
+.strip svg{display:block}
+.cols{display:grid;grid-template-columns:62px 14px 1fr 26px;gap:8px;padding:12px 24px 6px;border-bottom:1px solid var(--line)}
+.e{display:grid;grid-template-columns:62px 14px 1fr 26px;gap:8px;align-items:start;padding:9px 24px 9px;border-bottom:1px solid var(--grid)}
+.e .t{font:400 12px/18px var(--mono);color:var(--ink2)}
+.e .st{margin-top:5px;width:9px;height:9px;border-radius:50%;border:1.5px solid var(--ink3)}
+.e.x .st{border:none;border-radius:1px;background:var(--stop);width:10px;height:10px}
+.e .d{font:400 13.5px/18px var(--mono);letter-spacing:-.02em;color:var(--ink2)}
+.e .d b{font-weight:500;color:var(--ink)}
+.e .m{margin-top:3px;font:400 12px/16px var(--ui);color:var(--ink2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.e.x .m em{font-style:normal;color:var(--stop);font-weight:500}
+.e .appicon{margin-top:1px}
+.e.new{background:linear-gradient(90deg,var(--stopTint),transparent 85%)}
+</style></head><body>
+<div class="phone">
+  <div class="status"></div>
+  <div class="top">
+    <span class="ib"><span class="ms">arrow_back</span></span>
+    <h1>Logs</h1>
+    <span class="rate"><span class="lamp"></span><b>4.1/min</b></span>
+    <span class="ib"><span class="ms">search</span></span>
+  </div>
+  <div class="bar2">
+    <div class="seg"><span class="on">Net</span><span>DNS</span></div>
+    <div class="seg" style="flex:1"><span class="on">All <b>579</b></span><span>Pass <b>457</b></span><span>Stop <b style="color:var(--stop)">122</b></span></div>
+  </div>
+  <div class="strip panel ticks">
+    <div style="display:flex;justify-content:space-between"><span class="cap">Last 60 min</span><span class="cap">Window 09:33–09:41</span></div>
+    <svg id="strip" width="362" height="46"></svg>
+  </div>
+  <div class="cols"><span class="cap">Time</span><span class="cap"></span><span class="cap">Destination · app · rule</span><span class="cap"></span></div>
+  <div id="log"></div>
+  <div class="nav">
+    <a><span class="ms">home</span>Home</a>
+    <a><span class="ms">bar_chart</span>Stats</a>
+    <a class="on"><span class="ms">settings</span>Settings</a>
+  </div>
+</div>
+<script>
+// Last-hour strip: each tick is one connection, stops drop below the line. The bracket is the window shown below.
+const r = rng(3); let g = `<line x1="0" y1="26" x2="362" y2="26" stroke="var(--ink3)"/>`;
+for (let i = 0; i < 150; i++) {
+  const x = 2 + r() * 356, stop = r() < .22, h = 6 + r() * 12;
+  g += stop ? `<rect x="${x}" y="27" width="1.6" height="${h * .8}" fill="var(--stop)"/>` : `<rect x="${x}" y="${25 - h}" width="1.2" height="${h}" fill="var(--pass)" opacity=".8"/>`;
+}
+g += `<rect x="314" y="2" width="46" height="42" fill="none" stroke="var(--ink)" stroke-width="1.2" rx="2"/><rect x="314" y="2" width="46" height="42" fill="var(--ink)" opacity=".06"/>`;
+$('#strip').innerHTML = g;
+const MAXC = 32; $('#log').innerHTML = KP.logs.map(([t, sub, root, app, ic, x, how, det], i) => `
+  <div class="e ${x ? 'x' : ''} ${i === 0 ? 'new' : ''}">
+    <span class="t">${t}</span><span class="st"></span>
+    <div style="min-width:0"><div class="d ell">${fitDomain(sub, root, MAXC)}<b>${root}</b></div>
+    <div class="m">${app} · ${x ? `<em>stopped · ${how === 'DNS' ? 'DNS' : 'app rule'}</em>${how === 'DNS' ? ' · ' + det : ''}` : `${how} · ${det}`}</div></div>
+    ${appIcon(ic, 22, app)}
+  </div>`).join('');
+frame();
+</script></body></html>

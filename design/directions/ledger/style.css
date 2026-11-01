@@ -1,0 +1,28 @@
+/* Direction A — Ledger. Paper, ink, hairline rules, and one red pencil for what was stopped. */
+@import url('https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,500&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,200..400,0..1,0&display=block');
+:root{
+  --bg:#F6F1E9; --surface:#FFFCF6; --sunk:#ECE4D8; --ink:#1F1A16; --ink2:#6B6158; --ink3:#A1968A; --rule:#DCD2C4;
+  --stop:#CF3447; --stopTint:#F8DEDC; --pass:#2D6A4E; --passTint:#DCE9DF; --seal1:#FF8A7A; --seal2:#F0485A;
+  --serif:'Newsreader',serif; --ui:'IBM Plex Sans',sans-serif; --mono:'IBM Plex Mono',monospace;
+}
+.dark{
+  --bg:#15110E; --surface:#1D1814; --sunk:#29221C; --ink:#F1E8DC; --ink2:#AA9D8E; --ink3:#76695C; --rule:#382F27;
+  --stop:#FF7D84; --stopTint:#3B1D1F; --pass:#86C9A5; --passTint:#1C3026;
+}
+body{font-family:var(--ui)}
+.ms{font-family:'Material Symbols Outlined';font-weight:300;font-size:22px;line-height:1;font-variation-settings:'opsz' 24,'wght' 300,'FILL' 0;display:inline-block;color:var(--ink)}
+.pad{padding:0 24px}
+.kicker{font:500 11px/1 var(--ui);letter-spacing:.14em;text-transform:uppercase;color:var(--ink2)}
+.hair{height:1px;background:var(--rule)}
+.double{border-top:2px solid var(--ink);border-bottom:1px solid var(--ink);height:5px}
+.serif{font-family:var(--serif)}
+.stop{color:var(--stop)}
+.struck{text-decoration:line-through;text-decoration-color:var(--stop);text-decoration-thickness:1.6px}
+
+/* Nav: quiet, a short ink rule marks where you are. */
+.nav{position:absolute;left:0;right:0;bottom:0;height:96px;padding-bottom:22px;background:var(--bg);border-top:1px solid var(--rule);display:flex;z-index:10}
+.nav a{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;font:500 12px/1 var(--ui);color:var(--ink2);position:relative}
+.nav a .ms{color:var(--ink2)}
+.nav a.on{color:var(--ink)}
+.nav a.on .ms{color:var(--ink);font-variation-settings:'opsz' 24,'wght' 400,'FILL' 1}
+.nav a.on::before{content:'';position:absolute;top:-1px;width:28px;height:2px;background:var(--ink)}

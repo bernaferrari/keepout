@@ -1,0 +1,50 @@
+<!doctype html><html><head><meta charset="utf-8">
+<link rel="stylesheet" href="../_assets/frame.css"><link rel="stylesheet" href="style.css">
+<script src="../_assets/data.js"></script>
+<style>
+.top{height:56px;display:flex;align-items:center;justify-content:space-between;padding:0 8px 0 20px}
+.top h1{font:600 30px/1 var(--ui);letter-spacing:-.035em}
+.ib{width:44px;height:44px;display:grid;place-items:center}
+.sh{display:flex;align-items:center;gap:10px;padding:14px 20px 8px}
+.sh::after{content:'';flex:1;height:1px;background:var(--line)}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;padding:0 12px}
+.mod{height:92px;padding:12px 12px 12px 14px;display:flex;flex-direction:column}
+.mod .hd{display:flex;align-items:center;justify-content:space-between}
+.mod .ms{font-size:22px}
+.mod .n{margin-top:auto;font:500 16px/1 var(--ui);letter-spacing:-.01em}
+.mod .v{margin-top:6px;display:flex;align-items:center;gap:6px;font:400 11.5px/1 var(--mono);color:var(--ink2);white-space:nowrap}
+.mod .v .lamp{width:6px;height:6px;box-shadow:0 0 6px var(--lamp)}
+.mod.wide{grid-column:span 2;height:56px;flex-direction:row;align-items:center;gap:12px}
+.mod.wide .n{margin:0;flex:1}
+.mod.wide .v{margin:0}
+.seg{margin:0 12px;display:flex;border:1px solid var(--line);border-radius:6px;background:var(--panel);padding:3px;gap:3px}
+.seg span{flex:1;height:38px;display:flex;align-items:center;justify-content:center;border-radius:4px;font:500 11px/1 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--ink2)}
+.seg span.on{background:var(--ink);color:var(--panel)}
+</style></head><body>
+<div class="phone">
+  <div class="status"></div>
+  <div class="top"><h1>Settings</h1><span class="ib"><span class="ms">search</span></span></div>
+  <div class="sh"><span class="cap">01 · Protection</span></div>
+  <div class="grid">
+    <div class="mod panel ticks"><div class="hd"><span class="ms">apps</span><span class="cap">142</span></div><div class="n">Apps</div><div class="v">6 custom rules</div></div>
+    <div class="mod panel ticks"><div class="hd"><span class="ms">dns</span><span class="cap" style="color:var(--pass)">33 ms</span></div><div class="n">DNS</div><div class="v"><span class="lamp"></span>RDNS Default</div></div>
+    <div class="mod panel ticks"><div class="hd"><span class="ms">shield</span><span class="cap">3</span></div><div class="n">Firewall</div><div class="v"><span class="lamp"></span>3 rules armed</div></div>
+    <div class="mod panel ticks"><div class="hd"><span class="ms">alt_route</span><span class="cap">—</span></div><div class="n">Proxy</div><div class="v"><span class="lamp off"></span>off</div></div>
+  </div>
+  <div class="sh"><span class="cap">02 · System</span></div>
+  <div class="grid">
+    <div class="mod panel"><div class="hd"><span class="ms">lan</span></div><div class="n">Network</div><div class="v">wi-fi · ipv4/6</div></div>
+    <div class="mod panel"><div class="hd"><span class="ms">tune</span></div><div class="n">General</div><div class="v">start on boot</div></div>
+    <div class="mod panel"><div class="hd"><span class="ms">receipt_long</span><span class="cap">12 MB</span></div><div class="n">Logs</div><div class="v">kept 7 days</div></div>
+    <div class="mod panel"><div class="hd"><span class="ms">public</span></div><div class="n">Anti-censorship</div><div class="v"><span class="lamp off"></span>off</div></div>
+    <div class="mod panel wide"><span class="ms">science</span><span class="n">Advanced</span><span class="v">expert</span><span class="ms" style="font-size:18px">arrow_forward</span></div>
+  </div>
+  <div class="sh"><span class="cap">03 · Appearance</span></div>
+  <div class="seg"><span class="on">System</span><span>Light</span><span>Dark</span></div>
+  <div class="nav">
+    <a><span class="ms">home</span>Home</a>
+    <a><span class="ms">bar_chart</span>Stats</a>
+    <a class="on"><span class="ms">settings</span>Settings</a>
+  </div>
+</div>
+<script>frame();</script></body></html>

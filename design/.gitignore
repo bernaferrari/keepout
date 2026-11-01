@@ -1,0 +1,15 @@
+# Regenerable output (see directions/README.md and icons/README.md for the commands). Sources stay in git:
+# the mockups' HTML and CSS, the hand-cropped app icons in directions/_assets, the icon scripts and
+# current-icons.json, and the notes.
+*.png
+!directions/_assets/*.png
+icons/svg/
+icons/kotlin/
+icons/kotlin-cd/
+icons/composites/
+icons/tools/symbols/
+icons/tools/manifest*.json
+icons/tools/composite*.json
+icons/tools/review.json
+icons/tools/blind-*.json
+__pycache__/

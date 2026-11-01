@@ -1,0 +1,12 @@
+/* Phone frame shared by every mock: 412x915 dp, rendered at 2x. */
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:412px;height:915px;overflow:hidden;-webkit-font-smoothing:antialiased}
+.phone{position:relative;width:412px;height:915px;overflow:hidden;background:var(--bg);color:var(--ink)}
+.status{position:relative;z-index:5;height:40px;display:flex;align-items:center;justify-content:space-between;padding:4px 22px 0 26px;font:500 14px/1 var(--ui);color:var(--ink)}
+.status .ic{display:flex;gap:4px}
+.status .ic svg{width:16px;height:16px;fill:currentColor}
+.gesture{position:absolute;z-index:20;bottom:9px;left:50%;width:108px;height:4px;border-radius:2px;background:var(--ink);opacity:.85;transform:translateX(-50%)}
+.row{display:flex;align-items:center}
+.grow{flex:1;min-width:0}
+.tnum{font-variant-numeric:tabular-nums}
+.ell{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}

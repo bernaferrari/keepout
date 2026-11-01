@@ -1,0 +1,67 @@
+<!doctype html><html><head><meta charset="utf-8">
+<link rel="stylesheet" href="../_assets/frame.css"><link rel="stylesheet" href="style.css">
+<script src="../_assets/data.js"></script>
+<style>
+.top{display:flex;justify-content:flex-end;padding:8px 14px 0}
+.top .ib{width:44px;height:44px;display:grid;place-items:center}
+h1{font:500 46px/1 var(--serif);letter-spacing:-.025em;padding:6px 24px 0}
+.sub{padding:10px 24px 0;font:italic 400 16px/1.35 var(--serif);color:var(--ink2)}
+.sec{padding:22px 24px 0}
+.sec .h{display:flex;align-items:baseline;gap:10px;padding-bottom:10px;border-bottom:2px solid var(--ink)}
+.sec .h .no{font:italic 400 15px/1 var(--serif);color:var(--ink3)}
+.sec .h .t{font:500 11px/1 var(--ui);letter-spacing:.14em;text-transform:uppercase}
+.grid{display:grid;grid-template-columns:1fr 1fr}
+.cell{padding:12px 0 12px 0;border-bottom:1px solid var(--rule);min-height:80px;position:relative}
+.cell:nth-child(2n){padding-left:16px;border-left:1px solid var(--rule)}
+.cell.wide{grid-column:span 2}
+.cell .ms{font-size:20px;color:var(--ink2)}
+.cell .n{margin-top:6px;font:500 21px/1.05 var(--serif);letter-spacing:-.01em}
+.cell .v{margin-top:5px;font:400 12.5px/1.3 var(--ui);color:var(--ink2)}
+.cell .v.on{color:var(--pass)}
+.cell .v.on::before{content:'● ';font-size:9px;vertical-align:1px}
+.cell .ar{position:absolute;right:2px;top:15px;font:400 14px/1 var(--ui);color:var(--ink3)}
+.seg{display:flex;margin-top:12px;border:1px solid var(--ink);border-radius:20px;overflow:hidden}
+.seg > span{flex:1;height:38px;display:flex;align-items:center;justify-content:center;gap:6px;font:500 13px/1 var(--ui)}
+.seg > span+span{border-left:1px solid var(--ink)}
+.seg > span.on{background:var(--ink);color:var(--bg)}
+.seg span.on .ms{color:var(--bg)}
+</style></head><body>
+<div class="phone">
+  <div class="status"></div>
+  <div class="top" style="padding-top:0"><span class="ib"><span class="ms">search</span></span></div>
+  <h1>Settings</h1>
+  <p class="sub">What Keepout guards, and how.</p>
+
+  <div class="sec">
+    <div class="h"><span class="no">i.</span><span class="t">Protection</span></div>
+    <div class="grid">
+      <div class="cell"><span class="ms">apps</span><div class="n">Apps</div><div class="v">6 with their own rules</div><span class="ar">→</span></div>
+      <div class="cell"><span class="ms">dns</span><div class="n">DNS</div><div class="v on">RDNS Default · 33 ms</div><span class="ar">→</span></div>
+      <div class="cell"><span class="ms">shield</span><div class="n">Firewall</div><div class="v">3 rules for every app</div><span class="ar">→</span></div>
+      <div class="cell"><span class="ms">alt_route</span><div class="n">Proxy</div><div class="v">Off</div><span class="ar">→</span></div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="h"><span class="no">ii.</span><span class="t">System</span></div>
+    <div class="grid">
+      <div class="cell"><span class="ms">lan</span><div class="n">Network</div><div class="v">Wi-Fi and mobile data</div><span class="ar">→</span></div>
+      <div class="cell"><span class="ms">tune</span><div class="n">General</div><div class="v">Starts with the phone</div><span class="ar">→</span></div>
+      <div class="cell"><span class="ms">receipt_long</span><div class="n">Logs</div><div class="v">Kept for 7 days</div><span class="ar">→</span></div>
+      <div class="cell"><span class="ms">public</span><div class="n">Anti-censorship</div><div class="v">Off</div><span class="ar">→</span></div>
+      <div class="cell wide" style="min-height:0;display:flex;align-items:center;gap:14px"><span class="ms">science</span><div class="n" style="margin:0">Advanced</div><div class="v" style="margin:0">Packet-level options, for experts</div><span class="ar">→</span></div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="h"><span class="no">iii.</span><span class="t">Appearance</span></div>
+    <div class="seg"><span class="on"><span class="ms" style="font-size:18px">check</span>System</span><span>Light</span><span>Dark</span></div>
+  </div>
+
+  <div class="nav">
+    <a><span class="ms">home</span>Home</a>
+    <a><span class="ms">bar_chart</span>Stats</a>
+    <a class="on"><span class="ms">settings</span>Settings</a>
+  </div>
+</div>
+<script>frame();</script></body></html>

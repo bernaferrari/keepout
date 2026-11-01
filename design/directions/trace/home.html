@@ -1,0 +1,85 @@
+<!doctype html><html><head><meta charset="utf-8">
+<link rel="stylesheet" href="../_assets/frame.css"><link rel="stylesheet" href="style.css">
+<script src="../_assets/data.js"></script>
+<style>
+.top{height:52px;display:flex;align-items:center;justify-content:space-between;padding:0 16px 0 20px}
+.brand{display:flex;align-items:center;gap:8px;font:600 19px/1 var(--ui);letter-spacing:-.02em}
+.ann{display:flex;align-items:center;gap:8px;height:28px;padding:0 10px;border:1px solid var(--line);border-radius:4px;background:var(--panel)}
+.main{margin:2px 12px 0;padding:16px 16px 0}
+.hd{display:flex;align-items:flex-start;justify-content:space-between}
+.hd h1{margin-top:8px;font:600 36px/1 var(--ui);letter-spacing:-.035em}
+.hd .sub{margin-top:8px;font:400 12px/1.4 var(--mono);color:var(--ink2)}
+.rock{width:96px;height:44px;border-radius:6px;border:1px solid var(--line);background:var(--bg);display:flex;padding:3px;gap:3px;margin-top:4px}
+.rock span{flex:1;border-radius:4px;display:flex;align-items:center;justify-content:center;gap:6px;font:600 11px/1 var(--mono);letter-spacing:.06em;color:var(--ink3)}
+.rock span.on{background:var(--ink);color:var(--panel)}
+.scope{margin:16px -16px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);position:relative}
+.scope svg{display:block}
+.read{display:grid;grid-template-columns:1fr 1fr 1fr;margin:0 -16px}
+.read div{padding:12px 16px 14px}
+.read div+div{border-left:1px solid var(--line)}
+.read b{display:block;margin-top:8px;font:500 28px/1 var(--mono);letter-spacing:-.04em}
+.read i{display:block;margin-top:6px;font:400 11px/1 var(--mono);font-style:normal;color:var(--ink3)}
+.tbl{margin:10px 12px 0;padding:0 14px}
+.th{display:flex;justify-content:space-between;align-items:center;height:38px;border-bottom:1px solid var(--line)}
+.tr{display:flex;align-items:center;gap:12px;height:44px}
+.tr+.tr{border-top:1px solid var(--grid)}
+.tr .nm{flex:1;font:500 14.5px/1 var(--ui)}
+.led{display:flex;gap:2px}
+.led i{width:6px;height:12px;border-radius:1px;background:var(--grid)}
+.led i.on{background:var(--stop)}
+.tr .v{width:30px;text-align:right;font:500 14px/1 var(--mono);color:var(--stop)}
+</style></head><body>
+<div class="phone">
+  <div class="status"></div>
+  <div class="top">
+    <span class="brand" id="brand">Keepout</span>
+    <span class="ann"><span class="lamp"></span><span class="cap" style="color:var(--ink)">Filtering</span></span>
+  </div>
+  <div class="main panel ticks">
+    <div class="hd">
+      <div>
+        <div class="cap">Protection · via VPN</div>
+        <h1>Protected</h1>
+        <div class="sub">RDNS Default · 33 ms<br>up 2h 29m · 0 errors</div>
+      </div>
+      <div class="rock"><span class="on">ON</span><span>OFF</span></div>
+    </div>
+    <div class="scope"><svg id="scope" width="386" height="210"></svg></div>
+    <div class="read">
+      <div><span class="cap">Passed</span><b style="color:var(--pass)">457</b><i>connections</i></div>
+      <div><span class="cap">Stopped</span><b style="color:var(--stop)">122</b><i>21.1% of all</i></div>
+      <div><span class="cap">DNS refused</span><b>259</b><i>lookups</i></div>
+    </div>
+  </div>
+  <div class="tbl panel">
+    <div class="th"><span class="cap">Stopped most · 24h</span><span class="cap">All →</span></div>
+    <div id="rows"></div>
+  </div>
+  <div class="nav">
+    <a class="on"><span class="ms">home</span>Home</a>
+    <a><span class="ms">bar_chart</span>Stats</a>
+    <a><span class="ms">settings</span>Settings</a>
+  </div>
+</div>
+<script>
+$('#brand').insertAdjacentHTML('afterbegin', sealSvg(22));
+// The scope: 96 x 15-minute buckets. Passed traffic rises above the baseline, stopped traffic falls below it.
+const W = 386, H = 210, mid = 118, s = series(96), ma = Math.max(...s.allowed), mb = Math.max(...s.blocked);
+let g = '';
+for (let i = 1; i < 4; i++) g += `<line x1="${i * W / 4}" y1="0" x2="${i * W / 4}" y2="${H}" stroke="var(--grid)" stroke-width="1"/>`;
+[30, 74, 162].forEach(y => g += `<line x1="0" y1="${y}" x2="${W}" y2="${y}" stroke="var(--grid)" stroke-dasharray="2 3"/>`);
+g += `<line x1="0" y1="${mid}" x2="${W}" y2="${mid}" stroke="var(--ink3)" stroke-width="1"/>`;
+const bw = (W - 30) / 96;
+s.allowed.forEach((a, i) => {
+  const x = 8 + i * bw;
+  if (a) g += `<rect x="${x}" y="${mid - 1 - a / ma * 84}" width="${bw - 1.2}" height="${a / ma * 84}" fill="var(--pass)" opacity=".85"/>`;
+  if (s.blocked[i]) g += `<rect x="${x}" y="${mid + 1}" width="${bw - 1.2}" height="${s.blocked[i] / ma * 84}" fill="var(--stop)"/>`;
+});
+const nx = 8 + 96 * bw + 2;
+g += `<line x1="${nx}" y1="10" x2="${nx}" y2="${H - 24}" stroke="var(--ink)" stroke-dasharray="1 2"/><circle cx="${nx}" cy="${mid}" r="4" fill="var(--lamp)"/><circle cx="${nx}" cy="${mid}" r="9" fill="none" stroke="var(--lamp)" opacity=".35"/>`;
+g += `<text x="10" y="16" font-family="Geist Mono" font-size="9.5" fill="var(--ink2)" letter-spacing=".6">PASS ↑</text><text x="10" y="${H - 28}" font-family="Geist Mono" font-size="9.5" fill="var(--stop)" letter-spacing=".6">STOP ↓</text>`;
+['−24h', '−18h', '−12h', '−6h', 'now'].forEach((l, i) => g += `<text x="${i === 4 ? W - 8 : i * W / 4 + (i ? 0 : 8)}" y="${H - 7}" text-anchor="${i === 0 ? 'start' : i === 4 ? 'end' : 'middle'}" font-family="Geist Mono" font-size="9.5" fill="var(--ink3)">${l}</text>`);
+$('#scope').innerHTML = g;
+$('#rows').innerHTML = KP.stopped.map(x => `<div class="tr">${appIcon(x.icon, 24)}<span class="nm">${x.app}</span><span class="led">${Array.from({ length: 14 }, (_, i) => `<i class="${i < Math.round(x.n / 75 * 14) ? 'on' : ''}"></i>`).join('')}</span><span class="v">${x.n}</span></div>`).join('');
+frame();
+</script></body></html>

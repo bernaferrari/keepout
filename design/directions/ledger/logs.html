@@ -1,0 +1,68 @@
+<!doctype html><html><head><meta charset="utf-8">
+<link rel="stylesheet" href="../_assets/frame.css"><link rel="stylesheet" href="style.css">
+<script src="../_assets/data.js"></script>
+<style>
+.top{height:56px;display:flex;align-items:center;padding:0 12px 0 14px;gap:6px}
+.top .ib{width:44px;height:44px;display:grid;place-items:center}
+.top h1{flex:1;font:500 30px/1 var(--serif);letter-spacing:-.02em;padding-left:2px}
+.tabs{display:flex;gap:22px;padding:2px 24px 0;border-bottom:1px solid var(--rule)}
+.tabs span{padding:10px 0 11px;font:500 14px/1 var(--ui);color:var(--ink2);position:relative}
+.tabs span.on{color:var(--ink)}
+.tabs span.on::after{content:'';position:absolute;left:0;right:0;bottom:-1px;height:2px;background:var(--ink)}
+.filters{display:flex;gap:8px;padding:14px 24px 6px;align-items:center}
+.chip{height:34px;padding:0 13px;border-radius:17px;border:1px solid var(--rule);display:inline-flex;align-items:center;gap:7px;font:500 13px/1 var(--ui);color:var(--ink);white-space:nowrap}
+.chip em{font:400 12px/1 var(--mono);font-style:normal;color:var(--ink2)}
+.chip.on{background:var(--ink);border-color:var(--ink);color:var(--bg)}
+.chip.on em{color:var(--bg);opacity:.7}
+.chip.st{color:var(--stop)}
+.chip.st i{width:12px;height:1.6px;background:var(--stop);display:inline-block}
+.day{display:flex;justify-content:space-between;align-items:center;padding:16px 24px 6px}
+.live{display:flex;align-items:center;gap:7px;font:500 11px/1 var(--ui);letter-spacing:.1em;text-transform:uppercase;color:var(--pass)}
+.live::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--pass)}
+.log{padding:0 24px}
+.e{display:grid;grid-template-columns:62px 1fr;padding:11px 0 12px;border-bottom:1px solid var(--rule)}
+.e .t{font:400 12px/20px var(--mono);color:var(--ink2)}
+.e .t s{text-decoration:none;color:var(--ink3)}
+.e .d{font:400 14.5px/20px var(--mono);letter-spacing:-.01em;color:var(--ink2)}
+.e .d b{font-weight:500;color:var(--ink)}
+.e .m{white-space:nowrap;margin-top:5px;display:flex;align-items:center;gap:7px;font:400 12.5px/1 var(--ui);color:var(--ink2)}
+.e .m .appicon{width:16px!important;height:16px!important}
+.e .m .sep{color:var(--ink3)}
+.e.x .d{text-decoration:line-through;text-decoration-color:var(--stop);text-decoration-thickness:1.6px}
+.e.x .m .why{color:var(--stop);font-weight:500}
+</style></head><body>
+<div class="phone">
+  <div class="status"></div>
+  <div class="top">
+    <span class="ib"><span class="ms">arrow_back</span></span>
+    <h1>Logs</h1>
+    <span class="ib"><span class="ms">search</span></span>
+    <span class="ib"><span class="ms">more_vert</span></span>
+  </div>
+  <div class="tabs"><span class="on">Network</span><span>DNS</span></div>
+  <div class="filters">
+    <span class="chip on">All <em>579</em></span>
+    <span class="chip">Allowed <em>457</em></span>
+    <span class="chip st"><i></i>Stopped <em>122</em></span>
+    <span style="flex:1"></span>
+    <span class="ms" style="font-size:22px">tune</span>
+  </div>
+  <div class="day"><span class="kicker">Thursday, 30 October</span><span class="live">Live</span></div>
+  <div class="log" id="log"></div>
+  <div class="nav">
+    <a><span class="ms">home</span>Home</a>
+    <a><span class="ms">bar_chart</span>Stats</a>
+    <a class="on"><span class="ms">settings</span>Settings</a>
+  </div>
+</div>
+<script>
+const MAXC = 34; $('#log').innerHTML = KP.logs.map(([t, sub, root, app, ic, x, how, det]) => `
+  <div class="e ${x ? 'x' : ''}">
+    <div class="t">${t.slice(0, 5)}<s>:${t.slice(6)}</s></div>
+    <div style="min-width:0">
+      <div class="d ell">${fitDomain(sub, root, MAXC)}<b>${root}</b></div>
+      <div class="m">${appIcon(ic, 16, app)}<span>${app}</span><span class="sep">·</span>${x ? `<span class="why">Stopped${how === 'DNS' ? ' by DNS' : ' by app rule'}</span>${how === 'DNS' ? `<span class="sep">·</span><span class="ell" style="min-width:0">${det.split(',')[0]}</span>` : ''}` : `<span>${how}</span><span class="sep">·</span><span>↓ ${det}</span>`}</div>
+    </div>
+  </div>`).join('');
+frame();
+</script></body></html>

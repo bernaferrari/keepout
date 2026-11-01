@@ -1,0 +1,76 @@
+<!doctype html><html><head><meta charset="utf-8">
+<link rel="stylesheet" href="../_assets/frame.css"><link rel="stylesheet" href="style.css">
+<script src="../_assets/data.js"></script>
+<style>
+.top{height:56px;display:flex;align-items:center;justify-content:space-between;padding:0 16px 0 20px}
+.word{display:flex;align-items:center;gap:9px;font:900 30px/1 var(--display);letter-spacing:.02em;text-transform:uppercase}
+.tag{height:30px;padding:0 10px;border-radius:8px;border:1.5px solid var(--ink);display:flex;align-items:center;gap:6px;font:700 11px/1 var(--ui);letter-spacing:.08em;text-transform:uppercase}
+.tag i{width:7px;height:7px;border-radius:50%;background:var(--pass)}
+.hero{position:relative;margin:4px 12px 0;height:334px;border-radius:32px;background:var(--board);overflow:hidden;color:var(--boardInk)}
+.hero .big{position:absolute;right:22px;top:22px}
+.hero .rings{position:absolute;right:-128px;top:-128px;width:440px;height:440px;border-radius:50%;box-shadow:0 0 0 1px #ffffff14,inset 0 0 0 60px #ffffff05;}
+.hero .rings::before,.hero .rings::after{content:'';position:absolute;inset:70px;border-radius:50%;border:1px solid #ffffff17}
+.hero .rings::after{inset:140px;border-color:#ffffff10}
+.hero .lbl{position:absolute;left:24px;top:26px}
+.hero .txt{position:absolute;left:24px;right:24px;bottom:22px}
+.hero .lbl{color:var(--boardInk2)}
+.hero h1{font:900 82px/.84 var(--display);text-transform:uppercase;letter-spacing:.005em;margin-top:8px}
+.hero p{margin-top:10px;font:500 15px/1.35 var(--ui);color:var(--boardInk2)}
+.hold{margin-top:16px;height:52px;border-radius:26px;background:var(--boardInk);color:var(--board);display:flex;align-items:center;gap:12px;padding:0 8px 0 8px;font:800 13px/1 var(--ui);letter-spacing:.12em;text-transform:uppercase;width:max-content;padding-right:22px}
+.hold .ring{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;background:conic-gradient(var(--stop) 0 0deg,#0000 0);box-shadow:inset 0 0 0 2px var(--line)}
+.hold .ms{font-size:20px;color:var(--board)}
+.sh{display:flex;justify-content:space-between;align-items:center;padding:20px 20px 10px}
+.sh .t{font:800 22px/1 var(--display);letter-spacing:.04em;text-transform:uppercase}
+.sh .lk{font:700 12px/1 var(--ui);letter-spacing:.1em;text-transform:uppercase;color:var(--ink2)}
+.nums{display:grid;grid-template-columns:1.15fr 1fr;gap:8px;padding:0 12px}
+.p{border-radius:20px;background:var(--plate);padding:14px 16px}
+.p.stop{background:var(--stop);color:#fff;grid-row:span 2;position:relative;overflow:hidden;padding:16px 18px}
+.p b{display:block;font:900 46px/.9 var(--display)}
+.p.stop b{font-size:96px;line-height:.82}
+.p span{display:block;margin-top:6px;font:700 11px/1.2 var(--ui);letter-spacing:.1em;text-transform:uppercase;color:var(--ink2)}
+.p.stop span{color:#fff}
+.tally{position:absolute;left:18px;right:18px;bottom:14px;height:30px;display:flex;align-items:flex-end;gap:3px}
+.tally i{flex:1;background:#fff;border-radius:2px;opacity:.9;min-height:2px}
+.rows{padding:0 12px;display:flex;flex-direction:column;gap:6px}
+.r{height:56px;border-radius:18px;background:var(--plate);display:flex;align-items:center;gap:12px;padding:0 16px 0 10px}
+.r .nm{font:700 15px/1 var(--ui)}
+.r .bar{margin-top:7px;height:8px;border-radius:4px;background:var(--stop)}
+.r .v{font:900 30px/1 var(--display);color:var(--stop);width:40px;text-align:right}
+</style></head><body>
+<div class="phone">
+  <div class="status"></div>
+  <div class="top">
+    <span class="word"><span id="mini"></span>Keepout</span>
+    <span class="tag"><i></i>RDNS Default · 33 ms</span>
+  </div>
+  <div class="hero">
+    <span class="rings"></span><span class="big" id="big"></span>
+    <div class="label lbl"><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--pass);margin-right:8px;box-shadow:0 0 0 4px #52d49c33"></span>On guard since 07:12</div>
+    <div class="txt">
+      <h1>Protected</h1>
+      <p>Every app asks before it talks.</p>
+      <div class="hold"><span class="ring"><span class="ms">pause</span></span>Hold to pause</div>
+    </div>
+  </div>
+  <div class="sh"><span class="t">Last 24 hours</span><span class="lk">Stats →</span></div>
+  <div class="nums">
+    <div class="p stop"><b>122</b><span>Stopped</span><div class="tally" id="tally"></div></div>
+    <div class="p"><b>457</b><span>Let through</span></div>
+    <div class="p"><b>259</b><span>DNS lookups refused</span></div>
+  </div>
+  <div class="sh"><span class="t">Stopped most</span><span class="lk">All apps →</span></div>
+  <div class="rows" id="rows"></div>
+  <div class="nav">
+    <a class="on"><span class="ms">home</span>Home</a>
+    <a><span class="ms">bar_chart</span>Stats</a>
+    <a><span class="ms">settings</span>Settings</a>
+  </div>
+</div>
+<script>
+$('#mini').innerHTML = sealSvg(28);
+$('#big').innerHTML = sealSvg(128, { barW: .56, barH: .16 });
+const s = series(24), m = Math.max(...s.blocked);
+$('#tally').innerHTML = s.blocked.map(b => `<i style="height:${b / m * 30}px"></i>`).join('');
+$('#rows').innerHTML = KP.stopped.map(x => `<div class="r">${appIcon(x.icon, 36)}<div class="grow"><div class="nm">${x.app}</div><div class="bar" style="width:${x.n / 75 * 100}%"></div></div><span class="v">${x.n}</span></div>`).join('');
+frame();
+</script></body></html>

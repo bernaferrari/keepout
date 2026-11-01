@@ -1,0 +1,84 @@
+<!doctype html><html><head><meta charset="utf-8">
+<link rel="stylesheet" href="../_assets/frame.css"><link rel="stylesheet" href="style.css">
+<script src="../_assets/data.js"></script>
+<style>
+.mast{padding:14px 24px 0;display:flex;align-items:baseline;justify-content:space-between}
+.mast .name{font:600 22px/1 var(--serif);letter-spacing:-.01em}
+.mast .date{font:400 13px/1 var(--ui);color:var(--ink2)}
+.hero{padding:30px 24px 0}
+.hero h1{font:500 58px/0.98 var(--serif);letter-spacing:-.025em;margin-top:14px}
+.hero h1 i{font-weight:400;color:var(--stop)}
+.via{margin-top:18px;display:flex;align-items:center;gap:12px}
+.via .txt{flex:1;font:400 14px/1.4 var(--ui);color:var(--ink2)}
+.via .txt b{color:var(--ink);font-weight:500}
+.dot2{width:8px;height:8px;border-radius:50%;background:var(--pass);box-shadow:0 0 0 4px var(--passTint)}
+.via .dot{width:8px;height:8px;border-radius:50%;background:var(--pass);box-shadow:0 0 0 4px var(--passTint);flex:none;margin-top:1px}
+.btn{height:40px;padding:0 18px;border:1px solid var(--ink);border-radius:20px;display:inline-flex;align-items:center;gap:6px;font:500 14px/1 var(--ui);color:var(--ink)}
+.sec{padding:26px 24px 0}
+.sechead{display:flex;justify-content:space-between;align-items:baseline}
+.sechead .t{font:italic 400 17px/1 var(--serif);color:var(--ink)}
+.sechead .lk{font:500 13px/1 var(--ui);color:var(--ink2)}
+.lede{margin-top:12px;font:400 23px/1.28 var(--serif);letter-spacing:-.005em}
+.lede b{font-weight:600}
+.lede .stop{font-weight:600}
+.chart{margin-top:18px;height:58px;display:flex;align-items:flex-end;gap:5px}
+.chart .c{flex:1;display:flex;flex-direction:column-reverse;gap:1px}
+.chart .a{background:var(--ink);opacity:.22}
+.chart .b{background:var(--stop)}
+.axis{display:flex;justify-content:space-between;margin-top:6px;font:400 10px/1 var(--mono);color:var(--ink3)}
+.figs{display:flex;margin-top:18px;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule)}
+.figs div{flex:1;padding:12px 0 12px 0}
+.figs div+div{border-left:1px solid var(--rule);padding-left:14px}
+.figs b{display:block;font:500 34px/1 var(--serif);letter-spacing:-.02em;font-variant-numeric:lining-nums tabular-nums}
+.figs span{display:block;margin-top:6px;font:400 12px/1.2 var(--ui);color:var(--ink2)}
+.rank{margin-top:8px}
+.rank .r{display:flex;align-items:center;height:44px;gap:12px;border-bottom:1px solid var(--rule)}
+.rank .n{width:14px;font:italic 400 16px/1 var(--serif);color:var(--ink3)}
+.rank .nm{font:500 15px/1 var(--ui)}
+.rank .lead{flex:1;border-bottom:1.5px dotted var(--ink3);height:1px;margin:6px 2px 0}
+.rank .v{font:500 18px/1 var(--serif);color:var(--stop);font-variant-numeric:lining-nums tabular-nums}
+</style></head><body>
+<div class="phone">
+  <div class="status"></div>
+  <div class="mast"><span class="name" style="display:flex;align-items:center;gap:8px"><svg width="20" height="20" viewBox="0 0 20 20" id="seal"></svg>Keepout</span><span class="date">Thursday, 30 October</span></div>
+  <div class="pad" style="margin-top:12px"><div class="double"></div></div>
+
+  <div class="hero">
+    <div class="kicker" style="display:flex;align-items:center;gap:10px;color:var(--pass)"><span class="dot2"></span>Protected · since 07:12</div>
+    <h1>Every app is<br>on your <i>terms.</i></h1>
+    <div class="via">
+            <span class="txt">Every connection is checked by<br><b>RDNS Default</b>, answering in 33 ms</span>
+      <span class="btn"><span class="ms" style="font-size:18px">pause</span>Pause</span>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sechead"><span class="t">The last 24 hours</span><span class="lk">Statistics →</span></div>
+    <p class="lede">Your apps opened <b>579</b> connections. Keepout stopped <span class="stop">122</span>, most of them on the way to ad and analytics servers.</p>
+    <div class="chart" id="chart"></div>
+    <div class="axis"><span>10:00</span><span>16:00</span><span>22:00</span><span>04:00</span><span>now</span></div>
+    <div class="figs">
+      <div><b>457</b><span>allowed</span></div>
+      <div><b class="stop">122</b><span>stopped</span></div>
+      <div><b>259</b><span>lookups refused</span></div>
+    </div>
+  </div>
+
+  <div class="sec" style="padding-top:22px">
+    <div class="sechead"><span class="t">Stopped most</span><span class="lk">All apps →</span></div>
+    <div class="rank" id="rank"></div>
+  </div>
+
+  <div class="nav">
+    <a class="on"><span class="ms">home</span>Home</a>
+    <a><span class="ms">bar_chart</span>Stats</a>
+    <a><span class="ms">settings</span>Settings</a>
+  </div>
+</div>
+<script>
+const s = series(24), max = Math.max(...s.allowed.map((a, i) => a + s.blocked[i]));
+$('#chart').innerHTML = s.allowed.map((a, i) => `<div class="c"><div class="a" style="height:${a / max * 56}px"></div><div class="b" style="height:${s.blocked[i] / max * 56}px"></div></div>`).join('');
+$('#rank').innerHTML = KP.stopped.map((x, i) => `<div class="r"><span class="n">${i + 1}</span>${appIcon(x.icon, 24)}<span class="nm">${x.app}</span><span class="lead"></span><span class="v">${x.n}</span></div>`).join('');
+$('#seal').innerHTML=`<path d="${sealPath(10,10,10)}" fill="var(--seal2)"/><rect x="5" y="8.6" width="10" height="2.8" rx="1.4" fill="#fff"/>`;
+frame();
+</script></body></html>

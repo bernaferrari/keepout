@@ -1,0 +1,60 @@
+<!doctype html><html><head><meta charset="utf-8">
+<link rel="stylesheet" href="../_assets/frame.css"><link rel="stylesheet" href="style.css">
+<script src="../_assets/data.js"></script>
+<style>
+.top{height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 12px 0 20px}
+.top h1{font:900 44px/1 var(--display);text-transform:uppercase;letter-spacing:.01em;padding-top:4px}
+.ib{width:44px;height:44px;display:grid;place-items:center}
+.sh{padding:12px 20px 10px;font:800 20px/1 var(--display);letter-spacing:.05em;text-transform:uppercase;display:flex;align-items:center;gap:10px}
+.sh::after{content:'';flex:1;height:2px;background:var(--ink);opacity:.9}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:0 12px}
+.tile{height:120px;border-radius:22px;background:var(--plate);padding:14px 14px 14px 16px;position:relative;display:flex;flex-direction:column;justify-content:flex-end}
+.tile .pic{position:absolute;left:12px;top:12px;width:46px;height:46px;display:grid;place-items:center}
+.tile .pic .seal{position:absolute;inset:0}
+.tile .pic .ms{position:relative;color:#fff;font-size:22px}
+.tile .ar{position:absolute;right:14px;top:16px;font-size:22px;color:var(--ink)}
+.tile b{font:900 30px/.9 var(--display);text-transform:uppercase;letter-spacing:.01em}
+.tile span.s{margin-top:5px;font:600 12.5px/1.2 var(--ui);color:var(--ink2)}
+.tile span.s.on{color:var(--pass)}
+.board{margin:0 12px;border-radius:22px;background:var(--board);color:var(--boardInk);padding:4px 0}
+.dr{display:flex;align-items:center;gap:14px;height:56px;padding:0 16px}
+.dr+.dr{border-top:1px solid #ffffff14}
+.dr .sq{width:34px;height:34px;border-radius:9px;background:var(--boardInk);display:grid;place-items:center}
+.dr .sq .ms{font-size:20px;color:var(--board)}
+.dr .n{flex:1;font:700 16.5px/1 var(--ui)}
+.dr .v{font:600 12px/1 var(--ui);color:var(--boardInk2)}
+.dr .ar{font-size:22px;color:var(--boardInk)}
+.seg{display:flex;gap:6px;padding:0 12px}
+.seg span{flex:1;height:46px;border-radius:12px;background:var(--plate);display:flex;align-items:center;justify-content:center;gap:6px;font:800 12px/1 var(--ui);letter-spacing:.1em;text-transform:uppercase}
+.seg span.on{background:var(--ink);color:var(--bg)}
+</style></head><body>
+<div class="phone">
+  <div class="status"></div>
+  <div class="top"><h1>Settings</h1><span class="ib"><span class="ms">search</span></span></div>
+  <div class="sh">Protection</div>
+  <div class="grid">
+    <div class="tile"><span class="pic" data-i="apps"></span><span class="ms ar">north_east</span><b>Apps</b><span class="s">6 with their own rules</span></div>
+    <div class="tile"><span class="pic" data-i="dns"></span><span class="ms ar">north_east</span><b>DNS</b><span class="s on">RDNS Default · 33 ms</span></div>
+    <div class="tile"><span class="pic" data-i="shield"></span><span class="ms ar">north_east</span><b>Firewall</b><span class="s">3 rules for every app</span></div>
+    <div class="tile"><span class="pic" data-i="alt_route" data-off="1"></span><span class="ms ar">north_east</span><b>Proxy</b><span class="s">Off</span></div>
+  </div>
+  <div class="sh" style="padding-top:20px">System</div>
+  <div class="board">
+    <div class="dr"><span class="sq"><span class="ms">lan</span></span><span class="n">Network</span><span class="v">Wi-Fi + mobile</span><span class="ms ar">arrow_forward</span></div>
+    <div class="dr"><span class="sq"><span class="ms">tune</span></span><span class="n">General</span><span class="v">Starts on boot</span><span class="ms ar">arrow_forward</span></div>
+    <div class="dr"><span class="sq"><span class="ms">receipt_long</span></span><span class="n">Logs</span><span class="v">7 days</span><span class="ms ar">arrow_forward</span></div>
+    <div class="dr"><span class="sq"><span class="ms">public</span></span><span class="n">Anti-censorship</span><span class="v">Off</span><span class="ms ar">arrow_forward</span></div>
+    <div class="dr"><span class="sq"><span class="ms">science</span></span><span class="n">Advanced</span><span class="v"></span><span class="ms ar">arrow_forward</span></div>
+  </div>
+  <div class="sh" style="padding-top:20px">Appearance</div>
+  <div class="seg"><span class="on">System</span><span>Light</span><span>Dark</span></div>
+  <div class="nav">
+    <a><span class="ms">home</span>Home</a>
+    <a><span class="ms">bar_chart</span>Stats</a>
+    <a class="on"><span class="ms">settings</span>Settings</a>
+  </div>
+</div>
+<script>
+document.querySelectorAll('.pic').forEach(p => p.innerHTML = (p.dataset.off ? sealSvg(46, { bar: '', outline: 'var(--ink3)', sw: 3, dash: '' }) : sealSvg(46, { bar: '' })) + `<span class="ms" style="${p.dataset.off ? 'color:var(--ink2)' : ''}">${p.dataset.i}</span>`);
+frame();
+</script></body></html>
