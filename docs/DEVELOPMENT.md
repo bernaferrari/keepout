@@ -70,21 +70,20 @@ deleting `app/lint-baseline.xml` and running lint once. CI runs no instrumented 
 
 ## Store screenshots and icon
 
-Screenshot Studio lives in `store-listing/studio/`. It is synced from `~/Documents/screenshot-studio`, so never edit
-it here. Start with [store-listing/README.md](../store-listing/README.md).
+Store art comes from [Screenshot Studio](https://github.com/bernaferrari/screenshot-studio) (`npx screenshot-studio`);
+the app keeps no copy of it. Start with [store-listing/README.md](../store-listing/README.md).
 
 - The capture build is `./gradlew :app:assembleFdroidStoreCapture` (`com.bernaferrari.bravedns.storecapture`). It
   shows the real UI with seeded rules and a week of made-up traffic against the Google apps on the emulator's Play
   image. It has no VPN service and no INTERNET permission, installs beside the real app and is never released.
-  The scene tour is `store-listing/capture-emulator.py`. `fixture-apps.json` only lists retired stub apps,
+  The scene tour is `store-listing/capture.tour.mjs`. `fixture-apps.json` only lists retired stub apps,
   which the tour uninstalls if it finds them.
-- `node store-listing/studio/recapture.cjs` builds, installs and captures on the dedicated capture emulator
-  (`CAPTURE_SERIAL`, default `emulator-5578`, never a personal phone), then exports. Narrow it with a locale
-  (`en-US`), `--profile phone`, `--no-build` or `--no-capture`.
-- Export only: `PLAYWRIGHT_MODULE=… node store-listing/studio/export.cjs --locale en-US`. Live editor:
-  `node store-listing/studio/server.cjs`.
+- `npx screenshot-studio recapture` (from `store-listing/`) builds, installs and captures on the dedicated capture
+  emulator (`emulator-5578`, never a personal phone), then exports. Narrow it with a locale (`en-US`),
+  `--profile phone`, `--no-build` or `--no-capture`; `npx screenshot-studio tour --profile phone` runs the tour alone.
+- Export only: `npx screenshot-studio export --locale en-US`. Live editor: `npx screenshot-studio studio`.
 - The icon is drawn as layers in `store-listing/brand/*.svg`, with targets in `brand/icon.json` (an `alpha/`
-  variant included). Regenerate every target with `PLAYWRIGHT_MODULE=… node store-listing/studio/icon.cjs`.
+  variant included). Regenerate every target with `npx screenshot-studio icon`.
 
 ## Good to know
 

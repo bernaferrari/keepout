@@ -9,7 +9,7 @@ Built with [Screenshot Studio](https://github.com/bernaferrari/screenshot-studio
 | Look | `theme.css`, `theme.js` |
 | Canvas and capture sizes | `profiles.json` |
 | Seeded apps and traffic | `app/src/storeCapture/.../StoreFixtures.kt` |
-| Scene tour | `capture-emulator.py` (build and runs: `studio.json` → `capture`) |
+| Scene tour | `capture.tour.mjs` (build and runs: `studio.json` → `capture`) |
 
 ```sh
 npx screenshot-studio recapture                 # build, install, capture every size on emulator-5578, export
