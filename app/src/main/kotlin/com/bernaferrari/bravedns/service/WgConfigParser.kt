@@ -35,6 +35,13 @@ internal object WgConfigParser {
         return rebuild(id, name, parsed.getInterface(), parsed.getPeers())
     }
 
+    fun addPeer(config: Config, peer: Peer): Config {
+        check(config.getPeers().orEmpty().none { it.getPublicKey().base64() == peer.getPublicKey().base64() }) {
+            "A peer with this public key already exists"
+        }
+        return rebuild(config.getId(), config.getName(), config.getInterface(), config.getPeers().orEmpty() + peer)
+    }
+
     fun replacePeer(config: Config, previous: Peer, replacement: Peer): Config {
         val peers = config.getPeers().orEmpty().toMutableList()
         val index = peers.indexOfFirst { it.toWgQuickString() == previous.toWgQuickString() }

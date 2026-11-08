@@ -268,8 +268,12 @@ internal fun DemoWireguardScreen(modifier: Modifier, onBack: () -> Unit) {
                 onDismissRequest = { showPeerEditor = false },
                 expandOnShow = true,
             ) {
+                var peerDraft by remember(selected.endpoint) {
+                    mutableStateOf(RethinkWireguardPeerState(endpoint = selected.endpoint, allowedIps = "0.0.0.0/0, ::/0"))
+                }
                 RethinkWireguardPeerEditor(
-                    initialState = RethinkWireguardPeerState(endpoint = selected.endpoint, allowedIps = "0.0.0.0/0, ::/0"),
+                    state = peerDraft,
+                    onStateChange = { peerDraft = it },
                     strings = RethinkWireguardPeerEditorStrings(
                         title = "Add peer",
                         publicKey = "Public key",

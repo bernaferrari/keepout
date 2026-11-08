@@ -65,7 +65,10 @@ class RestoreAgent(val context: Context, workerParams: WorkerParameters) :
             check(validateRestoredSchemaVersions(directory.listFiles() ?: emptyArray())) { "Invalid database schema" }
             validateSchemaIdentities(directory)
             val preferences = RestoreIdentityPolicy.preferences(readPreferences(directory))
-            RestoreIdentityPolicy.clearImportedPurchases(File(directory, AppDatabase.DATABASE_NAME))
+            RestoreIdentityPolicy.prepareDatabase(
+                File(directory, AppDatabase.DATABASE_NAME),
+                File(context.filesDir, com.bernaferrari.bravedns.util.Constants.WIREGUARD_FOLDER_NAME),
+            )
             val transactions = stageFiles(directory)
             stopped = true
             VpnController.stopAndAwait("restore", context)

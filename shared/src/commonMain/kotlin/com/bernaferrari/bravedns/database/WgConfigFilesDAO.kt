@@ -29,6 +29,9 @@ interface WgConfigFilesDAO {
 
     @Update suspend fun update(wgConfigFiles: WgConfigFiles)
 
+    @Query("UPDATE WgConfigFiles SET name = :name, configPath = :path, serverResponse = :response WHERE id = :id")
+    suspend fun updateConfiguration(id: Int, name: String, path: String, response: String): Int
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAll(wgConfigFiles: List<WgConfigFiles>): LongArray
 

@@ -131,7 +131,7 @@ fun WgConfigDetailScreen(
     var ssids by remember { mutableStateOf<List<SsidItem>>(emptyList()) }
     var showInvalidConfigDialog by remember { mutableStateOf(false) }
     var showSsidPermissionDialog by remember { mutableStateOf(false) }
-    var showAddPeerDialog by remember { mutableStateOf(false) }
+    var showAddPeerDialog by androidx.compose.runtime.saveable.rememberSaveable { mutableStateOf(false) }
     var showHopDialog by remember { mutableStateOf(false) }
     var hopDialogConfigs by remember { mutableStateOf<List<Config>>(emptyList()) }
     var hopDialogSelectedId by remember { mutableIntStateOf(INVALID_CONF_ID) }

@@ -39,14 +39,15 @@ data class RethinkWireguardPeerEditorStrings(
 /** Full portable peer editor; hosts own WireGuard parsing, persistence, and error reporting. */
 @Composable
 fun RethinkWireguardPeerEditor(
-    initialState: RethinkWireguardPeerState,
+    state: RethinkWireguardPeerState,
+    onStateChange: (RethinkWireguardPeerState) -> Unit,
     strings: RethinkWireguardPeerEditorStrings,
     onSave: (RethinkWireguardPeerState) -> Unit,
     onDismiss: () -> Unit,
     keepaliveHint: (String) -> String? = { null },
     modifier: Modifier = Modifier,
+    enabled: Boolean = true,
 ) {
-    var state by remember(initialState) { mutableStateOf(initialState) }
     val keepaliveSupportingText = remember(state.persistentKeepalive) { keepaliveHint(state.persistentKeepalive) }
     Column(modifier = modifier, verticalArrangement = androidx.compose.foundation.layout.Arrangement.spacedBy(SharedDimensions.spacingLg)) {
         Column(
@@ -54,16 +55,18 @@ fun RethinkWireguardPeerEditor(
             verticalArrangement = androidx.compose.foundation.layout.Arrangement.spacedBy(SharedDimensions.spacingSm),
         ) {
             Text(strings.title, style = MaterialTheme.typography.titleLarge)
-            RethinkPeerTextField(state.publicKey, strings.publicKey, KeyboardType.Password) { state = state.copy(publicKey = it) }
-            RethinkPeerTextField(state.presharedKey, strings.presharedKey, KeyboardType.Password) { state = state.copy(presharedKey = it) }
-            RethinkPeerTextField(state.persistentKeepalive, strings.persistentKeepalive, KeyboardType.Number) { state = state.copy(persistentKeepalive = it) }
+            RethinkPeerTextField(state.publicKey, strings.publicKey, KeyboardType.Password, enabled) { onStateChange(state.copy(publicKey = it)) }
+            RethinkPeerTextField(state.presharedKey, strings.presharedKey, KeyboardType.Password, enabled) { onStateChange(state.copy(presharedKey = it)) }
+            RethinkPeerTextField(state.persistentKeepalive, strings.persistentKeepalive, KeyboardType.Number, enabled) { onStateChange(state.copy(persistentKeepalive = it)) }
             if (!keepaliveSupportingText.isNullOrBlank()) {
                 Text(keepaliveSupportingText, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
             }
-            RethinkPeerTextField(state.endpoint, strings.endpoint, KeyboardType.Password) { state = state.copy(endpoint = it) }
-            RethinkPeerTextField(state.allowedIps, strings.allowedIps, KeyboardType.Text) { state = state.copy(allowedIps = it) }
+            RethinkPeerTextField(state.endpoint, strings.endpoint, KeyboardType.Password, enabled) { onStateChange(state.copy(endpoint = it)) }
+            RethinkPeerTextField(state.allowedIps, strings.allowedIps, KeyboardType.Text, enabled) { onStateChange(state.copy(allowedIps = it)) }
         }
         RethinkFormActionRow(
+            confirmEnabled = enabled,
+            dismissEnabled = enabled,
             confirmLabel = strings.save,
             onConfirm = { onSave(state) },
             dismissLabel = strings.dismiss,
@@ -77,9 +80,11 @@ private fun RethinkPeerTextField(
     value: String,
     label: String,
     keyboardType: KeyboardType,
+    enabled: Boolean,
     onValueChange: (String) -> Unit,
 ) {
     RethinkFormTextField(
+        enabled = enabled,
         value = value,
         onValueChange = onValueChange,
         label = label,

@@ -45,12 +45,11 @@ object WireguardManager : KoinComponent {
     private val db: WgConfigFilesRepository by inject()
     private val applicationContext: Context by inject()
     private val appConfig: AppConfig by inject()
-    private val persistentState: PersistentState by inject()
 
     internal val registry = WgConfigRegistry()
     private val hopSelector = WgHopSelector()
     private val store by lazy {
-        WgConfigStore(applicationContext, db, persistentState)
+        WgConfigStore(applicationContext, db)
     }
 
     // 120 sec + 5 sec buffer
@@ -77,35 +76,22 @@ object WireguardManager : KoinComponent {
     }
 
     suspend fun load(forceRefresh: Boolean): Int {
-        store.migrateEncryptedConfigsIfNeeded()
-
         if (!forceRefresh && registry.hasConfigs()) {
             Logger.i(LOG_TAG_PROXY, "configs already loaded; returning...")
             return registry.configCount()
         }
+        store.removeOrphanedFiles()
         registry.lastAddedConfigId = db.getLastAddedConfigId()
         registry.replaceMappings(db.getWgConfigs().map { it.toImmutable() })
         for (it in registry.mappings) {
             val path = it.configPath
-            if (!store.ensurePlaintextConfigFile(path)) {
-                Logger.w(LOG_TAG_PROXY, "wg config missing or undecryptable: $path")
+            val config = store.parseConfigFile(path).getOrNull()
+            if (config == null) {
+                Logger.w(LOG_TAG_PROXY, "WireGuard configuration missing or invalid: $path")
                 if (it.isActive) {
-                    val inactive = it.copy(isActive = false, oneWireGuard = false)
-                    registry.putMapping(inactive)
+                    registry.putMapping(it.copy(isActive = false, oneWireGuard = false))
                     db.disableConfig(it.id)
                     VpnController.removeWireGuardProxy(it.id)
-                }
-                continue
-            }
-            val parsed = store.parseConfigFile(path)
-            if (parsed.isFailure) {
-                continue
-            }
-            val config = parsed.getOrNull()
-            if (config == null) {
-                Logger.e(LOG_TAG_PROXY, "err loading wg config: $path, invalid config")
-                if ((it.id == WARP_ID && it.name == WARP_NAME) || (it.id == SEC_WARP_ID && it.name == SEC_WARP_NAME)) {
-                    deleteConfig(it.id)
                 }
                 continue
             }
@@ -371,7 +357,7 @@ object WireguardManager : KoinComponent {
         return cfg
     }
 
-    suspend fun deleteConfig(id: Int) {
+    suspend fun deleteConfig(id: Int) = configEditMutex.withLock {
         val cf = registry.findMapping(id)
         Logger.i(LOG_TAG_PROXY, "deleteConfig start: $id, ${cf?.name}, ${cf?.configPath}")
 
@@ -382,8 +368,12 @@ object WireguardManager : KoinComponent {
         }
 
         withContext(Dispatchers.IO) {
-            store.deleteConfigFile(id)
-            db.deleteConfig(id)
+            com.bernaferrari.bravedns.backup.BackupRestoreFileGate.withSourceFiles {
+                kotlinx.coroutines.withContext(kotlinx.coroutines.NonCancellable) {
+                    db.deleteConfig(id)
+                    cf?.let { store.removeUnreferencedFile(java.io.File(it.configPath)) }
+                }
+            }
             val proxyId = ID_WG_BASE + id
             ProxyManager.removeProxyId(proxyId)
             registry.removeMapping(id)
@@ -504,12 +494,7 @@ object WireguardManager : KoinComponent {
     suspend fun addPeer(id: Int, peer: Peer) = configEditMutex.withLock {
         withContext(kotlinx.coroutines.NonCancellable) {
             val config = checkNotNull(registry.findConfig(id)) { "WireGuard configuration no longer exists" }
-            val peers = config.getPeers() ?: mutableListOf()
-            val newPeers = peers.toMutableList()
-            newPeers.add(peer)
-            val cfg = WgConfigParser.rebuild(config.getId(), config.getName(), config.getInterface(), newPeers)
-            Logger.i(LOG_TAG_PROXY, "adding peer for config: $id, ${cfg.getName()}, ${newPeers.size}")
-            writeConfigAndUpdateDb(cfg)
+            writeConfigAndUpdateDb(WgConfigParser.addPeer(config, peer))
         }
     }
 
@@ -556,7 +541,7 @@ object WireguardManager : KoinComponent {
         }
         registry.putConfig(cfg)
         refreshSplitProxyInfo(ID_WG_BASE + cfg.getId())
-        if (result.existing?.isActive == true) {
+        if (registry.isMappingActive(cfg.getId())) {
             VpnController.addWireGuardProxy(id = ID_WG_BASE + cfg.getId(), force = true)
         }
     }

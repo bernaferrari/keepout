@@ -22,15 +22,7 @@ import java.io.File
 import java.io.IOException
 import java.nio.charset.StandardCharsets
 
-/**
- * Plain-text file I/O for WireGuard configuration files.
- *
- * Historically configs were encrypted via [EncryptedFileManager]. New installs and migrated
- * devices now store configs as plain UTF-8 `.conf` files under `files/wireguard/`.
- *
- * This helper intentionally does **not** perform any encryption so that the Go backend and
- * backup/restore flows can read/write the files directly.
- */
+/** Plain UTF-8 configs under private files/wireguard, committed by synced atomic replacement. */
 object WireguardConfigFileManager {
     private const val LOG_TAG = "WgConfigFileMgr"
 
@@ -94,30 +86,4 @@ object WireguardConfigFileManager {
         return file.readBytes()
     }
 
-    /**
-     * Deletes a WireGuard config file if it exists.
-     *
-     * @return true if the file was deleted or did not exist
-     */
-    fun delete(file: File): Boolean {
-        return if (file.exists()) {
-            file.delete()
-        } else {
-            true
-        }
-    }
-
-    /**
-     * Returns true if the file looks like a plain WireGuard config (contains an [Interface]
-     * section). This is used by the migration to skip files that are already plaintext.
-     */
-    fun isPlaintextConfig(file: File): Boolean {
-        if (!file.exists() || file.length() == 0L) return false
-        return try {
-            file.readText(StandardCharsets.UTF_8).contains("[Interface]", ignoreCase = true)
-        } catch (_: IOException) {
-            Logger.w(LOG_TAG, "cannot determine if file is plaintext: ${file.absolutePath}")
-            false
-        }
-    }
 }

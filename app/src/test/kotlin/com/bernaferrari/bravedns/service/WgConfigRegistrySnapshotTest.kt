@@ -12,6 +12,24 @@ class WgConfigRegistrySnapshotTest {
         isCatchAll = false, isLockdown = false, oneWireGuard = true, useOnlyOnMetered = false,
         isDeletable = true, ssidEnabled = false, ssids = "")
 
+    @Test fun `committed config path preserves concurrent mapping changes`() {
+        val registry = WgConfigRegistry()
+        val old = mapping()
+        registry.putMapping(old)
+        registry.replaceMapping(1) { it.copy(isLockdown = true, ssidEnabled = true, ssids = "Office") }
+        val config = io.mockk.mockk<com.bernaferrari.bravedns.wireguard.Config> {
+            io.mockk.every { getId() } returns 1
+            io.mockk.every { getName() } returns "Edited"
+        }
+        registry.addOrUpdateConfigFileMapping(config, old, "new.conf", "")
+        val committed = registry.findMapping(1)!!
+        assertEquals("new.conf", committed.configPath)
+        assertEquals("Edited", committed.name)
+        assertTrue(committed.isLockdown)
+        assertTrue(committed.ssidEnabled)
+        assertEquals("Office", committed.ssids)
+    }
+
     @Test fun `updating split info never removes the active one-wg from concurrent readers`() {
         val registry = WgConfigRegistry()
         registry.putMapping(mapping())

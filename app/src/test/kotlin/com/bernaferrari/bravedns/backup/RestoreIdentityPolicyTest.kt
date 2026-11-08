@@ -84,9 +84,13 @@ class RestoreIdentityPolicyTest {
                 index, "app.$index", "App $index", id, true, id
             ))
         }
+        db.wgConfigFilesDAO().insert(com.bernaferrari.bravedns.database.WgConfigFiles(
+            id = 7, name = "Work", configPath = "/data/user/10/other.app/files/wireguard/wg7.conf", serverResponse = "",
+            isActive = true, isCatchAll = false, oneWireGuard = false, useOnlyOnMetered = false,
+        ))
         db.close()
         val file = context.getDatabasePath(AppDatabase.DATABASE_NAME)
-        RestoreIdentityPolicy.clearImportedPurchases(file, AndroidSQLiteDriver())
+        RestoreIdentityPolicy.prepareDatabase(file, File(ApplicationProvider.getApplicationContext<Context>().filesDir, "wireguard"), AndroidSQLiteDriver())
         val restored = openDb()
         try {
             val row = requireNotNull(restored.subscriptionStatusDao().getSubscriptionByToken("recoverable-token"))
@@ -96,6 +100,10 @@ class RestoreIdentityPolicyTest {
             assertEquals("", row.deviceId)
             assertEquals("", row.sessionToken)
             assertEquals("", row.developerPayload)
+            val wireguard = requireNotNull(restored.wgConfigFilesDAO().isConfigAdded(7))
+            assertEquals(File(context.filesDir, "wireguard/wg7.conf").absolutePath, wireguard.configPath)
+            assertEquals("Work", wireguard.name)
+            assertTrue(wireguard.isActive)
             val importedProxy = requireNotNull(restored.rpnProxyDao().getProxyById(4))
             assertFalse(importedProxy.isActive)
             assertEquals("", importedProxy.configPath)
@@ -113,7 +121,7 @@ class RestoreIdentityPolicyTest {
             db.prepare("CREATE TABLE SubscriptionStatus(deviceId TEXT, sessionToken TEXT, developerPayload TEXT, status INTEGER)").use { it.step() }
             db.prepare("INSERT INTO SubscriptionStatus VALUES('old','old','old',1)").use { it.step() }
         }
-        assertThrows(Exception::class.java) { RestoreIdentityPolicy.clearImportedPurchases(file, AndroidSQLiteDriver()) }
+        assertThrows(Exception::class.java) { RestoreIdentityPolicy.prepareDatabase(file, File(ApplicationProvider.getApplicationContext<Context>().filesDir, "wireguard"), AndroidSQLiteDriver()) }
         AndroidSQLiteDriver().open(file.path).use { db ->
             db.prepare("SELECT status, deviceId FROM SubscriptionStatus").use {
                 assertTrue(it.step()); assertEquals(1L, it.getLong(0)); assertEquals("old", it.getText(1))

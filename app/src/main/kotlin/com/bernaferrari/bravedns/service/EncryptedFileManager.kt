@@ -9,7 +9,6 @@ import android.system.Os
 import android.system.OsConstants
 import androidx.security.crypto.EncryptedFile
 import androidx.security.crypto.MasterKey
-import com.bernaferrari.bravedns.util.Constants.Companion.WIREGUARD_FOLDER_NAME
 import com.bernaferrari.bravedns.wireguard.Config
 import com.bernaferrari.bravedns.wireguard.ConfigIo
 import java.io.ByteArrayInputStream
@@ -51,9 +50,6 @@ object EncryptedFileManager {
     } catch (error: SecurityException) {
         readFailure(file, error)
     }
-
-    fun writeWireguardConfig(ctx: Context, cfg: String, fileName: String): Boolean =
-        writeConfiguration(ctx, cfg, File(ctx.filesDir, WIREGUARD_FOLDER_NAME), fileName)
 
     fun writeTcpConfig(ctx: Context, cfg: String, fileName: String): Boolean = writeConfiguration(
         ctx, cfg, File(File(ctx.filesDir, TcpProxyHelper.TCP_FOLDER_NAME), TcpProxyHelper.getFolderName()), fileName,

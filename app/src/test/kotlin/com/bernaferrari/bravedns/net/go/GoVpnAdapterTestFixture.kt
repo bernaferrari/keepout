@@ -44,7 +44,6 @@ internal class GoVpnAdapterTestFixture {
         every { persistentState.localBlocklistStamp } returns ""
         every { persistentState.rpnDnsTunTypes } returns ""
 
-        every { persistentState.wireguardPlainFileMigrationDone } returns true
         startKoin { modules(module {
             single<Context> { context }; single { persistentState }; single { appConfig }
             single { mockk<com.bernaferrari.bravedns.database.WgConfigFilesRepository>(relaxed = true) }

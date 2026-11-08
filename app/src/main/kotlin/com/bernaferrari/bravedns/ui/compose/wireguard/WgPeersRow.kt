@@ -43,7 +43,7 @@ fun WgPeerRow(
     onPeerChanged: () -> Unit
 ) {
     val scope = rememberCoroutineScope()
-    var showEditDialog by remember(wgPeer.getPublicKey()) { mutableStateOf(false) }
+    var showEditDialog by androidx.compose.runtime.saveable.rememberSaveable(wgPeer.getPublicKey().base64()) { mutableStateOf(false) }
     val endpoint =
         if ((wgPeer.getEndpoint() != null)) {
             wgPeer.getEndpoint()!!.toString()

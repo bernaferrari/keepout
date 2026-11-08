@@ -25,8 +25,6 @@ import com.bernaferrari.bravedns.util.Constants.Companion.WIREGUARD_FOLDER_NAME
 import com.bernaferrari.bravedns.util.Utilities
 import com.bernaferrari.bravedns.wireguard.BadConfigException
 import com.bernaferrari.bravedns.wireguard.Config
-import kotlinx.coroutines.sync.Mutex
-import kotlinx.coroutines.sync.withLock
 import java.io.File
 import java.nio.charset.StandardCharsets
 
@@ -38,121 +36,18 @@ internal data class WgPersistResult(
 /**
  * File + Room persistence for WireGuard configs.
  *
- * Owns encrypted-to-plaintext migration, in-place decrypt, write/delete of
- * `.conf` files, and backup restore from [TEMP_WG_DIR]. Does not own the
- * in-memory registry.
+ * Owns plaintext `.conf` files, database path commits, and backup restore from [TEMP_WG_DIR].
+ * The manager publishes committed configs to the in-memory registry.
  */
 internal class WgConfigStore(
     private val context: Context,
     private val db: WgConfigFilesRepository,
-    private val persistentState: PersistentState,
 ) {
-    private val migrationMutex = Mutex()
-
-    fun configFileName(id: Int): String = "wg$id.conf"
-
     fun configDirPath(): String {
         return context.filesDir.absolutePath +
             File.separator +
             WIREGUARD_FOLDER_NAME +
             File.separator
-    }
-
-    /**
-     * Migration that converts encrypted wg config files created by older app versions into plain
-     * text files. Files already containing a valid Interface section are skipped,
-     * completion is tracked by [PersistentState.wireguardPlainFileMigrationDone].
-     *
-     * If a file cannot be decrypted the config is marked inactive in the database and
-     * removed from the tunnel. The encrypted file is deleted to prevent repeated failures.
-     */
-    suspend fun migrateEncryptedConfigsIfNeeded() {
-        if (persistentState.wireguardPlainFileMigrationDone) {
-            return
-        }
-
-        migrationMutex.withLock {
-            if (persistentState.wireguardPlainFileMigrationDone) {
-                return@withLock
-            }
-
-            Logger.i(LOG_TAG_PROXY, "migrate: starting encrypted wg config migration")
-            val configs = db.getWgConfigs()
-            var migratedCount = 0
-            var failedCount = 0
-
-            configs.forEach { entry ->
-                val file = File(entry.configPath)
-                if (!file.exists()) {
-                    Logger.w(LOG_TAG_PROXY, "migrate: file missing for config ${entry.id}: ${entry.configPath}")
-                    return@forEach
-                }
-
-                if (WireguardConfigFileManager.isPlaintextConfig(file)) {
-                    Logger.v(LOG_TAG_PROXY, "migrate: config ${entry.id} is already plaintext")
-                    return@forEach
-                }
-
-                try {
-                    val bytes = EncryptedFileManager.readByteArray(context, file)
-                    file.writeBytes(bytes)
-                    migratedCount++
-                    Logger.i(LOG_TAG_PROXY, "migrate: converted encrypted config ${entry.id} to plaintext")
-                } catch (e: EncryptionException) {
-                    failedCount++
-                    markMigrateFailed(entry.id, entry.isActive, file, e)
-                } catch (e: java.io.IOException) {
-                    failedCount++
-                    markMigrateFailed(entry.id, entry.isActive, file, e)
-                } catch (e: SecurityException) {
-                    failedCount++
-                    markMigrateFailed(entry.id, entry.isActive, file, e)
-                }
-            }
-
-            persistentState.wireguardPlainFileMigrationDone = true
-            Logger.i(LOG_TAG_PROXY, "migrate: wg config migration complete: migrated=$migratedCount, failed=$failedCount")
-        }
-    }
-
-    private suspend fun markMigrateFailed(id: Int, isActive: Boolean, file: File, cause: Exception) {
-        Logger.e(LOG_TAG_PROXY, "migrate: failed to decrypt config $id, marking inactive", cause)
-        if (isActive) {
-            db.disableConfig(id)
-            VpnController.removeWireGuardProxy(id)
-        }
-        if (file.exists() && !file.delete()) {
-            Logger.w(LOG_TAG_PROXY, "migrate: could not delete unreadable file ${file.absolutePath}")
-        }
-    }
-
-    /**
-     * Ensures the file at [path] is a plaintext WireGuard config.
-     *
-     * @return true if the file exists and is plaintext (either originally or after decryption),
-     *         false if the file is missing or could not be decrypted.
-     */
-    suspend fun ensurePlaintextConfigFile(path: String): Boolean {
-        val file = File(path)
-        if (!file.exists()) return false
-        if (WireguardConfigFileManager.isPlaintextConfig(file)) return true
-
-        return try {
-            Logger.i(LOG_TAG_PROXY, "found encrypted wg config at $path, decrypting in place")
-            val bytes = EncryptedFileManager.readByteArray(context, file)
-            file.writeBytes(bytes)
-            Logger.i(LOG_TAG_PROXY, "decrypted wg config in place: $path")
-            true
-        } catch (e: EncryptionException) {
-            Logger.e(LOG_TAG_PROXY, "failed to decrypt wg config at $path", e)
-            false
-        } catch (e: java.io.IOException) {
-            Logger.e(LOG_TAG_PROXY, "unexpected error decrypting wg config at $path", e)
-            false
-        } catch (e: SecurityException) {
-            Logger.e(LOG_TAG_PROXY, "unexpected error decrypting wg config at $path", e)
-            false
-        }
     }
 
     fun parseConfigFile(path: String): Result<Config> {
@@ -171,48 +66,58 @@ internal class WgConfigStore(
         }
     }
 
-    suspend fun persist(cfg: Config, serverResponse: String = ""): WgPersistResult {
-        val parsedCfg = cfg.toWgQuickString()
-        val fileName = configFileName(cfg.getId())
-        try {
-            WireguardConfigFileManager.write(context, parsedCfg, fileName)
-        } catch (e: java.io.IOException) {
-            Logger.e(LOG_TAG_PROXY, "I/O failure writing wg config: ${cfg.getId()}", e)
-            throw e
-        }
-        val path = configDirPath() + fileName
-        Logger.i(LOG_TAG_PROXY, "writing wg config to file: $path")
-        val file = db.isConfigAdded(cfg.getId())
-        if (file == null) {
-            val wgf =
-                WgConfigFiles(
-                    cfg.getId(),
-                    cfg.getName(),
-                    path,
-                    serverResponse,
-                    isActive = false,
-                    isCatchAll = false,
-                    isLockdown = false,
-                    oneWireGuard = false,
-                    useOnlyOnMetered = false,
-                    isDeletable = true,
-                    ssidEnabled = false,
-                    ssids = ""
+    /** The database path is the commit point; never overwrite a referenced file. */
+    suspend fun persist(cfg: Config, serverResponse: String = ""): WgPersistResult =
+        com.bernaferrari.bravedns.backup.BackupRestoreFileGate.withSourceFiles {
+            kotlinx.coroutines.withContext(kotlinx.coroutines.NonCancellable) {
+                val previous = db.isConfigAdded(cfg.getId())
+                val name = "wg${cfg.getId()}-${java.util.UUID.randomUUID()}.conf"
+                val target = File(configDirPath(), name)
+                val updated = WgConfigFiles(
+                    cfg.getId(), cfg.getName(), target.absolutePath,
+                    serverResponse.ifEmpty { previous?.serverResponse.orEmpty() },
+                    isActive = previous?.isActive ?: false,
+                    isCatchAll = previous?.isCatchAll ?: false,
+                    isLockdown = previous?.isLockdown ?: false,
+                    oneWireGuard = previous?.oneWireGuard ?: false,
+                    useOnlyOnMetered = previous?.useOnlyOnMetered ?: false,
+                    isDeletable = previous?.isDeletable ?: true,
+                    ssidEnabled = previous?.ssidEnabled ?: false,
+                    ssids = previous?.ssids.orEmpty(),
                 )
-            db.insert(wgf)
-        } else {
-            file.name = cfg.getName()
-            file.configPath = path
-            file.serverResponse = serverResponse
-            db.update(file)
+                var committed = false
+                try {
+                    WireguardConfigFileManager.write(context, cfg.toWgQuickString(), name)
+                    if (previous == null) db.insert(updated) else check(
+                        db.updateConfiguration(updated.id, updated.name, updated.configPath, updated.serverResponse) == 1,
+                    ) { "WireGuard configuration no longer exists" }
+                    committed = true
+                } finally {
+                    // If Room rejects the write, only the unreferenced candidate is removed.
+                    if (!committed) removeUnreferencedFile(target)
+                }
+                previous?.let { removeUnreferencedFile(File(it.configPath)) }
+                WgPersistResult(target.absolutePath, updated.takeIf { previous != null })
+            }
         }
-        return WgPersistResult(path, file)
+
+    fun removeUnreferencedFile(file: File) {
+        try {
+            if (file.canonicalFile.parentFile != File(configDirPath()).canonicalFile) return
+            if (file.exists() && !file.delete()) Logger.w(LOG_TAG_PROXY, "Unable to remove unused WireGuard file: $file")
+        } catch (error: java.io.IOException) {
+            Logger.w(LOG_TAG_PROXY, "Unable to locate unused WireGuard file: $file", error)
+        } catch (error: SecurityException) {
+            Logger.w(LOG_TAG_PROXY, "Unable to remove unused WireGuard file: $file", error)
+        }
     }
 
-    fun deleteConfigFile(id: Int) {
-        val fileName = configFileName(id)
-        val file = File(configDirPath(), fileName)
-        WireguardConfigFileManager.delete(file)
+    /** Removes candidates left by a process death before the database commit. */
+    suspend fun removeOrphanedFiles() = com.bernaferrari.bravedns.backup.BackupRestoreFileGate.withSourceFiles {
+        val referenced = db.getWgConfigs().map { File(it.configPath).absolutePath }.toSet()
+        File(configDirPath()).listFiles().orEmpty()
+            .filter { it.name.matches(Regex("wg[0-9]+-[a-f0-9-]+\\.conf")) && it.absolutePath !in referenced }
+            .forEach(::removeUnreferencedFile)
     }
 
     suspend fun performRestore() {

@@ -8,11 +8,9 @@ package com.bernaferrari.bravedns.ui.compose.wireguard
 
 import android.widget.Toast
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import com.bernaferrari.bravedns.R
-import com.bernaferrari.bravedns.service.WireguardManager
 import com.bernaferrari.bravedns.ui.compose.wireguard.RethinkWireguardPeerEditor
 import com.bernaferrari.bravedns.ui.compose.wireguard.RethinkWireguardPeerEditorStrings
 import com.bernaferrari.bravedns.ui.compose.wireguard.RethinkWireguardPeerState
@@ -22,9 +20,6 @@ import com.bernaferrari.bravedns.util.UIUtils.getDurationInHumanReadableFormat
 import com.bernaferrari.bravedns.util.Utilities
 import com.bernaferrari.bravedns.wireguard.Peer
 import com.bernaferrari.bravedns.wireguard.util.ErrorMessages
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import Logger
 
 /** Android validation, persistence, and toast adapter for the shared WireGuard peer editor. */
@@ -35,17 +30,26 @@ fun WgAddPeerDialog(
     onDismiss: () -> Unit,
 ) {
     val context = LocalContext.current
-    val scope = rememberCoroutineScope()
-    RethinkWireguardDialog(onDismissRequest = onDismiss) {
+    val draft: WgPeerEditorViewModel = androidx.lifecycle.viewmodel.compose.viewModel(
+        key = "wg-peer:$configId:${wgPeer?.getPublicKey()?.base64() ?: "new"}",
+    )
+    androidx.compose.runtime.LaunchedEffect(draft, wgPeer) { draft.initialize(wgPeer) }
+    val dismiss = { if (!draft.saving) { draft.reset(); onDismiss() } }
+    androidx.activity.compose.BackHandler(enabled = draft.saving) { }
+    androidx.compose.runtime.LaunchedEffect(draft.saved, draft.error) {
+        if (draft.saved) dismiss()
+        draft.error?.let { error ->
+            draft.error = null
+            Logger.e(Logger.LOG_TAG_UI, "Unable to save WireGuard peer", error)
+            Utilities.showToastUiCentered(context, ErrorMessages[context, error], Toast.LENGTH_SHORT)
+        }
+    }
+    RethinkWireguardDialog(onDismissRequest = dismiss) {
         RethinkWireguardDialogColumn(scrollable = true) {
             RethinkWireguardPeerEditor(
-                initialState = RethinkWireguardPeerState(
-                    publicKey = wgPeer?.getPublicKey()?.base64().orEmpty(),
-                    presharedKey = wgPeer?.getPreSharedKey()?.base64().orEmpty(),
-                    allowedIps = wgPeer?.getAllowedIps()?.joinToString { it.toString() }.orEmpty(),
-                    endpoint = wgPeer?.getEndpoint()?.toString().orEmpty(),
-                    persistentKeepalive = wgPeer?.persistentKeepalive?.toString().orEmpty(),
-                ),
+                state = draft.state,
+                onStateChange = draft::edit,
+                enabled = !draft.saving,
                 strings = RethinkWireguardPeerEditorStrings(
                     title = stringResource(R.string.add_peer),
                     publicKey = stringResource(R.string.lbl_public_key),
@@ -57,68 +61,9 @@ fun WgAddPeerDialog(
                     dismiss = stringResource(R.string.lbl_dismiss),
                 ),
                 keepaliveHint = { value -> value.toIntOrNull()?.let { getDurationInHumanReadableFormat(context, it) } },
-                onSave = { state ->
-                    scope.launch {
-                        savePeer(
-                            context = context,
-                            configId = configId,
-                            wgPeer = wgPeer,
-                            publicKey = state.publicKey,
-                            presharedKey = state.presharedKey,
-                            allowedIps = state.allowedIps,
-                            endpoint = state.endpoint,
-                            keepAlive = state.persistentKeepalive,
-                            onSuccess = onDismiss,
-                            onError = { Utilities.showToastUiCentered(context, it, Toast.LENGTH_SHORT) },
-                        )
-                    }
-                },
-                onDismiss = onDismiss,
+                onSave = { draft.save(configId) },
+                onDismiss = dismiss,
             )
         }
-    }
-}
-
-private suspend fun savePeer(
-    context: android.content.Context,
-    configId: Int,
-    wgPeer: Peer?,
-    publicKey: String,
-    presharedKey: String,
-    allowedIps: String,
-    endpoint: String,
-    keepAlive: String,
-    onSuccess: () -> Unit,
-    onError: (String) -> Unit,
-) {
-    fun report(error: Exception) {
-        Logger.e(Logger.LOG_TAG_UI, "Unable to save WireGuard peer", error)
-        onError(ErrorMessages[context, error])
-    }
-    try {
-        val builder = Peer.Builder()
-        if (allowedIps.isNotEmpty()) builder.parseAllowedIPs(allowedIps)
-        if (endpoint.isNotEmpty()) builder.parseEndpoint(endpoint)
-        if (keepAlive.isNotEmpty()) builder.parsePersistentKeepalive(keepAlive)
-        if (presharedKey.isNotEmpty()) builder.parsePreSharedKey(presharedKey)
-        if (publicKey.isNotEmpty()) builder.parsePublicKey(publicKey)
-        val newPeer = builder.build()
-        withContext(Dispatchers.IO) {
-            if (wgPeer != null) WireguardManager.replacePeer(configId, wgPeer, newPeer)
-            else WireguardManager.addPeer(configId, newPeer)
-        }
-        onSuccess()
-    } catch (cancelled: kotlinx.coroutines.CancellationException) {
-        throw cancelled
-    } catch (error: com.bernaferrari.bravedns.wireguard.BadConfigException) {
-        report(error)
-    } catch (error: java.io.IOException) {
-        report(error)
-    } catch (error: androidx.sqlite.SQLiteException) {
-        report(error)
-    } catch (error: IllegalStateException) {
-        report(error)
-    } catch (error: SecurityException) {
-        report(error)
     }
 }

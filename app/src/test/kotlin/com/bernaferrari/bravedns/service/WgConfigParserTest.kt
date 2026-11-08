@@ -50,6 +50,14 @@ class WgConfigParserTest {
     }
 
     @Test(expected = IllegalStateException::class)
+    fun addingPeerRejectsAnExistingPublicKey() {
+        val first = mockk<Peer> { io.mockk.every { getPublicKey().base64() } returns "same" }
+        val second = mockk<Peer> { io.mockk.every { getPublicKey().base64() } returns "same" }
+        val cfg = WgConfigParser.rebuild(3, "office", mockk(relaxed = true), listOf(first))
+        WgConfigParser.addPeer(cfg, second)
+    }
+
+    @Test(expected = IllegalStateException::class)
     fun replacementRejectsAStalePeer() {
         val config = WgConfigParser.rebuild(3, "office", mockk(relaxed = true), emptyList())
         WgConfigParser.replacePeer(config, mockk(relaxed = true), mockk(relaxed = true))

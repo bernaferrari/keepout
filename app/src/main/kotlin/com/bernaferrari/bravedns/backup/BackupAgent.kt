@@ -34,9 +34,8 @@ import com.bernaferrari.bravedns.backup.BackupHelper.Companion.deleteResidue
 import com.bernaferrari.bravedns.backup.BackupHelper.Companion.getFileNameFromPath
 import com.bernaferrari.bravedns.database.AppDatabase
 import com.bernaferrari.bravedns.database.LogDatabase
-import com.bernaferrari.bravedns.service.EncryptedFileManager
+import com.bernaferrari.bravedns.service.WireguardConfigFileManager
 import com.bernaferrari.bravedns.service.PersistentState
-import com.bernaferrari.bravedns.service.WireguardManager
 import com.bernaferrari.bravedns.util.Utilities
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -121,7 +120,7 @@ class BackupAgent(val context: Context, workerParams: WorkerParameters) :
         }
     }
 
-    private suspend fun snapshotSourceFiles(tempDir: File): Boolean = BackupRestoreFileGate.withSourceFiles {
+    internal suspend fun snapshotSourceFiles(tempDir: File): Boolean = BackupRestoreFileGate.withSourceFiles {
         if (RestoreRestart.required(context)) return@withSourceFiles false
         backupPreferences = persistentState.snapshotPreferences()
         val prefsBackupFile = File(tempDir, SHARED_PREFS_BACKUP_FILE_NAME)
@@ -133,17 +132,13 @@ class BackupAgent(val context: Context, workerParams: WorkerParameters) :
             Logger.w(LOG_TAG_BACKUP_RESTORE, "Could not snapshot backup databases")
             return@withSourceFiles false
         }
-        // Existing behavior allows a backup when no readable WireGuard configs exist.
         currentCoroutineContext().ensureActive()
         backupWireGuardConfig(tempDir)
-        true
     }
 
-    private fun backupWireGuardConfig(tempDir: File): Boolean {
-        // get all the wireguard config from the database,
-        // loop through them and get the path from the database
-        // create a copy of a encrypted file to normal file in the temp dir
-        // add the file to the zip list
+    internal suspend fun backupWireGuardConfig(tempDir: File): Boolean {
+        // Use the committed database paths; the live registry can lag a completed save.
+        // Current configs are plaintext. Archive stable IDs rather than private file names.
 
         Logger.d(LOG_TAG_BACKUP_RESTORE, "init backup wireguard configs")
         val dir = File(tempDir, BACKUP_WG_DIR)
@@ -153,25 +148,27 @@ class BackupAgent(val context: Context, workerParams: WorkerParameters) :
         }
 
         try {
-            val mappings = WireguardManager.getAllMappings()
+            val mappings = appDatabase.wgConfigFilesDAO().getWgConfigs()
             mappings.forEach { m ->
                 val file = File(m.configPath)
-                val content = EncryptedFileManager.read(context, file)
-                if (content.isNotEmpty()) {
-                    val tmpWgFile = File(dir, "${m.id}.conf")
-                    tmpWgFile.writer().use {
-                        writer -> writer.write(content)
-                        writer.flush()
-                    }
-                    filesPathToZip.add(tmpWgFile.absolutePath)
-                    Logger.v(LOG_TAG_BACKUP_RESTORE, "wg ${m.id}.conf added to backup, path: ${tmpWgFile.path}")
-                } else {
-                    Logger.w(LOG_TAG_BACKUP_RESTORE, "empty config for ${m.id}, ${m.configPath}")
-                }
+                val content = WireguardConfigFileManager.read(file).toString(Charsets.UTF_8)
+                check(content.isNotBlank()) { "WireGuard configuration ${m.id} is empty" }
+                val tmpWgFile = File(dir, "${m.id}.conf")
+                tmpWgFile.writer().use { writer -> writer.write(content); writer.flush() }
+                filesPathToZip.add(tmpWgFile.absolutePath)
+                Logger.v(LOG_TAG_BACKUP_RESTORE, "wg ${m.id}.conf added to backup, path: ${tmpWgFile.path}")
             }
             return true
-        } catch (e: Exception) {
-            Logger.w(LOG_TAG_BACKUP_RESTORE, "err while backing up wg config, ${e.message}", e)
+        } catch (cancelled: CancellationException) {
+            throw cancelled
+        } catch (error: java.io.IOException) {
+            Logger.w(LOG_TAG_BACKUP_RESTORE, "Cannot snapshot WireGuard files", error)
+        } catch (error: androidx.sqlite.SQLiteException) {
+            Logger.w(LOG_TAG_BACKUP_RESTORE, "Cannot read WireGuard metadata", error)
+        } catch (error: SecurityException) {
+            Logger.w(LOG_TAG_BACKUP_RESTORE, "Cannot access WireGuard files", error)
+        } catch (error: IllegalStateException) {
+            Logger.w(LOG_TAG_BACKUP_RESTORE, "Invalid WireGuard configuration", error)
         }
         return false
     }

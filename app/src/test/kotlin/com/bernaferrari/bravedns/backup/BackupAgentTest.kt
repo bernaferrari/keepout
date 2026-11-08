@@ -88,6 +88,51 @@ class BackupAgentTest {
         unmockkAll()
     }
 
+    @Test fun `missing WireGuard file fails the whole snapshot`() = kotlinx.coroutines.test.runTest {
+        io.mockk.mockkObject(DatabaseSnapshot)
+        every { DatabaseSnapshot.create(any(), any(), any()) } answers {
+            secondArg<java.io.File>().writeText("snapshot")
+            true
+        }
+        every { logDatabase.dnsLogDAO().logsCount() } returns kotlinx.coroutines.flow.flowOf(0L)
+        coEvery { appDatabase.wgConfigFilesDAO().getWgConfigs() } returns listOf(wireguardRecord("missing.conf"))
+        org.junit.Assert.assertFalse(agent.snapshotSourceFiles(tmp.newFolder("staging")))
+    }
+
+    @Test fun `empty WireGuard config cannot produce a successful incomplete backup`() = kotlinx.coroutines.test.runTest {
+        val source = tmp.newFile("empty.conf")
+        coEvery { appDatabase.wgConfigFilesDAO().getWgConfigs() } returns listOf(wireguardRecord(source.path))
+        org.junit.Assert.assertFalse(agent.backupWireGuardConfig(tmp.newFolder("staging")))
+    }
+
+    @Test fun `WireGuard snapshot propagates cancellation`() = kotlinx.coroutines.test.runTest {
+        coEvery { appDatabase.wgConfigFilesDAO().getWgConfigs() } throws kotlinx.coroutines.CancellationException("cancel")
+        try {
+            agent.backupWireGuardConfig(tmp.newFolder("staging"))
+            org.junit.Assert.fail("Expected cancellation")
+        } catch (_: kotlinx.coroutines.CancellationException) { }
+    }
+
+    private fun wireguardRecord(path: String) = com.bernaferrari.bravedns.database.WgConfigFiles(
+        id = 7, name = "Config", configPath = path, serverResponse = "",
+        isActive = false, isCatchAll = false, oneWireGuard = false, useOnlyOnMetered = false,
+    )
+
+    @Test fun `WireGuard backup follows the committed database path`() = kotlinx.coroutines.test.runTest {
+        val source = java.io.File(tmp.root, "wg7-committed.conf").apply {
+            writeText("[Interface]\nPrivateKey = retained-secret\n")
+        }
+        val record = com.bernaferrari.bravedns.database.WgConfigFiles(
+            id = 7, name = "Committed", configPath = source.path, serverResponse = "",
+            isActive = false, isCatchAll = false, oneWireGuard = false, useOnlyOnMetered = false,
+        )
+        coEvery { appDatabase.wgConfigFilesDAO().getWgConfigs() } returns listOf(record)
+        assertTrue(agent.backupWireGuardConfig(tmp.root))
+        val archived = java.io.File(agent.filesPathToZip.single())
+        org.junit.Assert.assertEquals("7.conf", archived.name)
+        org.junit.Assert.assertEquals(source.readText(), archived.readText())
+    }
+
     @Test
     fun `production preference writer uses the bounded current codec`() {
         val values = mapOf("boolean" to true, "integer" to 7, "long" to 9L, "string" to "value")

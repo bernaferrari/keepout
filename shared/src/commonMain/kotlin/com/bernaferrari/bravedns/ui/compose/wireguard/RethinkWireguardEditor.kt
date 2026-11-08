@@ -77,6 +77,7 @@ fun RethinkWireguardEditor(
     onSaveClick: () -> Unit,
     modifier: Modifier = Modifier,
     saveEnabled: Boolean = true,
+    editingEnabled: Boolean = true,
 ) {
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
     Scaffold(
@@ -87,6 +88,7 @@ fun RethinkWireguardEditor(
                 confirmLabel = strings.save,
                 onConfirm = onSaveClick,
                 confirmEnabled = saveEnabled,
+                dismissEnabled = editingEnabled,
                 dismissLabel = strings.cancel,
                 onDismiss = onBackClick,
                 modifier = Modifier.padding(
@@ -109,40 +111,21 @@ fun RethinkWireguardEditor(
             verticalArrangement = Arrangement.spacedBy(SharedDimensions.spacingMd),
         ) {
             item {
-                RethinkFormSection(strings.configuration) {
-                    RethinkFormTextField(
-                        value = state.interfaceName,
-                        onValueChange = { onStateChange(state.copy(interfaceName = it)) },
-                        label = strings.name,
-                        singleLine = true,
-                    )
-                    RethinkFormTextField(
-                        value = state.addresses,
-                        onValueChange = { onStateChange(state.copy(addresses = it)) },
-                        label = strings.addresses,
-                        minLines = 2,
-                        textStyle = MaterialTheme.typography.bodyLarge.copy(fontFamily = FontFamily.Monospace),
-                    )
-                    RethinkFormTextField(
-                        value = state.dnsServers,
-                        onValueChange = { onStateChange(state.copy(dnsServers = it)) },
-                        label = strings.dnsServers,
-                        minLines = 2,
-                        textStyle = MaterialTheme.typography.bodyLarge.copy(fontFamily = FontFamily.Monospace),
-                    )
-                }
+                WireguardConfigurationFields(state, strings, editingEnabled, onStateChange)
             }
             item {
                 RethinkFormSection(strings.setup) {
                     RethinkFormTextField(
+                        enabled = editingEnabled,
                         value = state.privateKey,
                         onValueChange = { onStateChange(state.withPrivateKey(it)) },
                         label = strings.privateKey,
                         singleLine = true,
                         textStyle = MaterialTheme.typography.bodyLarge.copy(fontFamily = FontFamily.Monospace),
-                        trailingIcon = { IconButton(onClick = onGenerateKeys) { Icon(MaterialSymbols.Filled.Refresh, strings.generateKeys) } },
+                        trailingIcon = { IconButton(onClick = onGenerateKeys, enabled = editingEnabled) { Icon(MaterialSymbols.Filled.Refresh, strings.generateKeys) } },
                     )
                     RethinkFormTextField(
+                        enabled = editingEnabled,
                         value = state.publicKey,
                         onValueChange = {},
                         label = strings.publicKey,
@@ -164,6 +147,7 @@ fun RethinkWireguardEditor(
                 RethinkFormSection(strings.network) {
                     if (state.showListenPort) {
                         RethinkFormTextField(
+                            enabled = editingEnabled,
                             value = state.listenPort,
                             onValueChange = { onStateChange(state.copy(listenPort = it)) },
                             label = strings.listenPort,
@@ -172,6 +156,7 @@ fun RethinkWireguardEditor(
                         )
                     }
                     RethinkFormTextField(
+                        enabled = editingEnabled,
                         value = state.mtu,
                         onValueChange = { onStateChange(state.copy(mtu = it)) },
                         label = strings.mtu,
@@ -196,5 +181,39 @@ private fun WireguardAdvancedProperties(title: String, properties: String) {
             Text(properties, style = MaterialTheme.typography.bodyMedium,
                 fontFamily = FontFamily.Monospace, color = MaterialTheme.colorScheme.onSurfaceVariant)
         }
+    }
+}
+
+@Composable
+private fun WireguardConfigurationFields(
+    state: RethinkWireguardEditorState,
+    strings: RethinkWireguardEditorStrings,
+    editingEnabled: Boolean,
+    onStateChange: (RethinkWireguardEditorState) -> Unit,
+) {
+    RethinkFormSection(strings.configuration) {
+        RethinkFormTextField(
+            enabled = editingEnabled,
+            value = state.interfaceName,
+            onValueChange = { onStateChange(state.copy(interfaceName = it)) },
+            label = strings.name,
+            singleLine = true,
+        )
+        RethinkFormTextField(
+            enabled = editingEnabled,
+            value = state.addresses,
+            onValueChange = { onStateChange(state.copy(addresses = it)) },
+            label = strings.addresses,
+            minLines = 2,
+            textStyle = MaterialTheme.typography.bodyLarge.copy(fontFamily = FontFamily.Monospace),
+        )
+        RethinkFormTextField(
+            enabled = editingEnabled,
+            value = state.dnsServers,
+            onValueChange = { onStateChange(state.copy(dnsServers = it)) },
+            label = strings.dnsServers,
+            minLines = 2,
+            textStyle = MaterialTheme.typography.bodyLarge.copy(fontFamily = FontFamily.Monospace),
+        )
     }
 }

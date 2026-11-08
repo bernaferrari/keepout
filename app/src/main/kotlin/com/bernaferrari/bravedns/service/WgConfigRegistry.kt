@@ -92,13 +92,15 @@ internal class WgConfigRegistry {
         mappings = CopyOnWriteArraySet(mappings.filterNot { it.id == mapping.id } + mapping)
     }
 
+    @Synchronized
     fun addOrUpdateConfigFileMapping(
         cfg: Config,
         file: WgConfigFilesImmutable?,
         path: String,
         serverResponse: String,
     ) {
-        if (file == null) {
+        val current = findMapping(cfg.getId()) ?: file
+        if (current == null) {
             putMapping(
                 WgConfigFilesImmutable(
                     cfg.getId(),
@@ -116,7 +118,10 @@ internal class WgConfigRegistry {
                 )
             )
         } else {
-            putMapping(file)
+            putMapping(current.copy(
+                name = cfg.getName(), configPath = path,
+                serverResponse = serverResponse.ifEmpty { current.serverResponse },
+            ))
         }
     }
 

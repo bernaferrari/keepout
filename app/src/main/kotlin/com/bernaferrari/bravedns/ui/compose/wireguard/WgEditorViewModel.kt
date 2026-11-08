@@ -19,6 +19,11 @@ internal class WgEditorViewModel(
         { id, name, iface -> WireguardManager.addOrUpdateInterface(id, name, iface) },
 ) : ViewModel() {
     var state by mutableStateOf(RethinkWireguardEditorState())
+        private set
+
+    fun edit(next: RethinkWireguardEditorState) {
+        if (!saving && !saved) state = next
+    }
     var initial = RethinkWireguardEditorState()
     var original: WgInterface? = null
     var loaded by mutableStateOf(false)

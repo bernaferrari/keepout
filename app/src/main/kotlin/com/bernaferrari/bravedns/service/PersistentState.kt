@@ -451,9 +451,6 @@ class PersistentState(context: Context) {
     // global lockdown for wireguard proxy
     var wgGlobalLockdown by store.boolean("wg_global_lockdown", false)
 
-    // True after encrypted WireGuard profiles have been migrated to plain config files.
-    var wireguardPlainFileMigrationDone by store.boolean("wg_plain_file_migration_done", false)
-
     // Last successful RPN device registration and notification state.
     var deviceRegistrationTimestamp by store.long("device_registration_timestamp", 0L)
 

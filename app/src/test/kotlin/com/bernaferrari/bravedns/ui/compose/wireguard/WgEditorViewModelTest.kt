@@ -29,11 +29,27 @@ class WgEditorViewModelTest {
         assertEquals("", edited.publicKey)
     }
 
+    @Test fun editsDuringSaveCannotReplaceTheSubmittedSnapshot() = runTest(dispatcher) {
+        val release = kotlinx.coroutines.CompletableDeferred<Unit>()
+        val draft = WgEditorViewModel(dispatcher) { _, _, _ -> release.await(); mockk(relaxed = true) }
+        draft.loaded = true
+        val submitted = RethinkWireguardEditorState(interfaceName = "Office", privateKey = "key")
+        draft.edit(submitted)
+        draft.save(7)
+        runCurrent()
+        draft.edit(submitted.copy(interfaceName = "Too late"))
+        assertEquals(submitted, draft.state)
+        release.complete(Unit)
+        advanceUntilIdle()
+        assertEquals(submitted, draft.initial)
+        assertTrue(draft.saved)
+    }
+
     @Test fun failedSavePreservesDraftAndCanBeRetriedWithoutDuplicateWrites() = runTest(dispatcher) {
         val save = mockk<suspend (Int, String, com.bernaferrari.bravedns.wireguard.WgInterface) -> com.bernaferrari.bravedns.wireguard.Config?>()
         val draft = WgEditorViewModel(dispatcher, save)
         draft.loaded = true
-        draft.state = RethinkWireguardEditorState(interfaceName = "Office", privateKey = "key")
+        draft.edit(RethinkWireguardEditorState(interfaceName = "Office", privateKey = "key"))
         val snapshot = draft.state
         coEvery { save(any(), any(), any()) } throws IOException("disk full")
         draft.save(7)

@@ -24,7 +24,7 @@ internal object RestoreIdentityPolicy {
         "pcap_started_at" to 0L,
     )
 
-    fun clearImportedPurchases(database: File, driver: SQLiteDriver? = null) {
+    fun prepareDatabase(database: File, wireguardDirectory: File, driver: SQLiteDriver? = null) {
         (driver ?: BundledSQLiteDriver()).open(database.path).use { db ->
             db.execute("BEGIN IMMEDIATE")
             try {
@@ -35,6 +35,11 @@ internal object RestoreIdentityPolicy {
                 db.execute("""UPDATE RpnProxy SET configPath = '', serverResPath = '',
                     tunId = '', isActive = 0""")
                 db.execute("UPDATE ProxyApplicationMapping SET isActive = 0 WHERE proxyId LIKE '%rpn' OR proxyId = 'Auto' OR proxyId LIKE 'RPN-WIN%'")
+                // Imported absolute paths belong to the source device/profile, never this install.
+                db.prepare("UPDATE WgConfigFiles SET configPath = ? || '/wg' || id || '.conf'").use {
+                    it.bindText(1, wireguardDirectory.absolutePath)
+                    it.step()
+                }
                 db.execute("COMMIT")
             } catch (error: SQLiteException) {
                 db.execute("ROLLBACK")

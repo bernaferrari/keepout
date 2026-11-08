@@ -78,10 +78,10 @@ fun WgConfigEditorScreen(
     val publicKeyCopyToast = stringResource(R.string.public_key_copy_toast_msg)
     val configAddSuccessToast = stringResource(R.string.config_add_success_toast)
     val draft: WgEditorViewModel = androidx.lifecycle.viewmodel.compose.viewModel(key = "wg-editor:$configId")
-    var state by draft::state
+    val state = draft.state
 
     fun showListenPort(wgIface: WgInterface?): Boolean {
-        val isPresent = wgIface?.listenPort != null && wgIface.listenPort != 1
+        val isPresent = wgIface?.listenPort != null
         return isPresent && (wgType.isOneWg() || (!persistentState.randomizeListenPort && wgType.isDefault()))
     }
 
@@ -94,7 +94,7 @@ fun WgConfigEditorScreen(
             val searchDomains = iface?.dnsSearchDomains?.joinToString().orEmpty()
             withContext(Dispatchers.Main) {
                 draft.original = iface
-                state = RethinkWireguardEditorState(
+                draft.edit(RethinkWireguardEditorState(
                     interfaceName = config?.getName().orEmpty(),
                     privateKey = iface?.getKeyPair()?.getPrivateKey()?.base64().orEmpty(),
                     publicKey = iface?.getKeyPair()?.getPublicKey()?.base64().orEmpty(),
@@ -104,8 +104,8 @@ fun WgConfigEditorScreen(
                     mtu = iface?.mtu?.toString().orEmpty(),
                     advancedProperties = if (iface?.isAmnezia() == true) iface.getAmzProps().orEmpty() else "",
                     showListenPort = showListenPort(iface),
-                )
-                draft.initial = state
+                ))
+                draft.initial = draft.state
                 draft.loaded = true
             }
         }
@@ -113,7 +113,7 @@ fun WgConfigEditorScreen(
 
     fun generateKeys() {
         val key = Backend.newWgPrivateKey()
-        state = state.copy(privateKey = key.base64().toString(), publicKey = key.mult().base64().toString())
+        draft.edit(state.copy(privateKey = key.base64().toString(), publicKey = key.mult().base64().toString()))
     }
 
     fun copyPublicKey() {
@@ -154,8 +154,8 @@ fun WgConfigEditorScreen(
         return
     }
     var confirmDiscard by remember { mutableStateOf(false) }
-    val leave = { if (state != draft.initial) confirmDiscard = true else onBackClick() }
-    androidx.activity.compose.BackHandler(enabled = state != draft.initial) { leave() }
+    val leave = { if (!draft.saving) { if (state != draft.initial) confirmDiscard = true else onBackClick() } }
+    androidx.activity.compose.BackHandler(enabled = draft.saving || state != draft.initial) { leave() }
     if (confirmDiscard) com.bernaferrari.bravedns.ui.compose.theme.RethinkConfirmDialog(
         onDismissRequest = { confirmDiscard = false },
         title = stringResource(R.string.wg_discard_changes),
@@ -169,6 +169,7 @@ fun WgConfigEditorScreen(
     RethinkWireguardEditor(
         state = state,
         saveEnabled = draft.loaded && !draft.saving,
+        editingEnabled = !draft.saving,
         strings = RethinkWireguardEditorStrings(
             title = stringResource(R.string.lbl_configure),
             configuration = stringResource(R.string.lbl_configure),
@@ -188,7 +189,7 @@ fun WgConfigEditorScreen(
             save = stringResource(R.string.lbl_save),
         ),
         actionBottomInset = actionBarBottomInset,
-        onStateChange = { state = it },
+        onStateChange = draft::edit,
         onBackClick = leave,
         onGenerateKeys = ::generateKeys,
         onCopyPublicKey = ::copyPublicKey,

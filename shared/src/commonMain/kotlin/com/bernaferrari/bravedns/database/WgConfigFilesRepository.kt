@@ -24,6 +24,10 @@ class WgConfigFilesRepository(private val wgConfigFilesDAO: WgConfigFilesDAO) {
         wgConfigFilesDAO.update(wgConfigFiles)
     }
 
+    /** Commits a new config path without overwriting concurrently changed activation or SSID flags. */
+    suspend fun updateConfiguration(id: Int, name: String, path: String, response: String): Int =
+        wgConfigFilesDAO.updateConfiguration(id, name, path, response)
+
     suspend fun insertAll(wgConfigFiles: List<WgConfigFiles>): LongArray {
         return wgConfigFilesDAO.insertAll(wgConfigFiles)
     }
