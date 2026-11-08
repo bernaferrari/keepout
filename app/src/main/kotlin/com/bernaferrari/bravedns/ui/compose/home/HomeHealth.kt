@@ -104,3 +104,8 @@ internal fun homeDnsLabel(
     if (preset.isEmpty() || preset.equals("rdns", ignoreCase = true)) return keepoutName
     return "$keepoutName · ${presetNames[preset.lowercase()] ?: preset}"
 }
+
+/** A start request is not proof that protection is working. */
+internal fun canCelebrateProtection(status: HomeProtectionStatus?, environment: HomeEnvironment, dnsFailing: Boolean): Boolean =
+    (status == HomeProtectionStatus.Protected || status == HomeProtectionStatus.UltraSecure) &&
+        !environment.otherAlwaysOnVpn && !environment.privateDnsActive && !dnsFailing

@@ -20,6 +20,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.liveRegion
 import androidx.compose.ui.text.font.FontFamily
 import com.bernaferrari.bravedns.ui.compose.theme.CardPosition
 import com.bernaferrari.bravedns.ui.compose.theme.RethinkListGroup
@@ -61,6 +63,8 @@ fun RethinkBackupRestoreSheet(
     onRestore: () -> Unit,
     onFailureDismiss: () -> Unit,
     modifier: Modifier = Modifier,
+    busy: Boolean = false,
+    progressText: String = "",
 ) {
     var confirmation by remember { mutableStateOf<RethinkBackupRestoreFailure?>(null) }
     val prompt = when {
@@ -74,6 +78,10 @@ fun RethinkBackupRestoreSheet(
             .padding(horizontal = SharedDimensions.screenPaddingHorizontal),
         verticalArrangement = Arrangement.spacedBy(SharedDimensions.spacingLg),
     ) {
+        if (busy) {
+            androidx.compose.material3.LinearProgressIndicator(modifier = Modifier.fillMaxWidth())
+            Text(progressText, modifier = Modifier.semantics { liveRegion = androidx.compose.ui.semantics.LiveRegionMode.Polite })
+        }
         if (prompt != null) {
             val (action, copy) = prompt
             Column(verticalArrangement = Arrangement.spacedBy(SharedDimensions.spacingXs)) {
@@ -92,6 +100,7 @@ fun RethinkBackupRestoreSheet(
                     Text(copy.dismiss)
                 }
                 Button(
+                    enabled = !busy,
                     onClick = {
                         if (failure != null) onFailureDismiss() else confirmation = null
                         if (action == RethinkBackupRestoreFailure.Backup) onBackup() else onRestore()
@@ -115,6 +124,7 @@ fun RethinkBackupRestoreSheet(
             }
             RethinkListGroup {
                 RethinkListItem(
+                    enabled = !busy,
                     headline = strings.backupTitle,
                     supporting = strings.backupDescription,
                     leadingIcon = MaterialSymbols.Filled.Backup,
@@ -123,6 +133,7 @@ fun RethinkBackupRestoreSheet(
                     onClick = onBackup,
                 )
                 RethinkListItem(
+                    enabled = !busy,
                     headline = strings.restoreTitle,
                     supporting = strings.restoreDescription,
                     leadingIcon = MaterialSymbols.Filled.Restore,

@@ -29,7 +29,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
@@ -47,18 +46,10 @@ import com.bernaferrari.bravedns.wireguard.WgInterface
 import com.bernaferrari.bravedns.wireguard.util.ErrorMessages
 import com.celzero.firestack.backend.Backend
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import com.bernaferrari.bravedns.ui.compose.common.findActivity
 
 private const val CLIPBOARD_PUBLIC_KEY_LBL = "Public Key"
-private const val DEFAULT_MTU = "-1"
-
-// when dns is set to auto, the default dns is set to 1.1.1.1. this differs from official
-// wireguard for android, because rethink requires a dns to be set in "Simple" mode
-private const val DEFAULT_DNS = "1.1.1.1"
-private const val DEFAULT_LISTEN_PORT = "0"
-
 @Keep
 @kotlinx.serialization.Serializable
 enum class WgType(val value: Int) {
@@ -84,10 +75,10 @@ fun WgConfigEditorScreen(
 ) {
     val context = LocalContext.current
     val activity = context.findActivity<Activity>()
-    val scope = rememberCoroutineScope()
     val publicKeyCopyToast = stringResource(R.string.public_key_copy_toast_msg)
     val configAddSuccessToast = stringResource(R.string.config_add_success_toast)
-    var state by remember { mutableStateOf(RethinkWireguardEditorState()) }
+    val draft: WgEditorViewModel = androidx.lifecycle.viewmodel.compose.viewModel(key = "wg-editor:$configId")
+    var state by draft::state
 
     fun showListenPort(wgIface: WgInterface?): Boolean {
         val isPresent = wgIface?.listenPort != null && wgIface.listenPort != 1
@@ -95,12 +86,14 @@ fun WgConfigEditorScreen(
     }
 
     LaunchedEffect(configId) {
+        if (draft.loaded) return@LaunchedEffect
         withContext(Dispatchers.IO) {
             val config = WireguardManager.getConfigById(configId)
             val iface = config?.getInterface()
             val dns = iface?.dnsServers?.joinToString().orEmpty()
             val searchDomains = iface?.dnsSearchDomains?.joinToString().orEmpty()
             withContext(Dispatchers.Main) {
+                draft.original = iface
                 state = RethinkWireguardEditorState(
                     interfaceName = config?.getName().orEmpty(),
                     privateKey = iface?.getKeyPair()?.getPrivateKey()?.base64().orEmpty(),
@@ -112,6 +105,8 @@ fun WgConfigEditorScreen(
                     advancedProperties = if (iface?.isAmnezia() == true) iface.getAmzProps().orEmpty() else "",
                     showListenPort = showListenPort(iface),
                 )
+                draft.initial = state
+                draft.loaded = true
             }
         }
     }
@@ -126,28 +121,16 @@ fun WgConfigEditorScreen(
         Utilities.showToastUiCentered(context, publicKeyCopyToast, Toast.LENGTH_SHORT)
     }
 
-    fun saveConfig() {
-        val editorState = state
-        scope.launch(Dispatchers.IO) {
-            try {
-                val newWgInterface = WgInterface.Builder()
-                    .parsePrivateKey(editorState.privateKey)
-                    .parseAddresses(editorState.addresses)
-                    .parseListenPort(editorState.listenPort.ifEmpty { DEFAULT_LISTEN_PORT })
-                    .parseDnsServers(editorState.dnsServers.ifEmpty { DEFAULT_DNS })
-                    .parseMtu(editorState.mtu.ifEmpty { DEFAULT_MTU })
-                    .build()
-                if (WireguardManager.addOrUpdateInterface(configId, editorState.interfaceName, newWgInterface) != null) {
-                    withContext(Dispatchers.Main) {
-                        Utilities.showToastUiCentered(context, configAddSuccessToast, Toast.LENGTH_LONG)
-                        onSaveSuccess()
-                    }
-                }
-            } catch (error: Throwable) {
-                val message = ErrorMessages[context, error]
-                Logger.e(Logger.LOG_TAG_UI, "err while parsing wg interface: $message", error as? Exception)
-                withContext(Dispatchers.Main) { Utilities.showToastUiCentered(context, message, Toast.LENGTH_LONG) }
-            }
+    LaunchedEffect(draft.saved, draft.error) {
+        if (draft.saved) {
+            draft.saved = false
+            Utilities.showToastUiCentered(context, configAddSuccessToast, Toast.LENGTH_LONG)
+            onSaveSuccess()
+        }
+        draft.error?.let { error ->
+            draft.error = null
+            Logger.e(Logger.LOG_TAG_UI, "Unable to save WireGuard interface", error)
+            Utilities.showToastUiCentered(context, ErrorMessages[context, error], Toast.LENGTH_LONG)
         }
     }
 
@@ -166,8 +149,26 @@ fun WgConfigEditorScreen(
         onDispose { if (previousSoftInputMode != null) window.setSoftInputMode(previousSoftInputMode) }
     }
 
+    if (!draft.loaded) {
+        com.bernaferrari.bravedns.ui.compose.common.RethinkLoadingState(stringResource(R.string.lbl_loading))
+        return
+    }
+    var confirmDiscard by remember { mutableStateOf(false) }
+    val leave = { if (state != draft.initial) confirmDiscard = true else onBackClick() }
+    androidx.activity.compose.BackHandler(enabled = state != draft.initial) { leave() }
+    if (confirmDiscard) com.bernaferrari.bravedns.ui.compose.theme.RethinkConfirmDialog(
+        onDismissRequest = { confirmDiscard = false },
+        title = stringResource(R.string.wg_discard_changes),
+        message = stringResource(R.string.wg_discard_changes_body),
+        confirmText = stringResource(R.string.wg_discard),
+        dismissText = stringResource(R.string.lbl_cancel),
+        onConfirm = onBackClick,
+        onDismiss = { confirmDiscard = false },
+        isConfirmDestructive = true,
+    )
     RethinkWireguardEditor(
         state = state,
+        saveEnabled = draft.loaded && !draft.saving,
         strings = RethinkWireguardEditorStrings(
             title = stringResource(R.string.lbl_configure),
             configuration = stringResource(R.string.lbl_configure),
@@ -188,9 +189,9 @@ fun WgConfigEditorScreen(
         ),
         actionBottomInset = actionBarBottomInset,
         onStateChange = { state = it },
-        onBackClick = onBackClick,
+        onBackClick = leave,
         onGenerateKeys = ::generateKeys,
         onCopyPublicKey = ::copyPublicKey,
-        onSaveClick = ::saveConfig,
+        onSaveClick = { draft.save(configId) },
     )
 }

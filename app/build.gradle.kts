@@ -359,6 +359,7 @@ dependencies {
     implementation(libs.androidx.room.sqlite.wrapper)
     implementation(libs.androidx.sqlite.bundled)
 
+    implementation(libs.compose.lifecycle.viewmodel)
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
 

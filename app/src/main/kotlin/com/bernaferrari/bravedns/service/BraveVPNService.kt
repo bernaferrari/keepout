@@ -3369,8 +3369,8 @@ class BraveVPNService : VpnService(), ConnectionMonitor.NetworkListener, Bridge 
         netLogTracker.writeConsoleLog(log)
     }
 
-    suspend fun isProxyReachable(_proxyId: String, csv: String): Boolean { // can be ippcsv or hostpcsv
-        return vpnAdapter?.isRpnReachable(csv) == true
+    suspend fun isProxyReachable(proxyId: String, csv: String): Boolean { // can be ippcsv or hostpcsv
+        return vpnAdapter?.isProxyReachable(proxyId, csv) == true
     }
 
     suspend fun isRpnReachable(csv: String): Boolean {

@@ -81,6 +81,8 @@ fun BackupRestoreSheet(
     val activity = remember(context) { context.findActivity<ComponentActivity>() }
     val workManager = remember(context) { WorkManager.getInstance(context.applicationContext) }
     var versionText by remember { mutableStateOf("") }
+    var backupRunning by remember { mutableStateOf(true) }
+    var restoreRunning by remember { mutableStateOf(true) }
     var failure by remember { mutableStateOf<RethinkBackupRestoreFailure?>(null) }
 
     val backupLauncher =
@@ -90,7 +92,10 @@ fun BackupRestoreSheet(
                 host,
                 result,
                 onFailure = { failure = RethinkBackupRestoreFailure.Backup },
-                onBackup = { uri -> startBackupProcess(host, uri, workManager) }
+                onBackup = { uri ->
+                    if (uri != null) backupRunning = true
+                    startBackupProcess(host, uri, workManager)
+                }
             )
         }
     val restoreLauncher =
@@ -100,7 +105,10 @@ fun BackupRestoreSheet(
                 host,
                 result,
                 onFailure = { failure = RethinkBackupRestoreFailure.Restore },
-                onRestore = { uri -> startRestoreProcess(uri, workManager) }
+                onRestore = { uri ->
+                    if (uri != null) restoreRunning = true
+                    startRestoreProcess(uri, workManager)
+                }
             )
         }
 
@@ -111,7 +119,8 @@ fun BackupRestoreSheet(
     LaunchedEffect(workManager, activity) {
         val host = activity ?: return@LaunchedEffect
         workManager.workInfosByTagFlow(BackupAgent.TAG).collect { workInfoList ->
-            val workInfo = workInfoList.getOrNull(0) ?: return@collect
+            backupRunning = workInfoList.any { !it.state.isFinished }
+            val workInfo = workInfoList.firstOrNull { !it.state.isFinished } ?: workInfoList.firstOrNull() ?: return@collect
             Logger.i(LOG_TAG_UI, "WorkManager state: ${workInfo.state} for ${BackupAgent.TAG}")
             when (workInfo.state) {
                 WorkInfo.State.SUCCEEDED -> {
@@ -134,6 +143,7 @@ fun BackupRestoreSheet(
     LaunchedEffect(workManager, activity) {
         val host = activity ?: return@LaunchedEffect
         RestoreWork.observe(workManager).collect { workInfo ->
+            restoreRunning = workInfo != null && !workInfo.state.isFinished
             workInfo ?: return@collect
             Logger.i(LOG_TAG_UI, "WorkManager state: ${workInfo.state} for ${RestoreAgent.TAG}")
             if (WorkInfo.State.SUCCEEDED == workInfo.state) {
@@ -163,6 +173,8 @@ fun BackupRestoreSheet(
     RethinkRuleSheetModal(onDismissRequest = onDismiss) {
         RethinkBackupRestoreSheet(
             versionText = versionText,
+            busy = backupRunning || restoreRunning,
+            progressText = stringResource(if (restoreRunning) R.string.restore_in_progress else R.string.backup_in_progress),
             strings = RethinkBackupRestoreStrings(
                 title = stringResource(R.string.brbs_title),
                 description = stringResource(R.string.brbs_backup_restore_desc),
@@ -365,7 +377,7 @@ private fun startBackupProcess(activity: ComponentActivity, backupUri: Uri?, wor
             )
             .addTag(BackupAgent.TAG)
             .build()
-    workManager.beginWith(downloadWatcher).enqueue()
+    workManager.enqueueUniqueWork(BackupAgent.TAG, androidx.work.ExistingWorkPolicy.KEEP, downloadWatcher)
 }
 
 private fun restartApp(context: Context) = com.bernaferrari.bravedns.backup.RestoreRestart.restart(context)

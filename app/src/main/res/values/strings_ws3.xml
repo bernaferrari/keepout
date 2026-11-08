@@ -42,4 +42,9 @@
     <string name="home_card_notifications_body">Get alerts when a new app is installed or protection stops.</string>
     <string name="home_card_notifications_allow">Allow notifications</string>
     <string name="home_card_notifications_decline">No thanks</string>
+    <string name="backup_in_progress">Backing up your data…</string>
+    <string name="restore_in_progress">Restoring your data…</string>
+    <string name="wg_discard_changes">Discard unsaved changes?</string>
+    <string name="wg_discard_changes_body">Your WireGuard changes have not been saved.</string>
+    <string name="wg_discard">Discard</string>
 </resources>

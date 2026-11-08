@@ -69,7 +69,19 @@ object WireguardConfigFileManager {
     fun write(file: File, cfg: String) {
         Logger.d(LOG_TAG, "writing wg config to plain file: ${file.absolutePath}")
         file.parentFile?.mkdirs()
-        file.writeText(cfg, StandardCharsets.UTF_8)
+        val staged = File.createTempFile("wg-write-", ".tmp", file.absoluteFile.parentFile)
+        try {
+            java.io.FileOutputStream(staged).use { output ->
+                output.write(cfg.toByteArray(StandardCharsets.UTF_8))
+                output.fd.sync()
+            }
+            // Same-directory POSIX rename keeps the previous config intact until commit.
+            android.system.Os.rename(staged.absolutePath, file.absolutePath)
+        } catch (error: android.system.ErrnoException) {
+            throw IOException("Unable to commit WireGuard configuration", error)
+        } finally {
+            staged.delete()
+        }
     }
 
     /**

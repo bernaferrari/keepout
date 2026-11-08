@@ -91,6 +91,10 @@ private suspend fun savePeer(
     onSuccess: () -> Unit,
     onError: (String) -> Unit,
 ) {
+    fun report(error: Exception) {
+        Logger.e(Logger.LOG_TAG_UI, "Unable to save WireGuard peer", error)
+        onError(ErrorMessages[context, error])
+    }
     try {
         val builder = Peer.Builder()
         if (allowedIps.isNotEmpty()) builder.parseAllowedIPs(allowedIps)
@@ -100,12 +104,21 @@ private suspend fun savePeer(
         if (publicKey.isNotEmpty()) builder.parsePublicKey(publicKey)
         val newPeer = builder.build()
         withContext(Dispatchers.IO) {
-            if (wgPeer != null) WireguardManager.deletePeer(configId, wgPeer)
-            WireguardManager.addPeer(configId, newPeer)
+            if (wgPeer != null) WireguardManager.replacePeer(configId, wgPeer, newPeer)
+            else WireguardManager.addPeer(configId, newPeer)
         }
         onSuccess()
-    } catch (error: Throwable) {
-        Logger.e(Logger.LOG_TAG_UI, "Error while adding peer", error as? Exception)
-        onError(ErrorMessages[context, error])
+    } catch (cancelled: kotlinx.coroutines.CancellationException) {
+        throw cancelled
+    } catch (error: com.bernaferrari.bravedns.wireguard.BadConfigException) {
+        report(error)
+    } catch (error: java.io.IOException) {
+        report(error)
+    } catch (error: androidx.sqlite.SQLiteException) {
+        report(error)
+    } catch (error: IllegalStateException) {
+        report(error)
+    } catch (error: SecurityException) {
+        report(error)
     }
 }

@@ -75,7 +75,7 @@ class HomeScreenViewModel(
 
     private fun observeHealth() {
         combine(environment, protectedCardArmed, dnsFailing, _uiState) { env, armed, failing, state ->
-            val protectedOn = state.isVpnActive && !state.isPaused
+            val protectedOn = canCelebrateProtection(state.protectionStatus, env, failing)
             homeHealthIssue(env, state.isVpnActive, state.isPaused, failing) to
                 homeCard(env, protectedOn, armed)
         }.distinctUntilChanged().onEach { (health, card) ->

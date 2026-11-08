@@ -164,6 +164,7 @@ object WireguardManager : KoinComponent {
         return registry.isMappingActive(id)
     }
 
+    private val configEditMutex = Mutex()
     private val activationMutex = Mutex()
 
     suspend fun enableConfig(unmapped: WgConfigFilesImmutable) = activationMutex.withLock {
@@ -334,11 +335,10 @@ object WireguardManager : KoinComponent {
         configId: Int,
         configName: String,
         wgInterface: WgInterface
-    ): Config? {
-        return if (configId <= 0) {
-            addInterface(configName, wgInterface)
-        } else {
-            updateInterface(configId, configName, wgInterface)
+    ): Config? = configEditMutex.withLock {
+        withContext(kotlinx.coroutines.NonCancellable) {
+            if (configId <= 0) addInterface(configName, wgInterface)
+            else updateInterface(configId, configName, wgInterface)
         }
     }
 
@@ -493,45 +493,53 @@ object WireguardManager : KoinComponent {
         }
     }
 
-    suspend fun addPeer(id: Int, peer: Peer) {
-        val config = registry.findConfig(id)
-        if (config == null) {
-            Logger.e(LOG_TAG_PROXY, "addPeer: wg not found, id: $id, ${registry.configCount()}")
-            return
+    /** Replaces a peer in one persisted configuration; the live tunnel never sees a missing peer. */
+    suspend fun replacePeer(id: Int, previous: Peer, replacement: Peer) = configEditMutex.withLock {
+        withContext(kotlinx.coroutines.NonCancellable) {
+            val config = checkNotNull(registry.findConfig(id)) { "WireGuard configuration no longer exists" }
+            writeConfigAndUpdateDb(WgConfigParser.replacePeer(config, previous, replacement))
         }
-        val peers = config.getPeers() ?: mutableListOf()
-        val newPeers = peers.toMutableList()
-        newPeers.add(peer)
-        val cfg = WgConfigParser.rebuild(config.getId(), config.getName(), config.getInterface(), newPeers)
-        Logger.i(LOG_TAG_PROXY, "adding peer for config: $id, ${cfg.getName()}, ${newPeers.size}")
-        writeConfigAndUpdateDb(cfg)
     }
 
-    suspend fun deletePeer(id: Int, peer: Peer) {
-        val config = registry.findConfig(id)
-        if (config == null) {
-            Logger.e(LOG_TAG_PROXY, "deletePeer: wg not found, id: $id, ${registry.configCount()}")
-            return
+    suspend fun addPeer(id: Int, peer: Peer) = configEditMutex.withLock {
+        withContext(kotlinx.coroutines.NonCancellable) {
+            val config = checkNotNull(registry.findConfig(id)) { "WireGuard configuration no longer exists" }
+            val peers = config.getPeers() ?: mutableListOf()
+            val newPeers = peers.toMutableList()
+            newPeers.add(peer)
+            val cfg = WgConfigParser.rebuild(config.getId(), config.getName(), config.getInterface(), newPeers)
+            Logger.i(LOG_TAG_PROXY, "adding peer for config: $id, ${cfg.getName()}, ${newPeers.size}")
+            writeConfigAndUpdateDb(cfg)
         }
-        val peers = config.getPeers()?.toMutableList()
-        if (peers == null) {
-            Logger.e(LOG_TAG_PROXY, "peers not found for config: $id")
-            return
-        }
-        val isRemoved =
-            peers.removeIf {
-                it.getPublicKey() == peer.getPublicKey() &&
-                    it.getEndpoint() == peer.getEndpoint() &&
-                    it.getAllowedIps() == peer.getAllowedIps() &&
-                    it.getPreSharedKey() == peer.getPreSharedKey()
+    }
+
+    suspend fun deletePeer(id: Int, peer: Peer) = configEditMutex.withLock {
+        withContext(kotlinx.coroutines.NonCancellable) {
+            val config = registry.findConfig(id)
+            if (config == null) {
+                Logger.e(LOG_TAG_PROXY, "deletePeer: wg not found, id: $id, ${registry.configCount()}")
+                return@withContext
             }
-        Logger.d(
-            LOG_TAG_PROXY,
-            "new peers: ${peers.size}, ${peer.getPublicKey().base64()} is removed? $isRemoved"
-        )
-        val cfg = WgConfigParser.rebuild(config.getId(), config.getName(), config.getInterface(), peers)
-        Logger.i(LOG_TAG_PROXY, "deleting peer for config: $id, ${cfg.getName()}")
-        writeConfigAndUpdateDb(cfg)
+            val peers = config.getPeers()?.toMutableList()
+            if (peers == null) {
+                Logger.e(LOG_TAG_PROXY, "peers not found for config: $id")
+                return@withContext
+            }
+            val isRemoved =
+                peers.removeIf {
+                    it.getPublicKey() == peer.getPublicKey() &&
+                        it.getEndpoint() == peer.getEndpoint() &&
+                        it.getAllowedIps() == peer.getAllowedIps() &&
+                        it.getPreSharedKey() == peer.getPreSharedKey()
+                }
+            Logger.d(
+                LOG_TAG_PROXY,
+                "new peers: ${peers.size}, ${peer.getPublicKey().base64()} is removed? $isRemoved"
+            )
+            val cfg = WgConfigParser.rebuild(config.getId(), config.getName(), config.getInterface(), peers)
+            Logger.i(LOG_TAG_PROXY, "deleting peer for config: $id, ${cfg.getName()}")
+            writeConfigAndUpdateDb(cfg)
+        }
     }
 
     private suspend fun writeConfigAndUpdateDb(cfg: Config, serverResponse: String = "") {

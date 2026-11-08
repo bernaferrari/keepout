@@ -23,7 +23,7 @@ private const val PING_IP3 = "216.239.32.27:443"
 private const val PING_HOST1 = "cloudflare.com:443"
 private const val PING_HOST2 = "google.com:443"
 private const val PING_HOST3 = "brave.com:443"
-private const val STRENGTH_MAX = 5
+private const val STRENGTH_MAX = 6
 private const val TAG = "PingUi"
 
 /** Android reachability bridge for the target-neutral connectivity-check renderer. */
@@ -43,45 +43,31 @@ fun PingTestScreen(onBackClick: (() -> Unit)? = null) {
     var host2Status by remember { mutableStateOf<RethinkPingStatus>(RethinkPingStatus.Idle) }
     var host3Status by remember { mutableStateOf<RethinkPingStatus>(RethinkPingStatus.Idle) }
     var strength by remember { mutableStateOf<Int?>(null) }
-    val proxiesStatus = remember { mutableListOf<Boolean>() }
-
-    suspend fun getProxiesStatus(csv: String): List<Boolean> {
-        if (proxiesStatus.isNotEmpty()) return proxiesStatus
-        return withContext(Dispatchers.IO) {
-            listOf(
-                VpnController.isProxyReachable(Backend.RpnWin, csv),
-                VpnController.isProxyReachable(Backend.RpnWin, csv),
-                VpnController.isProxyReachable(Backend.RpnWin, csv),
-                VpnController.isRpnReachable(csv),
-                VpnController.isProxyReachable(Backend.Rpn64, csv),
-            ).also { probes -> proxiesStatus.addAll(probes) }
-        }
+    var running by remember { mutableStateOf(false) }
+    suspend fun isReachable(target: String): Boolean = withContext(Dispatchers.IO) {
+        VpnController.isProxyReachable(Backend.Exit, target)
     }
 
-    suspend fun isReachable(csv: String): Boolean = getProxiesStatus(csv).any { it }
-
-    suspend fun calculateStrength(csv: String): Int = getProxiesStatus(csv).count { it }
-
     fun performPing() = scope.launch {
+        if (running) return@launch
+        running = true
         try {
-            proxiesStatus.clear()
             ip1Status = RethinkPingStatus.Loading; ip2Status = RethinkPingStatus.Loading; ip3Status = RethinkPingStatus.Loading
             host1Status = RethinkPingStatus.Loading; host2Status = RethinkPingStatus.Loading; host3Status = RethinkPingStatus.Loading
             strength = null
-            val ip1Reachable = isReachable(ip1)
-            val ip2Reachable = isReachable(ip2)
-            val ip3Reachable = isReachable(ip3)
-            val host1Reachable = isReachable(host1)
-            val host2Reachable = isReachable(host2)
-            val host3Reachable = isReachable(host3)
+            val results = checkConnectivity(listOf(ip1, ip2, ip3, host1, host2, host3), ::isReachable)
+            val ip1Reachable = results[0]; val ip2Reachable = results[1]; val ip3Reachable = results[2]
+            val host1Reachable = results[3]; val host2Reachable = results[4]; val host3Reachable = results[5]
             ip1Status = RethinkPingStatus.Result(ip1Reachable); ip2Status = RethinkPingStatus.Result(ip2Reachable); ip3Status = RethinkPingStatus.Result(ip3Reachable)
             host1Status = RethinkPingStatus.Result(host1Reachable); host2Status = RethinkPingStatus.Result(host2Reachable); host3Status = RethinkPingStatus.Result(host3Reachable)
-            strength = calculateStrength(ip3).coerceIn(1, STRENGTH_MAX)
+            strength = results.count { it }
+        } catch (cancelled: kotlinx.coroutines.CancellationException) {
+            throw cancelled
         } catch (error: Exception) {
             Logger.e(TAG, "reachability test failed: ${error.message}", error)
             ip1Status = RethinkPingStatus.Result(false); ip2Status = RethinkPingStatus.Result(false); ip3Status = RethinkPingStatus.Result(false)
             host1Status = RethinkPingStatus.Result(false); host2Status = RethinkPingStatus.Result(false); host3Status = RethinkPingStatus.Result(false)
-        }
+        } finally { running = false }
     }
     RethinkPingTestScreen(
         ipChecks = listOf(RethinkPingCheck("ip1", ip1, false, ip1Status), RethinkPingCheck("ip2", ip2, false, ip2Status), RethinkPingCheck("ip3", ip3, true, ip3Status)),
@@ -98,8 +84,13 @@ fun PingTestScreen(onBackClick: (() -> Unit)? = null) {
             reachable = stringResource(R.string.ping_status_reachable), unreachable = stringResource(R.string.ping_status_unreachable),
             testing = stringResource(R.string.ping_status_testing), customTarget = stringResource(R.string.ping_custom_target),
         ),
-        onValueChange = { id, value -> if (id == "ip3") ip3 = value else if (id == "host3") host3 = value },
+        onValueChange = { id, value ->
+            if (id == "ip3") { ip3 = value; ip3Status = RethinkPingStatus.Idle }
+            else if (id == "host3") { host3 = value; host3Status = RethinkPingStatus.Idle }
+            strength = null
+        },
         onTest = ::performPing,
+        running = running,
         onBackClick = onBackClick,
     )
 }

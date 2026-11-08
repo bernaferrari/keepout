@@ -35,6 +35,17 @@ internal object WgConfigParser {
         return rebuild(id, name, parsed.getInterface(), parsed.getPeers())
     }
 
+    fun replacePeer(config: Config, previous: Peer, replacement: Peer): Config {
+        val peers = config.getPeers().orEmpty().toMutableList()
+        val index = peers.indexOfFirst { it.toWgQuickString() == previous.toWgQuickString() }
+        check(index >= 0) { "WireGuard peer changed; reopen the editor" }
+        check(peers.withIndex().none { (i, peer) ->
+            i != index && peer.getPublicKey().base64() == replacement.getPublicKey().base64()
+        }) { "A peer with this public key already exists" }
+        peers[index] = replacement
+        return rebuild(config.getId(), config.getName(), config.getInterface(), peers)
+    }
+
     fun rebuild(
         id: Int,
         name: String,

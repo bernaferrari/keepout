@@ -76,6 +76,7 @@ fun RethinkWireguardEditor(
     onCopyPublicKey: () -> Unit,
     onSaveClick: () -> Unit,
     modifier: Modifier = Modifier,
+    saveEnabled: Boolean = true,
 ) {
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
     Scaffold(
@@ -85,6 +86,7 @@ fun RethinkWireguardEditor(
             RethinkFormActionRow(
                 confirmLabel = strings.save,
                 onConfirm = onSaveClick,
+                confirmEnabled = saveEnabled,
                 dismissLabel = strings.cancel,
                 onDismiss = onBackClick,
                 modifier = Modifier.padding(
@@ -134,7 +136,7 @@ fun RethinkWireguardEditor(
                 RethinkFormSection(strings.setup) {
                     RethinkFormTextField(
                         value = state.privateKey,
-                        onValueChange = { onStateChange(state.copy(privateKey = it)) },
+                        onValueChange = { onStateChange(state.withPrivateKey(it)) },
                         label = strings.privateKey,
                         singleLine = true,
                         textStyle = MaterialTheme.typography.bodyLarge.copy(fontFamily = FontFamily.Monospace),
@@ -180,18 +182,19 @@ fun RethinkWireguardEditor(
             }
             if (state.advancedProperties.isNotEmpty()) {
                 item {
-                    RethinkFormSection(strings.advanced) {
-                        SelectionContainer {
-                            Text(
-                                state.advancedProperties,
-                                style = MaterialTheme.typography.bodyMedium,
-                                fontFamily = FontFamily.Monospace,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                            )
-                        }
-                    }
+                    WireguardAdvancedProperties(strings.advanced, state.advancedProperties)
                 }
             }
+        }
+    }
+}
+
+@Composable
+private fun WireguardAdvancedProperties(title: String, properties: String) {
+    RethinkFormSection(title) {
+        SelectionContainer {
+            Text(properties, style = MaterialTheme.typography.bodyMedium,
+                fontFamily = FontFamily.Monospace, color = MaterialTheme.colorScheme.onSurfaceVariant)
         }
     }
 }

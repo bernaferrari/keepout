@@ -2797,6 +2797,20 @@ class GoVpnAdapter(
         }
     }
 
+    // JNI reports checked native failures without a narrower Kotlin exception contract.
+    @Suppress("TooGenericExceptionCaught")
+    suspend fun isProxyReachable(proxyId: String, csv: String): Boolean {
+        if (!tunnel.isConnected) return false
+        return try {
+            tunnel.proxies.getProxy(proxyId).router().reaches(csv)
+        } catch (cancelled: kotlinx.coroutines.CancellationException) {
+            throw cancelled
+        } catch (error: Exception) {
+            Logger.w(LOG_TAG_PROXY, "$TAG reachability failed for $proxyId", error)
+            false
+        }
+    }
+
     suspend fun isRpnReachable(csv: String): Boolean {
         if (!tunnel.isConnected) {
             Logger.i(LOG_TAG_PROXY, "$TAG no tunnel, skip ping rpn proxy")

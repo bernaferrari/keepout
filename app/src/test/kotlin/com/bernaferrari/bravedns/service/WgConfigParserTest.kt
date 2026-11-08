@@ -34,6 +34,27 @@ class WgConfigParserTest {
         assertEquals(peers, rebuilt.getPeers())
     }
 
+    @Test fun replacementKeepsOriginalUntilCompleteConfigIsReady() {
+        val original = mockk<Peer>(relaxed = true) { io.mockk.every { toWgQuickString() } returns "original" }
+        val other = mockk<Peer>(relaxed = true) { io.mockk.every { toWgQuickString() } returns "other" }
+        val replacement = mockk<Peer>(relaxed = true) {
+            io.mockk.every { toWgQuickString() } returns "replacement"
+            io.mockk.every { getPublicKey().base64() } returns "new-key"
+        }
+        val config = WgConfigParser.rebuild(3, "office", mockk(relaxed = true), listOf(original, other))
+        val edited = WgConfigParser.replacePeer(config, original, replacement)
+        assertEquals(listOf(original, other), config.getPeers())
+        assertEquals(listOf(replacement, other), edited.getPeers())
+        assertEquals(3, edited.getId())
+        assertSame(config.getInterface(), edited.getInterface())
+    }
+
+    @Test(expected = IllegalStateException::class)
+    fun replacementRejectsAStalePeer() {
+        val config = WgConfigParser.rebuild(3, "office", mockk(relaxed = true), emptyList())
+        WgConfigParser.replacePeer(config, mockk(relaxed = true), mockk(relaxed = true))
+    }
+
     @Test(expected = BadConfigException::class)
     fun `parseText rejects missing interface section`() {
         WgConfigParser.parseText("PrivateKey = aaa\n")

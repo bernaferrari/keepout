@@ -86,6 +86,7 @@ fun RethinkPingTestScreen(
     onTest: () -> Unit,
     onBackClick: (() -> Unit)?,
     modifier: Modifier = Modifier,
+    running: Boolean = false,
 ) {
     var showVpnRequiredDialog by remember(vpnActive) { mutableStateOf(!vpnActive) }
     RethinkTopBarLazyColumnScreen(
@@ -94,10 +95,10 @@ fun RethinkPingTestScreen(
         onBackClick = onBackClick,
         modifier = modifier,
     ) {
-        item { PingCheckSection(strings.ipSection, ipChecks, strings, onValueChange) }
-        item { PingCheckSection(strings.hostSection, hostChecks, strings, onValueChange) }
+        item { PingCheckSection(strings.ipSection, ipChecks, strings, onValueChange, enabled = !running) }
+        item { PingCheckSection(strings.hostSection, hostChecks, strings, onValueChange, enabled = !running) }
         item {
-            PrimaryButton(text = strings.test, onClick = onTest, modifier = Modifier.fillMaxWidth())
+            PrimaryButton(text = strings.test, onClick = onTest, modifier = Modifier.fillMaxWidth(), enabled = vpnActive && !running)
         }
         strength?.let { value ->
             item {
@@ -138,6 +139,7 @@ private fun PingCheckSection(
     checks: List<RethinkPingCheck>,
     strings: RethinkPingTestStrings,
     onValueChange: (String, String) -> Unit,
+    enabled: Boolean,
 ) {
     val fixed = checks.filterNot { it.editable }
     val editable = checks.filter { it.editable }
@@ -159,6 +161,7 @@ private fun PingCheckSection(
         }
         editable.forEach { check ->
             RethinkFormTextField(
+                enabled = enabled,
                 value = check.value,
                 onValueChange = { onValueChange(check.id, it) },
                 label = strings.customTarget,

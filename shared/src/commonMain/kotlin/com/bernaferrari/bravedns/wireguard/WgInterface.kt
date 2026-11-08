@@ -164,7 +164,7 @@ class WgInterface private constructor(builder: Builder) {
     fun getH3(): Long? = h3
     fun getH4(): Long? = h4
 
-    class Builder {
+    class Builder(original: WgInterface? = null) {
         val addresses: MutableSet<InetNetwork> = linkedSetOf()
         val dnsServers: MutableSet<String> = linkedSetOf()
         val dnsSearchDomains: MutableSet<String> = linkedSetOf()
@@ -183,6 +183,29 @@ class WgInterface private constructor(builder: Builder) {
         var h3: Long? = null
         var h4: Long? = null
         var mtu: Int? = null
+
+        init {
+            if (original != null) {
+                addresses.addAll(original.addresses)
+                dnsServers.addAll(original.dnsServers)
+                dnsSearchDomains.addAll(original.dnsSearchDomains)
+                excludedApplications.addAll(original.excludedApplications)
+                includedApplications.addAll(original.includedApplications)
+                keyPair = original.keyPair
+                listenPort = original.listenPort
+                mtu = original.mtu
+                clientId = original.clientId
+                jc = original.jc
+                jmin = original.jmin
+                jmax = original.jmax
+                s1 = original.s1
+                s2 = original.s2
+                h1 = original.h1
+                h2 = original.h2
+                h3 = original.h3
+                h4 = original.h4
+            }
+        }
 
         fun addAddress(addr: String): Builder {
             addresses.add(InetNetwork.parse(addr)); return this

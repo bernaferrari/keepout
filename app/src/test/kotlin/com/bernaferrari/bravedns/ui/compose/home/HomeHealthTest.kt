@@ -41,6 +41,18 @@ class HomeHealthTest {
         assertNull(homeCard(clear, protectedOn = true, protectedCardArmed = false))
     }
 
+    @Test fun celebrationRequiresHealthyProtection() {
+        HomeProtectionStatus.entries.forEach { status ->
+            assertEquals(status.name,
+                status == HomeProtectionStatus.Protected || status == HomeProtectionStatus.UltraSecure,
+                canCelebrateProtection(status, clear, false))
+        }
+        assertFalse(canCelebrateProtection(null, clear, false))
+        assertFalse(canCelebrateProtection(HomeProtectionStatus.Protected, clear, true))
+        assertFalse(canCelebrateProtection(HomeProtectionStatus.Protected, HomeEnvironment(privateDnsActive = true), false))
+        assertFalse(canCelebrateProtection(HomeProtectionStatus.Protected, HomeEnvironment(otherAlwaysOnVpn = true), false))
+    }
+
     @Test fun missingPreferredTransportAndServerErrorsCountAsFailing() {
         assertTrue(isDnsFailing(null))
         listOf(
