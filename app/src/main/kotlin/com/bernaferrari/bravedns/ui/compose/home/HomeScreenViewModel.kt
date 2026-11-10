@@ -58,7 +58,6 @@ class HomeScreenViewModel(
         observeLastDay()
         observePause()
         observeHealth()
-        pollDnsHealth()
     }
 
     fun updateEnvironment(value: HomeEnvironment) {
@@ -101,21 +100,19 @@ class HomeScreenViewModel(
      * protection is on. System DNS has no preferred resolver to fail, and a pinned state (the
      * store-capture build) has no tunnel to ask.
      */
-    private fun pollDnsHealth() {
-        viewModelScope.launch {
-            var failures = 0
-            while (isActive) {
-                val state = _uiState.value
-                val check = state.isVpnActive && !state.isPaused && VpnController.pinnedState == null
-                val failed = check && withContext(Dispatchers.IO) {
-                    if (appConfig.getDnsType().isSystemDns()) return@withContext false
-                    val id = if (appConfig.isSmartDnsEnabled()) Backend.Plus else Backend.Preferred
-                    runCatching { isDnsFailing(VpnController.getDnsStatus(id)) }.getOrDefault(false)
-                }
-                failures = if (failed) failures + 1 else 0
-                dnsFailing.value = failures >= DNS_FAILURES_BEFORE_BANNER
-                delay(DNS_POLL_MILLIS)
+    suspend fun pollDnsHealth() = kotlinx.coroutines.coroutineScope {
+        var failures = 0
+        while (isActive) {
+            val state = _uiState.value
+            val check = state.isVpnActive && !state.isPaused && VpnController.pinnedState == null
+            val failed = check && withContext(Dispatchers.IO) {
+                if (appConfig.getDnsType().isSystemDns()) return@withContext false
+                val id = if (appConfig.isSmartDnsEnabled()) Backend.Plus else Backend.Preferred
+                runCatching { isDnsFailing(VpnController.getDnsStatus(id)) }.getOrDefault(false)
             }
+            failures = if (failed) failures + 1 else 0
+            dnsFailing.value = failures >= DNS_FAILURES_BEFORE_BANNER
+            delay(DNS_POLL_MILLIS)
         }
     }
 

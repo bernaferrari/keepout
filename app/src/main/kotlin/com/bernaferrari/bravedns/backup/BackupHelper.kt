@@ -21,13 +21,8 @@ import com.bernaferrari.bravedns.R
 import com.bernaferrari.bravedns.database.AppDatabase
 import com.bernaferrari.bravedns.database.LogDatabase
 import com.bernaferrari.bravedns.service.VpnController
-import java.io.BufferedInputStream
-import java.io.ByteArrayOutputStream
 import java.io.File
-import java.io.FileOutputStream
 import java.io.InputStream
-import java.util.zip.ZipEntry
-import java.util.zip.ZipInputStream
 
 class BackupHelper {
 
@@ -128,57 +123,8 @@ class BackupHelper {
             logDatabase.checkPoint()
         }
 
-        fun unzip(inputStream: InputStream?, path: String): Boolean {
-            var zis: ZipInputStream? = null
-            try {
-                val destDir = File(path).canonicalFile
-                zis = ZipInputStream(BufferedInputStream(inputStream))
-                var ze: ZipEntry? = zis.nextEntry
-                while (ze != null) {
-                    val filename: String = ze.name
-                    val outFile = sanitizedZipEntryFile(destDir, filename) ?: return false
-                    if (ze.isDirectory) {
-                        if (!outFile.exists() && !outFile.mkdirs()) {
-                            Logger.w(
-                                Logger.LOG_TAG_BACKUP_RESTORE,
-                                "failed to create zip directory entry: $filename"
-                            )
-                            return false
-                        }
-                        zis.closeEntry()
-                        ze = zis.nextEntry
-                        continue
-                    }
-                    outFile.parentFile?.let { parent ->
-                        if (!parent.exists() && !parent.mkdirs()) {
-                            Logger.w(
-                                Logger.LOG_TAG_BACKUP_RESTORE,
-                                "failed to create parent for zip entry: $filename"
-                            )
-                            return false
-                        }
-                    }
-                    val baos = ByteArrayOutputStream()
-                    val buffer = ByteArray(1024)
-                    var count: Int
-                    FileOutputStream(outFile).use { fout ->
-                        while (zis.read(buffer).also { r -> count = r } != -1) {
-                            baos.write(buffer, 0, count)
-                            fout.write(baos.toByteArray())
-                            baos.reset()
-                        }
-                    }
-                    zis.closeEntry()
-                    ze = zis.nextEntry
-                }
-            } catch (e: Exception) {
-                Logger.e(Logger.LOG_TAG_BACKUP_RESTORE, "unzip failed: ${e.message}", e)
-                return false
-            } finally {
-                zis?.close()
-            }
-            return true
-        }
+        fun unzip(inputStream: InputStream?, path: String): Boolean =
+            unzipBounded(inputStream, path, maxEntries = 8192, maxBytes = 4L * 1024 * 1024 * 1024)
 
         internal fun sanitizedZipEntryFile(destDir: File, filename: String): File? {
             if (filename.isBlank() || filename.contains("..") || File(filename).isAbsolute) {

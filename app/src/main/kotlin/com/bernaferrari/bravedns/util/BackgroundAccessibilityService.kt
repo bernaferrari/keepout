@@ -25,7 +25,6 @@ import android.view.accessibility.AccessibilityEvent
 import com.bernaferrari.bravedns.service.FirewallManager
 import com.bernaferrari.bravedns.service.PersistentState
 import com.bernaferrari.bravedns.service.VpnController
-import com.bernaferrari.bravedns.util.Utilities.isAtleastP
 import com.bernaferrari.bravedns.util.Utilities.isAtleastT
 import org.koin.android.ext.android.inject
 import org.koin.core.component.KoinComponent
@@ -72,13 +71,8 @@ class BackgroundAccessibilityService : AccessibilityService(), KoinComponent {
 
         if (latestTrackedPackage.isNullOrEmpty()) return
 
-        val hasContentChanged =
-            if (isAtleastP()) {
-                event.eventType == AccessibilityEvent.CONTENT_CHANGE_TYPE_PANE_DISAPPEARED ||
-                    event.eventType == AccessibilityEvent.TYPE_WINDOW_CONTENT_CHANGED
-            } else {
-                event.eventType == AccessibilityEvent.TYPE_WINDOW_CONTENT_CHANGED
-            }
+        val hasContentChanged = event.eventType == AccessibilityEvent.TYPE_WINDOW_CONTENT_CHANGED ||
+            event.eventType == AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED
         Logger.d(
             LOG_TAG_FIREWALL,
             "onAccessibilityEvent: ${event.packageName}, ${event.eventType}, $hasContentChanged")

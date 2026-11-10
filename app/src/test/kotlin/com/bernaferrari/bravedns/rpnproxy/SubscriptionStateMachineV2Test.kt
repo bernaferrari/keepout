@@ -82,7 +82,6 @@ class SubscriptionStateMachineV2Test : KoinTest {
     companion object {
         /** Time (ms) to wait after constructing a machine for its IO-dispatched init to complete. */
         /** Time (ms) to wait for `scope.launch { }` side-effects (deactivateRpn, processRpnPurchase). */
-        private const val SIDE_EFFECT_WAIT_MS = 500L
 
         private const val STD_PRODUCT  = "standard.tier"
         private const val INAPP_2YRS   = "proxy-yearly-2"
@@ -534,7 +533,6 @@ class SubscriptionStateMachineV2Test : KoinTest {
         val pd = makePurchaseDetail(STD_PRODUCT)
 
         machine.paymentSuccessful(pd)
-        Thread.sleep(SIDE_EFFECT_WAIT_MS)  // Wait for scope.launch (IO) side-effect
 
         coVerify { RpnProxyManager.processRpnPurchase(any(), any()) }
     }
@@ -1118,7 +1116,6 @@ class SubscriptionStateMachineV2Test : KoinTest {
         coEvery { mockRepository.getCurrentSubscription() } returns sub
 
         machine.subscriptionExpired()
-        Thread.sleep(SIDE_EFFECT_WAIT_MS)  // scope.launch (IO) side-effect
 
         coVerify { RpnProxyManager.deactivateRpn("expired") }
     }
@@ -1133,7 +1130,6 @@ class SubscriptionStateMachineV2Test : KoinTest {
         coEvery { mockRepository.getCurrentSubscription() } returns sub
 
         machine.subscriptionRevoked()
-        Thread.sleep(SIDE_EFFECT_WAIT_MS)
 
         coVerify { RpnProxyManager.deactivateRpn("revoked") }
     }

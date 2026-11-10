@@ -141,8 +141,8 @@ interface SubscriptionStatusDao {
         UPDATE SubscriptionStatus
         SET status = 3, lastUpdatedTs = :currentTime
         WHERE billingExpiry > 0 AND billingExpiry < :currentTime
-        AND status NOT IN (3, 10)
-        AND (productId LIKE '%onetime%' OR productId LIKE '%inapp%' OR productId = 'test_product')
+        AND status NOT IN (3, 7)
+        AND (productId IN ('proxy-yearly-2', 'proxy-yearly-5') OR productId LIKE '%onetime%' OR productId LIKE '%inapp%' OR productId = 'test_product')
     """
     )
     suspend fun markExpiredSubscriptions(currentTime: Long): Int

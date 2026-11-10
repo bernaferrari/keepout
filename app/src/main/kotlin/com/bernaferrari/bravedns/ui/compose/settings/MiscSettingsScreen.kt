@@ -16,6 +16,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import com.bernaferrari.bravedns.R
 import com.bernaferrari.bravedns.database.EventSource
@@ -117,12 +118,19 @@ fun LoggingSettingsScreen(
     initialFocusKey: String? = null,
     onBackClick: (() -> Unit)? = null,
 ) {
+    val context = LocalContext.current
+    var trafficSharing by remember { mutableStateOf(persistentState.appFunctionTrafficEnabled) }
+    var weeklyDigest by remember { mutableStateOf(persistentState.weeklyDigestEnabled) }
     var logsEnabled by remember { mutableStateOf(persistentState.logsEnabled) }
     var firewallBubbleEnabled by remember { mutableStateOf(persistentState.firewallBubbleEnabled) }
     var ipInfoEnabled by remember { mutableStateOf(persistentState.downloadIpInfo) }
     val toggles = listOfNotNull(
         RethinkMiscToggle("general_logs", stringResource(R.string.settings_enable_logs), stringResource(R.string.settings_enable_logs_desc), logsEnabled, Logs),
         RethinkMiscToggle("general_ip_info", stringResource(R.string.download_ip_info_title), stringResource(R.string.download_ip_info_desc, stringResource(R.string.lbl_ipinfo_inc)).replace("..", "."), ipInfoEnabled, IpInfo),
+        RethinkMiscToggle("app_function_traffic", stringResource(R.string.app_function_traffic_title),
+            stringResource(R.string.app_function_traffic_description), trafficSharing, Logs),
+        RethinkMiscToggle("weekly_digest", stringResource(R.string.weekly_digest_title),
+            stringResource(R.string.weekly_digest_description), weeklyDigest, Logs),
         if (isAtleastQ()) RethinkMiscToggle("general_firewall_bubble", stringResource(R.string.firewall_bubble_title), stringResource(R.string.firewall_bubble_desc), firewallBubbleEnabled, FirewallBubble) else null,
     )
     RethinkMiscSettingsScreen(
@@ -133,6 +141,15 @@ fun LoggingSettingsScreen(
         toggles = toggles,
         onToggleChange = { id, enabled ->
             when (id) {
+                "app_function_traffic" -> {
+                    trafficSharing = enabled
+                    persistentState.appFunctionTrafficEnabled = enabled
+                }
+                "weekly_digest" -> {
+                    weeklyDigest = enabled
+                    persistentState.weeklyDigestEnabled = enabled
+                    com.bernaferrari.bravedns.scheduler.WeeklyTrafficDigest.updateSchedule(context, enabled)
+                }
                 "general_logs" -> { logsEnabled = enabled; persistentState.logsEnabled = enabled }
                 "general_firewall_bubble" -> { firewallBubbleEnabled = enabled; persistentState.firewallBubbleEnabled = enabled }
                 "general_ip_info" -> { ipInfoEnabled = enabled; persistentState.downloadIpInfo = enabled }

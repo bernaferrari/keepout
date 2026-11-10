@@ -17,6 +17,8 @@ import com.bernaferrari.bravedns.data.AppConfig
 import com.bernaferrari.bravedns.database.AppDatabase
 import com.bernaferrari.bravedns.database.LogDatabase
 import com.bernaferrari.bravedns.database.WgConfigFilesRepository
+import com.bernaferrari.bravedns.database.WgHopMapRepository
+import com.bernaferrari.bravedns.wireguard.WgHopManager
 import com.bernaferrari.bravedns.service.PersistentState
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -27,6 +29,7 @@ import io.mockk.runs
 import io.mockk.unmockkAll
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.awaitAll
 import org.junit.After
 import org.junit.Assert.assertTrue
@@ -74,11 +77,18 @@ class BackupAgentTest {
                     single { logDatabase }
                     single { mockk<AppConfig>(relaxed = true) }
                     single { mockk<WgConfigFilesRepository>(relaxed = true) }
+                    single {
+                        mockk<WgHopMapRepository>(relaxed = true) {
+                            coEvery { getAllByPrefix(any()) } returns emptyList()
+                        }
+                    }
                     single<Application> { context.applicationContext as Application }
                     single<Context> { context }
                 }
             )
         }
+        // Resolve the manager's repository while this test's Koin graph is active.
+        runBlocking { WgHopManager.load(forceRefresh = false) }
         agent = BackupAgent(context, mockk<WorkerParameters>(relaxed = true))
     }
 

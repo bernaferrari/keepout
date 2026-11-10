@@ -1784,4 +1784,14 @@
     <string name="smart_dns_profile_active">Active for new resolver choices. Existing DNS answers can remain cached until their normal expiry.</string>
     <string name="smart_dns_profile_failed">Could not apply this profile. Select it again to retry.</string>
     <string name="rpn_relay_network_policy">Network restrictions currently inherit AUTO. These saved mobile and Wi-Fi controls apply when relay is disabled.</string>
+    <string name="app_function_traffic_title">Share recent traffic with assistants</string>
+    <string name="app_function_traffic_description">Allow supported assistants on this device to read recent destinations and firewall decisions. Requires logging and is unavailable when App lock is enabled.</string>
+    <string name="weekly_digest_title">Weekly traffic summary</string>
+    <string name="weekly_digest_description">Get a local notification with recorded allowed and blocked connections from the last seven completed days.</string>
+    <string name="weekly_digest_body">Allowed %1$d · Blocked %2$d</string>
+    <string name="wg_export_title">Export WireGuard configuration</string>
+    <string name="wg_export_description">The exported file contains the private key. Save it somewhere you trust.</string>
+    <string name="document_export_action">Export</string>
+    <string name="document_export_failed">Could not export the file</string>
+    <string name="rules_export_blocks">Export blocks</string>
 </resources>

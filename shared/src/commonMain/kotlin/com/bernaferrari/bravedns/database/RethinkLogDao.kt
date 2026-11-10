@@ -112,7 +112,7 @@ interface RethinkLogDao {
     suspend fun getLeastLoggedTime(): Long
 
     @Query(
-        "SELECT uid, SUM(uploadBytes) AS uploadBytes, SUM(downloadBytes) AS downloadBytes FROM RethinkLog where timeStamp >= :fromTime and timeStamp <= :toTime"
+        "SELECT uid, SUM(uploadBytes) AS uploadBytes, SUM(downloadBytes) AS downloadBytes FROM RethinkLog where timeStamp > :fromTime and timeStamp <= :toTime"
     )
     suspend fun getDataUsage(fromTime: Long, toTime: Long): DataUsage?
 }

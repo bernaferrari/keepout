@@ -84,6 +84,7 @@ fun RethinkWireguardDetail(
     onSsidChange: (Boolean) -> Unit,
     onEditSsids: () -> Unit,
     modifier: Modifier = Modifier,
+    exportAction: (@Composable () -> Unit)? = null,
     peerContent: @Composable () -> Unit = {},
 ) {
     var confirmDelete by remember { mutableStateOf(false) }
@@ -93,6 +94,7 @@ fun RethinkWireguardDetail(
         modifier = modifier,
     ) {
         item { RethinkWireguardDetailOverview(state) }
+        exportAction?.let { action -> item { action() } }
         if (state.isOneWireguard) item { RethinkOneWireguardNotice(strings.oneWireguardNotice) }
         rethinkSection(strings.configure) {
             RethinkListGroup {

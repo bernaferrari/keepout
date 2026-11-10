@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "4b632862fa163fe8f725835216042f9a",
+    "identityHash": "82f505e9a92da3d539605b5a0410cd8a",
     "entities": [
       {
         "tableName": "AppInfo",
@@ -128,6 +128,30 @@
           "columnNames": [
             "uid",
             "packageName"
+          ]
+        }
+      },
+      {
+        "tableName": "DataUsageCheckpoint",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `through` INTEGER NOT NULL, PRIMARY KEY(`id`))",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "through",
+            "columnName": "through",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "id"
           ]
         }
       },
@@ -1754,7 +1778,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '4b632862fa163fe8f725835216042f9a')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '82f505e9a92da3d539605b5a0410cd8a')"
     ]
   }
 }

@@ -114,6 +114,7 @@ fun RethinkPagedLogList(
     listState: LazyListState,
     modifier: Modifier = Modifier,
     bottomPadding: androidx.compose.ui.unit.Dp = SharedDimensions.screenPaddingHorizontal,
+    itemKey: ((Int) -> Any)? = null,
     itemContent: @Composable (index: Int, itemCount: Int) -> Unit,
 ) {
     LazyColumn(
@@ -135,7 +136,7 @@ fun RethinkPagedLogList(
             is RethinkPagedLogListState.Error -> item("logs_load_error") {
                 RethinkErrorState(strings.error, Modifier.fillParentMaxSize(), retryLabel = strings.retry, onRetry = state.onRetry)
             }
-            RethinkPagedLogListState.Content -> items(itemCount) { index -> itemContent(index, itemCount) }
+            RethinkPagedLogListState.Content -> items(itemCount, key = itemKey) { index -> itemContent(index, itemCount) }
         }
     }
 }

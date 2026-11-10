@@ -20,6 +20,7 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
+import androidx.paging.compose.itemKey
 import com.bernaferrari.bravedns.R
 import com.bernaferrari.bravedns.database.ActivityLogEntry
 import com.bernaferrari.bravedns.database.ConnectionTrackerRepository
@@ -151,12 +152,12 @@ private fun LogControls(
 }
 
 @Composable
-private fun <T : Any> LogsPagedListContent(
-    items: LazyPagingItems<T>,
+private fun LogsPagedListContent(
+    items: LazyPagingItems<ActivityLogEntry>,
     listState: LazyListState,
     emptyMessage: String,
     modifier: Modifier = Modifier,
-    rowContent: @Composable (item: T, index: Int, itemCount: Int) -> Unit
+    rowContent: @Composable (item: ActivityLogEntry, index: Int, itemCount: Int) -> Unit
 ) {
     val refreshState = items.loadState.refresh
     val itemCount = items.itemCount
@@ -174,6 +175,7 @@ private fun <T : Any> LogsPagedListContent(
     }
     RethinkPagedLogList(
         itemCount = itemCount,
+        itemKey = items.itemKey { it.key },
         state = listContentState,
         strings = logListStrings().copy(empty = emptyMessage),
         listState = listState,

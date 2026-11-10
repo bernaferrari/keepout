@@ -18,8 +18,6 @@ package com.bernaferrari.bravedns
 import Logger
 import android.app.Application
 import android.content.pm.ApplicationInfo
-import androidx.appfunctions.service.AppFunctionConfiguration
-import com.bernaferrari.bravedns.appfunctions.AppFunctionProvider
 import com.bernaferrari.bravedns.scheduler.ScheduleManager
 import com.bernaferrari.bravedns.scheduler.WorkScheduler
 import com.bernaferrari.bravedns.util.FirebaseErrorReporting
@@ -34,10 +32,7 @@ import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.plugin.module.dsl.startKoin
 
-class RethinkDnsApplicationPlay : Application(), AppFunctionConfiguration.Provider {
-
-    override val appFunctionConfiguration: AppFunctionConfiguration
-        get() = AppFunctionProvider.configuration
+class RethinkDnsApplicationPlay : Application() {
 
     override fun onCreate() {
         super.onCreate()

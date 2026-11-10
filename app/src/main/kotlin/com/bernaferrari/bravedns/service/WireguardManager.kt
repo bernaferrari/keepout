@@ -89,9 +89,7 @@ object WireguardManager : KoinComponent {
             if (config == null) {
                 Logger.w(LOG_TAG_PROXY, "WireGuard configuration missing or invalid: $path")
                 if (it.isActive) {
-                    registry.putMapping(it.copy(isActive = false, oneWireGuard = false))
-                    db.disableConfig(it.id)
-                    VpnController.removeWireGuardProxy(it.id)
+                    disableConfig(it)
                 }
                 continue
             }
@@ -153,40 +151,21 @@ object WireguardManager : KoinComponent {
     private val configEditMutex = Mutex()
     private val activationMutex = Mutex()
 
-    suspend fun enableConfig(unmapped: WgConfigFilesImmutable) = activationMutex.withLock {
-        enableConfigLocked(unmapped)
-    }
-
-    private suspend fun enableConfigLocked(unmapped: WgConfigFilesImmutable) {
-        val map = registry.findMapping(unmapped.id)
-        if (map == null) {
-            Logger.e(
-                LOG_TAG_PROXY,
-                "enableConfig: wg not found, id: ${unmapped.id}, ${registry.mappingCount()}"
-            )
-            return
+    suspend fun enableConfig(unmapped: WgConfigFilesImmutable) {
+        val id = unmapped.id
+        val enabled = activationMutex.withLock {
+            if (registry.findMapping(id) == null) return@withLock false
+            if (registry.findConfig(id) == null || getConflictingActiveConfigId(id) != null) {
+                return@withLock false
+            }
+            refreshSplitProxyInfo(ID_WG_BASE + id)
+            db.enableConfig(id)
+            registry.replaceMapping(id) { it.copy(isActive = true) }
+            appConfig.addProxy(AppConfig.ProxyType.WIREGUARD, AppConfig.ProxyProvider.WIREGUARD)
+            true
         }
-
-        val config = registry.findConfig(map.id)
-        if (config == null) {
-            Logger.w(LOG_TAG_PROXY, "config not found: ${map.id}")
-            return
-        }
-
-        if (getConflictingActiveConfigId(map.id) != null) {
-            Logger.w(LOG_TAG_PROXY, "refusing duplicate active WireGuard identity for config ${map.id}")
-            return
-        }
-        refreshSplitProxyInfo(ID_WG_BASE + map.id)
-        val newMap = registry.replaceMapping(map.id) { it.copy(isActive = true) } ?: return
-        val dbMap = WgConfigFiles.fromImmutable(newMap)
-        db.update(dbMap)
-        val proxyType = AppConfig.ProxyType.WIREGUARD
-        val proxyProvider = AppConfig.ProxyProvider.WIREGUARD
-        appConfig.addProxy(proxyType, proxyProvider)
-        VpnController.addWireGuardProxy(ID_WG_BASE + map.id)
-        Logger.i(LOG_TAG_PROXY, "enable wg config: ${map.id}, ${map.name}")
-        return
+        // Adding a native proxy can recursively activate its hop.
+        if (enabled) VpnController.addWireGuardProxy(ID_WG_BASE + id)
     }
 
     fun getConflictingActiveConfigId(id: Int): Int? {
@@ -238,35 +217,18 @@ object WireguardManager : KoinComponent {
         }
     }
 
-    fun disableConfig(unmapped: WgConfigFilesImmutable) {
-        val m = registry.findMapping(unmapped.id)
-        if (m == null) {
-            Logger.e(
-                LOG_TAG_PROXY,
-                "disableConfig: wg not found, id: ${unmapped.id}, ${registry.mappingCount()}"
-            )
-            return
+    suspend fun disableConfig(unmapped: WgConfigFilesImmutable) {
+        val id = unmapped.id
+        val disabled = activationMutex.withLock {
+            if (registry.findMapping(id) == null) return@withLock false
+            db.disableConfig(id)
+            registry.replaceMapping(id) { it.copy(isActive = false, oneWireGuard = false) }
+            if (registry.mappings.none { it.isActive }) {
+                appConfig.removeProxy(AppConfig.ProxyType.WIREGUARD, AppConfig.ProxyProvider.WIREGUARD)
+            }
+            true
         }
-
-        val config = registry.findConfig(unmapped.id)
-        if (config == null) {
-            Logger.w(LOG_TAG_PROXY, "config not found: ${unmapped.id}")
-            return
-        }
-
-        val newMap = registry.replaceMapping(m.id) {
-            it.copy(isActive = false, oneWireGuard = false)
-        } ?: return
-
-        io { db.disableConfig(newMap.id) }
-        if (registry.mappings.none { it.isActive }) {
-            val proxyType = AppConfig.ProxyType.WIREGUARD
-            val proxyProvider = AppConfig.ProxyProvider.WIREGUARD
-            appConfig.removeProxy(proxyType, proxyProvider)
-        }
-        io { VpnController.removeWireGuardProxy(newMap.id) }
-        Logger.i(LOG_TAG_PROXY, "disable wg config: ${newMap.id}, ${newMap.name}")
-        return
+        if (disabled && !registry.isMappingActive(id)) VpnController.removeWireGuardProxy(id)
     }
 
     suspend fun getAllPossibleConfigIdsForApp(

@@ -193,6 +193,12 @@ object Logger : KoinComponent {
         log(tag, message, LoggerLevel.INFO)
     }
 
+    fun isEnabled(level: LoggerLevel): Boolean = logLevel <= level.id || uiLogLevel <= level.id
+
+    inline fun info(tag: String, message: () -> String) {
+        if (isEnabled(LoggerLevel.INFO)) i(tag, message())
+    }
+
     fun w(tag: String, message: String, e: Exception? = null) {
         log(tag, message, LoggerLevel.WARN, e)
     }

@@ -511,6 +511,7 @@ fun WgConfigDetailScreen(
         onUseMobileChange = ::updateUseOnMobileNetwork,
         onSsidChange = ::toggleSsid,
         onEditSsids = ::openSsidDialog,
+        exportAction = { WgExportAction(configId, persistentState) },
     ) {
         Column(verticalArrangement = Arrangement.spacedBy(SharedDimensions.spacingMd)) {
             peers.forEach { peer ->

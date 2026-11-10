@@ -24,10 +24,6 @@ room3 {
     schemaDirectory("$projectDir/schemas")
 }
 
-ksp {
-    arg("appfunctions:aggregateAppFunctions", "true")
-}
-
 java {
     toolchain {
         languageVersion.set(JavaLanguageVersion.of(17))
@@ -112,7 +108,7 @@ android {
         minSdk = 24
         targetSdk = 37
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        versionCode = getVersionCode(project)
+        versionCode = getVersionCode(project).takeIf { it > 0 } ?: 1
         versionName = gitVersion
         vectorDrawables.useSupportLibrary = true
     }
@@ -307,10 +303,6 @@ tasks.withType<Detekt>().configureEach {
     }
 }
 
-val download by configurations.creating {
-    isTransitive = false
-}
-
 val firestackRepo = project.findProperty("firestackRepo") as? String ?: "github"
 val firestackCommit = project.findProperty("firestackCommit") as? String ?: "main"
 
@@ -376,23 +368,19 @@ dependencies {
     implementation(libs.coil.network.ktor3)
 
     implementation(platform(libs.koin.bom))
-    download(libs.koin.core)
     implementation(libs.koin.core)
     implementation(libs.koin.compose)
-    download(libs.koin.android)
     implementation(libs.koin.android)
     implementation(libs.koin.annotations)
 
 
 
-    download(firestackDependency())
     "websiteImplementation"(firestackDependency())
     "fdroidImplementation"(firestackDependency())
     "playImplementation"(firestackDependency())
 
     implementation(libs.androidx.work.runtime.ktx)
 
-    download(libs.ipaddress)
     implementation(libs.ipaddress)
 
     testImplementation(libs.junit)
@@ -437,7 +425,6 @@ dependencies {
     lintChecks(libs.android.security.lint)
 
     implementation(libs.androidx.appfunctions)
-    implementation(libs.androidx.appfunctions.service)
     ksp(libs.androidx.appfunctions.compiler)
 
     "websiteImplementation"(platform(libs.firebase.bom))

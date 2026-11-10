@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:versionCode="54"
-    android:versionName="v055v"> <!-- 54 for v055v -->
+    xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SYSTEM_EXEMPTED" />
@@ -113,8 +111,25 @@
                 android:resource="@xml/accessibility_service_config" />
         </service>
 
+        <service
+            android:name=".appfunctions.KeepoutAppFunctionService"
+            android:enabled="@bool/enable_app_functions"
+            android:exported="true"
+            android:permission="android.permission.BIND_APP_FUNCTION_SERVICE"
+            tools:targetApi="36">
+            <property android:name="android.app.appfunctions.v2" android:value="keepout_functions.xml" />
+            <intent-filter>
+                <action android:name="android.app.appfunctions.AppFunctionService" />
+            </intent-filter>
+        </service>
+
         <activity android:name=".ui.HomeScreenActivity"
+            android:exported="false"
             android:launchMode="singleTask" />
+
+        <activity android:name=".ui.LauncherActivity"
+            android:exported="false"
+            android:noHistory="true" />
 
         <!-- Sole launcher entry, kept as an alias so existing home-screen shortcuts keep
              resolving to the same component across upgrades. -->
@@ -124,7 +139,7 @@
             android:exported="true"
             android:icon="@mipmap/ic_launcher"
             android:label="@string/app_name"
-            android:targetActivity=".ui.HomeScreenActivity">
+            android:targetActivity=".ui.LauncherActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

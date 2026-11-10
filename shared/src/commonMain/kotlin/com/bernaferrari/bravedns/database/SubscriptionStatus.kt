@@ -37,7 +37,6 @@ class SubscriptionStatus {
     var purchaseTime: Long = 0L
     var accountExpiry: Long = 0L
     var billingExpiry: Long = 0L
-    // "developerPayload":"{\"ws\":{\"cid\":\"aa95f04efcb19a54c7605a02e5dd0b435906b993d12bec031a60f3f1272f4f0e\",\"sessiontoken\":\"22695:4:1752256088:524537c17ba103463ba1d330efaf05c146ba3404af:023f958b6c1949568f55078e3c58fe6885d3e57322\",\"expiry\":\"2025-08-11T00:00:00.000Z\",\"status\":\"valid\"}}"
     var developerPayload: String = ""
     var status: Int = SubscriptionState.STATE_INITIAL.id
     var windowDays: Int = DEFAULT_REVOKE_WINDOW_DAYS

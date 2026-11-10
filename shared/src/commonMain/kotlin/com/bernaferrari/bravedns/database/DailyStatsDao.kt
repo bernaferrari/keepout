@@ -12,6 +12,13 @@ import kotlinx.coroutines.flow.Flow
 @Suppress("TooManyFunctions")
 @Dao
 interface DailyStatsDao : AsnStatsMaintenanceDao {
+    @Query("""
+        SELECT COALESCE(SUM(connectionCount - blockedCount), 0) AS allowed,
+            COALESCE(SUM(blockedCount), 0) AS blocked
+        FROM daily_app_stats WHERE date >= :fromDay AND date < :untilDay
+    """)
+    suspend fun weeklyConnectionTotals(fromDay: Long, untilDay: Long): VerdictCounts
+
 
     @Query(
         """

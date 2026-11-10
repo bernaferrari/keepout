@@ -446,7 +446,6 @@ object RpnProxyManager : KoinComponent {
     }
 
     suspend fun getSessionTokenFromPayload(payload: String): String {
-        // "developerPayload":"{\"ws\":{\"cid\":\"aa95f04efcb19a54c7605a02e5dd0b435906b993d12bec031a60f3f1272f4f0e\",\"sessiontoken\":\"22695:4:1752256088:524537c17**c146ba3404af:023f958b6c194**fe6885d3e57322\",\"expiry\":\"2025-08-11T00:00:00.000Z\",\"status\":\"valid\"}}"
         try {
             val ws = extractWsObject(payload) ?: return ""
             val ent = VpnController.getEntitlementDetails(ws, billingBackendClient.getDeviceId())

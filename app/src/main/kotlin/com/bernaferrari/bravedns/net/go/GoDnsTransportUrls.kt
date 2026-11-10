@@ -48,7 +48,7 @@ internal fun dotTransportUrl(url: String, isSecure: Boolean): String {
  * kept (trimmed) so Intra sees the same CSV the adapter used to build inline.
  */
 internal fun dnsProxyIpPortCsv(proxyIps: String, port: Int): String {
-    return proxyIps.split(",").joinToString(",") { "${it.trim()}:$port" }
+    return proxyIps.split(",").joinToString(",") { "${bracketIpv6Host(it.trim())}:$port" }
 }
 
 /** Non-blank DNSCrypt relay stamps from a comma-separated config string. */

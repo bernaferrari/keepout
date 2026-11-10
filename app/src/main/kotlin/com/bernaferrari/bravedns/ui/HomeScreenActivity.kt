@@ -92,6 +92,7 @@ import androidx.core.net.toUri
 import androidx.core.view.WindowCompat
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.bernaferrari.bravedns.BuildConfig
 import com.bernaferrari.bravedns.NonStoreAppUpdater
 import com.bernaferrari.bravedns.R
@@ -295,6 +296,9 @@ class HomeScreenActivity : FragmentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        lifecycleScope.launch {
+            repeatOnLifecycle(androidx.lifecycle.Lifecycle.State.STARTED) { homeViewModel.pollDnsHealth() }
+        }
         com.bernaferrari.bravedns.util.SensitiveWindowProtection.apply(window)
         enableEdgeToEdge(
             statusBarStyle = SystemBarStyle.auto(

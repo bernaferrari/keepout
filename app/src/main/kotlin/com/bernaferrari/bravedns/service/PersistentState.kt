@@ -22,6 +22,7 @@ import android.os.Handler
 import kotlinx.coroutines.flow.SharedFlow
 import android.os.Looper
 import android.widget.Toast
+import androidx.core.content.edit
 import com.bernaferrari.bravedns.datastore.SyncPreferencesStore
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -264,6 +265,15 @@ class PersistentState(context: Context) {
     var biometricAuth by store.boolean("biometric_authentication", false)
 
     // bio-metric authentication type
+    internal val previousDataUsageWatermark by store.long("prev_data_usage_check", INIT_TIME_MS)
+    private val deviceOptIns = appContext.getSharedPreferences("device_opt_ins", Context.MODE_PRIVATE)
+    var appFunctionTrafficEnabled: Boolean
+        get() = deviceOptIns.getBoolean("app_function_traffic", false)
+        set(value) = deviceOptIns.edit { putBoolean("app_function_traffic", value) }
+    var weeklyDigestEnabled: Boolean
+        get() = deviceOptIns.getBoolean("weekly_digest", false)
+        set(value) = deviceOptIns.edit { putBoolean("weekly_digest", value) }
+
     var biometricAuthType by store.int("biometric_authentication_type", 0)
 
     // enable dns alg
@@ -325,7 +335,6 @@ class PersistentState(context: Context) {
     var firewallBubbleEnabled by store.boolean("pref_firewall_bubble_enabled", false)
 
     // previous data usage check timestamp
-    var prevDataUsageCheck by store.long("prev_data_usage_check", INIT_TIME_MS)
 
     // route rethink in rethink
     var routeRethinkInRethink by store.boolean("route_rethink_in_rethink", false)

@@ -27,10 +27,12 @@ import com.bernaferrari.bravedns.data.AppConfig
 import com.bernaferrari.bravedns.database.RefreshDatabase
 import com.bernaferrari.bravedns.service.FirewallManager
 import com.bernaferrari.bravedns.service.FirewallManager.NOTIF_CHANNEL_ID_FIREWALL_ALERTS
+import com.bernaferrari.bravedns.service.PersistentState
 import com.bernaferrari.bravedns.service.VpnController
 import com.bernaferrari.bravedns.ui.compose.home.HomePauseDuration
 import com.bernaferrari.bravedns.ui.compose.home.VpnControllerPauseControls
 import com.bernaferrari.bravedns.ui.compose.home.pauseProtection
+import com.bernaferrari.bravedns.util.BioMetricType
 import com.bernaferrari.bravedns.util.Constants
 import com.bernaferrari.bravedns.util.OrbotHelper
 import com.bernaferrari.bravedns.util.OrbotHelper.Companion.NOTIF_CHANNEL_ID_PROXY_ALERTS
@@ -44,13 +46,30 @@ import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
 class NotificationActionReceiver : BroadcastReceiver(), KoinComponent {
+    private val protectedActions = setOf(
+        Constants.NOTIF_ACTION_PAUSE_VPN,
+        Constants.NOTIF_ACTION_PAUSE_VPN_HOUR,
+        Constants.NOTIF_ACTION_RESUME_VPN,
+        Constants.NOTIF_ACTION_STOP_VPN,
+        Constants.NOTIF_ACTION_DNS_VPN,
+        Constants.NOTIF_ACTION_DNS_FIREWALL_VPN,
+        Constants.NOTIF_ACTION_RULES_FAILURE,
+        Constants.NOTIF_ACTION_NEW_APP_ALLOW,
+        Constants.NOTIF_ACTION_NEW_APP_DENY,
+        Constants.NOTIF_ACTION_DB_CORRUPTED_CLEAR,
+    )
+
     private val appConfig by inject<AppConfig>()
     private val orbotHelper by inject<OrbotHelper>()
     private val rdb by inject<RefreshDatabase>()
+    private val preferences by inject<PersistentState>()
 
     override fun onReceive(context: Context, intent: Intent) {
         // TODO - Move the NOTIFICATION_ACTIONs value to enum
         val action: String? = intent.getStringExtra(Constants.NOTIFICATION_ACTION)
+        if (action in protectedActions &&
+            BioMetricType.fromValue(preferences.biometricAuthType).enabled()
+        ) return
         Logger.i(LOG_TAG_VPN, "received notification action: $action")
         val manager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         when (action) {

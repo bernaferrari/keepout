@@ -20,16 +20,16 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v7
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
 
       - name: Set up JDK 21
-        uses: actions/setup-java@v5
+        uses: actions/setup-java@b6effb05e454b25005698d916606bdc6ffcbf961 # v5
         with:
           distribution: temurin
           java-version: 21
 
       - name: Set up Gradle
-        uses: gradle/actions/setup-gradle@v6
+        uses: gradle/actions/setup-gradle@8da46b539cd8fe6ab27ca75128919a18d757604c # v6
 
       - name: Build and verify web distribution
         run: ./scripts/verify-web-deploy.sh --ci --web-only
@@ -49,16 +49,16 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v7
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
 
       - name: Set up JDK 17
-        uses: actions/setup-java@v5
+        uses: actions/setup-java@b6effb05e454b25005698d916606bdc6ffcbf961 # v5
         with:
           distribution: temurin
           java-version: 17
 
       - name: Set up Gradle
-        uses: gradle/actions/setup-gradle@v6
+        uses: gradle/actions/setup-gradle@8da46b539cd8fe6ab27ca75128919a18d757604c # v6
 
       - name: Prepare synthetic Firebase options for debug CI
         if: matrix.variant == 'PlayDebug' || matrix.variant == 'WebsiteDebug'
@@ -66,8 +66,11 @@ jobs:
           python3 -m unittest discover -s scripts/tests -p test_debug_firebase.py -v
           python3 scripts/prepare-debug-firebase.py
 
-      - name: Compile variant + unit tests + detekt
-        run: ./gradlew :app:compile${{ matrix.variant }}Kotlin :app:test${{ matrix.variant }}UnitTest :app:detekt --console=plain
+      - name: Compile variant and run unit tests
+        run: ./gradlew :app:compile${{ matrix.variant }}Kotlin :app:test${{ matrix.variant }}UnitTest --console=plain
+      - name: Detekt
+        if: matrix.variant == 'PlayDebug'
+        run: ./gradlew :app:detekt --console=plain
 
       - name: Verify design-system screenshot goldens
         if: matrix.variant == 'PlayDebug'
@@ -75,14 +78,14 @@ jobs:
 
       - name: Upload screenshot diffs
         if: failure() && matrix.variant == 'PlayDebug'
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: roborazzi-diffs
           path: app/build/outputs/roborazzi/
 
       - name: Upload test results
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: test-results-${{ matrix.variant }}
           path: app/build/test-results/
@@ -95,16 +98,16 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v7
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
 
       - name: Set up JDK 17
-        uses: actions/setup-java@v5
+        uses: actions/setup-java@b6effb05e454b25005698d916606bdc6ffcbf961 # v5
         with:
           distribution: temurin
           java-version: 17
 
       - name: Set up Gradle
-        uses: gradle/actions/setup-gradle@v6
+        uses: gradle/actions/setup-gradle@8da46b539cd8fe6ab27ca75128919a18d757604c # v6
 
       - name: Prepare synthetic Firebase options for debug CI
         run: |
@@ -116,7 +119,7 @@ jobs:
 
       - name: Upload lint reports
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: lint-reports
           path: app/build/reports/lint-results*

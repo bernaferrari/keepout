@@ -49,12 +49,27 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import org.koin.android.ext.android.inject
+import com.bernaferrari.bravedns.service.PersistentState
+import com.bernaferrari.bravedns.ui.HomeScreenActivity
+import com.bernaferrari.bravedns.util.BioMetricType
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 
 /**
  * BubbleActivity - Content activity for Android Bubble notifications.
  */
-class BubbleActivity : ComponentActivity() {
+class BubbleActivity : ComponentActivity(), KoinComponent {
+    private val preferences by inject<PersistentState>()
+
+    private fun openHomeWhenLocked(): Boolean {
+        if (!BioMetricType.fromValue(preferences.biometricAuthType).enabled()) {
+            return false
+        }
+        startActivity(Intent(this, HomeScreenActivity::class.java))
+        finish()
+        return true
+    }
+
     private val connectionTrackerDAO by inject<ConnectionTrackerDAO>()
     private val appInfoRepository by inject<AppInfoRepository>()
     private val dnsLogDAO by inject<DnsLogDAO>()
@@ -69,6 +84,7 @@ class BubbleActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        if (openHomeWhenLocked()) return
         com.bernaferrari.bravedns.util.SensitiveWindowProtection.apply(window)
 
         Logger.d(TAG, "$TAG onCreate, taskId: $taskId")
@@ -95,11 +111,13 @@ class BubbleActivity : ComponentActivity() {
 
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
+        if (openHomeWhenLocked()) return
         Logger.d(TAG, "$TAG onNewIntent - bubble clicked again")
     }
 
     override fun onResume() {
         super.onResume()
+        if (isFinishing || openHomeWhenLocked()) return
         vpnOn = VpnController.hasTunnel()
         refreshKey++
         if (!vpnOn) {
@@ -108,6 +126,7 @@ class BubbleActivity : ComponentActivity() {
     }
 
     private fun allowApp(blockedApp: BlockedAppInfo, onRefresh: () -> Unit) {
+        if (openHomeWhenLocked()) return
         lifecycleScope.launch {
             try {
                 Logger.i(TAG, "Temporarily allowing app for 15 minutes: ${blockedApp.appName} (uid: ${blockedApp.uid})")
@@ -125,6 +144,7 @@ class BubbleActivity : ComponentActivity() {
     }
 
     private fun removeAllowedApp(allowedApp: AllowedAppInfo, onRefresh: () -> Unit) {
+        if (openHomeWhenLocked()) return
         lifecycleScope.launch {
             try {
                 Logger.i(TAG, "Removing temp allow for app: ${allowedApp.appName} (uid: ${allowedApp.uid})")

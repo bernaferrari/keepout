@@ -462,7 +462,7 @@ class GoVpnAdapter(
                 }
                 proxyUrl.append("@")
             }
-            proxyUrl.append(ipAddress)
+            proxyUrl.append(ipAddress?.let(::bracketIpv6Host))
             proxyUrl.append(":")
             proxyUrl.append(port)
             return URI.create(proxyUrl.toString()).toASCIIString()
@@ -724,7 +724,9 @@ class GoVpnAdapter(
         }
     }
 
-    suspend fun removeWgProxy(id: Int) = proxyRecovery().mutate { removeWgProxyLocked(id) }
+    suspend fun removeWgProxy(id: Int) = proxyRecovery().mutate {
+        if (!WireguardManager.isConfigActive(ID_WG_BASE + id)) removeWgProxyLocked(id)
+    }
 
     private suspend fun removeWgProxyLocked(id: Int) {
         if (!tunnel.isConnected) {
@@ -799,15 +801,13 @@ class GoVpnAdapter(
         addHopIfAny(id)
     }
 
+    @Suppress("TooGenericExceptionCaught") // JNI and database activation boundary.
     private suspend fun checkAndAddProxyForHopIfNeeded(id: String) {
         // see if there is hop for this proxy, start the hop-wg if not started
         try {
             val hop = WgHopManager.getHop(id)
-            val hopId = hop.substring(ID_WG_BASE.length).toIntOrNull()
-            if (hopId == null) { // hop can be empty, in that case, return
-                Logger.w(LOG_TAG_VPN, "$TAG no hop for $id")
-                return
-            }
+            if (hop.isEmpty()) return
+            val hopId = hop.removePrefix(ID_WG_BASE).toIntOrNull() ?: return
             val config = WireguardManager.getConfigFilesById(hopId)
             if (config == null) {
                 Logger.w(LOG_TAG_VPN, "$TAG no wg config found for id: $id, but hop: $hop")
@@ -816,7 +816,11 @@ class GoVpnAdapter(
             Logger.i(LOG_TAG_VPN, "$TAG start hop config: $hop")
             // this will enable the config and initiate the add proxy to the tunnel
             WireguardManager.enableConfig(config)
-        } catch (_: Exception) {}
+        } catch (cancelled: kotlinx.coroutines.CancellationException) {
+            throw cancelled
+        } catch (error: Exception) {
+            Logger.w(LOG_TAG_VPN, "$TAG could not activate WireGuard hop", error)
+        }
     }
 
     suspend fun closeConnections(connIds: List<String>, isUid: Boolean = false, reason: String) {
@@ -1470,7 +1474,7 @@ class GoVpnAdapter(
                     Intra.addDefaultTransport(tunnel, "", "", "")
                 } else {
                     Logger.i(LOG_TAG_VPN, "$TAG; fallback; set default dns to $fallbackUrl")
-                    Intra.addDefaultTransport(tunnel, type, fallbackUrl, "")
+                    Intra.addDefaultTransport(tunnel, Backend.DNS53, fallbackUrl, "")
                 }
                 true
             } catch (e: Exception) {

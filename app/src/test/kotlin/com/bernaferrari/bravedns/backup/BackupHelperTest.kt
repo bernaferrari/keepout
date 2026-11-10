@@ -95,6 +95,20 @@ class BackupHelperTest {
     }
 
     @Test
+    fun `unzip enforces a cumulative byte limit and an entry limit`() {
+        val zip = zipOf("first" to byteArrayOf(1, 2), "second" to byteArrayOf(3))
+        assertTrue(unzipBounded(ByteArrayInputStream(zip), tmp.newFolder().path, 2, 3))
+        assertFalse(unzipBounded(ByteArrayInputStream(zip), tmp.newFolder().path, 2, 2))
+        assertFalse(unzipBounded(ByteArrayInputStream(zip), tmp.newFolder().path, 1, 3))
+    }
+
+    @Test
+    fun `unzip rejects multiple entries targeting one file`() {
+        val zip = zipOf("rule.txt" to byteArrayOf(1), "./rule.txt" to byteArrayOf(2))
+        assertFalse(unzipBounded(ByteArrayInputStream(zip), tmp.newFolder().path, 2, 2))
+    }
+
+    @Test
     fun `sanitizedZipEntryFile accepts a simple name and nested inside path`() {
         val dest = tmp.newFolder("extract")
 

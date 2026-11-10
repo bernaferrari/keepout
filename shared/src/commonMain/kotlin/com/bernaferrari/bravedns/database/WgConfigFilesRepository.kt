@@ -76,6 +76,8 @@ class WgConfigFilesRepository(private val wgConfigFilesDAO: WgConfigFilesDAO) {
         return wgConfigFilesDAO.isConfigAdded(id)
     }
 
+    suspend fun enableConfig(id: Int) = wgConfigFilesDAO.enableConfig(id)
+
     suspend fun disableConfig(id: Int) {
         wgConfigFilesDAO.disableConfig(id)
     }

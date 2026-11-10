@@ -20,11 +20,11 @@ cd rethink-app
 | --- | --- | --- |
 | JDK | 17 | The build's toolchain; Gradle's foojay resolver downloads it if missing. CI's web job uses 21. |
 | Android SDK | API 37 | `compileSdk` 37 (minor 2), `targetSdk` 37, `minSdk` 24. |
-| Gradle | 9.8.1 | Use `./gradlew`. |
+| Gradle | 9.8.2 | Use `./gradlew`. |
 | Node | any recent | Only for the store listing tools. |
 
 No Go toolchain is needed: the tunnel ships as Celzero's prebuilt
-[firestack](https://github.com/celzero/firestack) AAR from JitPack. `tun2socks/` is a git submodule with the Go source.
+[firestack](https://github.com/celzero/firestack) AAR from Maven Central, pinned by version and SHA-256. `tun2socks/` is a git submodule with the Go source.
 
 ## Run it
 
@@ -62,8 +62,8 @@ Firebase also applies to those two only. `fdroid` must never see Play Billing cl
 ./scripts/verify-web-deploy.sh && ./gradlew :shared:jvmTest
 ```
 
-[CI](../.github/workflows/ci.yml) runs all of these on every push and pull request: compile, unit tests and detekt
-for each channel, Roborazzi screenshot goldens on PlayDebug, lint for each channel, and the web bundle plus shared
+[CI](../.github/workflows/ci.yml) runs all of these on every push and pull request: compile, unit tests and lint
+for each channel, Detekt and Roborazzi screenshot goldens on PlayDebug, and the web bundle plus shared
 JVM tests. Detekt (`config/detekt/`) and lint (`app/lint-baseline.xml`, warnings as errors) are baseline-ratcheted:
 new debt fails, and after you pay some off, regenerate the baseline with `./gradlew :app:detektBaseline` or by
 deleting `app/lint-baseline.xml` and running lint once. CI runs no instrumented tests.
@@ -88,8 +88,7 @@ the app keeps no copy of it. Start with [store-listing/README.md](../store-listi
 ## Good to know
 
 - Release builds need `VERSION_CODE` (environment or `-PVERSION_CODE=...`); they fail rather than ship
-  versionCode 0. Signing reads a local `keystore.properties`. It is not in `.gitignore`, so take care never to
-  commit it or a keystore file.
+  versionCode 0. Signing reads a local `keystore.properties`. The repository ignores this file and local keystores.
 - External VPN controls (`receiver/VPNControlReceiver.kt`): start/stop broadcasts work only on Android 14+ from an
   OS-verified sender in the configured package allowlist. Package names in intent extras are never trusted. On older
   Android the receiver fails closed, and the app and Quick Settings tile still work.

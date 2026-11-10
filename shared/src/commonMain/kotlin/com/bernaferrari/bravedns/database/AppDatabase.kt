@@ -20,6 +20,7 @@ expect object AppDatabaseConstructor : RoomDatabaseConstructor<AppDatabase> {
     entities =
     [
         AppInfo::class,
+        DataUsageCheckpoint::class,
         CustomIp::class,
         DoHEndpoint::class,
         DnsCryptEndpoint::class,

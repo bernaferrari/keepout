@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<verification-metadata xmlns="https://schema.gradle.org/dependency-verification">
+    <configuration>
+        <verify-metadata>false</verify-metadata>
+        <verify-signatures>false</verify-signatures>
+        <trusted-artifacts>
+            <trust group="^(?!com[.]celzero$).*" regex="true" reason="This policy pins the Firestack native binary" />
+        </trusted-artifacts>
+    </configuration>
+    <components>
+        <component group="com.celzero" name="firestack" version="d3d530ea3e">
+            <artifact name="firestack-d3d530ea3e.aar">
+                <sha256 value="7fa2cc5493005bdd9e31730b19baf7af2acac1e8e833f205a00a483b3df56d64" />
+            </artifact>
+        </component>
+    </components>
+</verification-metadata>

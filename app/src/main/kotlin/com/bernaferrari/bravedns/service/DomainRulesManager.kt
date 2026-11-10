@@ -43,12 +43,17 @@ object DomainRulesManager : KoinComponent {
 
     private val db by inject<CustomDomainRepository>()
 
-    private var trie: RadixTree = Backend.newRadixTree()
-    // fixme: find a better way to handle trusted domains without using two data structures
-    // map to store the trusted domains with set of uids
-    private val trustedMap = ConcurrentHashMap<String, Set<Int>>()
-    // even though we have trustedMap, we need to keep the trie for wildcard matching
-    private var trustedTrie: RadixTree = Backend.newRadixTree()
+    private class RuleSnapshot {
+        val trie: RadixTree = Backend.newRadixTree()
+        val trustedTrie: RadixTree = Backend.newRadixTree()
+        val trustedMap = ConcurrentHashMap<String, Set<Int>>()
+        val countries = ConcurrentHashMap.newKeySet<String>()
+    }
+
+    @Volatile private var snapshot = RuleSnapshot()
+    private val trie get() = snapshot.trie
+    private val trustedTrie get() = snapshot.trustedTrie
+    private val trustedMap get() = snapshot.trustedMap
 
     // regex to check if url is valid wildcard domain
     // valid wildcard domain: *.eu, *.com, *.example.com, *.example.co.in, *.do-main.com
@@ -56,7 +61,7 @@ object DomainRulesManager : KoinComponent {
     // Updated to support top-level domain wildcards (*.eu, *.ru, etc.)
     private val wcRegex = Pattern.compile("^(\\*\\.)?([a-zA-Z0-9-]+\\.)*[a-zA-Z0-9-]+$")
 
-    private val selectedCCs: MutableSet<String> = mutableSetOf()
+    private val selectedCCs get() = snapshot.countries
 
     private const val KV_SEP = ":"
 
@@ -134,9 +139,7 @@ object DomainRulesManager : KoinComponent {
     }
 
     suspend fun load(): Long {
-        trie.clear()
-        trustedTrie.clear()
-        trustedMap.clear()
+        val next = RuleSnapshot()
         db.getAllCustomDomains().forEach { cd ->
             // adding as part of defensive programming, even adding these rules to cache will
             // not cause any issues, but to avoid unnecessary entries in the trie, skipping these
@@ -147,11 +150,12 @@ object DomainRulesManager : KoinComponent {
             }
             val key = mkTrieKey(cd.domain, cd.uid)
             val value = mkTrieValue(cd.status.toString(), cd.proxyId, cd.proxyCC)
-            trie.set(key, value)
-            maybeAddToTrustedMap(cd)
-            if (cd.proxyCC.isNotEmpty()) selectedCCs.add(cd.proxyCC)
+            next.trie.set(key, value)
+            maybeAddToTrustedMap(cd, next)
+            if (cd.proxyCC.isNotEmpty()) next.countries.add(cd.proxyCC)
         }
-        val trieLen = trie.len()
+        snapshot = next
+        val trieLen = next.trie.len()
         Logger.i(LOG_TAG_DNS, "DomainRulesManager: loaded $trieLen rules from db")
         return trieLen
     }
@@ -161,15 +165,15 @@ object DomainRulesManager : KoinComponent {
         return selectedCCs.toList()
     }
 
-    private fun maybeAddToTrustedMap(cd: CustomDomain) {
+    private fun maybeAddToTrustedMap(cd: CustomDomain, target: RuleSnapshot = snapshot) {
         if (cd.status != Status.TRUST.id) return
 
         val domain = cd.domain.lowercase(Locale.ROOT)
         val key = mkTrieKeyForTrustedMap(domain)
 
-        trustedTrie.set(key, cd.status.toString().togs())
+        target.trustedTrie.set(key, cd.status.toString().togs())
 
-        trustedMap.compute(domain) { _, old ->
+        target.trustedMap.compute(domain) { _, old ->
             (old ?: emptySet()) + cd.uid
         }
     }

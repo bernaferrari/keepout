@@ -44,7 +44,7 @@ class HomeScreenTest {
             RethinkTheme {
                 HomeScreen(
                     uiState = uiState,
-                    onStartStopClick = {},
+                    actions = HomeProtectionActions.None,
                 )
             }
         }
@@ -62,7 +62,7 @@ class HomeScreenTest {
             RethinkTheme {
                 HomeScreen(
                     uiState = uiState,
-                    onStartStopClick = {},
+                    actions = HomeProtectionActions.None,
                 )
             }
         }
@@ -79,7 +79,7 @@ class HomeScreenTest {
             RethinkTheme {
                 HomeScreen(
                     uiState = uiState,
-                    onStartStopClick = { clickCount++ },
+                    actions = HomeProtectionActions.None.copy(onStartStop = { clickCount++ }),
                 )
             }
         }
@@ -101,7 +101,7 @@ class HomeScreenTest {
             RethinkTheme {
                 HomeScreen(
                     uiState = uiState,
-                    onStartStopClick = {},
+                    actions = HomeProtectionActions.None,
                 )
             }
         }

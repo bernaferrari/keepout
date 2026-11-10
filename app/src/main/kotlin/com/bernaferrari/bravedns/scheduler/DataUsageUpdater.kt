@@ -16,12 +16,11 @@
 package com.bernaferrari.bravedns.scheduler
 
 import Logger
-import Logger.LOG_TAG_SCHEDULER
 import android.content.Context
-import android.database.SQLException
+import androidx.sqlite.SQLiteException
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
-import com.bernaferrari.bravedns.database.AppInfoRepository
+import com.bernaferrari.bravedns.database.AppDatabase
 import com.bernaferrari.bravedns.database.ConnectionTrackerRepository
 import com.bernaferrari.bravedns.database.RethinkLogRepository
 import com.bernaferrari.bravedns.service.PersistentState
@@ -33,78 +32,25 @@ class DataUsageUpdater(context: Context, workerParams: WorkerParameters) :
     CoroutineWorker(context, workerParams), KoinComponent {
     private val connTrackRepository by inject<ConnectionTrackerRepository>()
     private val rethinkDb by inject<RethinkLogRepository>()
-    private val appInfoRepository by inject<AppInfoRepository>()
-    private val persistentState by inject<PersistentState>()
+    private val database by inject<AppDatabase>()
+    private val preferences by inject<PersistentState>()
 
     override suspend fun doWork(): Result {
-        val curr = System.currentTimeMillis()
-        val prev = persistentState.prevDataUsageCheck
-        updateDataUsage(prev, curr)
-        updateRethinkDataUsage(prev, curr)
-        return Result.success()
-    }
-
-    private suspend fun updateDataUsage(prev: Long, curr: Long) {
-        // fetch the data usage from connection tracker and update the app info database
-        // with the data usage.
-
-        val dataUsageList = connTrackRepository.getDataUsage(prev, curr)
-
-        if (dataUsageList == null) {
-            Logger.w(LOG_TAG_SCHEDULER, "Data usage list is null, skipping update")
-            persistentState.prevDataUsageCheck = curr
-            return
-        }
-
-        dataUsageList.forEach {
-            if (it.uid == Constants.INVALID_UID) return@forEach
-
-            try {
-                val currentDataUsage = appInfoRepository.getDataUsageByUid(it.uid)
-                if (currentDataUsage == null) {
-                    Logger.w(LOG_TAG_SCHEDULER, "No data usage found for uid: ${it.uid}")
-                    return@forEach
-                }
-
-                val upload = currentDataUsage.uploadBytes + it.uploadBytes
-                val download = currentDataUsage.downloadBytes + it.downloadBytes
-                Logger.d(LOG_TAG_SCHEDULER, "Data usage for ${it.uid}, $upload, $download")
-                appInfoRepository.updateDataUsageByUid(it.uid, upload, download)
-            } catch (e: SQLException) {
-                Logger.e(LOG_TAG_SCHEDULER, "err in data usage updater: ${e.message}", e)
-            } catch (e: IllegalStateException) {
-                Logger.e(LOG_TAG_SCHEDULER, "err in data usage updater: ${e.message}", e)
+        return try {
+            val apps = database.appInfoDAO()
+            val checkpoint = apps.dataUsageCheckpoint()
+            val previous = checkpoint ?: preferences.previousDataUsageWatermark
+            val through = System.currentTimeMillis()
+            if (through <= previous) return Result.success()
+            val usage = connTrackRepository.getDataUsage(previous, through).orEmpty()
+                .filter { it.uid != Constants.INVALID_UID }.toMutableList()
+            rethinkDb.getDataUsage(previous, through)?.let { local ->
+                usage.add(local.copy(uid = applicationContext.applicationInfo.uid))
             }
-        }
-
-        persistentState.prevDataUsageCheck = curr
-        Logger.i(LOG_TAG_SCHEDULER, "Data usage updated for all apps at $curr")
-    }
-
-    private suspend fun updateRethinkDataUsage(prev: Long, curr: Long) {
-        try {
-            // get rethink's uid from the database
-            val uid =
-                appInfoRepository.getAppInfoUidForPackageName(Constants.RETHINK_PACKAGE)
-
-            val currDataUsage = rethinkDb.getDataUsage(prev, curr) ?: return
-            val prevDataUsage = appInfoRepository.getDataUsageByUid(uid) ?: return
-
-            if (currDataUsage.uploadBytes == 0L && currDataUsage.downloadBytes == 0L) {
-                // if the data usage is 0, then no need to update the database
-                Logger.d(LOG_TAG_SCHEDULER, "rinr, data usage is 0 for $uid")
-                return
-            }
-
-            val upload = currDataUsage.uploadBytes + prevDataUsage.uploadBytes
-            val download = currDataUsage.downloadBytes + prevDataUsage.downloadBytes
-
-            Logger.d(LOG_TAG_SCHEDULER, "rinr, data usage:($uid), $upload, $download")
-            appInfoRepository.updateDataUsageByUid(uid, upload, download)
-        } catch (e: SQLException) {
-            Logger.e(LOG_TAG_SCHEDULER, "err in rinr data usage updater: ${e.message}", e)
-        } catch (e: IllegalStateException) {
-            Logger.e(LOG_TAG_SCHEDULER, "err in rinr data usage updater: ${e.message}", e)
+            if (apps.commitDataUsage(checkpoint, through, usage)) Result.success() else Result.retry()
+        } catch (error: SQLiteException) {
+            Logger.e(Logger.LOG_TAG_SCHEDULER, "Could not commit data usage", error)
+            Result.retry()
         }
     }
 }

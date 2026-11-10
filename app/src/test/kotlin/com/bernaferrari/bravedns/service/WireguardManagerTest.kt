@@ -1100,6 +1100,28 @@ class WireguardManagerTest : KoinTest {
         println("✅ PASSED: load() with forceRefresh true executed successfully")
     }
 
+    @Test
+    fun enablingSourceCanReenterActivationForItsHop() = runBlocking {
+        val source = createMockWgConfigFilesImmutable(71, "source")
+        val hop = createMockWgConfigFilesImmutable(72, "hop")
+        addConfigToManager(source, setupMockConfig(source.id).also {
+            every { it.getInterface() } returns null
+        })
+        addConfigToManager(hop, setupMockConfig(hop.id))
+        mockkObject(VpnController)
+        coEvery { VpnController.addWireGuardProxy(ID_WG_BASE + source.id, false) } coAnswers {
+            WireguardManager.enableConfig(hop)
+        }
+        coEvery { VpnController.addWireGuardProxy(ID_WG_BASE + hop.id, false) } just Runs
+        kotlinx.coroutines.withTimeout(2_000) { WireguardManager.enableConfig(source) }
+        assertTrue(WireguardManager.isConfigActive(ID_WG_BASE + source.id))
+        assertTrue(WireguardManager.isConfigActive(ID_WG_BASE + hop.id))
+        coVerifyOrder {
+            VpnController.addWireGuardProxy(ID_WG_BASE + source.id, false)
+            VpnController.addWireGuardProxy(ID_WG_BASE + hop.id, false)
+        }
+    }
+
     // ENABLE CONFIG TESTS
     @Test
     fun `test enableConfig - happy case with valid config`() = runBlocking {
@@ -1136,39 +1158,21 @@ class WireguardManagerTest : KoinTest {
         }
     }
 
-    // DISABLE CONFIG TESTS
     @Test
-    fun `test disableConfig - happy case with valid active config`() {
-        println("🧪 Testing disableConfig() - valid active config")
-
-        // Setup
-        val activeConfig = createMockWgConfigFilesImmutable(1, "ActiveConfig", isActive = true)
-        val config = setupMockConfig(1, "ActiveConfig")
-        addConfigToManager(activeConfig, config)
-
-        // Execute
-        try {
-            WireguardManager.disableConfig(activeConfig)
-            println("✅ PASSED: disableConfig() executed without errors")
-        } catch (e: Exception) {
-            println("✅ PASSED: disableConfig() handled dependencies correctly: ${e.message}")
-        }
+    fun disablingActiveConfigPublishesInactiveState() = runBlocking {
+        val active = createMockWgConfigFilesImmutable(1, "ActiveConfig", isActive = true)
+        addConfigToManager(active, setupMockConfig(active.id))
+        WireguardManager.disableConfig(active)
+        assertFalse(WireguardManager.isConfigActive(ID_WG_BASE + active.id))
     }
 
     @Test
-    fun `test disableConfig - sad case with non-existing config`() {
-        println("🧪 Testing disableConfig() - non-existing config")
-
-        // Setup
-        val nonExistentConfig = createMockWgConfigFilesImmutable(999, "NonExistent")
-
-        // Execute
-        try {
-            WireguardManager.disableConfig(nonExistentConfig)
-            println("✅ PASSED: disableConfig() handled non-existing config gracefully")
-        } catch (e: Exception) {
-            println("✅ PASSED: disableConfig() properly handled non-existing config")
-        }
+    fun disablingMissingConfigLeavesOtherConfigsActive() = runBlocking {
+        val active = createMockWgConfigFilesImmutable(1, "Active", isActive = true)
+        addConfigToManager(active, setupMockConfig(active.id))
+        val missing = createMockWgConfigFilesImmutable(999, "Missing")
+        WireguardManager.disableConfig(missing)
+        assertTrue(WireguardManager.isConfigActive(ID_WG_BASE + active.id))
     }
 
     // DISABLE ALL ACTIVE CONFIGS TESTS

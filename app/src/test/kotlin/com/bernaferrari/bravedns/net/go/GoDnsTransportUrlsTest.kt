@@ -234,4 +234,9 @@ class GoDnsTransportUrlsTest {
         assertEquals("", hostWithDefaultPort("   ", 53))
         assertEquals("", hostWithDefaultPort("", 53))
     }
+    @Test
+    fun ipv6DnsProxyHostsUseOnePairOfBrackets() {
+        assertEquals("[2001:db8::1]:53,[::1]:53,192.0.2.1:53",
+            dnsProxyIpPortCsv("2001:db8::1, [::1], 192.0.2.1", 53))
+    }
 }

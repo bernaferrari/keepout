@@ -22,6 +22,8 @@ import androidx.room3.Insert
 import androidx.room3.OnConflictStrategy
 import androidx.room3.Query
 import androidx.room3.Update
+import androidx.room3.Transaction
+import androidx.room3.Upsert
 import com.bernaferrari.bravedns.data.DataUsage
 import kotlinx.coroutines.flow.Flow
 
@@ -180,6 +182,23 @@ interface AppInfoDAO {
         "update AppInfo set  uploadBytes = :uploadBytes, downloadBytes = :downloadBytes where uid = :uid"
     )
     suspend fun updateDataUsageByUid(uid: Int, uploadBytes: Long, downloadBytes: Long)
+
+    @Query("SELECT through FROM DataUsageCheckpoint WHERE id = 1")
+    suspend fun dataUsageCheckpoint(): Long?
+
+    @Upsert
+    suspend fun saveDataUsageCheckpoint(checkpoint: DataUsageCheckpoint)
+
+    @Query("UPDATE AppInfo SET uploadBytes = uploadBytes + :upload, downloadBytes = downloadBytes + :download WHERE uid = :uid")
+    suspend fun addDataUsage(uid: Int, upload: Long, download: Long)
+
+    @Transaction
+    suspend fun commitDataUsage(previous: Long?, through: Long, usage: List<DataUsage>): Boolean {
+        if (dataUsageCheckpoint() != previous || (previous != null && through <= previous)) return false
+        usage.forEach { addDataUsage(it.uid, it.uploadBytes, it.downloadBytes) }
+        saveDataUsageCheckpoint(DataUsageCheckpoint(through = through))
+        return true
+    }
 
     @Query("update AppInfo set isProxyExcluded = :isProxyExcluded, modifiedTs = :modifiedTs where uid = :uid")
     suspend fun updateProxyExcluded(uid: Int, isProxyExcluded: Boolean, modifiedTs: Long)

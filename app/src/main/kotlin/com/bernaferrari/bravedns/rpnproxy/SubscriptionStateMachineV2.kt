@@ -1620,7 +1620,6 @@ class SubscriptionStateMachineV2(
 
         s.lastUpdatedTs  = System.currentTimeMillis()
         s.windowDays = d.windowDays
-        s.orderId = d.orderId
     }
 
     private suspend fun handleUserCancelled(data: SubscriptionData?) {

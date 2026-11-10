@@ -98,13 +98,12 @@ object ProxyManager : KoinComponent {
         }
     }
 
-    private val pamSet = CopyOnWriteArraySet<ProxyAppMapTuple>()
+    @Volatile private var pamSet = CopyOnWriteArraySet<ProxyAppMapTuple>()
 
     suspend fun load(): Int {
         val a = db.getApps()
         val entries = a.map { ProxyAppMapTuple(it.uid, it.packageName, it.proxyId) }
-        pamSet.clear()
-        pamSet.addAll(entries)
+        pamSet = CopyOnWriteArraySet(entries)
         return a.size
     }
 
@@ -175,8 +174,7 @@ object ProxyManager : KoinComponent {
                 .asSequence()
                 .map { ProxyAppMapTuple(it.uid, it.packageName, proxyId) }
                 .toSet()
-        pamSet.clear()
-        pamSet.addAll(uniqueApps)
+        pamSet = CopyOnWriteArraySet(uniqueApps)
         db.updateProxyForAllApps(proxyId, proxyName)
         Logger.i(LOG_TAG_PROXY, "added all apps to proxy: $proxyId")
     }

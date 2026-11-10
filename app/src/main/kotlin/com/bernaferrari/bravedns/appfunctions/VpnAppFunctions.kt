@@ -15,10 +15,19 @@
  */
 package com.bernaferrari.bravedns.appfunctions
 
-import android.annotation.SuppressLint
-import androidx.appfunctions.AppFunctionContext
 import androidx.appfunctions.AppFunctionSerializable
-import androidx.appfunctions.service.AppFunction
+import androidx.appfunctions.AppFunctionDeclaration
+import androidx.appfunctions.AppFunctionService
+import androidx.appfunctions.AppFunctionServiceEntryPoint
+import android.net.VpnService
+import androidx.annotation.RequiresApi
+import com.bernaferrari.bravedns.service.PersistentState
+import com.bernaferrari.bravedns.ui.compose.home.HomePauseDuration
+import com.bernaferrari.bravedns.ui.compose.home.VpnControllerPauseControls
+import com.bernaferrari.bravedns.ui.compose.home.pauseProtection
+import com.bernaferrari.bravedns.util.BioMetricType
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 import com.bernaferrari.bravedns.service.VpnController
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -26,9 +35,18 @@ import kotlinx.coroutines.withContext
 /**
  * AppFunctions that expose RethinkDNS VPN and firewall controls to on-device AI agents.
  */
-// AppFunctions compiler alpha13 still requires this restricted context (b/500281348).
-@SuppressLint("RestrictedApi")
-class VpnAppFunctions {
+@RequiresApi(36)
+@AppFunctionServiceEntryPoint(serviceName = "KeepoutAppFunctionService", appFunctionXmlFileName = "keepout_functions")
+abstract class VpnAppFunctions : AppFunctionService(), KoinComponent {
+    private val preferences by inject<PersistentState>()
+
+    private fun isLocked() = BioMetricType.fromValue(preferences.biometricAuthType).enabled()
+
+    private fun lockedResult(): VpnActionResult? =
+        if (isLocked()) {
+            VpnActionResult(false, "Open and unlock Keepout to change protection", null)
+        } else null
+
 
     /** The current VPN and firewall protection status. */
     @AppFunctionSerializable(isDescribedByKDoc = true)
@@ -58,11 +76,9 @@ class VpnAppFunctions {
 
     /**
      * Returns the current VPN and firewall protection status.
-     *
-     * @param appFunctionContext The execution context.
      */
-    @AppFunction(isDescribedByKDoc = true)
-    suspend fun getVpnStatus(appFunctionContext: AppFunctionContext): VpnStatus =
+    @AppFunctionDeclaration(isDescribedByKDoc = true)
+    suspend fun getVpnStatus(): VpnStatus =
         withContext(Dispatchers.IO) {
             toVpnStatus(VpnController.state())
         }
@@ -71,12 +87,11 @@ class VpnAppFunctions {
      * Starts VPN and DNS firewall protection.
      * The user must have granted VPN permission beforehand.
      * Call [getVpnStatus] first to check whether protection is already active.
-     *
-     * @param appFunctionContext The execution context.
      */
-    @AppFunction(isDescribedByKDoc = true)
-    suspend fun startVpn(appFunctionContext: AppFunctionContext): VpnActionResult =
+    @AppFunctionDeclaration(isDescribedByKDoc = true)
+    suspend fun startVpn(): VpnActionResult =
         withContext(Dispatchers.IO) {
+            lockedResult()?.let { return@withContext it }
             if (VpnController.hasTunnel()) {
                 return@withContext VpnActionResult(
                     success = true,
@@ -84,10 +99,13 @@ class VpnAppFunctions {
                     status = toVpnStatus(VpnController.state()),
                 )
             }
-            VpnController.start(appFunctionContext.context)
+            if (VpnService.prepare(applicationContext) != null) {
+                return@withContext VpnActionResult(false, "Grant VPN permission in Keepout first", null)
+            }
+            VpnController.start(applicationContext)
             VpnActionResult(
                 success = true,
-                message = "VPN protection started",
+                message = "VPN start requested",
                 status = toVpnStatus(VpnController.state()),
             )
         }
@@ -95,12 +113,11 @@ class VpnAppFunctions {
     /**
      * Stops VPN and DNS firewall protection.
      * Confirm with the user before calling this function because it removes network protection.
-     *
-     * @param appFunctionContext The execution context.
      */
-    @AppFunction(isDescribedByKDoc = true)
-    suspend fun stopVpn(appFunctionContext: AppFunctionContext): VpnActionResult =
+    @AppFunctionDeclaration(isDescribedByKDoc = true)
+    suspend fun stopVpn(): VpnActionResult =
         withContext(Dispatchers.IO) {
+            lockedResult()?.let { return@withContext it }
             if (!VpnController.hasTunnel()) {
                 return@withContext VpnActionResult(
                     success = true,
@@ -108,7 +125,7 @@ class VpnAppFunctions {
                     status = toVpnStatus(VpnController.state()),
                 )
             }
-            VpnController.stop("appfunction", appFunctionContext.context)
+            VpnController.stop("appfunction", applicationContext)
             VpnActionResult(
                 success = true,
                 message = "VPN protection stopped",
@@ -119,12 +136,11 @@ class VpnAppFunctions {
     /**
      * Temporarily pauses firewall protection while keeping the VPN service running.
      * Call [getVpnStatus] first to verify protection is active and not already paused.
-     *
-     * @param appFunctionContext The execution context.
      */
-    @AppFunction(isDescribedByKDoc = true)
-    suspend fun pauseVpn(appFunctionContext: AppFunctionContext): VpnActionResult =
+    @AppFunctionDeclaration(isDescribedByKDoc = true)
+    suspend fun pauseVpn(): VpnActionResult =
         withContext(Dispatchers.IO) {
+            lockedResult()?.let { return@withContext it }
             if (!VpnController.hasTunnel()) {
                 return@withContext VpnActionResult(
                     success = false,
@@ -139,7 +155,9 @@ class VpnAppFunctions {
                     status = toVpnStatus(VpnController.state()),
                 )
             }
-            VpnController.pauseApp()
+            if (!pauseProtection(HomePauseDuration.FifteenMinutes, VpnControllerPauseControls)) {
+                return@withContext VpnActionResult(false, "Could not pause protection", toVpnStatus(VpnController.state()))
+            }
             VpnActionResult(
                 success = true,
                 message = "Firewall protection paused",
@@ -150,12 +168,11 @@ class VpnAppFunctions {
     /**
      * Resumes firewall protection after a pause.
      * Call [getVpnStatus] first to verify the firewall is currently paused.
-     *
-     * @param appFunctionContext The execution context.
      */
-    @AppFunction(isDescribedByKDoc = true)
-    suspend fun resumeVpn(appFunctionContext: AppFunctionContext): VpnActionResult =
+    @AppFunctionDeclaration(isDescribedByKDoc = true)
+    suspend fun resumeVpn(): VpnActionResult =
         withContext(Dispatchers.IO) {
+            lockedResult()?.let { return@withContext it }
             if (!VpnController.isAppPaused()) {
                 return@withContext VpnActionResult(
                     success = true,
@@ -171,12 +188,32 @@ class VpnAppFunctions {
             )
         }
 
+    /**
+     * Lists recent traffic destinations for an Android package. Requires the user's traffic
+     * sharing opt-in in Keepout settings.
+     *
+     * @param packageName The exact Android package name, such as com.android.chrome.
+     */
+    @AppFunctionDeclaration(isDescribedByKDoc = true)
+    suspend fun recentAppTraffic(packageName: String): TrafficHistory =
+        TrafficHistoryLookup().recent(packageName, blockedOnly = false)
+
+    /**
+     * Lists recent blocked destinations and firewall rule IDs for an Android package.
+     * Requires the user's traffic sharing opt-in in Keepout settings.
+     *
+     * @param packageName The exact Android package name.
+     */
+    @AppFunctionDeclaration(isDescribedByKDoc = true)
+    suspend fun recentAppBlocks(packageName: String): TrafficHistory =
+        TrafficHistoryLookup().recent(packageName, blockedOnly = true)
+
     private fun toVpnStatus(state: com.bernaferrari.bravedns.service.VpnState): VpnStatus {
         return VpnStatus(
             isActive = state.on,
             status = state.statusText,
             activationRequested = state.activationRequested,
-            serverName = state.serverName,
+            serverName = state.serverName.takeUnless { isLocked() },
             isPaused = state.isPaused,
         )
     }

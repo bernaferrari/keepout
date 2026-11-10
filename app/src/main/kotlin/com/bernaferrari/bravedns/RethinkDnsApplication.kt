@@ -20,8 +20,6 @@ import Logger.LOG_TAG_SCHEDULER
 import android.app.Application
 import android.content.pm.ApplicationInfo
 import android.os.StrictMode
-import androidx.appfunctions.service.AppFunctionConfiguration
-import com.bernaferrari.bravedns.appfunctions.AppFunctionProvider
 import com.bernaferrari.bravedns.scheduler.ScheduleManager
 import com.bernaferrari.bravedns.scheduler.WorkScheduler
 import com.bernaferrari.bravedns.util.FirebaseErrorReporting
@@ -38,15 +36,12 @@ import org.koin.core.annotation.KoinApplication
 import org.koin.plugin.module.dsl.startKoin
 
 @KoinApplication(modules = [RethinkFullModule::class])
-open class RethinkDnsApplication : Application(), AppFunctionConfiguration.Provider {
+open class RethinkDnsApplication : Application() {
     companion object {
         var DEBUG: Boolean = false
     }
 
     private val applicationScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
-
-    override val appFunctionConfiguration: AppFunctionConfiguration
-        get() = AppFunctionProvider.configuration
 
     override fun onCreate() {
         super.onCreate()

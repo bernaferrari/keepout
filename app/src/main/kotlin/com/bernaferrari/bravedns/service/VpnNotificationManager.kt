@@ -37,6 +37,7 @@ import com.bernaferrari.bravedns.util.Constants.Companion.NOTIF_INTENT_EXTRA_ACC
 import com.bernaferrari.bravedns.util.NotificationActionType
 import com.bernaferrari.bravedns.util.UIUtils.getAccentColor
 import com.bernaferrari.bravedns.util.Utilities
+import com.bernaferrari.bravedns.util.Utilities.notificationAction
 import com.bernaferrari.bravedns.util.Utilities.isAtleastO
 
 /**
@@ -135,26 +136,22 @@ class VpnNotificationManager(
                 builder.setContentTitle(contentTitle)
                 if (isAppPaused()) {
                     builder.addAction(
-                        0,
-                        context.resources.getString(R.string.notification_action_resume_vpn),
-                        makeVpnIntent(NOTIF_ACTION_MODE_RESUME, Constants.NOTIF_ACTION_RESUME_VPN)
+                        notificationAction(context.getString(R.string.notification_action_resume_vpn),
+                            makeVpnIntent(NOTIF_ACTION_MODE_RESUME, Constants.NOTIF_ACTION_RESUME_VPN))
                     )
                 } else {
                     builder.addAction(
-                        0,
-                        context.resources.getString(R.string.notification_action_pause_15_minutes),
-                        makeVpnIntent(NOTIF_ACTION_MODE_PAUSE, Constants.NOTIF_ACTION_PAUSE_VPN)
+                        notificationAction(context.getString(R.string.notification_action_pause_15_minutes),
+                            makeVpnIntent(NOTIF_ACTION_MODE_PAUSE, Constants.NOTIF_ACTION_PAUSE_VPN))
                     )
                     builder.addAction(
-                        0,
-                        context.resources.getString(R.string.notification_action_pause_1_hour),
-                        makeVpnIntent(NOTIF_ACTION_MODE_PAUSE_HOUR, Constants.NOTIF_ACTION_PAUSE_VPN_HOUR)
+                        notificationAction(context.getString(R.string.notification_action_pause_1_hour),
+                            makeVpnIntent(NOTIF_ACTION_MODE_PAUSE_HOUR, Constants.NOTIF_ACTION_PAUSE_VPN_HOUR))
                     )
                 }
                 builder.addAction(
-                    0,
-                    context.resources.getString(R.string.notification_action_stop_vpn),
-                    makeVpnIntent(NOTIF_ACTION_MODE_STOP, Constants.NOTIF_ACTION_STOP_VPN)
+                    notificationAction(context.getString(R.string.notification_action_stop_vpn),
+                        makeVpnIntent(NOTIF_ACTION_MODE_STOP, Constants.NOTIF_ACTION_STOP_VPN))
                 )
             }
 
@@ -167,17 +164,9 @@ class VpnNotificationManager(
                         Constants.NOTIF_ACTION_DNS_FIREWALL_VPN
                     )
                 val notificationAction: NotificationCompat.Action =
-                    NotificationCompat.Action(
-                        0,
-                        context.resources.getString(R.string.notification_action_dns_mode),
-                        openIntent1
-                    )
+                    notificationAction(context.resources.getString(R.string.notification_action_dns_mode), openIntent1)
                 val notificationAction2: NotificationCompat.Action =
-                    NotificationCompat.Action(
-                        0,
-                        context.resources.getString(R.string.notification_action_dns_firewall_mode),
-                        openIntent2
-                    )
+                    notificationAction(context.resources.getString(R.string.notification_action_dns_firewall_mode), openIntent2)
                 builder.addAction(notificationAction)
                 builder.addAction(notificationAction2)
                 // set content title for notifications which has actions

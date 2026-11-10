@@ -79,7 +79,10 @@ fun CustomRulesScreen(
         domainCount = rememberRuleCount(everyRule, listUid, domainViewModel::everyDomainRuleCount, domainViewModel::domainRulesCount),
         ipCount = rememberRuleCount(everyRule, listUid, ipViewModel::everyIpRuleCount, ipViewModel::ipRulesCount),
         // Import writes to one owner: the app on its own screen, otherwise the all-apps rules.
-        importAction = { RulesImportAction(listUid, selectedTab) },
+        importAction = {
+            RulesImportAction(listUid, selectedTab)
+            if (!everyRule) RulesExportAction(listUid, selectedTab)
+        },
         onTabChange = { selectedTab = it },
         onScopeChange = if (lockedToApp) null else ({ chosenScope = it }),
         onChooseApp = if (lockedToApp) null else ({ picker.open { app -> chosenScope = RethinkRulesScope.App(app.uid, app.label) } }),

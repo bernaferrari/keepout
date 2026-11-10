@@ -33,9 +33,7 @@ import com.bernaferrari.bravedns.util.Utilities.calculateMd5
 import com.bernaferrari.bravedns.util.Utilities.getTagValueFromJson
 import com.bernaferrari.bravedns.util.Utilities.hasLocalBlocklists
 import com.bernaferrari.bravedns.util.Utilities.localBlocklistFileDownloadPath
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import java.io.File
@@ -149,7 +147,7 @@ class FileHandleWorker(val context: Context, workerParameters: WorkerParameters)
                 return false
             }
 
-            val result = updateTagsToDb(timestamp)
+            if (!updateTagsToDb(timestamp)) return false
 
             updatePersistenceOnCopySuccess(timestamp)
             // delete the old files in the external directory (downloaded by the download manager)
@@ -160,7 +158,7 @@ class FileHandleWorker(val context: Context, workerParameters: WorkerParameters)
                 LOCAL_BLOCKLIST_DOWNLOAD_FOLDER_NAME,
                 persistentState.localBlocklistTimestamp
             )
-            Logger.i(LOG_TAG_DOWNLOAD, "FileHandleWorker, copyFiles success? $result")
+            Logger.i(LOG_TAG_DOWNLOAD, "FileHandleWorker, blocklists installed")
             return true
         } catch (e: IOException) {
             Logger.e(LOG_TAG_DOWNLOAD, "FileHandleWorker Copy exception: ${e.message}", e)
@@ -179,11 +177,9 @@ class FileHandleWorker(val context: Context, workerParameters: WorkerParameters)
     }
 
     private fun updatePersistenceOnCopySuccess(timestamp: Long) {
-        ui {
-            persistentState.localBlocklistTimestamp = timestamp
-            persistentState.newestLocalBlocklistTimestamp = INIT_TIME_MS
-            persistentState.blocklistEnabled = true
-        }
+        persistentState.localBlocklistTimestamp = timestamp
+        persistentState.newestLocalBlocklistTimestamp = INIT_TIME_MS
+        persistentState.blocklistEnabled = true
     }
 
     /**
@@ -221,7 +217,4 @@ class FileHandleWorker(val context: Context, workerParameters: WorkerParameters)
         return false
     }
 
-    private fun ui(f: suspend () -> Unit) {
-        CoroutineScope(Dispatchers.Main).launch { f() }
-    }
 }

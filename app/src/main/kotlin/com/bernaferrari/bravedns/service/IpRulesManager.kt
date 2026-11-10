@@ -29,6 +29,7 @@ import com.bernaferrari.bravedns.util.Constants.Companion.UNSPECIFIED_PORT
 import com.bernaferrari.bravedns.util.Utilities.togs
 import com.bernaferrari.bravedns.util.Utilities.tos
 import com.celzero.firestack.backend.Backend
+import com.celzero.firestack.backend.IpTree
 import com.bernaferrari.firestack.backend.Gostr
 import com.bernaferrari.bravedns.util.ExpiringCache
 import inet.ipaddr.IPAddress
@@ -43,17 +44,25 @@ object IpRulesManager : KoinComponent {
     // max size of ip request look-up cache
     private const val CACHE_MAX_SIZE = 10000L
 
-    private var iptree = Backend.newIpTree()
+
 
     // key-value object for ip look-up
     data class CacheKey(val ipNetPort: String, val uid: Int)
 
     // stores the response for the look-up request from the BraveVpnService
     // especially useful for storing results of subnetMatch() function as it is expensive
-    private val resultsCache: ExpiringCache<CacheKey, IpRuleStatus> =
-        ExpiringCache(maxSize = CACHE_MAX_SIZE, expireAfterWriteMs = Long.MAX_VALUE / 2)
+    private class RuleSnapshot {
+        val tree = Backend.newIpTree()
+        val cache = ExpiringCache<CacheKey, IpRuleStatus>(
+            maxSize = CACHE_MAX_SIZE, expireAfterWriteMs = Long.MAX_VALUE / 2,
+        )
+        val countries = java.util.concurrent.ConcurrentHashMap.newKeySet<String>()
+    }
 
-    private val selectedCCs = mutableSetOf<String>()
+    @Volatile private var snapshot = RuleSnapshot()
+    private val iptree get() = snapshot.tree
+    private val resultsCache get() = snapshot.cache
+    private val selectedCCs get() = snapshot.countries
     @Volatile private var portRuleUids: Set<Int>? = null
 
     // A DNS answer has no destination port. Defer while rules are loading or when any
@@ -110,15 +119,14 @@ object IpRulesManager : KoinComponent {
         }
     }
 
-    private fun logv(msg: String) {
-        Logger.v(LOG_TAG_FIREWALL, msg)
+    private inline fun logv(message: () -> String) {
+        if (Logger.isEnabled(Logger.LoggerLevel.VERBOSE)) Logger.v(LOG_TAG_FIREWALL, message())
     }
 
     suspend fun load(): Long {
-        resultsCache.invalidateAll()
-        selectedCCs.clear()
-        iptree.clear()
-        db.getIpRules().forEach {
+        val next = RuleSnapshot()
+        val rules = db.getIpRules()
+        rules.forEach {
             // adding as part of defensive programming, even adding these rules to cache will
             // not cause any issues, but to avoid unnecessary entries in the trie, skipping these
             // entries
@@ -138,19 +146,21 @@ object IpRulesManager : KoinComponent {
             if (k != null) {
                 try {
                     Logger.i(LOG_TAG_FIREWALL, "iptree.add($k, $v)")
-                    iptree.add(k.togs(), v)
-                    if (it.proxyCC.isNotEmpty()) selectedCCs.add(it.proxyCC)
+                    next.tree.add(k.togs(), v)
+                    if (it.proxyCC.isNotEmpty()) next.countries.add(it.proxyCC)
                 } catch (e: Exception) {
                     Logger.e(LOG_TAG_FIREWALL, "err iptree.add($k, $v)", e)
                 }
             }
         }
-        refreshPortRuleUids()
-        return iptree.len()
+        portRuleUids = null
+        snapshot = next
+        portRuleUids = rules.filter { it.isActive && it.port > 0 }.map { it.uid }.toSet()
+        return next.tree.len()
     }
 
     fun getAllUniqueCCs(): Set<String> {
-        logv( "ip selectedCCs: $selectedCCs")
+        logv { "ip selectedCCs: $selectedCCs" }
         return selectedCCs
     }
 
@@ -241,71 +251,73 @@ object IpRulesManager : KoinComponent {
     }
 
     fun hasRule(uid: Int, ipstr: String, port: Int): IpRuleStatus {
+        val rules = snapshot
+        val cache = rules.cache
         val ipNetPort = joinIpNetPort(ipstr, port)
         val ck = CacheKey(ipNetPort, uid)
 
-        resultsCache.getIfPresent(ck)?.let {
+        cache.getIfPresent(ck)?.let {
             // return only if both ip and app(uid) matches
-            Logger.i(LOG_TAG_FIREWALL, "match in cache $uid $ipstr: $it")
+            Logger.info(LOG_TAG_FIREWALL) { "match in cache $uid $ipstr: $it" }
             return it
         }
 
-        getMostSpecificRuleMatch(uid, ipstr, port).let {
-            logv("ip rule for $uid $ipstr $port => ${it.name}")
+        getMostSpecificRuleMatch(uid, ipstr, port, rules.tree).let {
+            logv { "ip rule for $uid $ipstr $port => ${it.name}" }
             if (it != IpRuleStatus.NONE) {
-                resultsCache.put(ck, it)
+                cache.put(ck, it)
                 return it
             }
         }
-        getMostSpecificRuleMatch(uid, ipstr).let {
-            logv("ip rule for $uid $ipstr => ${it.name} ??")
+        getMostSpecificRuleMatch(uid, ipstr, tree = rules.tree).let {
+            logv { "ip rule for $uid $ipstr => ${it.name} ??" }
             if (it != IpRuleStatus.NONE) {
-                resultsCache.put(ck, it)
+                cache.put(ck, it)
                 return it
             }
         }
-        getMostSpecificRouteMatch(uid, ipstr, port).let {
-            logv("route rule for $uid $ipstr $port => ${it.name} ??")
+        getMostSpecificRouteMatch(uid, ipstr, port, rules.tree).let {
+            logv { "route rule for $uid $ipstr $port => ${it.name} ??" }
             if (it != IpRuleStatus.NONE) {
-                resultsCache.put(ck, it)
+                cache.put(ck, it)
                 return it
             }
         }
-        getMostSpecificRouteMatch(uid, ipstr).let {
-            logv("route rule for $uid $ipstr => ${it.name} ??")
+        getMostSpecificRouteMatch(uid, ipstr, tree = rules.tree).let {
+            logv { "route rule for $uid $ipstr => ${it.name} ??" }
             if (it != IpRuleStatus.NONE) {
-                resultsCache.put(ck, it)
+                cache.put(ck, it)
                 return it
             }
         }
 
-        Logger.i(LOG_TAG_FIREWALL, "hasRule? NO $uid, $ipstr, $port")
-        resultsCache.put(ck, IpRuleStatus.NONE)
+        Logger.info(LOG_TAG_FIREWALL) { "hasRule? NO $uid, $ipstr, $port" }
+        cache.put(ck, IpRuleStatus.NONE)
         return IpRuleStatus.NONE
     }
 
 
     fun hasProxy(uid: Int, ipstr: String, port: Int): Pair<String, String> {
         getMostSpecificMatchProxies(uid, ipstr, port).let {
-            logv("proxy for $uid $ipstr $port => ${it.first}, ${it.second}")
+            logv { "proxy for $uid $ipstr $port => ${it.first}, ${it.second}" }
             if (it.first.isNotEmpty() && it.second.isNotEmpty()) {
                 return it
             }
         }
         getMostSpecificMatchProxies(uid, ipstr).let {
-            logv("proxy for $uid $ipstr => ${it.first}, ${it.second}")
+            logv { "proxy for $uid $ipstr => ${it.first}, ${it.second}" }
             if (it.first.isNotEmpty() && it.second.isNotEmpty()) {
                 return it
             }
         }
         getMostSpecificRouteProxies(uid, ipstr, port).let {
-            logv("route rule for $uid $ipstr $port => ${it.first}, ${it.second}")
+            logv { "route rule for $uid $ipstr $port => ${it.first}, ${it.second}" }
             if (it.first.isNotEmpty() && it.second.isNotEmpty()) {
                 return it
             }
         }
         getMostSpecificRouteProxies(uid, ipstr).let {
-            logv("route rule for $uid $ipstr => ${it.first}, ${it.second}")
+            logv { "route rule for $uid $ipstr => ${it.first}, ${it.second}" }
             if (it.first.isNotEmpty() && it.second.isNotEmpty()) {
                 return it
             }
@@ -323,23 +335,26 @@ object IpRulesManager : KoinComponent {
         val proxyCC: String
     )
 
-    fun getMostSpecificRuleMatch(uid: Int, ipstr: String, port: Int = 0): IpRuleStatus {
+    fun getMostSpecificRuleMatch(uid: Int, ipstr: String, port: Int = 0): IpRuleStatus =
+        getMostSpecificRuleMatch(uid, ipstr, port, iptree)
+
+    private fun getMostSpecificRuleMatch(uid: Int, ipstr: String, port: Int = 0, tree: IpTree): IpRuleStatus {
         val k = treeKey(ipstr)
         if (!k.isNullOrEmpty()) {
             val vlike = treeValLike(uid, port)
             // rules at the end of the list have higher precedence as they're more specific
             // (think: 0.0.0.0/0 vs 1.1.1.1/32)
-            val x = iptree.getLike(k.togs(), vlike).tos()
-            logv("getMostSpecificRuleMatch: $uid, $k, $vlike => $x")
+            val x = tree.getLike(k.togs(), vlike).tos()
+            logv { "getMostSpecificRuleMatch: $uid, $k, $vlike => $x" }
             val treeValues = x?.split(Backend.Vsep) ?: return IpRuleStatus.NONE
             treeValues.forEach {
                 val treeVal = convertStringToTreeVal(it)
                 if (treeVal == null) {
-                    logv("getMostSpecificRuleMatch: $uid, $k, $vlike => treeVal is null for $it")
+                    logv { "getMostSpecificRuleMatch: $uid, $k, $vlike => treeVal is null for $it" }
                     return@forEach
                 }
                 if (treeVal.uid == uid && treeVal.port == port) {
-                    logv("getMostSpecificRuleMatch: $uid, $k, $vlike($it) => status ${treeVal.status}")
+                    logv { "getMostSpecificRuleMatch: $uid, $k, $vlike($it) => status ${treeVal.status}" }
                     return treeVal.status
                 }
             }
@@ -375,17 +390,17 @@ object IpRulesManager : KoinComponent {
             // rules at the end of the list have higher precedence as they're more specific
             // (think: 0.0.0.0/0 vs 1.1.1.1/32)
             val x = iptree.getLike(k.togs(), vlike).tos()
-            if (DEBUG) logv("getMostSpecificRuleMatch: $uid, $k, $vlike => $x")
+            if (DEBUG) logv { "getMostSpecificRuleMatch: $uid, $k, $vlike => $x" }
             val treeVals = x?.split(Backend.Vsep) ?: return Pair("","")
 
             treeVals.forEach {
                 val treeVal = convertStringToTreeVal(it)
                 if (treeVal == null) {
-                    logv("getMostSpecificMatchProxies: $uid, $k, $vlike => treeVal is null for $it")
+                    logv { "getMostSpecificMatchProxies: $uid, $k, $vlike => treeVal is null for $it" }
                     return Pair("", "")
                 }
                 if (treeVal.uid == uid && treeVal.port == port) {
-                    logv("getMostSpecificMatchProxies: $uid, $k, $vlike => found match for $it")
+                    logv { "getMostSpecificMatchProxies: $uid, $k, $vlike => found match for $it" }
                     return Pair(treeVal.proxyId, treeVal.proxyCC)
                 }
             }
@@ -393,25 +408,25 @@ object IpRulesManager : KoinComponent {
         return Pair("","")
     }
 
-    private fun getMostSpecificRouteMatch(uid: Int, ipstr: String, port: Int = 0): IpRuleStatus {
+    private fun getMostSpecificRouteMatch(uid: Int, ipstr: String, port: Int = 0, tree: IpTree): IpRuleStatus {
         val k = treeKey(ipstr)
         if (!k.isNullOrEmpty()) {
             val vlike = treeValLike(uid, port)
             // rules at the end of the list have higher precedence as they're more specific
             // (think: 0.0.0.0/0 vs 1.1.1.1/32)
-            val x = iptree.valuesLike(k.togs(), vlike).tos()
+            val x = tree.valuesLike(k.togs(), vlike).tos()
             // ex: uid: 10169, k: 142.250.67.78, vlike: 10169:443 => x: 10169:443:0
             // (10169:443:0) => (uid : port : rule[0->none, 1-> block, 2 -> trust, 3 -> bypass])
-            logv("getMostSpecificRouteMatch: $uid, $k, $vlike => $x")
+            logv { "getMostSpecificRouteMatch: $uid, $k, $vlike => $x" }
             val treeVals = x?.split(Backend.Vsep) ?: return IpRuleStatus.NONE
             treeVals.forEach {
                 val treeVal = convertStringToTreeVal(it)
                 if (treeVal == null) {
-                    logv("getMostSpecificRouteMatch: $uid, $k, $vlike => treeVal is null for $it")
+                    logv { "getMostSpecificRouteMatch: $uid, $k, $vlike => treeVal is null for $it" }
                     return@forEach
                 }
                 if (treeVal.uid == uid && treeVal.port == port) {
-                    logv("getMostSpecificRouteMatch: $uid, $k, $vlike => found match for $it")
+                    logv { "getMostSpecificRouteMatch: $uid, $k, $vlike => found match for $it" }
                     return treeVal.status
                 }
             }
@@ -428,16 +443,16 @@ object IpRulesManager : KoinComponent {
             val x = iptree.valuesLike(k.togs(), vlike).tos()
             // ex: uid: 10169, k: 142.250.67.78, vlike: 10169:443 => x: 10169:443:0
             // (10169:443:0) => (uid : port : rule[0->none, 1-> block, 2 -> trust, 3 -> bypass])
-            logv("getMostSpecificRouteMatch: $uid, $k, $vlike => $x")
+            logv { "getMostSpecificRouteMatch: $uid, $k, $vlike => $x" }
             val treeVals = x?.split(Backend.Vsep) ?: return Pair("","")
             treeVals.forEach {
                 val treeVal = convertStringToTreeVal(it)
                 if (treeVal == null) {
-                    logv("getMostSpecificRouteProxies: $uid, $k, $vlike => treeVal is null for $it")
+                    logv { "getMostSpecificRouteProxies: $uid, $k, $vlike => treeVal is null for $it" }
                     return Pair("", "")
                 }
                 if (treeVal.uid == uid && treeVal.port == port) {
-                    logv("getMostSpecificRouteProxies: $uid, $k, $vlike => $it")
+                    logv { "getMostSpecificRouteProxies: $uid, $k, $vlike => $it" }
                     return Pair(treeVal.proxyId, treeVal.proxyCC)
                 }
             }

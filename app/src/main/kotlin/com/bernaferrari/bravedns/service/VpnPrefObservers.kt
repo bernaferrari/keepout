@@ -111,7 +111,7 @@ class VpnPrefObservers(
         }
     }
 
-    private fun handleAppInfoChanges(t: Collection<AppInfo>) {
+    internal fun handleAppInfoChanges(t: Collection<AppInfo>) {
         try {
             var latestExcludedApps: Set<String>
             // adding synchronized block, found a case of concurrent modification
@@ -122,7 +122,7 @@ class VpnPrefObservers(
                 latestExcludedApps =
                     copy
                         .filter {
-                            it.firewallStatus == FirewallManager.FirewallStatus.EXCLUDE.id
+                            it.firewallStatus == FirewallManager.FirewallStatus.EXCLUDE.id && it.tombstoneTs == 0L
                         }
                         .map(AppInfo::packageName)
                         .toSet()

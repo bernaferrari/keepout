@@ -183,9 +183,9 @@ class BraveVPNService : VpnService(), ConnectionMonitor.NetworkListener, Bridge 
     private val inflowDispatcher by lazy { Daemons.ioDispatcher("inflow", Mark(), vpnScope) }
     private val preflowDispatcher by lazy { Daemons.ioDispatcher("preflow", PreMark(), vpnScope) }
     private val dnsQueryDispatcher by lazy { Daemons.ioDispatcher("onQuery", DNSOpts(), vpnScope) }
-    private val bind4Dispatcher by lazy { Daemons.ioDispatcher("bind4", Unit, vpnScope) }
-    private val bind6Dispatcher by lazy { Daemons.ioDispatcher("bind6", Unit, vpnScope) }
-    private val protectDispatcher by lazy { Daemons.ioDispatcher("protect", Unit, vpnScope) }
+    private val bind4Dispatcher by lazy { Dispatchers.IO.limitedParallelism(1, "bind4") }
+    private val bind6Dispatcher by lazy { Dispatchers.IO.limitedParallelism(1, "bind6") }
+    private val protectDispatcher by lazy { Dispatchers.IO.limitedParallelism(1, "protect") }
     private val proxyAddedDispatcher by lazy { Daemons.ioDispatcher("proxyAdded", Unit, vpnScope) }
 
     // TODO: remove volatile
@@ -374,18 +374,18 @@ class BraveVPNService : VpnService(), ConnectionMonitor.NetworkListener, Bridge 
         Logger.d(LOG_TAG_VPN, "$TAG $msg")
     }
 
-    override fun bind4(who: String, addrPort: String, fid: Long) = go2kt(bind4Dispatcher) {
+    override fun bind4(who: String, addrPort: String, fid: Long) = runSocketCallback(bind4Dispatcher) {
         var v4Net = underlyingNetworks?.ipv4Net
         val isAuto = InternetProtocol.isAuto(persistentState.internetProtocolType)
         if (ROUTE4IN6 && isAuto && v4Net.isNullOrEmpty()) {
             v4Net = underlyingNetworks?.ipv6Net
         }
 
-        return@go2kt bindAny(who, addrPort, fid, v4Net ?: emptyList())
+        return@runSocketCallback bindAny(who, addrPort, fid, v4Net ?: emptyList())
     }
 
-    override fun bind6(who: String, addrPort: String, fid: Long) = go2kt(bind6Dispatcher) {
-        return@go2kt bindAny(who, addrPort, fid, underlyingNetworks?.ipv6Net ?: emptyList())
+    override fun bind6(who: String, addrPort: String, fid: Long) = runSocketCallback(bind6Dispatcher) {
+        return@runSocketCallback bindAny(who, addrPort, fid, underlyingNetworks?.ipv6Net ?: emptyList())
     }
 
     private suspend fun bindAny(
@@ -430,13 +430,7 @@ class BraveVPNService : VpnService(), ConnectionMonitor.NetworkListener, Bridge 
             val destPort = dest.second.toIntOrNull()
             val destAddr = destIp.toInetAddress()
 
-            // in case of zero, bind only for wg connections, wireguard tries to bind to
-            // network with zero addresses
-            if (
-                (destIp.isZero && who.startsWith(ID_WG_BASE)) ||
-                destIp.isZero ||
-                destIp.isLoopback
-            ) {
+            if (destIp.isZero || destIp.isLoopback) {
                 logd("bind: invalid destIp: $destIp, who: $who, addr: $addrPort")
                 return
             }
@@ -578,10 +572,10 @@ class BraveVPNService : VpnService(), ConnectionMonitor.NetworkListener, Bridge 
         Logger.v(LOG_TAG_VPN, "socket protected")
     }
 
-    override fun protect(who: String?, fd: Long) = go2kt(protectDispatcher) {
+    override fun protect(who: String?, fd: Long) = runSocketCallback(protectDispatcher) {
         if (who == null) {
             Logger.w(LOG_TAG_VPN, "protect: who is null, fd: $fd")
-            return@go2kt
+            return@runSocketCallback
         }
 
         val rinr = persistentState.routeRethinkInRethink
@@ -594,12 +588,12 @@ class BraveVPNService : VpnService(), ConnectionMonitor.NetworkListener, Bridge 
                     // do not proceed if rethink is bypassed and proxyId(who) is not user-set proxy
                     // or Exit, this includes Base or any other go related proxies
                     Logger.vv(LOG_TAG_VPN, "protect: rinr, bypassed rethink, who: $who, fd: $fd")
-                    return@go2kt
+                    return@runSocketCallback
                 }
             } else if (who != Backend.Exit) {
                 // do not proceed if rethink within rethink is enabled and proxyId(who) is not exit
                 Logger.vv(LOG_TAG_VPN, "protect: rinr, within rethink, who: $who, fd: $fd")
-                return@go2kt
+                return@runSocketCallback
             }
         }
         this.protect(fd.toInt())
@@ -720,11 +714,11 @@ class BraveVPNService : VpnService(), ConnectionMonitor.NetworkListener, Bridge 
         val domains = if (isAtleastR()) {
             // on Android R and above, go will give the first domain as accurate domain so
             // no need to check further domains
-            val d = domain.lowercase(Locale.getDefault()).split(",").firstOrNull()
+            val d = domain.lowercase(Locale.ROOT).split(",").firstOrNull()
             if (d.isNullOrEmpty()) return Pair(DomainRulesManager.Status.NONE, "")
             listOf(d)
         } else {
-            domain.lowercase(Locale.getDefault()).split(",")
+            domain.lowercase(Locale.ROOT).split(",")
         }
 
         if (domains.isEmpty()) {
@@ -2162,6 +2156,17 @@ class BraveVPNService : VpnService(), ConnectionMonitor.NetworkListener, Bridge 
     private fun getAddresses(): String = vpnTunRoutes.addresses()
 
 
+    @Suppress("TooGenericExceptionCaught") // Never let a socket callback exception cross JNI.
+    private fun runSocketCallback(dispatcher: CoroutineDispatcher, action: suspend () -> Unit) = runBlocking {
+        try {
+            vpnScope.async(dispatcher) { action() }.await()
+        } catch (cancelled: kotlinx.coroutines.CancellationException) {
+            throw cancelled
+        } catch (error: Exception) {
+            Logger.w(LOG_TAG_VPN, "Socket callback failed", error)
+        }
+    }
+
     private fun <T> go2kt(co: CoFactory<T>, f: suspend() -> T): T = runBlocking {
         // runBlocking blocks the current thread until all coroutines within it are complete
         // an call a suspending function from a non-suspending context and obtain the result.
@@ -2499,54 +2504,6 @@ class BraveVPNService : VpnService(), ConnectionMonitor.NetworkListener, Bridge 
         return cm
     }
 
-    fun parseIpAndPort(endpoint: String?): Pair<String, Int> {
-        if (endpoint.isNullOrBlank()) return "" to 0
-
-        val trimmed = endpoint.trim()
-
-        // handle bracketed IPv6: [2001:db8::1]:443
-        if (trimmed.startsWith("[") && trimmed.contains("]")) {
-            val endBracket = trimmed.indexOf(']')
-            val ipPart = trimmed.substring(1, endBracket)
-            val portPart = trimmed.substring(endBracket + 1).removePrefix(":")
-            val port = portPart.toIntOrNull() ?: 0
-            return ipPart to port
-        }
-
-        // handle unbracketed IPv6 with port, e.g. 2001:db8::1:443
-        // we assume the last colon separates port, but IPv6 can contain many colons.
-        // so, only treat the last part as port if it's numeric.
-        val lastColonIndex = trimmed.lastIndexOf(':')
-        if (lastColonIndex > 0) {
-            val potentialPort = trimmed.substring(lastColonIndex + 1)
-            if (potentialPort.toIntOrNull() != null) {
-                val ipPart = trimmed.substring(0, lastColonIndex)
-                // avoid cutting an IPv6 without port (like 2001:db8::1)
-                val colonCount = ipPart.count { it == ':' }
-                val ip = if (colonCount >= 2) ipPart else trimmed
-                val port = if (colonCount >= 2) potentialPort.toIntOrNull() ?: 0 else 0
-                if (colonCount >= 2) return ip to port
-            }
-        }
-
-        // handle IPv4 or hostname with port, e.g. 10.0.0.1:53
-        val parts = trimmed.split(":")
-        if (parts.size == 2 && parts[1].toIntOrNull() != null) {
-            return parts[0] to (parts[1].toIntOrNull() ?: 0)
-        }
-
-        // use hostName parser for complex cases
-        return try {
-            val host = HostName(trimmed)
-            val ip = host.asAddress()?.toString() ?: trimmed
-            val port = host.port ?: 0
-            ip to port
-        } catch (_: inet.ipaddr.HostNameException) {
-            trimmed to 0
-        } catch (_: inet.ipaddr.AddressStringException) {
-            trimmed to 0
-        }
-    }
 
 
     override fun preflow(
@@ -3202,15 +3159,13 @@ class BraveVPNService : VpnService(), ConnectionMonitor.NetworkListener, Bridge 
         // no need to handle rethink
         mark.uid = uid.toString()
         if (cm == null) {
-            Logger.i(
-                LOG_TAG_VPN,
+            Logger.info(LOG_TAG_VPN) {
                 "flow/inflow: returning mark: $mark for connId: $connId, uid: $uid, cm: null"
-            )
+            }
         } else {
-            Logger.i(
-                LOG_TAG_VPN,
+            Logger.info(LOG_TAG_VPN) {
                 "flow/inflow: returning mark: $mark for src(${cm.sourceIP}: ${cm.sourcePort}), dest(${cm.destIP}:${cm.destPort}, ${cm.query})"
-            )
+            }
         }
         return mark
     }

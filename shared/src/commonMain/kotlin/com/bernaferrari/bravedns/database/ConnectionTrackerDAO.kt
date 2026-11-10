@@ -243,7 +243,7 @@ interface ConnectionTrackerDAO : StatsRebuildDao {
     fun observeRecentConnectionsForUid(uid: Int, since: Long, limit: Int): Flow<List<ConnectionTracker>>
 
     @Query(
-        "SELECT uid, SUM(uploadBytes) AS uploadBytes, SUM(downloadBytes) AS downloadBytes FROM ConnectionTracker where timeStamp >= :from and timeStamp <= :to GROUP BY uid"
+        "SELECT uid, SUM(uploadBytes) AS uploadBytes, SUM(downloadBytes) AS downloadBytes FROM ConnectionTracker where timeStamp > :from and timeStamp <= :to GROUP BY uid"
     )
     suspend fun getDataUsage(from: Long, to: Long): List<DataUsage>
 
@@ -263,6 +263,15 @@ interface ConnectionTrackerDAO : StatsRebuildDao {
         "SELECT CASE WHEN dnsQuery IS NULL OR dnsQuery = '' THEN ipAddress ELSE dnsQuery END AS label, '' AS packageName, COUNT(id) AS count, SUM(isBlocked) AS blocked FROM ConnectionTracker WHERE uid = :uid GROUP BY label ORDER BY count DESC LIMIT :limit"
     )
     suspend fun getDestinationsForUid(uid: Int, limit: Int): List<LogGroupCount>
+
+    @Query("""
+        SELECT COALESCE(NULLIF(dnsQuery, ''), ipAddress) ||
+            CASE WHEN isBlocked THEN ' (' || blockedByRule || ')' ELSE '' END
+        FROM ConnectionTracker
+        WHERE packageName = :packageName AND (:blockedOnly = 0 OR isBlocked = 1)
+        ORDER BY timeStamp DESC, id DESC LIMIT 20
+    """)
+    suspend fun recentAppTraffic(packageName: String, blockedOnly: Boolean): List<String>
 
     @Query(
         "SELECT COALESCE(SUM(CASE WHEN isBlocked = 0 THEN 1 ELSE 0 END), 0) AS allowed, COALESCE(SUM(isBlocked), 0) AS blocked FROM ConnectionTracker WHERE timeStamp > :since"

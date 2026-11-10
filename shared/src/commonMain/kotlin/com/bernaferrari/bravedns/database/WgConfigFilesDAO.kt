@@ -79,6 +79,9 @@ interface WgConfigFilesDAO {
     @Query("select count(id) from WgConfigFiles")
     fun getConfigCount(): Flow<Int>
 
+    @Query("update WgConfigFiles set isActive = 1 where id = :id")
+    suspend fun enableConfig(id: Int)
+
     @Query("update WgConfigFiles set isActive = 0, oneWireGuard = 0 where id = :id")
     suspend fun disableConfig(id: Int)
 
