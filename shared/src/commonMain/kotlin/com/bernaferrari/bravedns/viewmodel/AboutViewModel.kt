@@ -17,24 +17,12 @@ import kotlinx.coroutines.withContext
 import org.koin.core.annotation.KoinViewModel
 import org.koin.core.annotation.Provided
 
-/** Minimal preferences contract required by the shared About state. */
-interface AboutPreferences {
-    val firebaseUserToken: String
-    val firebaseErrorReportingEnabled: Boolean
-
-    fun updateFirebaseUserToken(token: String, timestampMillis: Long)
-}
-
 /** Platform scheduling bridge for the optional App Exit Info report. */
 interface BugReportController {
     val isRunning: Flow<Boolean>
 
     /** Returns false when a report is already queued or cannot be scheduled. */
     fun trigger(): Boolean
-}
-
-fun interface AboutTokenGenerator {
-    fun generate(): String
 }
 
 /**
@@ -44,9 +32,7 @@ fun interface AboutTokenGenerator {
 @KoinViewModel
 class AboutViewModel(
     @Provided private val metadataProvider: AppMetadataProvider,
-    @Provided private val preferences: AboutPreferences,
     @Provided private val bugReportController: BugReportController,
-    @Provided private val tokenGenerator: AboutTokenGenerator,
 ) : ViewModel() {
 
     private val uiStateMutable = MutableStateFlow(AboutUiState())
@@ -83,8 +69,6 @@ class AboutViewModel(
                 lastUpdated = metadata.lastUpdated,
                 daysSinceInstall = sponsorInfo.first,
                 sponsoredAmount = sponsorInfo.second,
-                firebaseToken = preferences.firebaseUserToken,
-                isFirebaseEnabled = preferences.firebaseErrorReportingEnabled,
                 isFdroid = metadata.isFdroid,
                 isPlayStore = metadata.isPlayStore,
                 isDebug = metadata.isDebug,

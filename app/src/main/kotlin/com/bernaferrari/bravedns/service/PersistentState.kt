@@ -18,10 +18,7 @@ package com.bernaferrari.bravedns.service
 import com.bernaferrari.bravedns.data.SmartDnsApplyStatus
 import com.bernaferrari.bravedns.data.SmartDnsProfile
 import android.content.Context
-import android.os.Handler
 import kotlinx.coroutines.flow.SharedFlow
-import android.os.Looper
-import android.widget.Toast
 import androidx.core.content.edit
 import com.bernaferrari.bravedns.datastore.SyncPreferencesStore
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -435,18 +432,10 @@ class PersistentState(context: Context) {
     // whether to use default dns for trusted ips and domains
     var useFallbackDnsToBypass by store.boolean("use_fallback_dns_to_bypass", true)
 
-    // Firebase error reporting enabled (only for play and website variants)
-    var firebaseErrorReportingEnabled by store.boolean("firebase_error_reporting", Utilities.isPlayStoreFlavour())
 
     // setting to enable/disable tombstone apps feature
     var tombstoneApps by store.boolean("tombstone_apps", false)
 
-    // Token for Firebase userId
-    var firebaseUserToken by store.string("firebase_user_token", "")
-    var firebaseUserTokenTimestamp by store.long("firebase_user_token_timestamp", 0L)
-
-    // Tombstone reporting is resumable across process restarts.
-    var lastReportedTombstoneFile by store.string("last_reported_tombstone_file", "")
 
     // experimental feature to use max mtu
     var useMaxMtu by store.boolean("use_max_mtu", false)
@@ -640,27 +629,6 @@ class PersistentState(context: Context) {
             }
         proxyStatus.value = status
         return proxyStatus
-    }
-
-    /**
-     * Enable settings which are dependent on stability program participation.
-     * Currently, only Firebase error reporting is enabled here.
-     */
-    fun enableStabilityDependentSettings(context: Context) {
-        // Skip for fdroid flavor
-        if (Utilities.isFdroidFlavour()) {
-            return
-        }
-
-        // Enable Firebase error reporting for play and website variants
-        if (!firebaseErrorReportingEnabled) {
-            firebaseErrorReportingEnabled = true
-            Handler(Looper.getMainLooper()).post {
-                Toast.makeText(context, context.getString(R.string.stability_program_toast), Toast.LENGTH_LONG).show()
-            }
-        }
-
-        return
     }
 
     // Allowed DNS record types (stored as comma-separated enum names)

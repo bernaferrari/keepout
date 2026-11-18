@@ -415,11 +415,14 @@ private const val STATUS_WASH_ALPHA = 0.14f
  */
 @Composable
 private fun RethinkAppAccessSection(state: RethinkAppInfoState, strings: RethinkAppInfoStrings, actions: RethinkAppInfoActions) {
+    val inTunnel = state.mode != RethinkAppMode.Excluded
+    val minutesLeft = state.tempAllowMinutesLeft
+    val somethingBlocked = state.mode == RethinkAppMode.TrustedOnly ||
+        (inTunnel && (state.wifiBlocked || state.mobileBlocked))
+    if (!inTunnel && minutesLeft == null) return
     RethinkFormSection(strings.internetAccess) {
         Column {
-            RethinkAppNetworkPair(state, strings, actions.onWifiClick, actions.onMobileClick)
-            val minutesLeft = state.tempAllowMinutesLeft
-            val somethingBlocked = state.wifiBlocked || state.mobileBlocked || state.mode == RethinkAppMode.TrustedOnly
+            if (inTunnel) RethinkAppNetworkPair(state, strings, actions.onWifiClick, actions.onMobileClick)
             AnimatedVisibility(
                 visible = minutesLeft != null || somethingBlocked,
                 enter = fadeIn() + expandVertically(),
@@ -430,7 +433,7 @@ private fun RethinkAppAccessSection(state: RethinkAppInfoState, strings: Rethink
                     enabled = state.enabled,
                     // 4dp under the tiles, inside the animation, so no gap is left once it hides.
                     modifier = Modifier
-                        .padding(top = SharedDimensions.spacingXs)
+                        .padding(top = if (inTunnel) SharedDimensions.spacingXs else 0.dp)
                         .fillMaxWidth()
                         .heightIn(min = SharedDimensions.buttonHeight),
                 ) {

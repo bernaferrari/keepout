@@ -331,8 +331,6 @@
     <string name="settings_enable_logs" translatable="true">Aktivera loggning på enheten</string>
     <string name="settings_enable_logs_desc" translatable="true">Spara DNS- och brandväggsloggar lokalt på enheten.</string>
     <string name="settings_exclude_proxy_apps_heading" translatable="true">Appar för loopback-proxyvidarebefordran</string>
-    <string name="settings_firebase_error_reporting_desc" translatable="true">Samla felrapporter för att bidra till bättre stabilitet.</string>
-    <string name="settings_firebase_error_reporting_heading" translatable="true">Stabilitetsprogram</string>
     <string name="settings_general_header" translatable="true">Allmänt</string>
     <string name="settings_http_proxy_desc" translatable="true">Vidarebefordrar till %1$s</string>
     <string name="settings_http_proxy_error_text1" translatable="true">Portintervallet ska vara 1024–65535</string>

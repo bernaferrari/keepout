@@ -426,7 +426,6 @@
     <string name="brbs_restore_dialog_failure_title">Falha na restauração</string>
     <string name="brbs_backup_complete_toast">Backup concluído</string>
     <string name="brbs_restore_no_uri_toast">Falha na restauração; tentar novamente</string>
-    <string name="about_privacy_policy_link">https://www.rethinkdns.com/privacy</string>
     <string name="about_privacy_policy">Política de Privacidade</string>
     <string name="hsf_notification_permission_failure">Ativar permissão de notificação em Configurações</string>
     <string name="rt_filter_parent_selected">Selecionado</string>
@@ -720,8 +719,6 @@
     <string name="lbl_criteria" translatable="true">Criteria</string>
     <string name="local_blocklist_delete_desc" translatable="true">Excluir listas de bloqueio no dispositivo?</string>
     <string name="settings_allow_incoming_wg_packets" translatable="true">WireGuard P2P</string>
-    <string name="settings_firebase_error_reporting_desc" translatable="true">Capturar registros de erros para ajudar a melhorar a estabilidade.</string>
-    <string name="settings_firebase_error_reporting_heading" translatable="true">Programa de estabilidade</string>
     <string name="settings_jumbo_packets" translatable="true">Acelerador de largura de banda</string>
     <string name="smart_dns" translatable="true">DNS inteligente</string>
     <string name="title_database_dump" translatable="true">Banco de dados</string>

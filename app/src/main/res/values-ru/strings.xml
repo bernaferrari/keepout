@@ -265,7 +265,6 @@
     <string name="about_dialog_positive_button">Поехали</string>
     <string name="about_app_update_check">Проверить наличие обновлений</string>
     <string name="about_mail_bugreport_subject">[Rethink]: Отчет об ошибке</string>
-    <string name="about_privacy_policy_link">https://www.rethinkdns.com/privacy</string>
     <string name="notification_screen_error">Не удалось запустить экран уведомлений приложения.</string>
     <string name="no_browser_error">Невозможно открыть веб-страницу из браузера.</string>
     <string name="dns_connected_rethink_plus">Подключено. Используется списков блокировки: %1$s</string>
@@ -718,8 +717,6 @@
     <string name="wg_ssid_type_exact" translatable="true">Совпадает точно</string>
     <string name="wg_ssid_type_wildcard" translatable="true">Совпадает частично</string>
     <string name="wg_ssid_invalid_error" translatable="true">Идентификаторы Wi-Fi (%1$s) должны быть до 32 символов.</string>
-    <string name="settings_firebase_error_reporting_heading" translatable="true">Программа стабилизации</string>
-    <string name="settings_firebase_error_reporting_desc" translatable="true">Отправлять журнал ошибок чтобы помочь улучшить стабильность приложения.</string>
     <string name="tombstone_app_title" translatable="true">Запоминать удалённые программы</string>
     <string name="tombstone_app_desc" translatable="true">Если включено, сохраняет правила приложений ещё 7 дней.</string>
     <string name="settings_allow_incoming_wg_packets" translatable="true">WireGuard P2P (напрямую между участниками)</string>
@@ -728,7 +725,6 @@
     <string name="lockdown_download_enable_inapp" translatable="true">Включить Менеджер Загрузок</string>
     <string name="settings_jumbo_packets" translatable="true">Расширение пропускной способности</string>
     <string name="settings_jumbo_packets_desc" translatable="true">Использовать jumbo-фреймы внутри VPN-туннеля Keepout.</string>
-    <string name="stability_program_toast" translatable="true">Теперь вы участник программы тестирования экспериментальных функций.</string>
     <string name="home_last_24_hours">Последние 24 часа</string>
     <plurals name="home_stopped_at_dns_count">
         <item quantity="one">%d запрос остановлен на уровне DNS</item>

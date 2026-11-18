@@ -71,7 +71,6 @@ object Logger : KoinComponent {
     const val LOG_GO_LOGGER_V1 = "GoLogV1"
     const val LOG_TAG_APP_OPS = "AppOpsService"
     const val LOG_IAB = "InAppBilling"
-    const val LOG_FIREBASE = "FirebaseErrorReporting"
     const val LOG_TAG_APP = "ExceptionHandler"
     const val LOG_OKHTTP = "OkHttp"
 

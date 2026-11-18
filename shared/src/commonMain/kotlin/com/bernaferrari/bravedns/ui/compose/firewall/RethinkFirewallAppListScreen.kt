@@ -839,7 +839,7 @@ private fun RethinkFirewallAppRow(
             RethinkFirewallAppRowLabels(app, query, statusLabel, proxyLabel, Modifier.weight(1f))
             when {
                 selected != null -> Checkbox(checked = checked, onCheckedChange = null, enabled = app.canToggleConnections)
-                app.canToggleConnections -> RethinkNetworkSegmentPair(
+                app.canToggleConnections && app.status != RethinkFirewallAppStatus.Excluded -> RethinkNetworkSegmentPair(
                     wifiBlocked = app.wifiBlocked,
                     mobileBlocked = app.mobileBlocked,
                     wifiDescription = wifiStateLabel,

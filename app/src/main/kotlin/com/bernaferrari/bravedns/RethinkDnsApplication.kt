@@ -20,11 +20,11 @@ import Logger.LOG_TAG_SCHEDULER
 import android.app.Application
 import android.content.pm.ApplicationInfo
 import android.os.StrictMode
+import com.bernaferrari.bravedns.scheduler.EnhancedBugReport
 import com.bernaferrari.bravedns.scheduler.ScheduleManager
 import com.bernaferrari.bravedns.scheduler.WorkScheduler
-import com.bernaferrari.bravedns.util.FirebaseErrorReporting
-import com.bernaferrari.bravedns.util.GlobalExceptionHandler
 import com.bernaferrari.bravedns.service.PersistentState
+import com.bernaferrari.bravedns.util.GlobalExceptionHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -59,7 +59,7 @@ open class RethinkDnsApplication : Application() {
         applicationScope.launch {
             get<PersistentState>()
             Logger.preferencesReady = true
-            FirebaseErrorReporting.initialize()
+            EnhancedBugReport.enforceMaxFiles(this@RethinkDnsApplication)
             scheduleJobs()
         }
 
@@ -76,7 +76,7 @@ open class RethinkDnsApplication : Application() {
     fun initializeNativeReporting() {
         if (nativeReportingInitialized) return
         nativeReportingInitialized = com.bernaferrari.bravedns.util.GoReportingHandler(
-            applicationContext, get<PersistentState>(), applicationScope
+            applicationContext, applicationScope
         ).initialize()
     }
 

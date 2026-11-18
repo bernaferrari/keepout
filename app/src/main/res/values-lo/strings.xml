@@ -337,8 +337,6 @@
     <string name="settings_enable_logs" translatable="true">ເປີດໃຊ້ການບັນທຶກໃນອຸປະກອນ</string>
     <string name="settings_enable_logs_desc" translatable="true">ເກັບຮັກສາບັນທຶກ DNS ແລະ ໄຟວໍໄວ້ໃນອຸປະກອນ.</string>
     <string name="settings_exclude_proxy_apps_heading" translatable="true">ແອັບສົ່ງຕໍ່ Loopback proxy</string>
-    <string name="settings_firebase_error_reporting_desc" translatable="true">ບັນທຶກຂໍ້ຜິດພາດເພື່ອຊ່ວຍປັບປຸງຄວາມສະຖຽນ.</string>
-    <string name="settings_firebase_error_reporting_heading" translatable="true">ໂປຣແກຣມຄວາມສະຖຽນ</string>
     <string name="settings_general_header" translatable="true">ທົ່ວໄປ</string>
     <string name="settings_http_proxy_desc" translatable="true">ກຳລັງສົ່ງຕໍ່ໄປຫາ %1$s</string>
     <string name="settings_http_proxy_error_text1" translatable="true">ຊ່ວງພອດ (Port) ຄວນຢູ່ລະຫວ່າງ 1024–65535</string>

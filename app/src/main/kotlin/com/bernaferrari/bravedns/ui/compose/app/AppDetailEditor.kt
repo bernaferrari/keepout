@@ -44,13 +44,15 @@ internal class AppDetailEditor(
     private val context: Context,
     private val copy: AppDetailCopy,
 ) {
-    fun toggleWifi() = applyFirewallRule(FirewallStatus.NONE, state.connStatus.toggledWifi())
-
-    fun toggleMobile() = applyFirewallRule(FirewallStatus.NONE, state.connStatus.toggledMobile())
+    fun toggleNetwork(wifi: Boolean) {
+        val status = state.appStatus
+        if (status.isExclude() || state.busy) return
+        val connection = if (wifi) state.connStatus.toggledWifi() else state.connStatus.toggledMobile()
+        applyFirewallRule(if (status.isUntracked()) FirewallStatus.NONE else status, connection)
+    }
 
     fun changeMode(mode: RethinkAppMode) {
-        val (status, connection) = modeChange(state.appStatus, state.connStatus, state.baselineConnStatus, mode) ?: return
-        if (state.appStatus == FirewallStatus.NONE) state.baselineConnStatus = state.connStatus
+        val (status, connection) = modeChange(state.appStatus, state.connStatus, mode) ?: return
         applyFirewallRule(status, connection, copy.modeChanged(mode))
     }
 
@@ -73,7 +75,6 @@ internal class AppDetailEditor(
         }
         val previousStatus = state.appStatus
         val previousConnection = state.connStatus
-        val previousBaseline = state.baselineConnStatus
         state.show(status, connection)
         val epoch = beginEdit()
         if (message == null) {
@@ -92,7 +93,6 @@ internal class AppDetailEditor(
             true
         }) {
             state.show(previousStatus, previousConnection)
-            state.baselineConnStatus = previousBaseline
             writeFirewallStatus(eventLogger, app, previousStatus, previousConnection, undo = true)
         }
     }

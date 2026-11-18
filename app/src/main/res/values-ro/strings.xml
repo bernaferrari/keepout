@@ -686,8 +686,6 @@
     <string name="wg_ssid_type_exact" translatable="true">Potrivire exactă</string>
     <string name="wg_ssid_type_wildcard" translatable="true">Potrivire parțială</string>
     <string name="wg_ssid_invalid_error" translatable="true">Identificatorii Wi-Fi (%1$s) trebuie să conțină cel mult 32 caractere..</string>
-    <string name="settings_firebase_error_reporting_heading" translatable="true">Program stabilitate</string>
-    <string name="settings_firebase_error_reporting_desc" translatable="true">Capturează înregistrările erorilor pentru îmbunătățirea stabilității.</string>
     <string name="tombstone_app_title" translatable="true">Memorează aplicațiile dezinstalate</string>
     <string name="tombstone_app_desc" translatable="true">Dacă este activat, păstrează regulile pe aplicații timp de 7 zile.</string>
     <string name="settings_allow_incoming_wg_packets" translatable="true">WireGuard P2P</string>
@@ -696,7 +694,6 @@
     <string name="lockdown_download_enable_inapp" translatable="true">Activează Downloader-ul</string>
     <string name="settings_jumbo_packets" translatable="true">Extindere lățime de bandă</string>
     <string name="settings_jumbo_packets_desc" translatable="true">Folosește pachete jumbo în tunelul VPN al Keepout.</string>
-    <string name="stability_program_toast" translatable="true">Înscris în programul de stabilitate pentru caracteristici experimentale.</string>
     <string name="home_last_24_hours">Ultimele 24 de ore</string>
     <plurals name="home_stopped_at_dns_count">
         <item quantity="one">%d interogare oprită la DNS</item>

@@ -9,7 +9,7 @@ spec.loader.exec_module(module)
 
 
 class ReleaseManifestTest(unittest.TestCase):
-    badging = "package: name='com.bernaferrari.bravedns' versionCode='30000001' versionName='test'"
+    badging = "package: name='com.bernaferrari.keepout' versionCode='30000001' versionName='test'"
     tree = '''E: manifest
   E: application
     E: activity-alias
@@ -32,7 +32,7 @@ class ReleaseManifestTest(unittest.TestCase):
         with self.assertRaises(ValueError):
             module.check_manifest(self.badging, self.tree, 90000001)
         with self.assertRaises(ValueError):
-            module.check_manifest(self.badging.replace('com.bernaferrari.bravedns', 'com.other.app'), self.tree, 30000001)
+            module.check_manifest(self.badging.replace('com.bernaferrari.keepout', 'com.other.app'), self.tree, 30000001)
         with self.assertRaises(ValueError):
             module.check_manifest(self.badging, self.tree.replace('android.permission.BIND_VPN_SERVICE', 'other.permission'), 30000001)
 

@@ -58,25 +58,15 @@ internal fun RethinkAppMode.toFirewallStatus(): FirewallStatus = when (this) {
     RethinkAppMode.Excluded -> FirewallStatus.EXCLUDE
 }
 
-/**
- * The firewall write for choosing [target] in the Special handling sheet, the same as the radio
- * group always did: entering a mode clears the network flags (remembering them in [baseline]),
- * and Normal restores [baseline]. Null when nothing would change.
- */
+/** Handling modes leave the stored Normal-mode network rules intact. */
 internal fun modeChange(
     current: FirewallStatus,
     connection: ConnectionStatus,
-    baseline: ConnectionStatus,
     target: RethinkAppMode,
 ): Pair<FirewallStatus, ConnectionStatus>? {
-    val targetStatus = target.toFirewallStatus()
-    if (current == targetStatus) return null
-    return if (target == RethinkAppMode.Normal) {
-        // Untracked apps have no mode to leave.
-        if (current == FirewallStatus.UNTRACKED) null else FirewallStatus.NONE to baseline
-    } else {
-        targetStatus to ConnectionStatus.ALLOW
-    }?.takeUnless { it.first == current && it.second == connection }
+    val status = target.toFirewallStatus()
+    if (current == status || (current.isUntracked() && target == RethinkAppMode.Normal)) return null
+    return status to connection
 }
 
 /** Flip the Wi‑Fi (unmetered) flag, keeping mobile data's. */

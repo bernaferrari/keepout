@@ -155,7 +155,6 @@
     <string name="about_mail_subject">[RethinkDNS]:</string>
     <string name="about_faq_link">https://www.rethinkdns.com/faq</string>
     <string name="about_website_link">https://www.rethinkdns.com/</string>
-    <string name="about_privacy_policy_link">https://www.rethinkdns.com/privacy</string>
     <string name="about_version_install_source">%1$s (%2$s)</string>
     <string name="notification_screen_error">Kan App Notificatie scherm niet starten.</string>
     <string name="about_twitter_handle">https://twitter.com/rethinkdns</string>

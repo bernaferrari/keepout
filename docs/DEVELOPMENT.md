@@ -30,14 +30,14 @@ No Go toolchain is needed: the tunnel ships as Celzero's prebuilt
 
 | Target | Command |
 | --- | --- |
-| Android, F-Droid channel (no Firebase, no billing) | `./gradlew :app:installFdroidDebug` |
+| Android, F-Droid channel (no billing) | `./gradlew :app:installFdroidDebug` |
 | Android, Play channel | `./gradlew :app:installPlayDebug` |
 | Android, website channel | `./gradlew :app:installWebsiteDebug` |
 | Web demo (Kotlin/Wasm, UI only, filters nothing) | `./gradlew :shared:wasmJsBrowserDevelopmentRun` |
 | JVM demo (models and Room types only) | `./gradlew :shared:runJvmDemo` |
 
 Flavors are release channels. Billing lives once in `app/src/billing/` and is wired only into `play` and `website`;
-Firebase also applies to those two only. `fdroid` must never see Play Billing classes.
+`fdroid` must never see Play Billing classes.
 
 ## Where things live
 
@@ -73,7 +73,7 @@ deleting `app/lint-baseline.xml` and running lint once. CI runs no instrumented 
 Store art comes from [Screenshot Studio](https://github.com/bernaferrari/screenshot-studio) (`npx screenshot-studio`);
 the app keeps no copy of it. Start with [store-listing/README.md](../store-listing/README.md).
 
-- The capture build is `./gradlew :app:assembleFdroidStoreCapture` (`com.bernaferrari.bravedns.storecapture`). It
+- The capture build is `./gradlew :app:assembleFdroidStoreCapture` (`com.bernaferrari.keepout.storecapture`). It
   shows the real UI with seeded rules and a week of made-up traffic against the Google apps on the emulator's Play
   image. It has no VPN service and no INTERNET permission, installs beside the real app and is never released.
   The scene tour is `store-listing/capture.tour.mjs`. `fixture-apps.json` only lists retired stub apps,

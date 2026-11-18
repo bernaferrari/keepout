@@ -85,16 +85,17 @@ class AppInfoFilterTest {
     }
 
     @Test
-    fun selectionChangesOnlySelectedUidsAndUndoRestoresEach() = runTest(dispatcher) {
+    fun selectionSkipsExcludedAndUnselectedAppsAndUndoRestoresChanges() = runTest(dispatcher) {
         rules.state[10] = AppFirewallStatus.None to AppConnectionStatus.Metered
         rules.state[11] = AppFirewallStatus.Exclude to AppConnectionStatus.Allow
         rules.state[12] = AppFirewallStatus.None to AppConnectionStatus.Allow
 
         val before = model.applyToSelected(setOf(10, 11), RethinkAppSelectionAction.BlockWifi)
 
-        // Wi‑Fi joins mobile data's block; a mode goes back to Normal; the unselected app is untouched.
+        // Wi‑Fi joins the mobile data block. Excluded and unselected apps keep their rules.
         assertEquals(AppFirewallStatus.None to AppConnectionStatus.Both, rules.state[10])
-        assertEquals(AppFirewallStatus.None to AppConnectionStatus.Unmetered, rules.state[11])
+        assertEquals(AppFirewallStatus.Exclude to AppConnectionStatus.Allow, rules.state[11])
+        assertEquals(listOf(10), before.map { it.uid })
         assertEquals(AppFirewallStatus.None to AppConnectionStatus.Allow, rules.state[12])
 
         model.restore(before)
@@ -103,13 +104,13 @@ class AppInfoFilterTest {
     }
 
     @Test
-    fun selectionModesClearNetworkBlocks() = runTest(dispatcher) {
+    fun selectionModesPreserveNetworkBlocksUntilAllowAll() = runTest(dispatcher) {
         rules.state[20] = AppFirewallStatus.None to AppConnectionStatus.Both
         model.applyToSelected(setOf(20), RethinkAppSelectionAction.TrustedOnly)
-        assertEquals(AppFirewallStatus.Isolate to AppConnectionStatus.Allow, rules.state[20])
+        assertEquals(AppFirewallStatus.Isolate to AppConnectionStatus.Both, rules.state[20])
 
         model.applyToSelected(setOf(20), RethinkAppSelectionAction.AllowMobile)
-        assertEquals(AppFirewallStatus.None to AppConnectionStatus.Allow, rules.state[20])
+        assertEquals(AppFirewallStatus.Isolate to AppConnectionStatus.Unmetered, rules.state[20])
 
         model.applyToSelected(setOf(20), RethinkAppSelectionAction.BlockMobile)
         model.applyToSelected(setOf(20), RethinkAppSelectionAction.AllowAll)
@@ -130,10 +131,10 @@ class AppInfoFilterTest {
     }
 
     @Test
-    fun rowToggleLeavesAModeForAPlainNetworkRule() = runTest(dispatcher) {
+    fun rowTogglePreservesHandlingMode() = runTest(dispatcher) {
         rules.state[31] = AppFirewallStatus.Isolate to AppConnectionStatus.Allow
 
         model.toggleNetwork(31, wifi = false)
-        assertEquals(AppFirewallStatus.None to AppConnectionStatus.Metered, rules.state[31])
+        assertEquals(AppFirewallStatus.Isolate to AppConnectionStatus.Metered, rules.state[31])
     }
 }

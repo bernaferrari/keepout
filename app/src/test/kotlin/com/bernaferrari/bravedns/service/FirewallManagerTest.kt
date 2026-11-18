@@ -22,7 +22,6 @@ import com.bernaferrari.bravedns.database.AppInfo
 import com.bernaferrari.bravedns.database.AppInfoRepository
 import com.bernaferrari.bravedns.database.AppInfoRepository.Companion.NO_PACKAGE_PREFIX
 import com.bernaferrari.bravedns.util.AndroidUidConfig
-import com.bernaferrari.bravedns.util.Constants.Companion.RETHINK_PACKAGE
 import com.bernaferrari.bravedns.util.OrbotHelper
 import io.mockk.*
 import kotlinx.coroutines.Dispatchers
@@ -189,7 +188,7 @@ class FirewallManagerTest : KoinTest {
         )
 
         rethinkAppInfo = AppInfo(
-            packageName = RETHINK_PACKAGE,
+            packageName = context.packageName,
             appName = "RethinkDNS",
             uid = testUid3,
             isSystemApp = false,

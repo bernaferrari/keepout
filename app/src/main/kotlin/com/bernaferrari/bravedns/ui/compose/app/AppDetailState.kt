@@ -30,8 +30,6 @@ internal class AppDetailState {
         private set
     var connStatus by mutableStateOf(ConnectionStatus.ALLOW)
         private set
-    /** The network flags to restore when a mode goes back to Normal (modes clear them). */
-    var baselineConnStatus by mutableStateOf(ConnectionStatus.ALLOW)
     var isProxyExcluded by mutableStateOf(false)
     var tempAllowExpiry by mutableLongStateOf(0L)
     var proxyDetails by mutableStateOf("")
@@ -60,11 +58,10 @@ internal class AppDetailState {
         loaded = true
     }
 
-    /** Show [status] and [connection]; in Normal mode the flags are also the new baseline. */
+    /** Show the saved handling mode and network rules. */
     fun show(status: FirewallStatus, connection: ConnectionStatus) {
         appStatus = status
         connStatus = connection
-        if (status == FirewallStatus.NONE) baselineConnStatus = connection
     }
 }
 

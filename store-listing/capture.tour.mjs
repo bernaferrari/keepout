@@ -9,7 +9,7 @@ const tab = (d, label) => d.tap(label, {textOnly: true});
 
 /** @type {import('screenshot-studio').Tour} */
 export default {
-  app: 'com.bernaferrari.bravedns.storecapture',
+  app: 'com.bernaferrari.keepout.storecapture',
   activity: 'com.bernaferrari.bravedns.ui.activity.LauncherAliasAppLock',
   animations: false,                       // the Home beacon animates forever; still screens settle
   animated: ['01-home', '11-home-dark'],   // …and these let it move for their frame

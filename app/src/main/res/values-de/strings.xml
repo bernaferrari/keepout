@@ -325,7 +325,6 @@
     <string name="about_telegram_link">https://telegram.me/rethinkdns</string>
     <string name="about_faq_link">https://www.rethinkdns.com/faq</string>
     <string name="about_docs_link">https://docs.rethinkdns.com/</string>
-    <string name="about_privacy_policy_link">https://www.rethinkdns.com/privacy</string>
     <string name="no_browser_error">Die Webseite kann nicht im Browser geöffnet werden.</string>
     <string name="notification_screen_error">App-Benachrichtigungs-Bildschirm konnte nicht geöffnet werden.</string>
     <string name="error_loading_log_file">Fehler beim Laden der Protokolldatei</string>
@@ -711,8 +710,6 @@
     <string name="wg_ssid_type_exact" translatable="true">Exakte Übereinstimmung</string>
     <string name="wg_ssid_type_wildcard" translatable="true">Teilweise Übereinstimmung</string>
     <string name="wg_ssid_invalid_error" translatable="true">Wi-Fi-Kennungen (%1$s) dürfen maximal 32 Zeichen lang sein.</string>
-    <string name="settings_firebase_error_reporting_heading" translatable="true">Stabilitätsprogramm</string>
-    <string name="settings_firebase_error_reporting_desc" translatable="true">Fehlerprotokolle erfassen, um die Stabilität zu verbessern.</string>
     <string name="tombstone_app_title" translatable="true">Deinstallierte Apps merken</string>
     <string name="tombstone_app_desc" translatable="true">Wenn aktiviert, werden die App-Regeln 7 Tage lang beibehalten.</string>
     <string name="settings_allow_incoming_wg_packets" translatable="true">WireGuard P2P</string>
@@ -722,7 +719,6 @@
     <string name="lockdown_download_message" translatable="true">Der in Android integrierte Download-Manager funktioniert möglicherweise nicht, da sich das VPN im Lockdown-Modus befindet. Möchtest du stattdessen den Downloader von Keepout aktivieren?</string>
     <string name="lockdown_download_enable_inapp" translatable="true">Downloader aktivieren</string>
     <string name="settings_jumbo_packets_desc" translatable="true">Verwendet Jumbo-Pakete innerhalb des VPN-Tunnels von Keepout.</string>
-    <string name="stability_program_toast" translatable="true">Für das Stabilitätsprogramm für experimentelle Funktionen angemeldet.</string>
     <string name="home_last_24_hours">Letzte 24 Stunden</string>
     <plurals name="home_stopped_at_dns_count">
         <item quantity="one">%d Anfrage schon beim DNS gestoppt</item>

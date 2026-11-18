@@ -184,7 +184,7 @@
     <string name="exclude" translatable="true">exclude</string>
     <string name="isolate" translatable="true">isolate</string>
     <string name="untracked" translatable="true">untracked</string>
-    <string name="bypass_dns_firewall" translatable="true">Skip all filtering</string>
+    <string name="bypass_dns_firewall" translatable="true">Skip DNS and universal rules</string>
 
     <string name="warning_title" description="Status indicator text shown in a warning notification." translatable="true">Keepout was turned off</string>
 
@@ -660,7 +660,7 @@
     <string name="about_website_link" translatable="false">https://www.rethinkdns.com/</string>
     <string name="about_foss_link" translatable="false">https://fossunited.org/grants</string>
     <string name="about_floss_fund_link" translatable="false">https://floss.fund/projects/2025</string>
-    <string name="about_privacy_policy_link" translatable="false">https://www.rethinkdns.com/privacy</string>
+    <string name="about_privacy_policy_link" translatable="false">https://github.com/bernaferrari/rethink-app/blob/main/PRIVACY.md</string>
     <string name="about_terms_link" translatable="false">https://rethinkdns.com/terms</string>
     <string name="about_license_link" translatable="false">https://opensource.org/license/apache-2-0</string>
     <string name="about_mastodom_handle" translatable="false">https://mastodon.social/@rdns</string>
@@ -853,7 +853,7 @@
     <string name="firewall_rule_block_metered" translatable="true">Mobile data blocked</string>
     <string name="firewall_rule_univ_block_metered" translatable="true">Mobile data blocked (all apps)</string>
     <string name="firewall_rule_isolate" translatable="true">Trusted only</string>
-    <string name="firewall_rule_bypass_dns_firewall" translatable="true">Skips all filtering</string>
+    <string name="firewall_rule_bypass_dns_firewall" translatable="true">Skips DNS and universal rules</string>
     <string name="firewall_rule_block_app_new_install" translatable="true">New app</string>
     <string name="firewall_rule_block_app_exception" translatable="true">Error</string>
     <string name="firewall_rule_block_ip" translatable="true">IP / port (app)</string>
@@ -890,7 +890,7 @@
     <string name="firewall_rule_block_app_mobile_desc" translatable="true">Blocked because this app is blocked on mobile data.</string>
     <string name="firewall_rule_block_app_univ_mobile_desc" translatable="true">Blocked because all apps are blocked on mobile data.</string>
     <string name="firewall_rule_isolate_desc" translatable="true">Blocked because this app may only reach trusted IPs and domains.</string>
-    <string name="firewall_rule_bypass_dns_firewall_desc" translatable="true">Allowed because this app skips all filtering.</string>
+    <string name="firewall_rule_bypass_dns_firewall_desc" translatable="true">Allowed because this app skips DNS and universal rules.</string>
     <string name="firewall_rule_block_ip_univ_desc" translatable="true">Blocked by a universal IP or port rule.</string>
     <string name="firewall_rule_block_ip_desc" translatable="true">Blocked by an IP rule for this app.</string>
     <string name="firewall_rule_trusted_ip_desc" translatable="true">Allowed because this IP is trusted.</string>
@@ -984,7 +984,7 @@
 
     <string name="ada_app_status_block_wifi" translatable="true">Blocked on Wi‑Fi</string>
     <string name="ada_app_status_block_md" translatable="true">Blocked on mobile data</string>
-    <string name="ada_app_status_bypass_dns_firewall" translatable="true">Skips all filtering</string>
+    <string name="ada_app_status_bypass_dns_firewall" translatable="true">Skips DNS and universal rules</string>
     <string name="ada_app_status_unknown" translatable="true">Unknown</string>
 
 
@@ -992,14 +992,14 @@
     <string name="ada_app_metered" translatable="true">Metered</string>
     <string name="ada_app_unmetered" translatable="true">Wi‑Fi</string>
     <string name="ada_app_bypass_univ" translatable="true">Skip universal rules</string>
-    <string name="ada_app_bypass_dns_firewall" translatable="true">Skip all filtering</string>
+    <string name="ada_app_bypass_dns_firewall" translatable="true">Skip DNS and universal rules</string>
     <string name="ada_app_exclude" translatable="true">Exclude from Keepout</string>
     <string name="ada_app_mode_title">How Keepout treats this app</string>
     <string name="ada_app_mode_normal">Normal</string>
     <string name="ada_app_mode_normal_desc">Follows your firewall and DNS rules</string>
     <string name="ada_app_isolate_desc">Only reaches domains and IPs you trust</string>
-    <string name="ada_app_bypass_dns_firewall_desc">No DNS blocking or firewall rules. Still logged.</string>
-    <string name="ada_app_bypass_univ_desc">Ignores the rules that apply to every app</string>
+    <string name="ada_app_bypass_dns_firewall_desc">Skips DNS filtering. Wi-Fi and mobile blocks still apply.</string>
+    <string name="ada_app_bypass_univ_desc">Ignores rules that apply to every app. App-specific blocks still apply.</string>
     <string name="ada_app_exclude_desc">Goes around Keepout. Not filtered or logged.</string>
     <string name="ada_app_isolate" translatable="true">Trusted only</string>
 
@@ -1417,8 +1417,6 @@
     <string name="wg_ssid_type_wildcard" translatable="true">Matches partially</string>
     <string name="wg_ssid_invalid_error" translatable="true">Wi‑Fi network names (%1$s) must be 32 characters or less.</string>
 
-    <string name="settings_firebase_error_reporting_heading" translatable="true">Stability program</string>
-    <string name="settings_firebase_error_reporting_desc" translatable="true">Capture error logs to help improve stability.</string>
 
     <string name="tombstone_app_title" translatable="true">Remember uninstalled apps</string>
     <string name="tombstone_app_desc" translatable="true">Keeps an uninstalled app\'s rules for 7 days, in case it comes back.</string>
@@ -1460,7 +1458,6 @@
     <string name="settings_jumbo_packets_desc" translatable="true">Larger packets inside Keepout\'s VPN; can speed up big downloads.</string>
 
 
-    <string name="stability_program_toast" translatable="true">Joined the stability program for experimental features.</string>
 
 
     <!-- Event Logs -->

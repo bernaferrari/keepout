@@ -473,7 +473,7 @@ internal fun DemoAppInfoScreen(modifier: Modifier, app: RethinkFirewallApp?, onB
         mode == RethinkAppMode.TrustedOnly -> "Only reaches domains and IPs you trust" to RethinkAppStatusTone.Blocked
         mode == RethinkAppMode.Excluded -> "Goes around Keepout" to RethinkAppStatusTone.Partial
         mode == RethinkAppMode.SkipUniversalRules -> "Can use the internet · skips universal rules" to RethinkAppStatusTone.Partial
-        mode == RethinkAppMode.SkipAllFiltering -> "Skips all filtering" to RethinkAppStatusTone.Partial
+        mode == RethinkAppMode.SkipAllFiltering -> "Skips DNS and universal rules" to RethinkAppStatusTone.Partial
         wifiBlocked && mobileBlocked -> "Can't use the internet" to RethinkAppStatusTone.Blocked
         wifiBlocked -> "Blocked on Wi‑Fi" to RethinkAppStatusTone.Blocked
         mobileBlocked -> "Blocked on mobile data" to RethinkAppStatusTone.Blocked
@@ -511,7 +511,7 @@ internal fun DemoAppInfoScreen(modifier: Modifier, app: RethinkFirewallApp?, onB
             modeTitle = "How Keepout treats this app",
             normal = "Normal", normalDescription = "Follows your firewall and DNS rules",
             trustedOnly = "Trusted only", trustedOnlyDescription = "Only reaches domains and IPs you trust",
-            skipAllFiltering = "Skip all filtering", skipAllFilteringDescription = "No DNS blocking or firewall rules. Still logged.",
+            skipAllFiltering = "Skip DNS and universal rules", skipAllFilteringDescription = "Skips DNS filtering. App-specific blocks still apply.",
             skipUniversalRules = "Skip universal rules", skipUniversalRulesDescription = "Ignores the rules that apply to every app",
             exclude = "Exclude from Keepout", excludeDescription = "Goes around Keepout. Not filtered or logged.",
             excludeWarning = "Keepout won't filter or log this app, and none of its rules apply.",

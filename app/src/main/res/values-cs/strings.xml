@@ -682,8 +682,6 @@
     <string name="lbl_criteria" translatable="true">Kritéria</string>
     <string name="local_blocklist_delete_desc" translatable="true">Smazat on-device blokovací seznamy?</string>
     <string name="settings_allow_incoming_wg_packets" translatable="true">WireGuard P2P</string>
-    <string name="settings_firebase_error_reporting_desc" translatable="true">Zaznamenávat chybové protokoly pro zlepšení stability.</string>
-    <string name="settings_firebase_error_reporting_heading" translatable="true">Program stability</string>
     <string name="settings_jumbo_packets" translatable="true">Posilovač šířky pásma</string>
     <string name="smart_dns" translatable="true">Chytré DNS</string>
     <string name="title_database_dump" translatable="true">Databáze</string>

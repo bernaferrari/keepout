@@ -5,11 +5,9 @@ import androidx.work.WorkInfo
 import androidx.work.WorkManager
 import com.bernaferrari.bravedns.RethinkDnsApplication.Companion.DEBUG
 import com.bernaferrari.bravedns.scheduler.WorkScheduler
-import com.bernaferrari.bravedns.service.PersistentState
 import com.bernaferrari.bravedns.util.Constants.Companion.TIME_FORMAT_4
 import com.bernaferrari.bravedns.util.Utilities
 import com.bernaferrari.bravedns.util.Utilities.getPackageMetadata
-import com.bernaferrari.bravedns.util.Utilities.getRandomString
 import com.bernaferrari.bravedns.util.Utilities.isFdroidFlavour
 import com.bernaferrari.bravedns.util.Utilities.isPlayStoreFlavour
 import com.bernaferrari.bravedns.util.workInfosByTagFlow
@@ -44,19 +42,6 @@ class AndroidAppMetadataProvider(context: Context) : AppMetadataProvider {
     }
 }
 
-class AndroidAboutPreferences(private val persistentState: PersistentState) : AboutPreferences {
-    override val firebaseUserToken: String
-        get() = persistentState.firebaseUserToken
-
-    override val firebaseErrorReportingEnabled: Boolean
-        get() = persistentState.firebaseErrorReportingEnabled
-
-    override fun updateFirebaseUserToken(token: String, timestampMillis: Long) {
-        persistentState.firebaseUserToken = token
-        persistentState.firebaseUserTokenTimestamp = timestampMillis
-    }
-}
-
 class AndroidBugReportController(
     context: Context,
     private val workScheduler: WorkScheduler,
@@ -76,10 +61,4 @@ class AndroidBugReportController(
         workScheduler.scheduleOneTimeWorkForAppExitInfo()
         return true
     }
-}
-
-object AndroidAboutTokenGenerator : AboutTokenGenerator {
-    override fun generate(): String = getRandomString(TOKEN_LENGTH)
-
-    private const val TOKEN_LENGTH = 16
 }

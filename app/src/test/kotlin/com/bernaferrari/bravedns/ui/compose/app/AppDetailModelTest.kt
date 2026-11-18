@@ -38,25 +38,22 @@ class AppDetailModelTest {
     }
 
     @Test
-    fun modeChangeMatchesTheRadioGroupsWrites() {
-        // Entering a mode clears the network flags.
-        assertEquals(
-            FirewallStatus.EXCLUDE to ConnectionStatus.ALLOW,
-            modeChange(FirewallStatus.NONE, ConnectionStatus.METERED, ConnectionStatus.METERED, RethinkAppMode.Excluded),
+    fun modeChangesPreserveNetworkRulesAcrossScreenRecreation() {
+        val (specialMode, storedConnection) = requireNotNull(
+            modeChange(FirewallStatus.NONE, ConnectionStatus.METERED, RethinkAppMode.TrustedOnly)
         )
-        // Normal restores the flags the app had before.
+        assertEquals(FirewallStatus.ISOLATE, specialMode)
         assertEquals(
             FirewallStatus.NONE to ConnectionStatus.METERED,
-            modeChange(FirewallStatus.ISOLATE, ConnectionStatus.ALLOW, ConnectionStatus.METERED, RethinkAppMode.Normal),
+            modeChange(specialMode, storedConnection, RethinkAppMode.Normal),
         )
-        // Switching between modes.
         assertEquals(
-            FirewallStatus.BYPASS_UNIVERSAL to ConnectionStatus.ALLOW,
-            modeChange(FirewallStatus.ISOLATE, ConnectionStatus.ALLOW, ConnectionStatus.ALLOW, RethinkAppMode.SkipUniversalRules),
+            FirewallStatus.EXCLUDE to ConnectionStatus.METERED,
+            modeChange(specialMode, storedConnection, RethinkAppMode.Excluded),
         )
-        assertNull(modeChange(FirewallStatus.ISOLATE, ConnectionStatus.ALLOW, ConnectionStatus.ALLOW, RethinkAppMode.TrustedOnly))
-        assertNull(modeChange(FirewallStatus.NONE, ConnectionStatus.BOTH, ConnectionStatus.BOTH, RethinkAppMode.Normal))
-        assertNull(modeChange(FirewallStatus.UNTRACKED, ConnectionStatus.ALLOW, ConnectionStatus.ALLOW, RethinkAppMode.Normal))
+        assertNull(modeChange(specialMode, storedConnection, RethinkAppMode.TrustedOnly))
+        assertNull(modeChange(FirewallStatus.NONE, ConnectionStatus.BOTH, RethinkAppMode.Normal))
+        assertNull(modeChange(FirewallStatus.UNTRACKED, ConnectionStatus.ALLOW, RethinkAppMode.Normal))
     }
 
     @Test

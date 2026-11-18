@@ -219,7 +219,6 @@ data class HomeAboutActions(
     val onDbStatsClick: () -> Unit,
     val onFlightRecordClick: () -> Unit,
     val onEventLogsClick: () -> Unit,
-    val onTokenClick: () -> Unit,
     val onFossClick: () -> Unit,
     val onFlossFundsClick: () -> Unit,
 )

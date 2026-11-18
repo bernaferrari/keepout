@@ -106,8 +106,8 @@ fun AppInfoScreen(
         strings = strings,
         actions = RethinkAppInfoActions(
             onBackClick = onBackClick,
-            onWifiClick = editor::toggleWifi,
-            onMobileClick = editor::toggleMobile,
+            onWifiClick = { editor.toggleNetwork(wifi = true) },
+            onMobileClick = { editor.toggleNetwork(wifi = false) },
             onModeChange = editor::changeMode,
             onTempAllowChange = editor::setTempAllow,
             onProxyExcludedChange = editor::setProxyExcluded,

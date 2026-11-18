@@ -18,10 +18,6 @@ import com.bernaferrari.bravedns.scheduler.ScheduleManager
 import com.bernaferrari.bravedns.scheduler.WorkScheduler
 import com.bernaferrari.bravedns.service.PersistentState
 import com.bernaferrari.bravedns.service.VpnController
-import com.bernaferrari.bravedns.ui.compose.about.AboutPreferences
-import com.bernaferrari.bravedns.ui.compose.about.AboutTokenGenerator
-import com.bernaferrari.bravedns.ui.compose.about.AndroidAboutPreferences
-import com.bernaferrari.bravedns.ui.compose.about.AndroidAboutTokenGenerator
 import com.bernaferrari.bravedns.ui.compose.about.AndroidAppMetadataProvider
 import com.bernaferrari.bravedns.ui.compose.about.AndroidBugReportController
 import com.bernaferrari.bravedns.ui.compose.about.AppMetadataProvider
@@ -104,17 +100,10 @@ class RethinkFullModule {
         AndroidAppMetadataProvider(context)
 
     @Single
-    fun aboutPreferences(@Provided persistentState: PersistentState): AboutPreferences =
-        AndroidAboutPreferences(persistentState)
-
-    @Single
     fun bugReportController(
         @Provided context: Context,
         workScheduler: WorkScheduler,
     ): BugReportController = AndroidBugReportController(context, workScheduler)
-
-    @Single
-    fun aboutTokenGenerator(): AboutTokenGenerator = AndroidAboutTokenGenerator
 
     @Single
     fun appFirewallRuleMutator(): AppFirewallRuleMutator = AndroidAppFirewallRuleMutator

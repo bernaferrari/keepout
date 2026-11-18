@@ -718,8 +718,6 @@
     <string name="lbl_connect" translatable="true">Kapcsolódás</string>
     <string name="lbl_criteria" translatable="true">Feltételek</string>
     <string name="settings_allow_incoming_wg_packets" translatable="true">WireGuard P2P</string>
-    <string name="settings_firebase_error_reporting_desc" translatable="true">Hibanaplók rögzítése a stabilitás javításához.</string>
-    <string name="settings_firebase_error_reporting_heading" translatable="true">Stabilítási program</string>
     <string name="settings_jumbo_packets" translatable="true">Sávszélesség‑növelő</string>
     <string name="tombstone_app_desc" translatable="true">Az engedélyezett alkalmazásszabályok, 7 napig megmaradnak meg.</string>
     <string name="tombstone_app_title" translatable="true">Eltávolított alkalmazások megjegyzése</string>

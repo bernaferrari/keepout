@@ -428,7 +428,6 @@
     <string name="unicode_warning_sign">⚠</string>
     <string name="cd_dns_crypt_name">DNSCrypt %1$s</string>
     <string name="about_privacy_policy">قراءة سياسة الخصوصية</string>
-    <string name="about_privacy_policy_link">https://www.rethinkdns.com/privacy</string>
     <string name="notification_screen_error">تعذر تشغيل شاشة إشعار التطبيق.</string>
     <string name="intent_launch_error">العد لا يتم إطلاقه %1$s</string>
     <string name="no_browser_error">لا يمكن فتح صفحة الويب من المتصفح.</string>

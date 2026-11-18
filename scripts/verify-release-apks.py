@@ -11,7 +11,7 @@ import subprocess
 import zipfile
 
 ABI_CODES = {"armeabi-v7a": 2, "arm64-v8a": 3, "x86": 8, "x86_64": 9}
-APPLICATION = "com.bernaferrari.bravedns"
+APPLICATION = "com.bernaferrari.keepout"
 
 
 def sdk_tool(name: str) -> Path:

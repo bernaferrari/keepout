@@ -163,9 +163,6 @@ import com.bernaferrari.bravedns.util.Constants
 import com.bernaferrari.bravedns.util.Constants.Companion.MAX_ENDPOINT
 import com.bernaferrari.bravedns.util.Constants.Companion.PKG_NAME_PLAY_STORE
 import com.bernaferrari.bravedns.viewmodel.SummaryStatisticsViewModel
-import com.bernaferrari.bravedns.util.FirebaseErrorReporting
-import com.bernaferrari.bravedns.util.FirebaseErrorReporting.TOKEN_LENGTH
-import com.bernaferrari.bravedns.util.FirebaseErrorReporting.TOKEN_REGENERATION_PERIOD_DAYS
 import com.bernaferrari.bravedns.util.RemoteFileTagUtil
 import com.bernaferrari.bravedns.util.UIUtils
 import com.bernaferrari.bravedns.util.UIUtils.openNetworkSettings
@@ -175,7 +172,6 @@ import com.bernaferrari.bravedns.util.UIUtils.sendEmailIntent
 import com.bernaferrari.bravedns.util.Themes
 import com.bernaferrari.bravedns.util.Utilities
 import com.bernaferrari.bravedns.util.Utilities.getPackageMetadata
-import com.bernaferrari.bravedns.util.Utilities.getRandomString
 import com.bernaferrari.bravedns.util.Utilities.isPlayStoreFlavour
 import com.bernaferrari.bravedns.util.Utilities.isWebsiteFlavour
 import com.bernaferrari.bravedns.util.Utilities.showToastUiCentered
@@ -345,7 +341,6 @@ class HomeScreenActivity : FragmentActivity() {
         initUpdateCheck()
 
 
-        regenerateFirebaseTokenIfNeeded()
 
         // Re-asserting the mode builds the whole AppConfig graph and writes a preference; keep
         // that off the main thread so the first frame is not waiting on it.
@@ -544,24 +539,6 @@ class HomeScreenActivity : FragmentActivity() {
 
     private fun showDialog(dialog: HomeDialog) {
         pendingDialog.value = dialog
-    }
-
-    private fun regenerateFirebaseTokenIfNeeded() {
-        if (Utilities.isFdroidFlavour()) return
-        if (!persistentState.firebaseErrorReportingEnabled) return
-
-        val now = System.currentTimeMillis()
-        val fortyFiveDaysMs = TimeUnit.DAYS.toMillis(TOKEN_REGENERATION_PERIOD_DAYS)
-
-        var token = persistentState.firebaseUserToken
-        var ts = persistentState.firebaseUserTokenTimestamp
-        if (token.isBlank() || now - ts > fortyFiveDaysMs) {
-            token = getRandomString(TOKEN_LENGTH)
-            ts = now
-            persistentState.firebaseUserToken = token
-            persistentState.firebaseUserTokenTimestamp = ts
-            FirebaseErrorReporting.setUserId(token)
-        }
     }
 
     private fun showRestoreDialog(uri: Uri) {
@@ -889,7 +866,6 @@ class HomeScreenActivity : FragmentActivity() {
         onDbStatsClick = { openDatabaseDumpDialog() },
         onFlightRecordClick = { initiateFlightRecord() },
         onEventLogsClick = { openEventLogs() },
-        onTokenClick = { copyTokenToClipboard() },
         onFossClick = { openUrl(this, getString(R.string.about_foss_link)) },
         onFlossFundsClick = { openUrl(this, getString(R.string.about_floss_fund_link)) },
     )
@@ -1191,14 +1167,6 @@ class HomeScreenActivity : FragmentActivity() {
                     }
                 }
             }
-    }
-
-    private fun copyTokenToClipboard() {
-        val text = persistentState.firebaseUserToken
-        val clipboard = ContextCompat.getSystemService(this, ClipboardManager::class.java)
-        val clip = ClipData.newPlainText("token", text)
-        clipboard?.setPrimaryClip(clip)
-        Toast.makeText(this, R.string.copied_clipboard, Toast.LENGTH_SHORT).show()
     }
 
     private fun initiateFlightRecord() {

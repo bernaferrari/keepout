@@ -450,7 +450,6 @@
     <string name="rt_filter_desc">Liste dei filtri %1$s mostrate</string>
     <string name="rt_filter_desc_subgroups">Liste dei filtri %1$s nel sottogruppo %3$s del gruppo %2$s mostrate</string>
     <string name="rsv_blocklist_count_text" description="This label will appear in rethink configure simple view screen which shows number of blocklists for each category">%1$s blocklist</string>
-    <string name="about_privacy_policy_link">https://www.rethinkdns.com/privacy</string>
     <string name="title_statistics">Statistiche</string>
     <string name="hs_biometeric_title">Sblocca Keepout</string>
     <string name="hs_biometeric_error">Errore autenticazione biometrica</string>

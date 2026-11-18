@@ -435,7 +435,6 @@
     <string name="rt_filter_parent_selected">已选</string>
     <string name="rt_filter_desc"><![CDATA[显示 %1$s 个屏蔽名单]]></string>
     <string name="rt_filter_desc_subgroups"><![CDATA[正显示 %1$s 个屏蔽名单，位于组： %2$s 和子分组： %3$s]]></string>
-    <string name="about_privacy_policy_link">https://www.rethinkdns.com/privacy</string>
     <string name="intent_launch_error">无法打开 %1$s</string>
     <string name="no_browser_error">无法于浏览器打开网页。</string>
     <string name="private_dns_dialog_positive">前往设置</string>
@@ -715,8 +714,6 @@
     <string name="lbl_criteria" translatable="true">筛选条件</string>
     <string name="local_blocklist_delete_desc" translatable="true">是否删除本地拦截规则库？</string>
     <string name="settings_allow_incoming_wg_packets" translatable="true">WireGuard P2P</string>
-    <string name="settings_firebase_error_reporting_desc" translatable="true">捕获错误日志以助力提升稳定性。</string>
-    <string name="settings_firebase_error_reporting_heading" translatable="true">稳定性程序</string>
     <string name="settings_jumbo_packets" translatable="true">带宽加速器</string>
     <string name="smart_dns" translatable="true">智能 DNS</string>
     <string name="title_database_dump" translatable="true">数据库</string>

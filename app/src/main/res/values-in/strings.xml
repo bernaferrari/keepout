@@ -372,7 +372,6 @@
     <string name="always_on_dialog_lockdown_stop_message">Keepout menjalankan VPN pada mode Penguncian penuh. Menghentikannya akan mengakibatkan hilangnya konektivitas Internet pada profil pengguna ini. Apakah anda masih ingin melanjutkan\?</string>
     <string name="cd_dns_crypt_dialog_stamp">Cap</string>
     <string name="ada_ip_no_connection">Tidak ada log jaringan untuk kategori ini.</string>
-    <string name="about_privacy_policy_link">https://www.rethinkdns.com/privacy</string>
     <string name="rbl_security_desc" description="The text appears as blocklists description in configure screen">Memblokir malware, ransomware, cryptoware, phisher, dan ancaman lainnya.</string>
     <string name="rbl_parental_control_desc" description="The text appears as blocklists description in configure screen">Blokir konten dewasa &amp; pembajakan, perjudian &amp; kencan online, dan media sosial.</string>
     <string name="download_update_dialog_title">Pembaruan Baru!</string>
@@ -718,8 +717,6 @@
     <string name="wg_ssid_type_exact" translatable="true">Cocok sepenuhnya</string>
     <string name="wg_ssid_type_wildcard" translatable="true">Cocok sebagian</string>
     <string name="wg_ssid_invalid_error" translatable="true">Identifier Wi-Fi (%1$s) harus terdiri dari 32 karakter atau kurang.</string>
-    <string name="settings_firebase_error_reporting_heading" translatable="true">Program Stabilitas</string>
-    <string name="settings_firebase_error_reporting_desc" translatable="true">Catat log kesalahan untuk membantu meningkatkan stabilitas.</string>
     <string name="tombstone_app_title" translatable="true">Ingat aplikasi yang telah dihapus</string>
     <string name="tombstone_app_desc" translatable="true">Saat diaktifkan, simpan aturan aplikasi selama 7 hari.</string>
     <string name="settings_allow_incoming_wg_packets" translatable="true">WireGuard P2P</string>
@@ -728,7 +725,6 @@
     <string name="lockdown_download_enable_inapp" translatable="true">Aktifkan Pengunduh</string>
     <string name="settings_jumbo_packets" translatable="true">Peningkat bandwidth</string>
     <string name="settings_jumbo_packets_desc" translatable="true">Menggunakan paket jumbo dalam terowongan VPN Keepout.</string>
-    <string name="stability_program_toast" translatable="true">Daftar ke program stabilitas untuk fitur eksperimental.</string>
     <string name="home_last_24_hours">24 jam terakhir</string>
     <plurals name="home_stopped_at_dns_count">
         <item quantity="other">%d kueri dihentikan di DNS</item>

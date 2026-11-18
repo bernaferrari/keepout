@@ -61,8 +61,6 @@ data class RethinkAboutUiState(
     val installSource: String = "",
     val buildNumber: String = "",
     val slicedVersion: String = "",
-    val firebaseToken: String = "",
-    val isFirebaseEnabled: Boolean = false,
     val isFdroid: Boolean = false,
     val isDebug: Boolean = false,
     val isBugReportRunning: Boolean = false,
@@ -133,7 +131,6 @@ data class RethinkAboutActions(
     val onDatabaseDump: () -> Unit = {},
     val onFlightRecorder: () -> Unit = {},
     val onEventLogs: () -> Unit = {},
-    val onToken: () -> Unit = {},
     val onFoss: () -> Unit = {},
     val onFlossFunds: () -> Unit = {},
 )
@@ -209,7 +206,7 @@ fun RethinkAboutScreen(
         }
         item { AboutCommunitySection(uiState, strings, actions, assets) }
         item { AboutPartners(strings, actions, assets) }
-        item { AboutFooter(uiState, actions) }
+        item { AboutFooter(uiState) }
     }
 }
 
@@ -441,24 +438,11 @@ private fun AboutPartnerLogo(
 }
 
 @Composable
-private fun AboutFooter(uiState: RethinkAboutUiState, actions: RethinkAboutActions) {
+private fun AboutFooter(uiState: RethinkAboutUiState) {
     Column(
         modifier = Modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        if (uiState.isFirebaseEnabled && !uiState.isFdroid) {
-            Text(
-                text = uiState.firebaseToken,
-                style = MaterialTheme.typography.labelSmall,
-                textAlign = TextAlign.Center,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .heightIn(min = SharedDimensions.touchTargetMin)
-                    .clickable(onClick = actions.onToken)
-                    .padding(bottom = SharedDimensions.spacingMd),
-            )
-        }
         Text(
             text = listOf(uiState.versionName, uiState.installSource).filter { it.isNotBlank() }.joinToString(" · "),
             style = MaterialTheme.typography.bodySmall,

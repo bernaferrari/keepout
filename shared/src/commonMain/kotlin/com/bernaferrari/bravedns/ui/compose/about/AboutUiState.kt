@@ -8,8 +8,6 @@ data class AboutUiState(
     val slicedVersion: String = "",
     val daysSinceInstall: String = "",
     val sponsoredAmount: String = "",
-    val firebaseToken: String = "",
-    val isFirebaseEnabled: Boolean = false,
     val isFdroid: Boolean = false,
     val isPlayStore: Boolean = false,
     val isDebug: Boolean = false,

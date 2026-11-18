@@ -5,6 +5,11 @@
     <exclude domain="database" path="rethink_logs.db-shm" />
     <exclude domain="sharedpref" path="device_opt_ins.xml" />
     <exclude domain="file" path="wireguard" />
+    <exclude domain="file" path="tombstone" />
+    <exclude domain="file" path="bugreport" />
+    <exclude domain="file" path="rethinkdns.tombstone.zip" />
+    <exclude domain="file" path="rethinkdns.bugreport.zip" />
+    <exclude domain="file" path="temp_rethinkdns.bugreport.zip" />
     <exclude domain="database" path="bravedns.db" />
     <exclude domain="database" path="bravedns.db-wal" />
     <exclude domain="database" path="bravedns.db-shm" />

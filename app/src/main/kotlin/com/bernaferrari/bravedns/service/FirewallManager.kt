@@ -29,7 +29,6 @@ import com.bernaferrari.bravedns.service.FirewallManager.GlobalVariable.appInfos
 import com.bernaferrari.bravedns.service.FirewallManager.GlobalVariable.appInfosFlow
 import com.bernaferrari.bravedns.service.FirewallManager.GlobalVariable.foregroundUids
 import com.bernaferrari.bravedns.util.AndroidUidConfig
-import com.bernaferrari.bravedns.util.Constants.Companion.RETHINK_PACKAGE
 import com.bernaferrari.bravedns.util.OrbotHelper
 import com.bernaferrari.bravedns.util.UidMultimap
 import kotlinx.coroutines.CoroutineScope
@@ -482,7 +481,7 @@ object FirewallManager : KoinComponent {
         val appsWithoutVpnPermission = mutableListOf<AppInfo>()
 
         allApps.forEach { appInfo ->
-            if (appInfo.packageName == RETHINK_PACKAGE) return@forEach
+            if (appInfo.packageName == context.packageName) return@forEach
             if (!appInfo.hasInternetPermission(packageManager)) return@forEach
             if (appInfo.tombstoneTs > 0L) return@forEach
 
@@ -585,7 +584,7 @@ object FirewallManager : KoinComponent {
         if (firewallStatus == FirewallStatus.ISOLATE) {
             VpnController.closeConnectionsIfNeeded(uid, "isolate-manual-close")
         } else if (
-            firewallStatus == FirewallStatus.NONE && connectionStatus != ConnectionStatus.ALLOW
+            !firewallStatus.isExclude() && connectionStatus != ConnectionStatus.ALLOW
         ) {
             VpnController.closeConnectionsIfNeeded(uid, "block-manual-close")
         } else {

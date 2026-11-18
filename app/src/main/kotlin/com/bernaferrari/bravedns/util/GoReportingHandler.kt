@@ -3,7 +3,6 @@ package com.bernaferrari.bravedns.util
 import Logger
 import android.content.Context
 import com.bernaferrari.bravedns.scheduler.EnhancedBugReport
-import com.bernaferrari.bravedns.service.PersistentState
 import com.bernaferrari.bravedns.service.VpnController
 import com.celzero.firestack.backend.LogConsumer
 import com.celzero.firestack.intra.Console
@@ -15,7 +14,6 @@ import java.io.IOException
 /** Process-owned string-console fallback. JNI FD ownership stays native when declined. */
 internal class GoReportingHandler(
     private val context: Context,
-    private val preferences: PersistentState,
     private val scope: CoroutineScope,
 ) : Console {
     @Suppress("TooGenericExceptionCaught") // Native bindings declare arbitrary bridge exceptions.
@@ -61,7 +59,6 @@ internal class GoReportingHandler(
         val file = EnhancedBugReport.newGoCrashFile(context)
         try {
             file?.writeText(text)
-            if (preferences.firebaseErrorReportingEnabled && CrashReporter.recordGoCrash(text)) file?.delete()
         } catch (error: IOException) {
             Logger.e(Logger.LOG_TAG_BUG_REPORT, "Cannot persist native crash", error)
         } finally {

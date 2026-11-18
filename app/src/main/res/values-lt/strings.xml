@@ -431,7 +431,6 @@
     <string name="rt_filter_desc_subgroups">Rodomi %1$s blokavimo sąrašai grupėje: %2$s ir pogrupyje: %3$s</string>
     <string name="hsf_notification_permission_failure">Įjunkite pranešimų leidimą nustatymų ekrane</string>
     <string name="about_privacy_policy">Privatumo politika</string>
-    <string name="about_privacy_policy_link">https://www.rethinkdns.com/privacy</string>
     <string name="notification_screen_error">Nepavyko paleisti programėlės pranešimų ekrano.</string>
     <string name="intent_launch_error">Nepavyko paleisti %1$s</string>
     <string name="no_browser_error">Nepavyksta atidaryti tinklalapio iš naršyklės.</string>

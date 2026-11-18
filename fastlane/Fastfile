@@ -2,7 +2,7 @@ require 'json'
 require 'tmpdir'
 require 'fileutils'
 
-PACKAGE = 'com.bernaferrari.bravedns'
+PACKAGE = 'com.bernaferrari.keepout'
 ROOT = File.expand_path('..', __dir__)
 SCREENSHOTS = { 'phone' => 'phoneScreenshots', 'tablet7' => 'sevenInchScreenshots', 'tablet10' => 'tenInchScreenshots' }.freeze
 

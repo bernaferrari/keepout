@@ -3,10 +3,8 @@ package com.bernaferrari.bravedns.ui.compose.logs
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -16,7 +14,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
@@ -164,8 +161,6 @@ private fun LogsPagedListContent(
     val isLoading = refreshState is LoadState.Loading && itemCount == 0
     val isEmpty = refreshState is LoadState.NotLoading && itemCount == 0
     val hasLoadError = refreshState is LoadState.Error && itemCount == 0
-    val density = LocalDensity.current
-    val navBarBottomInset = with(density) { WindowInsets.navigationBars.getBottom(density).toDp() }
 
     val listContentState = when {
         isLoading -> RethinkPagedLogListState.Loading
@@ -180,7 +175,6 @@ private fun LogsPagedListContent(
         strings = logListStrings().copy(empty = emptyMessage),
         listState = listState,
         modifier = modifier,
-        bottomPadding = SharedDimensions.screenPaddingHorizontal + navBarBottomInset,
     ) { index, total ->
         val item = items[index] ?: return@RethinkPagedLogList
         rowContent(item, index, total)
@@ -197,8 +191,6 @@ private fun LogsAdaptiveLayout(
     list: @Composable (modifier: Modifier, twoPane: Boolean) -> Unit,
     pane: @Composable (modifier: Modifier) -> Unit,
 ) {
-    val density = LocalDensity.current
-    val navBarBottomInset = with(density) { WindowInsets.navigationBars.getBottom(density).toDp() }
     RethinkAdaptiveWidth(Modifier.fillMaxSize()) { widthClass ->
         if (widthClass.isExpanded) {
             Row(Modifier.fillMaxSize().padding(end = SharedDimensions.screenPaddingHorizontal)) {
@@ -211,7 +203,7 @@ private fun LogsAdaptiveLayout(
                         .weight(1f)
                         .padding(
                             top = SharedDimensions.spacingXs,
-                            bottom = SharedDimensions.screenPaddingHorizontal + navBarBottomInset,
+                            bottom = SharedDimensions.screenPaddingHorizontal,
                         )
                 )
             }

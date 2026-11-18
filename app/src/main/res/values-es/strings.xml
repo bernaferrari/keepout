@@ -13,7 +13,6 @@
     <string name="about_mail_bugreport_subject">[Rethink]: Informe de errores</string>
     <string name="about_mail_bugreport_share_title">Seleccione el proveedor de correo electrónico</string>
     <string name="about_twitter_handle">https://twitter.com/rethinkdns</string>
-    <string name="about_privacy_policy_link">https://www.rethinkdns.com/privacy</string>
     <string name="cd_dns_proxy_error_text_2">El rango de puertos debe ser de 1024 a 65535</string>
     <string name="cd_custom_dns_proxy_default_app">Ninguno</string>
     <string name="cd_custom_dns_proxy_default_ip">127.0.0.1</string>
@@ -722,8 +721,6 @@
     <string name="hop_failure_toast" translatable="true">Error de retransmisión: %1$s -&gt; %2$s</string>
     <string name="local_blocklist_delete_desc" translatable="true">¿Eliminar las listas de bloqueo en el dispositivo?</string>
     <string name="settings_allow_incoming_wg_packets" translatable="true">WireGuard P2P</string>
-    <string name="settings_firebase_error_reporting_desc" translatable="true">Capturar registros de errores para ayudar a mejorar la estabilidad.</string>
-    <string name="settings_firebase_error_reporting_heading" translatable="true">Programa de estabilidad</string>
     <string name="settings_jumbo_packets" translatable="true">Impulsor de ancho de banda</string>
     <string name="title_database_dump" translatable="true">Base de datos</string>
     <string name="tombstone_app_desc" translatable="true">Cuando está activado, conserva las reglas de la aplicación durante 7 días.</string>

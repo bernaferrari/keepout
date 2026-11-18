@@ -26,7 +26,6 @@ import com.bernaferrari.bravedns.service.EventLogger
 import com.bernaferrari.bravedns.service.PersistentState
 import com.bernaferrari.bravedns.ui.compose.settings.RethinkMiscSettingIcon.AppUpdates
 import com.bernaferrari.bravedns.ui.compose.settings.RethinkMiscSettingIcon.AutoStart
-import com.bernaferrari.bravedns.ui.compose.settings.RethinkMiscSettingIcon.CrashReports
 import com.bernaferrari.bravedns.ui.compose.settings.RethinkMiscSettingIcon.FirewallBubble
 import com.bernaferrari.bravedns.ui.compose.settings.RethinkMiscSettingIcon.IpInfo
 import com.bernaferrari.bravedns.ui.compose.settings.RethinkMiscSettingIcon.Logs
@@ -36,7 +35,7 @@ import com.bernaferrari.bravedns.util.Utilities.isFdroidFlavour
 
 /**
  * Settings › General: everything about Keepout itself on one screen — how it behaves (start on
- * boot, uninstalled apps, update checks, crash reports), App lock, then Backup & restore and the
+ * boot, uninstalled apps, update checks), App lock, then Backup & restore and the
  * system notification settings. Logging lives on Logs & diagnostics ([LoggingSettingsScreen]).
  */
 @Composable
@@ -51,13 +50,11 @@ fun MiscSettingsScreen(
     var autoStartEnabled by remember { mutableStateOf(persistentState.prefAutoStartBootUp) }
     var tombstoneEnabled by remember { mutableStateOf(persistentState.tombstoneApps) }
     var checkUpdatesEnabled by remember { mutableStateOf(persistentState.checkForAppUpdate) }
-    var firebaseEnabled by remember { mutableStateOf(persistentState.firebaseErrorReportingEnabled) }
     val isFdroid = isFdroidFlavour()
     val toggles = listOfNotNull(
         RethinkMiscToggle("general_autostart", stringResource(R.string.settings_autostart_bootup_heading), stringResource(R.string.settings_autostart_bootup_desc), autoStartEnabled, AutoStart),
         RethinkMiscToggle("general_tombstone", stringResource(R.string.tombstone_app_title), stringResource(R.string.tombstone_app_desc), tombstoneEnabled, Tombstone),
         if (!isFdroid) RethinkMiscToggle("general_app_updates", stringResource(R.string.settings_check_update_heading), stringResource(R.string.settings_check_update_desc), checkUpdatesEnabled, AppUpdates) else null,
-        if (!isFdroid) RethinkMiscToggle("general_crash_reports", stringResource(R.string.settings_firebase_error_reporting_heading), stringResource(R.string.settings_firebase_error_reporting_desc), firebaseEnabled, CrashReports) else null,
     )
     RethinkMiscSettingsScreen(
         strings = settingsListStrings(
@@ -70,7 +67,6 @@ fun MiscSettingsScreen(
                 "general_autostart" -> { autoStartEnabled = enabled; persistentState.prefAutoStartBootUp = enabled }
                 "general_tombstone" -> { tombstoneEnabled = enabled; persistentState.tombstoneApps = enabled }
                 "general_app_updates" -> { checkUpdatesEnabled = enabled; persistentState.checkForAppUpdate = enabled }
-                "general_crash_reports" -> { firebaseEnabled = enabled; persistentState.firebaseErrorReportingEnabled = enabled; com.bernaferrari.bravedns.util.FirebaseErrorReporting.setEnabled(enabled) }
             }
             logSettingChange(eventLogger, "General setting", id, enabled)
         },

@@ -434,7 +434,6 @@
     <string name="rt_filter_hint">顯示緊所有攔截清單</string>
     <string name="hsf_notification_permission_failure">由設定區准許應用程式通知權限</string>
     <string name="about_privacy_policy">睇私隱政策</string>
-    <string name="about_privacy_policy_link">https://www.rethinkdns.com/privacy</string>
     <string name="notification_screen_error">開唔到應用程式通知區。</string>
     <string name="no_browser_error">瀏覽器開唔到網頁。</string>
     <string name="intent_launch_error">開唔到 %1$s</string>

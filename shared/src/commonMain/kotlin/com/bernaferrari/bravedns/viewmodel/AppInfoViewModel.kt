@@ -64,9 +64,10 @@ class AppInfoViewModel(
      */
     suspend fun applyToSelected(uids: Set<Int>, action: RethinkAppSelectionAction): List<AppRuleSnapshot> =
         bulkUpdateMutex.withLock {
-            uids.map { uid ->
-                val before = AppRuleSnapshot(uid, firewallRules.firewallStatus(uid), firewallRules.connectionStatus(uid))
-                val next = selectionRule(action, before.connection)
+            uids.mapNotNull { uid ->
+                val before = snapshot(uid)
+                val next = selectionRule(action, before)
+                if (next.firewall == before.firewall && next.connection == before.connection) return@mapNotNull null
                 firewallRules.updateFirewallStatus(uid, next.firewall, next.connection)
                 before
             }
@@ -78,18 +79,19 @@ class AppInfoViewModel(
     }
 
     /**
-     * A row's Wi‑Fi (or mobile data) tap: flip that network's flag, keep the other's, and return
-     * the app to Normal handling, as App detail's tiles do. Returns what it replaced for [undo].
+     * A row's Wi‑Fi or mobile data tap updates one network without changing handling mode.
      */
     suspend fun toggleNetwork(uid: Int, wifi: Boolean): AppRuleChange = bulkUpdateMutex.withLock {
         val before = snapshot(uid)
-        val next = if (wifi) {
+        if (before.firewall == AppFirewallStatus.Exclude) return@withLock AppRuleChange(before, before)
+        val connection = if (wifi) {
             wifiState(blocked = !before.connection.blocksWifi, before.connection)
         } else {
             mobileState(blocked = !before.connection.blocksMobile, before.connection)
         }
-        firewallRules.updateFirewallStatus(uid, next.firewall, next.connection)
-        AppRuleChange(before, AppRuleSnapshot(uid, next.firewall, next.connection))
+        val status = before.networkEditStatus()
+        firewallRules.updateFirewallStatus(uid, status, connection)
+        AppRuleChange(before, AppRuleSnapshot(uid, status, connection))
     }
 
     private suspend fun snapshot(uid: Int) =
@@ -125,17 +127,18 @@ class AppInfoViewModel(
     private fun matchesFirewallFilter(app: AppInfo, filter: RethinkFirewallFilter): Boolean {
         val status = app.firewallStatus
         val connection = app.connectionStatus
+        val inTunnel = status != AppFirewallStatus.Exclude.id
         val regularMatch =
             when (filter) {
                 RethinkFirewallFilter.All -> true
                 RethinkFirewallFilter.Allowed ->
                     status == AppFirewallStatus.None.id && connection == AppConnectionStatus.Allow.id
                 RethinkFirewallFilter.Blocked ->
-                    status == AppFirewallStatus.None.id && connection in BLOCKED_CONNECTION_IDS
+                    inTunnel && connection in BLOCKED_CONNECTION_IDS
                 RethinkFirewallFilter.BlockedWifi ->
-                    status == AppFirewallStatus.None.id && connection in setOf(AppConnectionStatus.Unmetered.id, AppConnectionStatus.Both.id)
+                    inTunnel && connection in setOf(AppConnectionStatus.Unmetered.id, AppConnectionStatus.Both.id)
                 RethinkFirewallFilter.BlockedMobile ->
-                    status == AppFirewallStatus.None.id && connection in setOf(AppConnectionStatus.Metered.id, AppConnectionStatus.Both.id)
+                    inTunnel && connection in setOf(AppConnectionStatus.Metered.id, AppConnectionStatus.Both.id)
                 RethinkFirewallFilter.Bypass -> status == AppFirewallStatus.BypassUniversal.id
                 RethinkFirewallFilter.SkipAllFiltering -> status == AppFirewallStatus.BypassDnsFirewall.id
                 RethinkFirewallFilter.Excluded -> status == AppFirewallStatus.Exclude.id
@@ -147,39 +150,41 @@ class AppInfoViewModel(
     private fun matchesSearch(app: AppInfo, query: String): Boolean =
         query.isBlank() || app.appName.contains(query.trim(), ignoreCase = true)
 
-    private fun selectionRule(action: RethinkAppSelectionAction, connection: AppConnectionStatus): AppRuleState = when (action) {
-        RethinkAppSelectionAction.BlockWifi -> wifiState(blocked = true, connection)
-        RethinkAppSelectionAction.BlockMobile -> mobileState(blocked = true, connection)
-        RethinkAppSelectionAction.AllowWifi -> wifiState(blocked = false, connection)
-        RethinkAppSelectionAction.AllowMobile -> mobileState(blocked = false, connection)
-        RethinkAppSelectionAction.AllowAll -> AppRuleState(AppFirewallStatus.None, AppConnectionStatus.Allow)
-        RethinkAppSelectionAction.TrustedOnly -> AppRuleState(AppFirewallStatus.Isolate, AppConnectionStatus.Allow)
-        RethinkAppSelectionAction.SkipUniversalRules -> AppRuleState(AppFirewallStatus.BypassUniversal, AppConnectionStatus.Allow)
-        RethinkAppSelectionAction.SkipAllFiltering -> AppRuleState(AppFirewallStatus.BypassDnsFirewall, AppConnectionStatus.Allow)
-        RethinkAppSelectionAction.Exclude -> AppRuleState(AppFirewallStatus.Exclude, AppConnectionStatus.Allow)
+    private fun AppRuleSnapshot.networkEditStatus() =
+        if (firewall == AppFirewallStatus.Untracked) AppFirewallStatus.None else firewall
+
+    private fun selectionRule(action: RethinkAppSelectionAction, before: AppRuleSnapshot): AppRuleState {
+        val connection = before.connection
+        val mode = before.networkEditStatus()
+        return when (action) {
+            RethinkAppSelectionAction.BlockWifi -> before.withNetworkRule(mode, wifiState(blocked = true, connection))
+            RethinkAppSelectionAction.BlockMobile -> before.withNetworkRule(mode, mobileState(blocked = true, connection))
+            RethinkAppSelectionAction.AllowWifi -> before.withNetworkRule(mode, wifiState(blocked = false, connection))
+            RethinkAppSelectionAction.AllowMobile -> before.withNetworkRule(mode, mobileState(blocked = false, connection))
+            RethinkAppSelectionAction.AllowAll -> AppRuleState(AppFirewallStatus.None, AppConnectionStatus.Allow)
+            RethinkAppSelectionAction.TrustedOnly -> AppRuleState(AppFirewallStatus.Isolate, connection)
+            RethinkAppSelectionAction.SkipUniversalRules -> AppRuleState(AppFirewallStatus.BypassUniversal, connection)
+            RethinkAppSelectionAction.SkipAllFiltering -> AppRuleState(AppFirewallStatus.BypassDnsFirewall, connection)
+            RethinkAppSelectionAction.Exclude -> AppRuleState(AppFirewallStatus.Exclude, connection)
+        }
     }
 
-    private fun wifiState(blocked: Boolean, connection: AppConnectionStatus): AppRuleState =
-        AppRuleState(
-            AppFirewallStatus.None,
-            when {
-                blocked && connection in setOf(AppConnectionStatus.Allow, AppConnectionStatus.Unmetered) -> AppConnectionStatus.Unmetered
-                blocked -> AppConnectionStatus.Both
-                connection in setOf(AppConnectionStatus.Allow, AppConnectionStatus.Unmetered) -> AppConnectionStatus.Allow
-                else -> AppConnectionStatus.Metered
-            },
-        )
+    private fun AppRuleSnapshot.withNetworkRule(mode: AppFirewallStatus, updated: AppConnectionStatus): AppRuleState =
+        AppRuleState(mode, if (firewall == AppFirewallStatus.Exclude) connection else updated)
 
-    private fun mobileState(blocked: Boolean, connection: AppConnectionStatus): AppRuleState =
-        AppRuleState(
-            AppFirewallStatus.None,
-            when {
-                blocked && connection in setOf(AppConnectionStatus.Allow, AppConnectionStatus.Metered) -> AppConnectionStatus.Metered
-                blocked -> AppConnectionStatus.Both
-                connection in setOf(AppConnectionStatus.Allow, AppConnectionStatus.Metered) -> AppConnectionStatus.Allow
-                else -> AppConnectionStatus.Unmetered
-            },
-        )
+    private fun wifiState(blocked: Boolean, connection: AppConnectionStatus): AppConnectionStatus = when {
+        blocked && connection.blocksMobile -> AppConnectionStatus.Both
+        blocked -> AppConnectionStatus.Unmetered
+        connection.blocksMobile -> AppConnectionStatus.Metered
+        else -> AppConnectionStatus.Allow
+    }
+
+    private fun mobileState(blocked: Boolean, connection: AppConnectionStatus): AppConnectionStatus = when {
+        blocked && connection.blocksWifi -> AppConnectionStatus.Both
+        blocked -> AppConnectionStatus.Metered
+        connection.blocksWifi -> AppConnectionStatus.Unmetered
+        else -> AppConnectionStatus.Allow
+    }
 
     private val AppConnectionStatus.blocksWifi get() = this == AppConnectionStatus.Unmetered || this == AppConnectionStatus.Both
     private val AppConnectionStatus.blocksMobile get() = this == AppConnectionStatus.Metered || this == AppConnectionStatus.Both

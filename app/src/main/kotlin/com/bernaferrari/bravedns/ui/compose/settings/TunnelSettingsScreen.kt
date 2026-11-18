@@ -242,7 +242,6 @@ fun TunnelSettingsScreen(
             onDismiss = { showVpnPolicyDialog = false },
             onConfirm = { selectedIndex ->
                 if (selectedIndex == POLICY_FIXED) {
-                    persistentState.enableStabilityDependentSettings(context)
                     persistentState.useMaxMtu = true
                     useMaxMtu = true
                     persistentState.internetProtocolType = InternetProtocol.ALWAYSv46.id
@@ -259,7 +258,6 @@ fun TunnelSettingsScreen(
     if (showIpDialog) {
         IpProtocolDialog(
             persistentState = persistentState,
-            context = context,
             onDismiss = { showIpDialog = false },
             onConfirm = { selectedProtocol ->
                 internetProtocol = selectedProtocol
@@ -442,13 +440,11 @@ fun TunnelSettingsScreen(
                 "network_allow_lan" -> {
                     routeLan = checked
                     persistentState.privateIps = checked
-                    if (checked) persistentState.enableStabilityDependentSettings(context)
                     logEvent("route lan traffic", "Route LAN traffic: $checked")
                 }
                 "network_all_networks" -> {
                     useMultipleNetworks = checked
                     persistentState.useMultipleNetworks = checked
-                    if (checked) persistentState.enableStabilityDependentSettings(context)
                     if (!checked && persistentState.routeRethinkInRethink) persistentState.routeRethinkInRethink = false
                     logEvent("use all networks", "Use all networks for VPN: $checked")
                 }
@@ -567,7 +563,6 @@ private fun VpnPolicyDialog(
 @Composable
 private fun IpProtocolDialog(
     persistentState: PersistentState,
-    context: Context,
     onDismiss: () -> Unit,
     onConfirm: (Int) -> Unit
 ) {
@@ -606,12 +601,6 @@ private fun IpProtocolDialog(
             if (persistentState.internetProtocolType != selectedItem) {
                 val protocolType = InternetProtocol.getInternetProtocol(selectedItem)
                 persistentState.internetProtocolType = protocolType.id
-                if (protocolType.id == InternetProtocol.IPv6.id ||
-                    protocolType.id == InternetProtocol.IPv46.id ||
-                    protocolType.id == InternetProtocol.ALWAYSv46.id
-                ) {
-                    persistentState.enableStabilityDependentSettings(context)
-                }
                 onConfirm(protocolType.id)
             }
             onDismiss()

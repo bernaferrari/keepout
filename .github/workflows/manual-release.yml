@@ -33,22 +33,6 @@ jobs:
       - uses: gradle/actions/setup-gradle@8da46b539cd8fe6ab27ca75128919a18d757604c # v6
         with:
           cache-provider: basic
-      - name: Configure optional Firebase channel
-        env:
-          RELEASE_CHANNEL: ${{ inputs.channel }}
-          GOOGLE_SERVICES_JSON: ${{ secrets.GOOGLE_SERVICES_RELEASE_JSON }}
-        run: |
-          python3 - <<'PY'
-          import os
-          from pathlib import Path
-          if os.environ['RELEASE_CHANNEL'] != 'fdroid':
-              value = os.environ.get('GOOGLE_SERVICES_JSON', '')
-              if not value:
-                  raise SystemExit('The selected channel requires GOOGLE_SERVICES_RELEASE_JSON')
-              target = Path('app/src/release/google-services.json')
-              target.parent.mkdir(parents=True, exist_ok=True)
-              target.write_text(value)
-          PY
       - name: Build and sign without publishing
         env:
           RELEASE_CHANNEL: ${{ inputs.channel }}
@@ -65,8 +49,6 @@ jobs:
           name: keepout-${{ inputs.channel }}-${{ inputs.version_code }}
           path: |
             app/build/outputs/signed-release/${{ inputs.channel }}/*.apk
+            app/build/outputs/signed-release/${{ inputs.channel }}/*.aab
             app/build/outputs/mapping/${{ inputs.channel }}Release/
           if-no-files-found: error
-      - name: Remove channel configuration
-        if: always()
-        run: rm -f app/src/release/google-services.json

@@ -432,7 +432,6 @@
     <string name="rt_filter_hint">Tüm engelleme listeleri gösteriliyor</string>
     <string name="hsf_notification_permission_failure">Ayarlar ekranından bildirim iznini etkinleştirin</string>
     <string name="about_privacy_policy">Gizlilik ilkesini oku</string>
-    <string name="about_privacy_policy_link">https://www.rethinkdns.com/privacy</string>
     <string name="notification_screen_error">Uygulama Bildirim ekranı başlatılamadı.</string>
     <string name="intent_launch_error">Sayım başlatılmadı %1$s</string>
     <string name="no_browser_error">Tarayıcıdan web sayfası açılamıyor.</string>
@@ -718,8 +717,6 @@
     <string name="wg_ssid_type_exact" translatable="true">Tam eşleşen</string>
     <string name="wg_ssid_type_wildcard" translatable="true">Kısmen eşleşen</string>
     <string name="wg_ssid_invalid_error" translatable="true">Wi-Fi tanımlayıcıları (%1$s) 32 karakter veya daha az olmalıdır.</string>
-    <string name="settings_firebase_error_reporting_heading" translatable="true">Kararlılık programı</string>
-    <string name="settings_firebase_error_reporting_desc" translatable="true">Kararlılığı artırmaya yardımcı olmak için hata günlüklerini yakala.</string>
     <string name="tombstone_app_title" translatable="true">Kaldırılan uygulamaları hatırla</string>
     <string name="tombstone_app_desc" translatable="true">Etkinleştirildiğinde, uygulama kurallarını 7 gün boyunca saklayın.</string>
     <string name="settings_allow_incoming_wg_packets" translatable="true">WireGuard P2P</string>
@@ -728,7 +725,6 @@
     <string name="lockdown_download_enable_inapp" translatable="true">İndiriciyi Etkinleştir</string>
     <string name="settings_jumbo_packets" translatable="true">Bant genişliği güçlendirici</string>
     <string name="settings_jumbo_packets_desc" translatable="true">Keepout\'in VPN tüneli içinde jumbo paketleri kullanır.</string>
-    <string name="stability_program_toast" translatable="true">Deneysel özellikler için kararlılık programına kaydolundu.</string>
     <string name="home_last_24_hours">Son 24 saat</string>
     <plurals name="home_stopped_at_dns_count">
         <item quantity="one">%d sorgu DNS\'te durduruldu</item>

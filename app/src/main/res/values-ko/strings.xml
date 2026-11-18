@@ -593,8 +593,6 @@
     <string name="rt_list_simple_btn_txt" translatable="true">간단</string>
     <string name="rt_re_download" translatable="true">차단 목록 다시 다운로드</string>
     <string name="settings_allow_incoming_wg_packets" translatable="true">WireGuard P2P</string>
-    <string name="settings_firebase_error_reporting_desc" translatable="true">오류 로그를 캡처하여 안정성 개선을 도와주세요.</string>
-    <string name="settings_firebase_error_reporting_heading" translatable="true">안정성 프로그램</string>
     <string name="settings_jumbo_packets" translatable="true">대역폭 부스터</string>
     <string name="smart_dns" translatable="true">스마트 DNS</string>
     <string name="title_database_dump" translatable="true">데이터베이스</string>

@@ -431,7 +431,6 @@
     <string name="rt_filter_hint">正顯示所有攔截清單</string>
     <string name="rt_filter_desc"><![CDATA[顯示 %1$s 個攔截清單]]></string>
     <string name="rt_filter_desc_subgroups"><![CDATA[正顯示 %1$s 個攔截清單，位於組： %2$s 與子分組： %3$s]]></string>
-    <string name="about_privacy_policy_link">https://www.rethinkdns.com/privacy</string>
     <string name="notification_screen_error">無法開啟應用程式通知區。</string>
     <string name="intent_launch_error">無法開啟 %1$s</string>
     <string name="no_browser_error">無法於瀏覽器開啟網頁。</string>

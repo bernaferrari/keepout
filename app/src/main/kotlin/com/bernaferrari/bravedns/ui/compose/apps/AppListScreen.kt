@@ -97,15 +97,17 @@ fun AppListScreen(
         if (uids.isEmpty()) return
         scope.launch {
             val previous = withContext(Dispatchers.IO + NonCancellable) { viewModel.applyToSelected(uids, action) }
+            if (previous.isEmpty()) return@launch
+            val updatedUids = previous.map { it.uid }
             eventLogger.log(
                 EventType.FW_RULE_MODIFIED,
                 Severity.LOW,
                 "App list, selected apps",
                 EventSource.UI,
                 true,
-                "Selection ${action.name} for UIDs ${uids.joinToString()}",
+                "Selection ${action.name} for UIDs ${updatedUids.joinToString()}",
             )
-            val message = resources.getQuantityString(R.plurals.apps_bulk_done, uids.size, uids.size)
+            val message = resources.getQuantityString(R.plurals.apps_bulk_done, updatedUids.size, updatedUids.size)
             snackbar.currentSnackbarData?.dismiss()
             if (snackbar.showRuleUndoSnackbar(message, undoLabel)) {
                 withContext(Dispatchers.IO + NonCancellable) { viewModel.restore(previous) }
@@ -115,7 +117,7 @@ fun AppListScreen(
                     "App list, selected apps",
                     EventSource.UI,
                     true,
-                    "Undo selection ${action.name} for UIDs ${uids.joinToString()}",
+                    "Undo selection ${action.name} for UIDs ${updatedUids.joinToString()}",
                 )
             }
         }
@@ -155,6 +157,7 @@ fun AppListScreen(
         haptics.performHapticFeedback(if (wasBlocked) HapticFeedbackType.ToggleOn else HapticFeedbackType.ToggleOff)
         scope.launch {
             val change = withContext(Dispatchers.IO + NonCancellable) { viewModel.toggleNetwork(app.uid, wifi) }
+            if (change.before == change.after) return@launch
             logToggle(eventLogger, app, change.after.connection.name)
             snackbar.currentSnackbarData?.dismiss()
         }
@@ -238,16 +241,14 @@ private data class AndroidFirewallToggleRequest(
 private fun AppInfo.toRethinkFirewallApp(context: Context): RethinkFirewallApp {
     val appStatus = FirewallStatus.getStatus(firewallStatus)
     val connection = ConnectionStatus.getStatus(connectionStatus)
-    // The network flags only apply in Normal mode; any other mode decides on its own.
-    val normalMode = appStatus == FirewallStatus.NONE
     return RethinkFirewallApp(
         id = "$uid:$packageName",
         uid = uid,
         appName = appName,
         packageName = packageName,
         status = firewallAppStatus(appStatus, connection),
-        wifiBlocked = normalMode && connection.wifiBlocked,
-        mobileBlocked = normalMode && connection.mobileBlocked,
+        wifiBlocked = !appStatus.isExclude() && connection.wifiBlocked,
+        mobileBlocked = !appStatus.isExclude() && connection.mobileBlocked,
         dataUsage = dataUsageText(this),
         proxyEnabled = !isProxyExcluded && hasProxy(uid),
         hasInternetPermission = hasInternetPermission(context.packageManager),

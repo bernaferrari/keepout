@@ -31,21 +31,6 @@ java {
 }
 
 
-// Apply plugins independently of requested task spelling; disable their tasks for
-// channels that do not contain Firebase. This also handles aggregate/mixed builds.
-apply(plugin = "com.google.gms.google-services")
-apply(plugin = "com.google.firebase.crashlytics")
-
-val artifactOnlyBuild = providers.gradleProperty("keepoutArtifactsOnly").map(String::toBoolean).getOrElse(false)
-
-tasks.configureEach {
-    if (artifactOnlyBuild && name.startsWith("uploadCrashlytics")) enabled = false
-    if (name.contains("Fdroid", ignoreCase = true) &&
-        (name.contains("GoogleServices") || name.contains("Crashlytics"))) {
-        enabled = false
-    }
-}
-
 val keystorePropertiesFile = rootProject.file("keystore.properties")
 val keystoreProperties = Properties()
 
@@ -104,7 +89,7 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.bernaferrari.bravedns"
+        applicationId = "com.bernaferrari.keepout"
         minSdk = 24
         targetSdk = 37
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -154,9 +139,6 @@ android {
                 debugSymbolLevel = "SYMBOL_TABLE"
                 abiFilters += listOf("arm64-v8a", "armeabi-v7a", "x86", "x86_64")
             }
-            configure<com.google.firebase.crashlytics.buildtools.gradle.CrashlyticsExtension> {
-                nativeSymbolUploadEnabled = true
-            }
         }
         create("leakCanary") {
             initWith(getByName("debug"))
@@ -178,24 +160,6 @@ android {
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
     }
-
-    run {
-        afterEvaluate {
-            tasks.configureEach {
-                if (name.contains("injectCrashlyticsBuildIds")) {
-                    enabled = false
-                    logger.warn("disabled build id injection for: $name")
-                }
-                if (name.contains("uploadCrashlyticsSymbolFile")) {
-                    doFirst {
-                        logger.info("uploading crashlytics symbols: $name")
-                    }
-                }
-            }
-        }
-    }
-
-
 
     buildFeatures {
         buildConfig = true
@@ -427,17 +391,11 @@ dependencies {
     implementation(libs.androidx.appfunctions)
     ksp(libs.androidx.appfunctions.compiler)
 
-    "websiteImplementation"(platform(libs.firebase.bom))
-    "websiteImplementation"(libs.firebase.crashlytics)
-    "websiteImplementation"(libs.firebase.crashlytics.ndk)
 
-    "playImplementation"(platform(libs.firebase.bom))
-    "playImplementation"(libs.firebase.crashlytics)
-    "playImplementation"(libs.firebase.crashlytics.ndk)
 }
 
 androidComponents {
-    // Store captures use the de-Googled channel only: no Firebase, no billing, no Play variants.
+    // Store captures use the de-Googled channel only: no billing or Play variants.
     beforeVariants(selector().withBuildType("storeCapture")) { variant ->
         variant.enable = variant.productFlavors.any { it.second == "fdroid" }
     }

@@ -13,8 +13,7 @@ A no-root Android VPN/DNS/firewall app (fork of RethinkDNS, modernized). Kotlin,
 ```
 
 Flavors: `play` / `fdroid` / `website` (single `releaseChannel` dimension; the former `releaseType` dimension and `src/full` were promoted into `src/main`). Billing lives once in `app/src/billing/` and is wired
-only into play + website variants (fdroid must never see Play Billing). Firebase applies to
-play/website channels only.
+only into play + website variants (fdroid must never see Play Billing).
 
 ## Quality gates (enforced in CI, `.github/workflows/ci.yml`)
 

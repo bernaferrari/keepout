@@ -437,7 +437,6 @@
     <string name="notification_screen_error">Impossible de lancer l’écran de notification de l’application.</string>
     <string name="hsf_notification_permission_failure">Activer l’autorisation de notification depuis les paramètres d’Android</string>
     <string name="about_privacy_policy">Lire la politique de confidentialité</string>
-    <string name="about_privacy_policy_link">https://www.rethinkdns.com/privacy</string>
     <string name="notif_download_cancel_content">Téléchargement annulé.</string>
     <string name="firewall_rule_block_univ_ip">IP / Port (Global)</string>
     <string name="ada_app_isolate">Confiner</string>
@@ -636,7 +635,6 @@
     <string name="lbl_test" translatable="true">test</string>
     <string name="settings_jumbo_packets" translatable="true">Amplificateur de bande passante</string>
     <string name="settings_jumbo_packets_desc" translatable="true">Utilise des paquets jumbo dans le tunnel VPN de Keepout.</string>
-    <string name="stability_program_toast" translatable="true">Inscrit au programme de stabilité pour les fonctionnalités expérimentales.</string>
     <string name="lbl_experimental" translatable="true">(expérimental)</string>
     <string name="lbl_manual" translatable="true">Manuel</string>
     <string name="lbl_fallback" translatable="true">Alternative</string>
@@ -723,8 +721,6 @@
     <string name="wg_ssid_type_exact" translatable="true">Correspond exactement</string>
     <string name="wg_ssid_type_wildcard" translatable="true">Correspond partiellement</string>
     <string name="wg_ssid_invalid_error" translatable="true">Les identifiants Wi-Fi (%1$s) doivent comporter 32 caractères ou moins.</string>
-    <string name="settings_firebase_error_reporting_heading" translatable="true">Programme de stabilité</string>
-    <string name="settings_firebase_error_reporting_desc" translatable="true">Enregistrer les journaux d\'erreurs pour contribuer à améliorer la stabilité.</string>
     <string name="tombstone_app_title" translatable="true">Se souvenir des applications désinstallées</string>
     <string name="tombstone_app_desc" translatable="true">Lorsque cette option est activée, conserver les règles de l\'application pendant 7 jours.</string>
     <string name="settings_allow_incoming_wg_packets" translatable="true">WireGuard P2P</string>

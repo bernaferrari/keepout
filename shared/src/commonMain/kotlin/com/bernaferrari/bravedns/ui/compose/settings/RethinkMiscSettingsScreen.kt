@@ -20,7 +20,7 @@ import com.bernaferrari.bravedns.ui.compose.theme.cardPositionFor
 import com.bernaferrari.bravedns.ui.compose.theme.rethinkSection
 
 enum class RethinkMiscSettingIcon {
-    Logs, AutoStart, Tombstone, FirewallBubble, IpInfo, AppUpdates, CrashReports, Downloader,
+    Logs, AutoStart, Tombstone, FirewallBubble, IpInfo, AppUpdates, Downloader,
 }
 
 data class RethinkMiscToggle(
@@ -184,6 +184,5 @@ private fun RethinkMiscSettingIcon.imageVector(): ImageVector = when (this) {
     RethinkMiscSettingIcon.FirewallBubble -> MaterialSymbols.Filled.ChatBubble
     RethinkMiscSettingIcon.IpInfo -> MaterialSymbols.Filled.Public
     RethinkMiscSettingIcon.AppUpdates -> MaterialSymbols.Filled.SystemUpdate
-    RethinkMiscSettingIcon.CrashReports -> MaterialSymbols.Filled.BugReport
     RethinkMiscSettingIcon.Downloader -> MaterialSymbols.Filled.Download
 }

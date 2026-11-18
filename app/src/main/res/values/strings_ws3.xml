@@ -34,8 +34,8 @@
 
     <!-- Home cards under the hero. -->
     <string name="home_card_protected_title">You\'re protected</string>
-    <string name="home_card_protected_body_keepout">Ads and trackers are blocked with Rethink DNS.</string>
-    <string name="home_card_protected_body">Keepout is filtering traffic for every app.</string>
+    <string name="home_card_protected_body_keepout">Rethink DNS is active. Choose blocklists to control what it blocks.</string>
+    <string name="home_card_protected_body">Keepout is filtering traffic that passes through it.</string>
     <string name="home_card_review_apps">Review apps</string>
     <string name="home_card_choose_blocklists">Choose blocklists</string>
     <string name="home_card_notifications_title">Get alerts from Keepout</string>

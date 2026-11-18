@@ -334,7 +334,7 @@ internal val demoFirewallAppListStrings = RethinkFirewallAppListStrings(
         RethinkFirewallFilter.Allowed -> "Allowed"
         RethinkFirewallFilter.Blocked -> "Blocked"
         RethinkFirewallFilter.Bypass -> "Skips universal rules"
-        RethinkFirewallFilter.SkipAllFiltering -> "Skips all filtering"
+        RethinkFirewallFilter.SkipAllFiltering -> "Skips DNS and universal rules"
         RethinkFirewallFilter.Excluded -> "Excluded"
         RethinkFirewallFilter.Lockdown -> "Trusted only"
         RethinkFirewallFilter.BlockedWifi -> "Blocked on Wi‑Fi"
@@ -343,7 +343,7 @@ internal val demoFirewallAppListStrings = RethinkFirewallAppListStrings(
     statusLabel = { status -> when (status) {
         RethinkFirewallAppStatus.Allowed, RethinkFirewallAppStatus.Blocked -> ""
         RethinkFirewallAppStatus.Bypass -> "Skips universal rules"
-        RethinkFirewallAppStatus.SkipAllFiltering -> "Skips all filtering"
+        RethinkFirewallAppStatus.SkipAllFiltering -> "Skips DNS and universal rules"
         RethinkFirewallAppStatus.Excluded -> "Excluded"
         RethinkFirewallAppStatus.Lockdown -> "Trusted only"
         RethinkFirewallAppStatus.Unknown -> "Unknown"
@@ -358,7 +358,7 @@ internal fun demoSelectionActionLabel(action: RethinkAppSelectionAction) = when 
     RethinkAppSelectionAction.AllowMobile -> "Allow mobile data"
     RethinkAppSelectionAction.TrustedOnly -> "Trusted only"
     RethinkAppSelectionAction.SkipUniversalRules -> "Skip universal rules"
-    RethinkAppSelectionAction.SkipAllFiltering -> "Skip all filtering"
+    RethinkAppSelectionAction.SkipAllFiltering -> "Skip DNS and universal rules"
     RethinkAppSelectionAction.Exclude -> "Exclude from Keepout"
 }
 

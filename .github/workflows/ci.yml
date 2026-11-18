@@ -60,12 +60,6 @@ jobs:
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@8da46b539cd8fe6ab27ca75128919a18d757604c # v6
 
-      - name: Prepare synthetic Firebase options for debug CI
-        if: matrix.variant == 'PlayDebug' || matrix.variant == 'WebsiteDebug'
-        run: |
-          python3 -m unittest discover -s scripts/tests -p test_debug_firebase.py -v
-          python3 scripts/prepare-debug-firebase.py
-
       - name: Compile variant and run unit tests
         run: ./gradlew :app:compile${{ matrix.variant }}Kotlin :app:test${{ matrix.variant }}UnitTest --console=plain
       - name: Detekt
@@ -108,11 +102,6 @@ jobs:
 
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@8da46b539cd8fe6ab27ca75128919a18d757604c # v6
-
-      - name: Prepare synthetic Firebase options for debug CI
-        run: |
-          python3 -m unittest discover -s scripts/tests -p test_debug_firebase.py -v
-          python3 scripts/prepare-debug-firebase.py
 
       - name: Lint (warningsAsErrors, baseline-ratcheted)
         run: ./gradlew :app:lintPlayDebug :app:lintFdroidDebug :app:lintWebsiteDebug --console=plain

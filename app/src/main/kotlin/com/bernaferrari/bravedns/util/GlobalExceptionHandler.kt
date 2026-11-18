@@ -19,29 +19,18 @@ import Logger
 import Logger.LOG_TAG_APP
 import android.content.Context
 import com.bernaferrari.bravedns.scheduler.EnhancedBugReport
-import com.bernaferrari.bravedns.service.PersistentState
-import com.bernaferrari.bravedns.util.Utilities.isFdroidFlavour
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.launch
-import org.koin.core.component.KoinComponent
-import org.koin.core.component.inject
 import java.lang.ref.WeakReference
 import kotlin.system.exitProcess
 
 /**
- * Global Exception Handler for catching all uncaught exceptions
- * and reporting them to Firebase Analytics/Crashlytics
+ * Saves uncaught exceptions for manual bug reports and delegates to Android.
  */
 class GlobalExceptionHandler private constructor(
     private val defaultHandler: Thread.UncaughtExceptionHandler?,
     contextRef: Context?
-) : Thread.UncaughtExceptionHandler, KoinComponent {
+) : Thread.UncaughtExceptionHandler {
 
     private val contextRef: WeakReference<Context>? = contextRef?.let { WeakReference(it) }
-    val scope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
-    private val persistentState by inject<PersistentState>()
     companion object {
         private var instance: GlobalExceptionHandler? = null
 
@@ -73,10 +62,6 @@ class GlobalExceptionHandler private constructor(
             val exception = Logger.throwableToException(throwable)
             Logger.e(LOG_TAG_APP, "uncaught exception in thread ${thread.name}", exception)
 
-            // Report to Firebase if available
-            reportToFirebase(exception)
-
-            // Add some custom context information
             logExceptionContext(thread, exception)
 
         } catch (e: Exception) {
@@ -88,20 +73,6 @@ class GlobalExceptionHandler private constructor(
                 Logger.e(LOG_TAG_APP, "no default exception handler found, terminating process")
                 exitProcess(1)
             }
-        }
-    }
-
-    /**
-     * Report the uncaught exception to Firebase
-     */
-    private fun reportToFirebase(exception: Exception) {
-        if (isFdroidFlavour()) return
-
-        try {
-            FirebaseErrorReporting.recordException(exception)
-        } catch (e: Exception) {
-            // Firebase might not be available in all build variants (e.g., fdroid)
-            Logger.w(LOG_TAG_APP, "crashlytics reporting not available: ${e.message}")
         }
     }
 
@@ -142,40 +113,12 @@ class GlobalExceptionHandler private constructor(
         }
     }
 
-    /**
-     * Attempt to write logs to file with fallback options when context is unavailable
-     */
-    private fun writeLogsToFileWithFallback(msg: String) {
-        scope.launch {
-            try {
-                // First try: get context from WeakReference
-                val context = contextRef?.get()
-                if (context != null) {
-                    val token = persistentState.firebaseUserToken
-                    EnhancedBugReport.writeLogsToFile(context, token, msg)
-                    Logger.i(LOG_TAG_APP, "crash logs written to file successfully")
-                    return@launch
-                }
-
-                // Fallback: log warning and ensure the crash info is at least logged
-                Logger.w(
-                    LOG_TAG_APP,
-                    "context is null or has been garbage collected during crash handling"
-                )
-                Logger.w(LOG_TAG_APP, "attempting to preserve crash info in system logs")
-
-                // Additional fallback: try to write to standard error as last resort
-                try {
-                    System.err.println("=== CRITICAL CRASH INFO (Context Unavailable) ===")
-                    System.err.println(msg)
-                    System.err.println("=== END CRITICAL CRASH INFO ===")
-                } catch (e: Exception) {
-                    Logger.e(LOG_TAG_APP, "failed to write crash info to stderr", e)
-                }
-
-            } catch (e: Exception) {
-                Logger.e(LOG_TAG_APP, "err in writeLogsToFileWithFallback", e)
-            }
+    private fun writeLogsToFileWithFallback(message: String) {
+        val context = contextRef?.get()
+        if (context != null) {
+            EnhancedBugReport.writeLogsToFile(context, message)
+        } else {
+            System.err.println(message)
         }
     }
 }
