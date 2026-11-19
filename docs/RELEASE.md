@@ -1,7 +1,7 @@
 # Release verification and manual signing
 
 The security workflow builds a minified F-Droid release without signing secrets. It checks the
-application ID, encoded version codes, launcher alias, VPN service permission, native ABI contents,
+application ID, version code, launcher alias, VPN service permission, native ABI contents,
 and 16 KB native-library alignment. CodeQL runs against the de-Googled Android build. Dependency
 review rejects high/critical advisories; its resolved Gradle graph is submitted to GitHub only from
 trusted pushes to `main`, with write permission confined to that job. No APK is sent to an external
@@ -15,18 +15,18 @@ Local unsigned verification requires JDK 17 and an Android SDK with Build Tools.
 `ANDROID_HOME` (or `ANDROID_SDK_ROOT`) to that SDK directory for the Python artifact tools.
 
 ```sh
-./gradlew :app:assembleFdroidRelease -PVERSION_CODE=1
+./gradlew :app:assembleFdroidRelease
 python3 scripts/verify-release-apks.py app/build/outputs/apk/fdroid/release --version-code 1
 python3 -m unittest discover -s scripts/tests -v
 ```
 
 Every release produces four ABI APKs (`armeabi-v7a`, `arm64-v8a`, `x86`, `x86_64`) and a universal
-APK. Play also produces a signed Android App Bundle (`.aab`) for Play Console. ABI version codes retain the established `multiplier * 10000000 + base` encoding; universal
-uses the arm64 multiplier. The base must be a positive integer below 10000000. Keep the published
-base monotonically increasing; the scripts do not query a store or publish anything.
+APK. Play also produces a signed Android App Bundle (`.aab`) for Play Console. All channels and ABIs
+use the same version code. The default is `1`. `VERSION_CODE` can override it with a positive integer
+below 10,000,000. Increase the version code for each published update.
 
 The **Manual signed release artifacts** workflow is dispatch-only and accepts only the `main` ref.
-Choose a channel, a positive base version code, and the expected signing certificate SHA-256 digest.
+Choose a channel, a version code, and the expected signing certificate SHA-256 digest.
 Provide these repository secrets at runtime:
 
 - `RELEASE_KEYSTORE_BASE64`: base64 encoding of the release keystore.

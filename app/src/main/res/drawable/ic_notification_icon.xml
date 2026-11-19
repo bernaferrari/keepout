@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Keepout seal with the keep-out bar cut out; status bar and Quick Settings tile glyph. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    <path
+        android:fillColor="#FFFFFFFF"
+        android:fillType="evenOdd"
+        android:pathData="M12,1.4C13.39,1.4 14.46,2.84 15.6,3.32C16.73,3.79 18.51,3.52 19.5,4.5C20.48,5.49 20.21,7.27 20.68,8.4C21.16,9.54 22.6,10.61 22.6,12C22.6,13.39 21.16,14.46 20.68,15.6C20.21,16.73 20.48,18.51 19.5,19.5C18.51,20.48 16.73,20.21 15.6,20.68C14.46,21.16 13.39,22.6 12,22.6C10.61,22.6 9.54,21.16 8.4,20.68C7.27,20.21 5.49,20.48 4.5,19.5C3.52,18.51 3.79,16.73 3.32,15.6C2.84,14.46 1.4,13.39 1.4,12C1.4,10.61 2.84,9.54 3.32,8.4C3.79,7.27 3.52,5.49 4.5,4.5C5.49,3.52 7.27,3.79 8.4,3.32C9.54,2.84 10.61,1.4 12,1.4ZM8.1,10.4H15.9A1.6,1.6 0,0 1,15.9,13.6H8.1A1.6,1.6 0,0 1,8.1,10.4Z" />
+</vector>

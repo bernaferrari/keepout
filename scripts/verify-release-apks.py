@@ -10,7 +10,7 @@ import struct
 import subprocess
 import zipfile
 
-ABI_CODES = {"armeabi-v7a": 2, "arm64-v8a": 3, "x86": 8, "x86_64": 9}
+ABIS = {"armeabi-v7a", "arm64-v8a", "x86", "x86_64"}
 APPLICATION = "com.bernaferrari.keepout"
 
 
@@ -43,7 +43,7 @@ def load_alignments(data: bytes) -> list[int]:
 def check_manifest(badging: str, tree: str, expected_version: int) -> None:
     package = re.search(r"^package: name='([^']+)' versionCode='(\d+)'", badging, re.MULTILINE)
     if not package or package.group(1) != APPLICATION or int(package.group(2)) != expected_version:
-        raise ValueError("Wrong application ID or encoded APK version code")
+        raise ValueError("Wrong application ID or APK version code")
     if "application-debuggable" in badging or re.search(r"android:(?:debuggable|testOnly)[^\n]*0xffffffff", tree):
         raise ValueError("Release APK is debuggable or test-only")
     if "LauncherAliasAppLock" not in tree:
@@ -70,13 +70,13 @@ def check_manifest(badging: str, tree: str, expected_version: int) -> None:
         raise ValueError("VPN service is missing")
 
 
-def inspect(apk: Path, base_code: int, expected_cert: str | None = None) -> str:
+def inspect(apk: Path, version_code: int, expected_cert: str | None = None) -> str:
     with zipfile.ZipFile(apk) as archive:
         native = [name for name in archive.namelist() if re.fullmatch(r"lib/[^/]+/[^/]+\.so", name)]
         abis = {name.split("/")[1] for name in native}
-        if abis == ABI_CODES.keys():
+        if abis == ABIS:
             kind = "universal"
-        elif len(abis) == 1 and abis <= ABI_CODES.keys():
+        elif len(abis) == 1 and abis <= ABIS:
             kind = next(iter(abis))
         else:
             raise ValueError(f"Invalid native ABI contents in {apk.name}: {sorted(abis)}")
@@ -91,8 +91,7 @@ def inspect(apk: Path, base_code: int, expected_cert: str | None = None) -> str:
     aapt = sdk_tool("aapt2")
     badging = subprocess.check_output([str(aapt), "dump", "badging", str(apk)], text=True)
     tree = subprocess.check_output([str(aapt), "dump", "xmltree", str(apk), "--file", "AndroidManifest.xml"], text=True)
-    multiplier = ABI_CODES["arm64-v8a"] if kind == "universal" else ABI_CODES[kind]
-    check_manifest(badging, tree, multiplier * 10_000_000 + base_code)
+    check_manifest(badging, tree, version_code)
     if expected_cert:
         cert = expected_cert.replace(":", "").lower()
         if not re.fullmatch(r"[a-f0-9]{64}", cert):
@@ -115,7 +114,7 @@ def main() -> None:
         parser.error("version code must be between 1 and 9,999,999")
     apks = sorted(arguments.directory.glob("*.apk"))
     kinds = [inspect(apk, arguments.version_code, arguments.expected_cert) for apk in apks]
-    if sorted(kinds) != sorted([*ABI_CODES, "universal"]):
+    if sorted(kinds) != sorted([*ABIS, "universal"]):
         raise ValueError("Expected exactly four ABI APKs and one universal APK")
     print(f"Verified {len(apks)} release APKs: identity, versions, native ABIs, and 16KB compatibility")
 

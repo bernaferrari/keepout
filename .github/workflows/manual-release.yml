@@ -8,7 +8,7 @@ on:
         options: [fdroid, play, website]
         default: fdroid
       version_code:
-        description: Positive base version code (1 to 9999999)
+        description: Version code (1 to 9999999)
         type: string
         required: true
       expected_cert_sha256:

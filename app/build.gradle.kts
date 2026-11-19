@@ -34,37 +34,16 @@ java {
 val keystorePropertiesFile = rootProject.file("keystore.properties")
 val keystoreProperties = Properties()
 
-// Archive deployments intentionally exclude .git. Android builds keep the descriptive Git
-// version, while the browser-only Vercel build gets a stable, non-empty version name instead.
-val gitVersion =
-    if (rootProject.file(".git").exists()) {
-        providers.exec {
-            commandLine("git", "describe", "--tags", "--always")
-        }.standardOutput.asText.get().trim()
-    } else {
-        System.getenv("VERCEL_GIT_COMMIT_SHA")
-            ?.takeIf(String::isNotBlank)
-            ?.take(12)
-            ?: "web-demo"
-    }
-
-fun getVersionCode(project: Project): Int {
-    var code = 0
-    try {
-        val envCode = System.getenv("VERSION_CODE")
-        if (envCode != null) {
-            code = Integer.parseInt(envCode)
-            project.logger.info("env version code: $code")
+val appVersionCode = providers.environmentVariable("VERSION_CODE")
+    .orElse(providers.gradleProperty("VERSION_CODE"))
+    .orElse("1")
+    .map { value ->
+        val code = value.toIntOrNull()
+        require(code != null && code in 1..9_999_999) {
+            "VERSION_CODE must be between 1 and 9,999,999."
         }
-    } catch (ex: NumberFormatException) {
-        project.logger.info("missing env version code: ${ex.message}")
+        code
     }
-    if (code == 0) {
-        code = (project.properties["VERSION_CODE"] as? String)?.toIntOrNull() ?: 0
-        project.logger.info("project properties version code: $code")
-    }
-    return code
-}
 
 try {
     if (keystorePropertiesFile.exists()) {
@@ -93,8 +72,8 @@ android {
         minSdk = 24
         targetSdk = 37
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        versionCode = getVersionCode(project).takeIf { it > 0 } ?: 1
-        versionName = gitVersion
+        versionCode = appVersionCode.get()
+        versionName = "1"
         vectorDrawables.useSupportLibrary = true
     }
 
@@ -293,8 +272,6 @@ dependencies {
     implementation(libs.compose.ui.graphics)
     implementation(libs.compose.ui.tooling.preview)
     implementation(libs.compose.material3)
-    implementation(libs.androidx.compose.material.icons.core)
-    implementation(libs.androidx.compose.material.icons.extended)
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.lifecycle.runtime.compose)
     implementation(libs.materialkolor)
@@ -408,43 +385,6 @@ androidComponents {
                 tests.sources.java?.addStaticSourceDirectory("src/testBilling/kotlin")
                 tests.sources.kotlin?.addStaticSourceDirectory("src/testBilling/kotlin")
             }
-        }
-    }
-
-    // Validate the resolved base code before ABI-specific output encoding. The action must
-    // capture only this value, never the script or Project, so configuration caching stays safe.
-    val releaseBaseVersionCode = getVersionCode(project)
-    val validateReleaseVersionCode =
-        tasks.register("validateReleaseVersionCode") {
-            inputs.property("baseVersionCode", releaseBaseVersionCode)
-            doLast {
-                require(releaseBaseVersionCode > 0) {
-                    "versionCode is 0: set VERSION_CODE (env or -PVERSION_CODE=...) for release builds."
-                }
-            }
-        }
-    tasks
-        .matching { (it.name.startsWith("assemble") || it.name.startsWith("bundle")) && it.name.endsWith("Release") }
-        .configureEach { dependsOn(validateReleaseVersionCode) }
-
-    onVariants { variant ->
-        val versionCodes = mapOf(
-            "armeabi-v7a" to 2,
-            "arm64-v8a" to 3,
-            "x86" to 8,
-            "x86_64" to 9
-        )
-        variant.outputs.forEach { output ->
-            val abi = output.filters.find {
-                it.filterType == com.android.build.api.variant.FilterConfiguration.FilterType.ABI
-            }?.identifier
-            val multiplier = if (abi == null) versionCodes.getValue("arm64-v8a")
-                else requireNotNull(versionCodes[abi]) { "Unknown output ABI: $abi" }
-            val base = output.versionCode.get()
-            require(base in 0 until 10_000_000) { "VERSION_CODE must be between 0 and 9,999,999" }
-            val encoded = multiplier * 10_000_000L + base
-            require(encoded <= Int.MAX_VALUE) { "APK version code overflow" }
-            output.versionCode.set(encoded.toInt())
         }
     }
 }

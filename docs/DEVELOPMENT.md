@@ -87,8 +87,8 @@ the app keeps no copy of it. Start with [store-listing/README.md](../store-listi
 
 ## Good to know
 
-- Release builds need `VERSION_CODE` (environment or `-PVERSION_CODE=...`); they fail rather than ship
-  versionCode 0. Signing reads a local `keystore.properties`. The repository ignores this file and local keystores.
+- Android builds default to version code `1`. Override it with the `VERSION_CODE` environment variable
+  or `-PVERSION_CODE=...`. See [release verification and signing](RELEASE.md) for the signing steps.
 - External VPN controls (`receiver/VPNControlReceiver.kt`): start/stop broadcasts work only on Android 14+ from an
   OS-verified sender in the configured package allowlist. Package names in intent extras are never trusted. On older
   Android the receiver fails closed, and the app and Quick Settings tile still work.

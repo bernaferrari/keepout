@@ -34,7 +34,6 @@ lifecycle = "2.11.0"
 lifecycleRuntimeCompose = "2.11.0"
 lint = "1.0.4"
 # UI & Material
-materialIcons = "1.7.8"
 materialkolor = "6.0.0"
 mockk = "1.14.12"
 # Navigation
@@ -67,8 +66,6 @@ androidx-activity-compose = { module = "androidx.activity:activity-compose", ver
 androidx-appfunctions = { module = "androidx.appfunctions:appfunctions", version.ref = "appfunctions" }
 androidx-appfunctions-compiler = { module = "androidx.appfunctions:appfunctions-compiler", version.ref = "appfunctions" }
 androidx-biometric = { module = "androidx.biometric:biometric", version.ref = "biometric" }
-androidx-compose-material-icons-core = { module = "androidx.compose.material:material-icons-core", version.ref = "materialIcons" }
-androidx-compose-material-icons-extended = { module = "androidx.compose.material:material-icons-extended", version.ref = "materialIcons" }
 compose-animation = { module = "org.jetbrains.compose.animation:animation", version.ref = "composeMultiplatform" }
 compose-foundation = { module = "org.jetbrains.compose.foundation:foundation", version.ref = "composeMultiplatform" }
 compose-ui = { module = "org.jetbrains.compose.ui:ui", version.ref = "composeMultiplatform" }
