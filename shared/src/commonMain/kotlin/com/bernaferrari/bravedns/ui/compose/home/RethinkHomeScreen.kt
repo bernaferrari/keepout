@@ -87,6 +87,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.toPath
 import androidx.compose.material3.toShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
@@ -97,6 +98,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Matrix
 import androidx.compose.ui.graphics.Outline
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.Shape
@@ -829,7 +831,9 @@ private fun ProtectionMark(state: ProtectionVisualState, colors: HeroColors, siz
         animationSpec = if (motion.reducedMotion) snap() else MaterialTheme.motionScheme.slowSpatialSpec(),
         label = "homeMarkMorph",
     )
-    val morph = remember { Morph(MaterialShapes.Circle, MaterialShapes.Cookie12Sided) }
+    val markShape = remember {
+        MorphShape(Morph(MaterialShapes.Circle, MaterialShapes.Cookie12Sided)) { morphProgress }
+    }
     val haloShape = MaterialShapes.SoftBurst.toShape()
     val phase = rememberTurn(active && !motion.reducedMotion)
     Box(Modifier.size(size), contentAlignment = Alignment.Center) {
@@ -852,7 +856,7 @@ private fun ProtectionMark(state: ProtectionVisualState, colors: HeroColors, siz
                     rotationZ = phase.value * 360f
                     compositingStrategy = CompositingStrategy.Offscreen
                 }
-                .background(colors.mark, MorphShape(morph, morphProgress)),
+                .background(colors.mark, markShape),
         )
         Icon(
             imageVector = when (state) {
@@ -1002,19 +1006,15 @@ private fun RethinkHomeUiState.visualState(): ProtectionVisualState = when {
 }
 
 /** A [Morph] between two normalized Material shapes, scaled to the layout size. */
-private class MorphShape(private val morph: Morph, private val progress: Float) : Shape {
+private class MorphShape(private val morph: Morph, private val progress: () -> Float) : Shape {
+    private val path = Path()
+    private val matrix = Matrix()
+
     override fun createOutline(size: Size, layoutDirection: LayoutDirection, density: Density): Outline {
-        val path = Path()
-        val cubics = morph.asCubics(progress)
-        cubics.firstOrNull()?.let { path.moveTo(it.anchor0X * size.width, it.anchor0Y * size.height) }
-        cubics.forEach { cubic ->
-            path.cubicTo(
-                cubic.control0X * size.width, cubic.control0Y * size.height,
-                cubic.control1X * size.width, cubic.control1Y * size.height,
-                cubic.anchor1X * size.width, cubic.anchor1Y * size.height,
-            )
-        }
-        path.close()
+        morph.toPath(progress(), path)
+        matrix.reset()
+        matrix.scale(size.width, size.height)
+        path.transform(matrix)
         return Outline.Generic(path)
     }
 }
